@@ -9,8 +9,11 @@
 .mainMenu {
   display: flex;
   font-size: 18px;
-  width: 380px;
-  justify-content: space-between;
+  gap: 60px;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .mainMenu a {
@@ -31,5 +34,21 @@
   .mainNav {
     min-height: 70px;
     padding-left: 40px;
+    padding-right: 40px;
   }
+}
+
+.navContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.menuWrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
