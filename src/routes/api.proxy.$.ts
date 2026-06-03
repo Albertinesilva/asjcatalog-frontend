@@ -9,8 +9,12 @@ const CORS_HEADERS = {
   "Access-Control-Max-Age": "86400",
 } as const;
 
-async function doProxy(request: Request, targetPath: string): Promise<Response> {
+async function doProxy(request: Request): Promise<Response> {
   const url = new URL(request.url);
+  const prefix = "/api/proxy/";
+  const targetPath = url.pathname.startsWith(prefix)
+    ? url.pathname.slice(prefix.length)
+    : "";
   const targetUrl = new URL(targetPath + url.search, API_BASE_URL);
 
   const headers = new Headers();
@@ -51,26 +55,11 @@ async function doProxy(request: Request, targetPath: string): Promise<Response> 
 export const Route = createFileRoute("/api/proxy/$")({
   server: {
     handlers: {
-      GET: async ({ request, params }) => {
-        const splat = (params as Record<string, string>)["*"] ?? "";
-        return doProxy(request, splat);
-      },
-      POST: async ({ request, params }) => {
-        const splat = (params as Record<string, string>)["*"] ?? "";
-        return doProxy(request, splat);
-      },
-      PUT: async ({ request, params }) => {
-        const splat = (params as Record<string, string>)["*"] ?? "";
-        return doProxy(request, splat);
-      },
-      DELETE: async ({ request, params }) => {
-        const splat = (params as Record<string, string>)["*"] ?? "";
-        return doProxy(request, splat);
-      },
-      PATCH: async ({ request, params }) => {
-        const splat = (params as Record<string, string>)["*"] ?? "";
-        return doProxy(request, splat);
-      },
+      GET: async ({ request }) => doProxy(request),
+      POST: async ({ request }) => doProxy(request),
+      PUT: async ({ request }) => doProxy(request),
+      DELETE: async ({ request }) => doProxy(request),
+      PATCH: async ({ request }) => doProxy(request),
       OPTIONS: async () => {
         return new Response(null, {
           status: 204,
