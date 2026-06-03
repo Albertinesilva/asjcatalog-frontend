@@ -41,6 +41,7 @@
 @media (min-width: 992px) {
   .homeText {
     padding-left: 100px;
+    align-items: flex-start !important;
   }
   .homeContent {
     padding-bottom: 20px;
