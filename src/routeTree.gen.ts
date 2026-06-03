@@ -16,6 +16,7 @@ import { Route as AdminAuthRouteImport } from './routes/admin.auth'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as CatalogProductProductRouteImport } from './routes/catalog.product.$product'
+import { Route as ApiProxySplatRouteImport } from './routes/api.proxy.$'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
@@ -56,6 +57,11 @@ const CatalogProductProductRoute = CatalogProductProductRouteImport.update({
   path: '/catalog/product/$product',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProxySplatRoute = ApiProxySplatRouteImport.update({
+  id: '/api/proxy/$',
+  path: '/api/proxy/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/catalog/product/$product': typeof CatalogProductProductRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/products/$id': typeof AuthenticatedAdminProductsIdRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/catalog/product/$product': typeof CatalogProductProductRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/products/$id': typeof AuthenticatedAdminProductsIdRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/api/proxy/$': typeof ApiProxySplatRoute
   '/catalog/product/$product': typeof CatalogProductProductRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/products/$id': typeof AuthenticatedAdminProductsIdRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/products'
     | '/admin/users'
+    | '/api/proxy/$'
     | '/catalog/product/$product'
     | '/admin/'
     | '/admin/products/$id'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/products'
     | '/admin/users'
+    | '/api/proxy/$'
     | '/catalog/product/$product'
     | '/admin'
     | '/admin/products/$id'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/users'
+    | '/api/proxy/$'
     | '/catalog/product/$product'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/products/$id'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminAuthRoute: typeof AdminAuthRoute
   CatalogIndexRoute: typeof CatalogIndexRoute
+  ApiProxySplatRoute: typeof ApiProxySplatRoute
   CatalogProductProductRoute: typeof CatalogProductProductRoute
 }
 
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/catalog/product/$product'
       fullPath: '/catalog/product/$product'
       preLoaderRoute: typeof CatalogProductProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/proxy/$': {
+      id: '/api/proxy/$'
+      path: '/api/proxy/$'
+      fullPath: '/api/proxy/$'
+      preLoaderRoute: typeof ApiProxySplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/users': {
@@ -315,6 +335,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminAuthRoute: AdminAuthRoute,
   CatalogIndexRoute: CatalogIndexRoute,
+  ApiProxySplatRoute: ApiProxySplatRoute,
   CatalogProductProductRoute: CatalogProductProductRoute,
 }
 export const routeTree = rootRouteImport

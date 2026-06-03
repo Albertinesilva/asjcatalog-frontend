@@ -14,6 +14,11 @@ export const CLIENT_SECRET =
   (import.meta.env.VITE_CLIENT_SECRET as string | undefined) ??
   "myclientsecret";
 
+function isLovablePreview(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.location.hostname.includes("lovable.app");
+}
+
 function basicAuthHeader(): string {
   const encoder =
     typeof btoa === "function"
@@ -22,7 +27,10 @@ function basicAuthHeader(): string {
   return `Basic ${encoder(`${CLIENT_ID}:${CLIENT_SECRET}`)}`;
 }
 
-export const api = axios.create({ baseURL: API_BASE_URL });
+export const api = axios.create({
+  baseURL: isLovablePreview() ? "/api/proxy" : API_BASE_URL,
+});
+
 
 api.interceptors.request.use((config) => {
   const session = getSessionData();
