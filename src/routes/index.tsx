@@ -1,29 +1,53 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ButtonIcon } from "../components";
+import homeImage from "../assets/homeimage.svg";
+import styles from "../styles/pages/home.module.css";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "DS Catalog" },
+      {
+        name: "description",
+        content:
+          "Conheça o melhor catálogo de produtos. Encontre rapidamente o que procura.",
+      },
+      { property: "og:title", content: "DS Catalog" },
+      {
+        property: "og:description",
+        content: "Conheça o melhor catálogo de produtos.",
+      },
     ],
   }),
-  component: Index,
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Home() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className={styles.homeContainer}>
+      <div
+        className={`row d-flex flex-column-reverse align-items-center justify-content-center flex-lg-row card-base border-radius-20 ${styles.homeContent}`}
+      >
+        <div
+          className={`col-lg-6 d-flex flex-column align-items-center mt-4 mt-md-0 ${styles.homeText}`}
+        >
+          <h1 className={styles.textTitle}>
+            Conheça o melhor catálogo de produtos
+          </h1>
+          <p className={styles.textSubtitle}>
+            Ajudaremos você a encontrar os melhores produtos disponíveis no
+            mercado.
+          </p>
+          <Link to="/catalog">
+            <ButtonIcon label="inicie agora a sua busca" type="button" />
+          </Link>
+        </div>
+        <div
+          className={`col-lg-6 d-flex align-items-center justify-content-center align-items-lg-center justify-content-lg-start ${styles.homeImgContainer}`}
+        >
+          <img src={homeImage} alt="Home Page" />
+        </div>
+      </div>
     </div>
   );
 }

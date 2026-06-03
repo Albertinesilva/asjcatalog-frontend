@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Navbar } from "../components";
 
 function NotFoundComponent() {
   return (
@@ -116,8 +117,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    // Bootstrap JS (collapse, dropdowns) – browser-only
+    void import("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
+      <Navbar />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
