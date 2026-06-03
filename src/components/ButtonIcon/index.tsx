@@ -1,7 +1,5 @@
-import Image from "next/image";
-import arrow from "../../../public/arrow.svg";
-
-import { ButtonIconProps } from "../../@types";
+import arrow from "../../assets/arrow.svg";
+import type { ButtonIconProps } from "../../lib/types";
 import styles from "./buttonicon.module.css";
 
 export default function ButtonIcon({ label, type }: ButtonIconProps) {
@@ -11,7 +9,7 @@ export default function ButtonIcon({ label, type }: ButtonIconProps) {
         <h5>{label}</h5>
       </button>
       <div className={styles.btnIconContent}>
-        <Image src={arrow} alt="Arrow" />
+        <img src={arrow} alt="Arrow" />
       </div>
     </div>
   );

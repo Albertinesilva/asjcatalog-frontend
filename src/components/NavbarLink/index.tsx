@@ -1,10 +1,13 @@
-import Link from "next/link";
-import { NavLinkProps } from "../../@types";
-import { returnSelect } from "../../utils";
+import { Link } from "@tanstack/react-router";
+import type { NavLinkProps } from "../../lib/types";
 
 export default function NavbarLink({ target, label }: NavLinkProps) {
   return (
-    <Link href={target} className={returnSelect(target)}>
+    <Link
+      to={target}
+      activeProps={{ className: "active" }}
+      activeOptions={{ exact: target === "/" }}
+    >
       {label}
     </Link>
   );

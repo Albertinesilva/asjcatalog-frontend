@@ -1,35 +1,40 @@
-import Link from "next/link";
-import { returnActiveItem } from "../../utils";
-import { isAllowedByRole } from "../../utils/auth";
+import { Link } from "@tanstack/react-router";
+import { hasAnyRole } from "../../lib/auth";
+import { useAuth } from "../../lib/use-auth";
 import styles from "./sidebar.module.css";
 
 export default function Sidebar() {
+  useAuth(); // re-render on auth change so role-gated items appear
+  const showUsers = hasAnyRole(["ROLE_ADMIN"]);
+  const activeClass = `${styles.adminNavItem} active-sidebar-item`;
+
   return (
     <div className={styles.adminNavContainer}>
       <ul>
         <li>
           <Link
-            href="/admin/dashboard/products"
-            className={`${returnActiveItem("/admin/dashboard/products")} ${styles.adminNavItem}`}
+            to="/admin/products"
+            className={styles.adminNavItem}
+            activeProps={{ className: activeClass }}
           >
             Produtos
           </Link>
         </li>
-
         <li>
           <Link
-            href="/admin/dashboard/categories"
-            className={`${returnActiveItem("/admin/dashboard/categories")} ${styles.adminNavItem}`}
+            to="/admin/categories"
+            className={styles.adminNavItem}
+            activeProps={{ className: activeClass }}
           >
             Categorias
           </Link>
         </li>
-
-        {isAllowedByRole(["ROLE_ADMIN"]) && (
+        {showUsers && (
           <li>
             <Link
-              href="/admin/dashboard/users"
-              className={`${returnActiveItem("/admin/dashboard/users")} ${styles.adminNavItem}`}
+              to="/admin/users"
+              className={styles.adminNavItem}
+              activeProps={{ className: activeClass }}
             >
               Usuários
             </Link>

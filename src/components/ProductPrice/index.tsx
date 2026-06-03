@@ -1,4 +1,4 @@
-import { ProductPriceProps } from "../../@types";
+import type { ProductPriceProps } from "../../lib/types";
 import styles from "./productprice.module.css";
 
 export default function ProductPrice({ price }: ProductPriceProps) {
