@@ -16,8 +16,7 @@ const productDetailQuery = (id: string) =>
   });
 
 export const Route = createFileRoute("/catalog/product/$product")({
-  loader: ({ params, context: { queryClient } }) =>
-    queryClient.ensureQueryData(productDetailQuery(params.product)),
+  ssr: false,
   component: ProductDetails,
 });
 
@@ -29,34 +28,28 @@ function ProductDetails() {
   return (
     <div className={styles.productDetailsContainer}>
       <div
-        className={`d-flex flex-column card-base border-radius-20 ${styles.productDetails}`}
+        className={`card-base border-radius-10 ${styles.productDetails}`}
       >
         <Link to="/catalog" className={styles.productDetailsGoback}>
           <img src={arrow} alt="Voltar" />
-          <h1 className={styles.textGoBack}>voltar</h1>
+          <span className={styles.textGoBack}>VOLTAR</span>
         </Link>
-        <div className="row flex-column flex-lg-row align-items-center align-items-lg-start">
-          <div className="col-xl-6">
-            <div
-              className={`text-center ${styles.productDetailsCard} ${styles.imgContainer}`}
-            >
+        <div className={styles.detailsGrid}>
+          <div className={styles.leftColumn}>
+            <div className={styles.imgCard}>
               <img
                 src={imgUrl}
                 alt={name}
                 className={styles.productDetailsImage}
-                width={350}
-                height={350}
               />
             </div>
-            <div className="d-md-flex justify-content-md-between flex-md-row flex-lg-column">
-              <h1 className={styles.productDetailsName}>{name}</h1>
-              <ProductPrice price={String(price)} />
-            </div>
+            <h1 className={styles.productDetailsName}>{name}</h1>
+            <ProductPrice price={String(price)} />
           </div>
-          <div className={`col-xl-6 ${styles.productDetailsCard}`}>
-            <h1 className={styles.productDescriptionTitle}>
-              Descrição do Produto
-            </h1>
+          <div className={styles.descriptionCard}>
+            <h2 className={styles.productDescriptionTitle}>
+              Decrição do Produto
+            </h2>
             <p className={styles.productDescriptionText}>{description}</p>
           </div>
         </div>
