@@ -28,6 +28,7 @@ const categoriesQueryOptions = queryOptions({
 });
 
 export const Route = createFileRoute("/catalog/")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Catálogo — DS Catalog" },
@@ -37,11 +38,6 @@ export const Route = createFileRoute("/catalog/")({
       },
     ],
   }),
-  loader: ({ context: { queryClient } }) =>
-    Promise.all([
-      queryClient.ensureQueryData(productsQueryOptions),
-      queryClient.ensureQueryData(categoriesQueryOptions),
-    ]),
   component: CatalogPage,
 });
 
