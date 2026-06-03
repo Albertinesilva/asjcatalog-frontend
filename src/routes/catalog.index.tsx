@@ -69,7 +69,7 @@ function CatalogPage() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid px-4 py-4">
       <div
         className={`card-base border-radius-10 ${styles.filterCard}`}
       >
