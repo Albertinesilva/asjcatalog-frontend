@@ -50,31 +50,77 @@ function CategoriesAdmin() {
     onSuccess: invalidate,
   });
 
-  return (
-    <div className="container py-4">
-      <h3 className="mb-4">Categorias</h3>
+  const [search, setSearch] = useState("");
+  const [showAdd, setShowAdd] = useState(false);
+  const filtered = (data ?? []).filter((c) =>
+    c.name.toLowerCase().includes(search.trim().toLowerCase()),
+  );
 
-      <form
-        className="d-flex gap-2 mb-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (newName.trim()) createMut.mutate(newName.trim());
-        }}
-      >
-        <input
-          className="form-control"
-          placeholder="Nova categoria"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-        />
+  return (
+    <div className="container-fluid py-4 px-3 px-md-4">
+      <div className="d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch align-items-md-center">
         <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={createMut.isPending}
+          type="button"
+          className="btn btn-primary fw-bold"
+          style={{ minWidth: 180, height: 50, borderRadius: 10 }}
+          onClick={() => setShowAdd((s) => !s)}
         >
-          Adicionar
+          ADICIONAR
         </button>
-      </form>
+        <div className="card-base border-radius-10 d-flex flex-column flex-md-row gap-2 flex-grow-1 p-2">
+          <input
+            className="form-control border-0 flex-grow-1"
+            style={{ height: 46 }}
+            placeholder="Pesquisar Categoria"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            style={{ height: 46, borderRadius: 10, minWidth: 150 }}
+            onClick={() => setSearch("")}
+          >
+            LIMPAR FILTRO
+          </button>
+        </div>
+      </div>
+
+      {showAdd && (
+        <form
+          className="card-base border-radius-10 p-3 mb-4 d-flex flex-column flex-md-row gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (newName.trim()) {
+              createMut.mutate(newName.trim(), {
+                onSuccess: () => setShowAdd(false),
+              });
+            }
+          }}
+        >
+          <input
+            className="form-control"
+            placeholder="Nome da categoria"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            autoFocus
+          />
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={createMut.isPending}
+          >
+            CADASTRAR
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={() => setShowAdd(false)}
+          >
+            CANCELAR
+          </button>
+        </form>
+      )}
 
       {isLoading && <p>Carregando...</p>}
       {isError && (
@@ -83,65 +129,72 @@ function CategoriesAdmin() {
         </p>
       )}
 
-      <ul className="list-group">
-        {data?.map((c) => (
-          <li
+      <div className="d-flex flex-column gap-3">
+        {filtered.map((c) => (
+          <div
             key={c.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
+            className="card-base border-radius-10 d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 gap-2"
           >
             {editingId === c.id ? (
-              <>
-                <input
-                  className="form-control me-2"
-                  value={editingName}
-                  onChange={(e) => setEditingName(e.target.value)}
-                />
-                <div className="d-flex gap-2">
+              <input
+                className="form-control"
+                value={editingName}
+                onChange={(e) => setEditingName(e.target.value)}
+              />
+            ) : (
+              <h5 className="m-0 fw-bold" style={{ color: "#263238" }}>
+                {c.name}
+              </h5>
+            )}
+            <div className="d-flex gap-2 flex-wrap">
+              {editingId === c.id ? (
+                <>
                   <button
-                    className="btn btn-sm btn-primary"
+                    className="btn btn-primary"
+                    style={{ minWidth: 120, borderRadius: 10 }}
                     onClick={() =>
                       updateMut.mutate({ id: c.id, name: editingName })
                     }
                   >
-                    Salvar
+                    SALVAR
                   </button>
                   <button
-                    className="btn btn-sm btn-outline-secondary"
+                    className="btn btn-outline-secondary"
+                    style={{ minWidth: 120, borderRadius: 10 }}
                     onClick={() => setEditingId(null)}
                   >
-                    Cancelar
+                    CANCELAR
                   </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <span>{c.name}</span>
-                <div className="d-flex gap-2">
+                </>
+              ) : (
+                <>
                   <button
-                    className="btn btn-sm btn-outline-secondary"
+                    className="btn btn-outline-secondary fw-bold"
+                    style={{ minWidth: 120, borderRadius: 10, color: "#9e9e9e" }}
                     onClick={() => {
                       setEditingId(c.id);
                       setEditingName(c.name);
                     }}
                   >
-                    Editar
+                    EDITAR
                   </button>
                   <button
-                    className="btn btn-sm btn-outline-danger"
+                    className="btn btn-outline-danger fw-bold"
+                    style={{ minWidth: 120, borderRadius: 10 }}
                     onClick={() => {
                       if (window.confirm("Excluir categoria?")) {
                         deleteMut.mutate(c.id);
                       }
                     }}
                   >
-                    Excluir
+                    EXCLUIR
                   </button>
-                </div>
-              </>
-            )}
-          </li>
+                </>
+              )}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
