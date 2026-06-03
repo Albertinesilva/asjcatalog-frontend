@@ -1,20 +1,21 @@
 .catalogProducts {
   margin: 20px 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 100%);
+  grid-template-columns: 1fr;
   gap: 50px 25px;
-  justify-content: space-between;
 }
 
 @media (min-width: 768px) {
   .catalogProducts {
-    grid-template-columns: repeat(auto-fit, 280px);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 20px;
   }
 }
 
 @media (min-width: 992px) {
   .catalogProducts {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px 20px;
   }
 }
 
