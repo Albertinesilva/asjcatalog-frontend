@@ -16,6 +16,7 @@ type AuthFormFields = {
 };
 
 export const Route = createFileRoute("/admin/auth")({
+  ssr: false,
   head: () => ({ meta: [{ title: "Login — DS Catalog" }] }),
   component: LoginPage,
 });
@@ -50,27 +51,29 @@ function LoginPage() {
 
   return (
     <div className={styles.authContainer}>
-      <div className={`d-none d-lg-block ${styles.authInfo}`}>
+      <div className={styles.authInfo}>
         <h1 className={styles.authInfoTitle}>
-          Divulgue seus produtos <br /> no DS Catalog
+          Divulgue seus produtos no DS Catalog
         </h1>
         <p className={styles.authInfoSubtitle}>
-          Faça parte do nosso catálogo de divulgação e <br /> aumente a venda
-          dos seus produtos.
+          Faça parte do nosso catálogo de divulgação e aumente a venda dos seus
+          produtos.
         </p>
-        <img src={imageBackground} alt="Background Login" />
+        <img
+          src={imageBackground}
+          alt="Pessoas divulgando produtos"
+          className={styles.authInfoImage}
+        />
       </div>
-      <div className={`card-base ${styles.authCard}`}>
-        <div className={styles.authContent}>
-          <form
-            className={`d-flex flex-column align-items-center justify-content-between ${styles.loginForm}`}
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h2 className={`text-center mb-5 ${styles.formTitle}`}>Login</h2>
 
+      <div className={`card-base ${styles.authCard}`}>
+        <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+          <h2 className={styles.formTitle}>LOGIN</h2>
+
+          <div className={styles.fieldGroup}>
             <input
               type="text"
-              className="form-control input-base"
+              className={`form-control ${styles.inputBase}`}
               placeholder="Email"
               {...register("username", {
                 required: true,
@@ -78,41 +81,51 @@ function LoginPage() {
               })}
             />
             {errors.username?.type === "required" && (
-              <p className="login-form-error">
+              <p className={styles.fieldError}>
                 O preenchimento do email é obrigatório
               </p>
             )}
             {errors.username?.type === "pattern" && (
-              <p className="login-form-error">Insira um email válido!</p>
+              <p className={styles.fieldError}>Insira um email válido!</p>
             )}
+          </div>
 
+          <div className={styles.fieldGroup}>
             <input
               type="password"
-              className="form-control input-base"
+              className={`form-control ${styles.inputBase}`}
               placeholder="Senha"
               {...register("password", { required: true })}
             />
             {errors.password?.type === "required" && (
-              <p className="login-form-error">
+              <p className={styles.fieldError}>
                 O preenchimento da senha é obrigatório
               </p>
             )}
+          </div>
 
-            {errors.root && (
-              <p className="login-form-error">{errors.root.message}</p>
-            )}
+          <Link to="/" className={styles.loginLinkRecover}>
+            Esqueci a senha?
+          </Link>
 
-            <Link to="/" className={styles.loginLinkRecover}>
-              Esqueci a senha?
+          {errors.root && (
+            <p className={styles.fieldError}>{errors.root.message}</p>
+          )}
+
+          <div className={styles.submitWrap}>
+            <ButtonIcon
+              label={isSubmitting ? "entrando..." : "logar"}
+              type="submit"
+            />
+          </div>
+
+          <div className={styles.notRegisteredWrap}>
+            <span className={styles.notRegistered}>Não tem Cadastro?</span>
+            <Link to="/" className={styles.loginLinkRegister}>
+              CADASTRAR
             </Link>
-            <div className="text-center">
-              <ButtonIcon
-                label={isSubmitting ? "entrando..." : "fazer login"}
-                type="submit"
-              />
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
