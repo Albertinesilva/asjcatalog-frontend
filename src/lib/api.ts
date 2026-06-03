@@ -62,15 +62,15 @@ export async function loginRequest(
     grant_type: "password",
   });
 
-  const res = await axios.post<LoginResponse>(
-    `${API_BASE_URL}/oauth2/token`,
-    body,
-    {
-      headers: {
-        Authorization: basicAuthHeader(),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+  const loginUrl = isLovablePreview()
+    ? "/api/proxy/oauth2/token"
+    : `${API_BASE_URL}/oauth2/token`;
+
+  const res = await axios.post<LoginResponse>(loginUrl, body, {
+    headers: {
+      Authorization: basicAuthHeader(),
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-  );
+  });
   return res.data;
 }
