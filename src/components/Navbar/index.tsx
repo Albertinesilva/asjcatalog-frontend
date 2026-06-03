@@ -1,15 +1,24 @@
-import Link from "next/link";
+import { Link, useNavigate } from "@tanstack/react-router";
 import NavbarLink from "../NavbarLink";
-
+import { useAuth } from "../../lib/use-auth";
+import { logout } from "../../lib/auth";
 import styles from "./navbar.module.css";
 
 export default function Navbar() {
+  const { authenticated, token } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate({ to: "/" });
+  };
+
   return (
     <nav
       className={`navbar navbar-expand-md navbar-dark bg-primary ${styles.mainNav}`}
     >
       <div className="container-fluid">
-        <Link href="/" className={styles.navLogoText}>
+        <Link to="/" className={styles.navLogoText}>
           <h4>DS Catalog</h4>
         </Link>
 
@@ -36,6 +45,21 @@ export default function Navbar() {
               <NavbarLink label="ADMIN" target="/admin" />
             </li>
           </ul>
+
+          {authenticated && (
+            <div className="ms-auto d-flex align-items-center gap-3 text-white">
+              <span className="small">
+                {token?.user_name}
+              </span>
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm"
+                onClick={handleLogout}
+              >
+                SAIR
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>
