@@ -10,11 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatalogIndexRouteImport } from './routes/catalog.index'
 import { Route as AdminRegisterRouteImport } from './routes/admin.register'
-import { Route as AdminRecoverRouteImport } from './routes/admin.recover'
-import { Route as AdminAuthRouteImport } from './routes/admin.auth'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as CatalogProductProductRouteImport } from './routes/catalog.product.$product'
@@ -29,11 +26,6 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CatalogIndexRoute = CatalogIndexRouteImport.update({
   id: '/catalog/',
   path: '/catalog/',
@@ -42,16 +34,6 @@ const CatalogIndexRoute = CatalogIndexRouteImport.update({
 const AdminRegisterRoute = AdminRegisterRouteImport.update({
   id: '/admin/register',
   path: '/admin/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRecoverRoute = AdminRecoverRouteImport.update({
-  id: '/admin/recover',
-  path: '/admin/recover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminAuthRoute = AdminAuthRouteImport.update({
-  id: '/admin/auth',
-  path: '/admin/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -105,10 +87,8 @@ const AuthenticatedAdminProductsIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/admin/auth': typeof AdminAuthRoute
-  '/admin/recover': typeof AdminRecoverRoute
   '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -121,9 +101,7 @@ export interface FileRoutesByFullPath {
   '/admin/products/new': typeof AuthenticatedAdminProductsNewRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/admin/auth': typeof AdminAuthRoute
-  '/admin/recover': typeof AdminRecoverRoute
+  '/': typeof AuthenticatedRouteWithChildren
   '/admin/register': typeof AdminRegisterRoute
   '/catalog': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -137,11 +115,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/admin/auth': typeof AdminAuthRoute
-  '/admin/recover': typeof AdminRecoverRoute
   '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -158,8 +133,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
-    | '/admin/auth'
-    | '/admin/recover'
     | '/admin/register'
     | '/catalog/'
     | '/admin/categories'
@@ -173,8 +146,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin/auth'
-    | '/admin/recover'
     | '/admin/register'
     | '/catalog'
     | '/admin/categories'
@@ -187,11 +158,8 @@ export interface FileRouteTypes {
     | '/admin/products/new'
   id:
     | '__root__'
-    | '/'
     | '/_authenticated'
     | '/_authenticated/admin'
-    | '/admin/auth'
-    | '/admin/recover'
     | '/admin/register'
     | '/catalog/'
     | '/_authenticated/admin/categories'
@@ -205,10 +173,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AdminAuthRoute: typeof AdminAuthRoute
-  AdminRecoverRoute: typeof AdminRecoverRoute
   AdminRegisterRoute: typeof AdminRegisterRoute
   CatalogIndexRoute: typeof CatalogIndexRoute
   ApiProxySplatRoute: typeof ApiProxySplatRoute
@@ -224,13 +189,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/catalog/': {
       id: '/catalog/'
       path: '/catalog'
@@ -243,20 +201,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/register'
       fullPath: '/admin/register'
       preLoaderRoute: typeof AdminRegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/recover': {
-      id: '/admin/recover'
-      path: '/admin/recover'
-      fullPath: '/admin/recover'
-      preLoaderRoute: typeof AdminRecoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/auth': {
-      id: '/admin/auth'
-      path: '/admin/auth'
-      fullPath: '/admin/auth'
-      preLoaderRoute: typeof AdminAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -371,10 +315,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AdminAuthRoute: AdminAuthRoute,
-  AdminRecoverRoute: AdminRecoverRoute,
   AdminRegisterRoute: AdminRegisterRoute,
   CatalogIndexRoute: CatalogIndexRoute,
   ApiProxySplatRoute: ApiProxySplatRoute,

@@ -1,11 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useParams } from "react-router-dom";
 import ProductForm from "../../features/admin/ProductForm";
 
-export const Route = createFileRoute("/_authenticated/admin/products/$id")({
-  component: EditProduct,
-});
-
-function EditProduct() {
-  const { id } = Route.useParams();
+export default function EditProductPage() {
+  const { id } = useParams<{ id: string }>();
   return <ProductForm mode="edit" productId={id} />;
 }

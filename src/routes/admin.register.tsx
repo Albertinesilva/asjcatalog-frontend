@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import imageBackground from "../assets/auth_image.png";
 import styles from "../styles/pages/auth.module.css";
@@ -11,13 +11,7 @@ type RegisterFormFields = {
   passwordConfirm: string;
 };
 
-export const Route = createFileRoute("/admin/register")({
-  ssr: false,
-  head: () => ({ meta: [{ title: "Cadastro — DS Catalog" }] }),
-  component: RegisterPage,
-});
-
-function RegisterPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
   const {
     register,
@@ -30,7 +24,7 @@ function RegisterPage() {
 
   const onSubmit = async (_data: RegisterFormFields) => {
     // TODO: integrar com backend de cadastro quando disponível
-    navigate({ to: "/admin/auth" });
+    navigate("/admin/auth");
   };
 
   return (
