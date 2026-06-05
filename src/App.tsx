@@ -1,11 +1,5 @@
 import { useEffect } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import {BrowserRouter,Navigate,Outlet,Route,Routes,} from "react-router-dom";
 import { Navbar, Sidebar } from "./components";
 import { isAuthenticated } from "./lib/auth";
 import HomePage from "./routes";

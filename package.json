@@ -1,15 +1,14 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "dscatalog",
   "private": true,
+  "version": "1.0.0",
   "sideEffects": false,
   "engines": {
-    "node": ">=20.10.0"
+    "node": "^20.10.0"
   },
   "type": "module",
   "scripts": {
-    "check-node": "node -e \"const [maj,min,pat]=process.version.slice(1).split('.').map(Number); const [rMaj,rMin,rPat]=[20,10,0]; if(maj<rMaj||(maj===rMaj&&min<rMin)||(maj===rMaj&&min===rMin&&pat<rPat)){console.error('\\u274C Erro: Node.js ' + process.version + ' nao suportado. Requerido: >= 20.10.0');process.exit(1)}console.log('\\u2705 Node.js ' + process.version + ' OK')\"",
-    "predev": "npm run check-node",
-    "dev": "vite dev",
+    "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
