@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { ButtonIcon } from "../components";
@@ -15,13 +15,7 @@ type AuthFormFields = {
   password: string;
 };
 
-export const Route = createFileRoute("/admin/auth")({
-  ssr: false,
-  head: () => ({ meta: [{ title: "Login — DS Catalog" }] }),
-  component: LoginPage,
-});
-
-function LoginPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const {
     register,
@@ -32,7 +26,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (checkAuth()) {
-      navigate({ to: "/admin" });
+      navigate("/admin");
     }
   }, [navigate]);
 
@@ -40,7 +34,7 @@ function LoginPage() {
     try {
       const session = await loginRequest(data.username, data.password);
       saveSessionData(session);
-      navigate({ to: "/admin" });
+      navigate("/admin");
     } catch (err) {
       console.error("Falha no login", err);
       setError("root", {
