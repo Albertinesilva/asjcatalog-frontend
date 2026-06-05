@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatalogIndexRouteImport } from './routes/catalog.index'
+import { Route as AdminRegisterRouteImport } from './routes/admin.register'
 import { Route as AdminAuthRouteImport } from './routes/admin.auth'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
 const CatalogIndexRoute = CatalogIndexRouteImport.update({
   id: '/catalog/',
   path: '/catalog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRegisterRoute = AdminRegisterRouteImport.update({
+  id: '/admin/register',
+  path: '/admin/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAuthRoute = AdminAuthRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
@@ -109,6 +116,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/catalog': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRouteWithChildren
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/auth'
+    | '/admin/register'
     | '/catalog/'
     | '/admin/categories'
     | '/admin/products'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/auth'
+    | '/admin/register'
     | '/catalog'
     | '/admin/categories'
     | '/admin/products'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_authenticated/admin'
     | '/admin/auth'
+    | '/admin/register'
     | '/catalog/'
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/products'
@@ -184,6 +196,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminAuthRoute: typeof AdminAuthRoute
+  AdminRegisterRoute: typeof AdminRegisterRoute
   CatalogIndexRoute: typeof CatalogIndexRoute
   ApiProxySplatRoute: typeof ApiProxySplatRoute
   CatalogProductProductRoute: typeof CatalogProductProductRoute
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/catalog'
       fullPath: '/catalog/'
       preLoaderRoute: typeof CatalogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/register': {
+      id: '/admin/register'
+      path: '/admin/register'
+      fullPath: '/admin/register'
+      preLoaderRoute: typeof AdminRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/auth': {
@@ -334,6 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminAuthRoute: AdminAuthRoute,
+  AdminRegisterRoute: AdminRegisterRoute,
   CatalogIndexRoute: CatalogIndexRoute,
   ApiProxySplatRoute: ApiProxySplatRoute,
   CatalogProductProductRoute: CatalogProductProductRoute,
