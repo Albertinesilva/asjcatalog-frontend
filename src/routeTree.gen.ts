@@ -13,6 +13,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatalogIndexRouteImport } from './routes/catalog.index'
 import { Route as AdminRegisterRouteImport } from './routes/admin.register'
+import { Route as AdminRecoverRouteImport } from './routes/admin.recover'
 import { Route as AdminAuthRouteImport } from './routes/admin.auth'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -41,6 +42,11 @@ const CatalogIndexRoute = CatalogIndexRouteImport.update({
 const AdminRegisterRoute = AdminRegisterRouteImport.update({
   id: '/admin/register',
   path: '/admin/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRecoverRoute = AdminRecoverRouteImport.update({
+  id: '/admin/recover',
+  path: '/admin/recover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAuthRoute = AdminAuthRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/recover': typeof AdminRecoverRoute
   '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/recover': typeof AdminRecoverRoute
   '/admin/register': typeof AdminRegisterRoute
   '/catalog': typeof CatalogIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/auth': typeof AdminAuthRoute
+  '/admin/recover': typeof AdminRecoverRoute
   '/admin/register': typeof AdminRegisterRoute
   '/catalog/': typeof CatalogIndexRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/auth'
+    | '/admin/recover'
     | '/admin/register'
     | '/catalog/'
     | '/admin/categories'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/auth'
+    | '/admin/recover'
     | '/admin/register'
     | '/catalog'
     | '/admin/categories'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_authenticated/admin'
     | '/admin/auth'
+    | '/admin/recover'
     | '/admin/register'
     | '/catalog/'
     | '/_authenticated/admin/categories'
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminAuthRoute: typeof AdminAuthRoute
+  AdminRecoverRoute: typeof AdminRecoverRoute
   AdminRegisterRoute: typeof AdminRegisterRoute
   CatalogIndexRoute: typeof CatalogIndexRoute
   ApiProxySplatRoute: typeof ApiProxySplatRoute
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/register'
       fullPath: '/admin/register'
       preLoaderRoute: typeof AdminRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/recover': {
+      id: '/admin/recover'
+      path: '/admin/recover'
+      fullPath: '/admin/recover'
+      preLoaderRoute: typeof AdminRecoverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/auth': {
@@ -354,6 +374,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminAuthRoute: AdminAuthRoute,
+  AdminRecoverRoute: AdminRecoverRoute,
   AdminRegisterRoute: AdminRegisterRoute,
   CatalogIndexRoute: CatalogIndexRoute,
   ApiProxySplatRoute: ApiProxySplatRoute,
@@ -362,3 +383,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

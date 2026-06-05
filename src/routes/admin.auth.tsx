@@ -104,7 +104,7 @@ function LoginPage() {
             )}
           </div>
 
-          <Link to="/" className={styles.loginLinkRecover}>
+          <Link to="/admin/recover" className={styles.loginLinkRecover}>
             Esqueci a senha?
           </Link>
 
