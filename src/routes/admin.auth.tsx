@@ -121,7 +121,7 @@ function LoginPage() {
 
           <div className={styles.notRegisteredWrap}>
             <span className={styles.notRegistered}>Não tem Cadastro?</span>
-            <Link to="/" className={styles.loginLinkRegister}>
+            <Link to="/admin/register" className={styles.loginLinkRegister}>
               CADASTRAR
             </Link>
           </div>
