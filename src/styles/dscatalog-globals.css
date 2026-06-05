@@ -4,6 +4,37 @@
   font-family: "Open Sans", sans-serif;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px; /* prevent iOS auto-zoom on focus */
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 h1,
 h2,
 h3,
