@@ -7,7 +7,7 @@
   },
   "type": "module",
   "scripts": {
-    "check-node": "node -e \"const v=process.version.slice(1).split('.').map(Number); const min=[20,19,0]; for(let i=0;i<3;i++){if(v[i]>min[i])break;if(v[i]<min[i]){console.error('Erro: Node.js '+process.version+' nao suportado. Requerido: >=20.19.0');process.exit(1)}}\"",
+    "check-node": "node -e \"const [maj,min,pat]=process.version.slice(1).split('.').map(Number); const [rMaj,rMin,rPat]=[20,19,0]; if(maj<rMaj||(maj===rMaj&&min<rMin)||(maj===rMaj&&min===rMin&&pat<rPat)){console.error('\\u274C Erro: Node.js ' + process.version + ' nao suportado. Requerido: >= 20.19.0');process.exit(1)}console.log('\\u2705 Node.js ' + process.version + ' OK')\"",
     "predev": "npm run check-node",
     "dev": "vite dev",
     "build": "vite build",
