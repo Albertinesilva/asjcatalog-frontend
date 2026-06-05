@@ -63,21 +63,27 @@
 }
 
 .inputBase {
-  height: 48px;
+  height: 50px;
   border-radius: 10px;
   border: 1px solid #e1e1e1;
-  padding: 0 16px;
+  padding: 0 18px;
   font-size: 15px;
+  line-height: 25px;
+  letter-spacing: -0.015em;
   color: #263238;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .inputBase::placeholder {
   color: #9e9e9e;
+  opacity: 1;
 }
 
 .inputBase:focus {
   border-color: #407bff;
-  box-shadow: none;
+  box-shadow: 0 0 0 3px rgba(64, 123, 255, 0.18);
+  outline: none;
 }
 
 .fieldError {
@@ -141,34 +147,47 @@
   margin-top: 18px;
 }
 
-.cancelBtn {
+.cancelBtn.cancelBtn {
   flex: 1;
-  height: 48px;
-  border-radius: 10px;
-  border: 1px solid #df5753;
-  background: #ffffff;
-  color: #df5753;
+  height: 50px;
+  border-radius: 10px !important;
+  border: 1px solid #df5753 !important;
+  background-color: #ffffff !important;
+  color: #df5753 !important;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  text-decoration: none !important;
+  padding: 0 16px;
+  transition: background-color 0.15s ease, transform 0.05s ease;
 }
 
-.cancelBtn:hover {
-  background: #fff5f5;
-  color: #df5753;
+.cancelBtn.cancelBtn:hover,
+.cancelBtn.cancelBtn:focus {
+  background-color: #fff5f5 !important;
+  color: #c2433f !important;
+  border-color: #c2433f !important;
 }
 
-.submitBtn {
+.cancelBtn.cancelBtn:active {
+  transform: translateY(1px);
+}
+
+.submitBtn.submitBtn {
   flex: 1;
-  height: 48px;
-  border-radius: 10px;
+  height: 50px;
+  border-radius: 10px !important;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.submitBtn.submitBtn:active {
+  transform: translateY(1px);
 }
 
 .recoverActions {
