@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import styles from "./productitem.module.css";
 import ProductPrice from "../ProductPrice";
 import type { ProductItemProps } from "../../lib/types";
@@ -8,8 +8,7 @@ export default function ProductItem(product: ProductItemProps) {
 
   return (
     <Link
-      to="/catalog/product/$product"
-      params={{ product: String(id) }}
+      to={`/catalog/product/${id}`}
       className={`card-base border-radius-10 ${styles.productCard}`}
     >
       <div className={styles.cardTopContainer}>

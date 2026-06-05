@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import styles from "./productitemadmin.module.css";
 
 import ProductPrice from "../ProductPrice";
@@ -40,8 +40,7 @@ export default function ProductItemAdmin(product: Props) {
         </div>
         <div className="col-12 col-md-4 pt-3 d-flex flex-row-reverse flex-md-column justify-content-between align-items-md-end gap-2">
           <Link
-            to="/admin/products/$id"
-            params={{ id: String(id) }}
+            to={`/admin/products/${id}`}
             className="btn btn-outline-secondary btn-block border-radius-10 col-6"
           >
             EDITAR

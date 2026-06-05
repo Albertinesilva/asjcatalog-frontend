@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { api } from "../../lib/api";
 import type { Category, ProductItemProps } from "../../lib/types";
 
@@ -20,7 +20,9 @@ type Props = {
 
 export default function ProductForm({ mode, productId }: Props) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const {
     register,
@@ -37,29 +39,17 @@ export default function ProductForm({ mode, productId }: Props) {
     },
   });
 
-  const categoriesQuery = useQuery({
-    queryKey: ["admin", "categories"],
-    queryFn: async () => {
-      const res = await api.get<Category[] | { content: Category[] }>(
-        "/categories",
-      );
+  useEffect(() => {
+    api.get<Category[] | { content: Category[] }>("/categories").then((res) => {
       const data = res.data;
-      return Array.isArray(data) ? data : data.content;
-    },
-  });
-
-  const productQuery = useQuery({
-    queryKey: ["product", productId],
-    enabled: mode === "edit" && !!productId,
-    queryFn: async () => {
-      const res = await api.get<ProductItemProps>(`/products/${productId}`);
-      return res.data;
-    },
-  });
+      setCategories(Array.isArray(data) ? data : data.content);
+    });
+  }, []);
 
   useEffect(() => {
-    if (mode === "edit" && productQuery.data) {
-      const p = productQuery.data;
+    if (mode !== "edit" || !productId) return;
+    api.get<ProductItemProps>(`/products/${productId}`).then((res) => {
+      const p = res.data;
       reset({
         name: p.name,
         price: p.price,
@@ -67,30 +57,29 @@ export default function ProductForm({ mode, productId }: Props) {
         description: p.description,
         categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
       });
+    });
+  }, [mode, productId, reset]);
+
+  const onSubmit = async (data: FormFields) => {
+    setLoading(true);
+    setSaveError(null);
+    const payload = {
+      name: data.name,
+      price: Number(data.price),
+      imgUrl: data.imgUrl,
+      description: data.description,
+      categories: data.categoryIds.map((id) => ({ id: Number(id) })),
+    };
+    try {
+      if (mode === "create") await api.post("/products", payload);
+      else await api.put(`/products/${productId}`, payload);
+      navigate("/admin/products");
+    } catch (err) {
+      setSaveError((err as Error).message);
+    } finally {
+      setLoading(false);
     }
-  }, [mode, productQuery.data, reset]);
-
-  const saveMutation = useMutation({
-    mutationFn: async (data: FormFields) => {
-      const payload = {
-        name: data.name,
-        price: Number(data.price),
-        imgUrl: data.imgUrl,
-        description: data.description,
-        categories: data.categoryIds.map((id) => ({ id: Number(id) })),
-      };
-      if (mode === "create") {
-        return api.post("/products", payload);
-      }
-      return api.put(`/products/${productId}`, payload);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
-      navigate({ to: "/admin/products" });
-    },
-  });
-
-  const onSubmit = (data: FormFields) => saveMutation.mutate(data);
+  };
 
   return (
     <div className="container py-4">
@@ -145,13 +134,13 @@ export default function ProductForm({ mode, productId }: Props) {
               <select
                 multiple
                 className="form-select"
-                size={Math.min(6, (categoriesQuery.data?.length ?? 1) + 1)}
+                size={Math.min(6, categories.length + 1)}
                 {...register("categoryIds", {
                   validate: (v) =>
                     v.length > 0 || "Selecione pelo menos uma categoria",
                 })}
               >
-                {categoriesQuery.data?.map((c) => (
+                {categories.map((c) => (
                   <option key={c.id} value={String(c.id)}>
                     {c.name}
                   </option>
@@ -186,9 +175,9 @@ export default function ProductForm({ mode, productId }: Props) {
             </div>
           </div>
 
-          {saveMutation.isError && (
+          {saveError && (
             <p className="text-danger mt-3">
-              Erro ao salvar: {(saveMutation.error as Error).message}
+              Erro ao salvar: {saveError}
             </p>
           )}
 
@@ -196,14 +185,14 @@ export default function ProductForm({ mode, productId }: Props) {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={isSubmitting || saveMutation.isPending}
+              disabled={isSubmitting || loading}
             >
-              {saveMutation.isPending ? "Salvando..." : "Salvar"}
+              {loading ? "Salvando..." : "Salvar"}
             </button>
             <button
               type="button"
               className="btn btn-outline-secondary"
-              onClick={() => navigate({ to: "/admin/products" })}
+              onClick={() => navigate("/admin/products")}
             >
               Cancelar
             </button>

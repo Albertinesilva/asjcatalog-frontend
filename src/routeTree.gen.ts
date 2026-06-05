@@ -13,7 +13,6 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as ApiProxySplatRouteImport } from './routes/api.proxy.$'
-import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -34,23 +33,15 @@ const ApiProxySplatRoute = ApiProxySplatRouteImport.update({
   path: '/api/proxy/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminCategoriesRoute =
-  AuthenticatedAdminCategoriesRouteImport.update({
-    id: '/categories',
-    path: '/categories',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AuthenticatedRouteWithChildren
-  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -58,20 +49,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/api/proxy/$': typeof ApiProxySplatRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/categories' | '/api/proxy/$' | '/admin/'
+  fullPaths: '/' | '/admin' | '/api/proxy/$' | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/categories' | '/api/proxy/$' | '/admin'
+  to: '/' | '/api/proxy/$' | '/admin'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_authenticated/admin'
-    | '/_authenticated/admin/categories'
     | '/api/proxy/$'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -111,23 +100,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiProxySplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/categories': {
-      id: '/_authenticated/admin/categories'
-      path: '/categories'
-      fullPath: '/admin/categories'
-      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
