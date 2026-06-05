@@ -3,11 +3,11 @@
   "private": true,
   "sideEffects": false,
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.10.0"
   },
   "type": "module",
   "scripts": {
-    "check-node": "node -e \"const [maj,min,pat]=process.version.slice(1).split('.').map(Number); const [rMaj,rMin,rPat]=[20,19,0]; if(maj<rMaj||(maj===rMaj&&min<rMin)||(maj===rMaj&&min===rMin&&pat<rPat)){console.error('\\u274C Erro: Node.js ' + process.version + ' nao suportado. Requerido: >= 20.19.0');process.exit(1)}console.log('\\u2705 Node.js ' + process.version + ' OK')\"",
+    "check-node": "node -e \"const [maj,min,pat]=process.version.slice(1).split('.').map(Number); const [rMaj,rMin,rPat]=[20,10,0]; if(maj<rMaj||(maj===rMaj&&min<rMin)||(maj===rMaj&&min===rMin&&pat<rPat)){console.error('\\u274C Erro: Node.js ' + process.version + ' nao suportado. Requerido: >= 20.10.0');process.exit(1)}console.log('\\u2705 Node.js ' + process.version + ' OK')\"",
     "predev": "npm run check-node",
     "dev": "vite dev",
     "build": "vite build",
@@ -46,9 +46,6 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.83.0",
-    "@tanstack/react-router": "^1.168.25",
-    "@tanstack/react-start": "^1.167.50",
-    "@tanstack/router-plugin": "^1.167.28",
     "axios": "^1.16.1",
     "bootstrap": "^5.3.8",
     "class-variance-authority": "^0.7.1",
@@ -64,6 +61,7 @@
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.77.0",
+    "react-router-dom": "^6.30.1",
     "react-resizable-panels": "^4.6.5",
     "recharts": "^2.15.4",
     "sonner": "^2.0.7",
@@ -76,21 +74,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@lovable.dev/vite-tanstack-config": "^2.1.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
-    "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^7.3.1"
+    "vite": "^6.4.1"
   }
 }
