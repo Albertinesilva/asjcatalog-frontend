@@ -66,16 +66,15 @@ function CatalogPage() {
 
   return (
     <div className="container-fluid px-4 py-4">
-      <div
-        className={`card-base border-radius-10 ${styles.filterCard}`}
-      >
-        <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
+      <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
+
+      <div className={`card-base border-radius-10 ${styles.filterCard}`}>
         <div className={styles.filterControls}>
           <div className={styles.searchWrapper}>
             <input
               type="search"
               className={`form-control ${styles.searchInput}`}
-              placeholder="Pesquisar Produto"
+              placeholder="Pesquisar Categoria"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -116,6 +115,34 @@ function CatalogPage() {
           ))
         )}
       </div>
+
+      {data.totalPages > 1 && (
+        <nav className={styles.pagination} aria-label="Paginação">
+          <button type="button" className={styles.pageArrow} aria-label="Anterior">
+            ‹
+          </button>
+          {Array.from({ length: Math.min(data.totalPages, 10) }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`${styles.pageDot} ${i === 0 ? styles.pageDotActive : ""}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          {data.totalPages > 10 && (
+            <>
+              <span className={styles.pageDots}>…</span>
+              <button type="button" className={styles.pageDot}>
+                {data.totalPages}
+              </button>
+            </>
+          )}
+          <button type="button" className={styles.pageArrow} aria-label="Próxima">
+            ›
+          </button>
+        </nav>
+      )}
     </div>
   );
 }
