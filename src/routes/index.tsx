@@ -1,28 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ButtonIcon } from "../components";
 import homeImage from "../assets/homeimage.svg";
 import styles from "../styles/pages/home.module.css";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "DS Catalog" },
-      {
-        name: "description",
-        content:
-          "Conheça o melhor catálogo de produtos. Encontre rapidamente o que procura.",
-      },
-      { property: "og:title", content: "DS Catalog" },
-      {
-        property: "og:description",
-        content: "Conheça o melhor catálogo de produtos.",
-      },
-    ],
-  }),
-  component: Home,
-});
-
-function Home() {
+export default function HomePage() {
   return (
     <div className={styles.homeContainer}>
       <div

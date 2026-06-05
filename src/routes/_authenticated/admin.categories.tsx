@@ -1,58 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import type { Category } from "../../lib/types";
 
-export const Route = createFileRoute("/_authenticated/admin/categories")({
-  component: CategoriesAdmin,
-});
-
-function CategoriesAdmin() {
-  const queryClient = useQueryClient();
+export default function CategoriesAdminPage() {
+  const [data, setData] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingName, setEditingName] = useState("");
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["admin", "categories"],
-    queryFn: async () => {
-      const res = await api.get<Category[] | { content: Category[] }>(
-        "/categories",
-      );
-      const d = res.data;
-      return Array.isArray(d) ? d : d.content;
-    },
-  });
+  const loadCategories = () => {
+    setIsLoading(true);
+    api
+      .get<Category[] | { content: Category[] }>("/categories")
+      .then((res) => {
+        const d = res.data;
+        setData(Array.isArray(d) ? d : d.content);
+      })
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setIsLoading(false));
+  };
 
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
-
-  const createMut = useMutation({
-    mutationFn: (name: string) => api.post("/categories", { name }),
-    onSuccess: () => {
-      setNewName("");
-      invalidate();
-    },
-  });
-
-  const updateMut = useMutation({
-    mutationFn: ({ id, name }: { id: number; name: string }) =>
-      api.put(`/categories/${id}`, { id, name }),
-    onSuccess: () => {
-      setEditingId(null);
-      invalidate();
-    },
-  });
-
-  const deleteMut = useMutation({
-    mutationFn: (id: number) => api.delete(`/categories/${id}`),
-    onSuccess: invalidate,
-  });
+  useEffect(loadCategories, []);
 
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
-  const filtered = (data ?? []).filter((c) =>
+  const filtered = data.filter((c) =>
     c.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
@@ -92,9 +66,11 @@ function CategoriesAdmin() {
           onSubmit={(e) => {
             e.preventDefault();
             if (newName.trim()) {
-              createMut.mutate(newName.trim(), {
-                onSuccess: () => setShowAdd(false),
-              });
+              api.post("/categories", { name: newName.trim() }).then(() => {
+                setNewName("");
+                setShowAdd(false);
+                loadCategories();
+              }).catch((err: Error) => setError(err.message));
             }
           }}
         >
@@ -108,7 +84,6 @@ function CategoriesAdmin() {
           <button
             type="submit"
             className="btn btn-primary"
-            disabled={createMut.isPending}
           >
             CADASTRAR
           </button>
@@ -123,9 +98,9 @@ function CategoriesAdmin() {
       )}
 
       {isLoading && <p>Carregando...</p>}
-      {isError && (
+      {error && (
         <p className="text-danger">
-          Erro ao carregar categorias: {(error as Error).message}
+          Erro ao carregar categorias: {error}
         </p>
       )}
 
@@ -152,9 +127,12 @@ function CategoriesAdmin() {
                   <button
                     className="btn btn-primary"
                     style={{ minWidth: 120, borderRadius: 10 }}
-                    onClick={() =>
-                      updateMut.mutate({ id: c.id, name: editingName })
-                    }
+                    onClick={() => {
+                      api.put(`/categories/${c.id}`, { id: c.id, name: editingName }).then(() => {
+                        setEditingId(null);
+                        loadCategories();
+                      }).catch((err: Error) => setError(err.message));
+                    }}
                   >
                     SALVAR
                   </button>
@@ -183,7 +161,7 @@ function CategoriesAdmin() {
                     style={{ minWidth: 120, borderRadius: 10 }}
                     onClick={() => {
                       if (window.confirm("Excluir categoria?")) {
-                        deleteMut.mutate(c.id);
+                        api.delete(`/categories/${c.id}`).then(loadCategories).catch((err: Error) => setError(err.message));
                       }
                     }}
                   >

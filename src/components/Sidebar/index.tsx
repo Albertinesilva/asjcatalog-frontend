@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { NavLink } from "react-router-dom";
 import { hasAnyRole } from "../../lib/auth";
 import { useAuth } from "../../lib/use-auth";
 import styles from "./sidebar.module.css";
@@ -12,32 +12,35 @@ export default function Sidebar() {
     <div className={styles.adminNavContainer}>
       <ul>
         <li>
-          <Link
+          <NavLink
             to="/admin/products"
-            className={styles.adminNavItem}
-            activeProps={{ className: activeClass }}
+            className={({ isActive }: { isActive: boolean }) =>
+              isActive ? activeClass : styles.adminNavItem
+            }
           >
             Produtos
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link
+          <NavLink
             to="/admin/categories"
-            className={styles.adminNavItem}
-            activeProps={{ className: activeClass }}
+            className={({ isActive }: { isActive: boolean }) =>
+              isActive ? activeClass : styles.adminNavItem
+            }
           >
             Categorias
-          </Link>
+          </NavLink>
         </li>
         {showUsers && (
           <li>
-            <Link
+            <NavLink
               to="/admin/users"
-              className={styles.adminNavItem}
-              activeProps={{ className: activeClass }}
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive ? activeClass : styles.adminNavItem
+              }
             >
               Usuários
-            </Link>
+            </NavLink>
           </li>
         )}
       </ul>

@@ -1,14 +1,16 @@
-import { Link } from "@tanstack/react-router";
+import { NavLink } from "react-router-dom";
 import type { NavLinkProps } from "../../lib/types";
 
 export default function NavbarLink({ target, label }: NavLinkProps) {
   return (
-    <Link
+    <NavLink
       to={target}
-      activeProps={{ className: "active" }}
-      activeOptions={{ exact: target === "/" }}
+      className={({ isActive }: { isActive: boolean }) =>
+        isActive ? "active" : undefined
+      }
+      end={target === "/"}
     >
       {label}
-    </Link>
+    </NavLink>
   );
 }

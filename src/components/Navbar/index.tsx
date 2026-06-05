@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "../../lib/use-auth";
@@ -8,7 +8,7 @@ import styles from "./navbar.module.css";
 export default function Navbar() {
   const { authenticated, token } = useAuth();
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
 
   // Close menu on route change
@@ -28,7 +28,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     setOpen(false);
-    navigate({ to: "/" });
+    navigate("/");
   };
 
   return (

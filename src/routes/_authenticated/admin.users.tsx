@@ -1,31 +1,31 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import type { User } from "../../lib/types";
 
-export const Route = createFileRoute("/_authenticated/admin/users")({
-  component: UsersAdmin,
-});
+export default function UsersAdminPage() {
+  const [data, setData] = useState<User[]>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-function UsersAdmin() {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["admin", "users"],
-    queryFn: async () => {
-      const res = await api.get<
-        User[] | { content: User[] }
-      >("/users", { params: { page: 0, size: 50, sort: "firstName,asc" } });
-      const d = res.data;
-      return Array.isArray(d) ? d : d.content;
-    },
-  });
+  useEffect(() => {
+    api
+      .get<User[] | { content: User[] }>("/users", {
+        params: { page: 0, size: 50, sort: "firstName,asc" },
+      })
+      .then((res) => {
+        const d = res.data;
+        setData(Array.isArray(d) ? d : d.content);
+      })
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <UsersView
       data={data}
       isLoading={isLoading}
-      isError={isError}
-      error={error as Error | null}
+      isError={!!error}
+      error={error}
     />
   );
 }
@@ -39,7 +39,7 @@ function UsersView({
   data: User[] | undefined;
   isLoading: boolean;
   isError: boolean;
-  error: Error | null;
+  error: string | null;
 }) {
   const [search, setSearch] = useState("");
   const filtered = (data ?? []).filter((u) =>
@@ -79,7 +79,7 @@ function UsersView({
 
       {isLoading && <p>Carregando...</p>}
       {isError && (
-        <p className="text-danger">Erro: {error?.message}</p>
+        <p className="text-danger">Erro: {error}</p>
       )}
 
       <div className="d-flex flex-column gap-3">

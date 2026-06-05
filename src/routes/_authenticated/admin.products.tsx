@@ -1,36 +1,31 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ProductItemAdmin } from "../../components";
 import { api } from "../../lib/api";
 import type { ProductsPage } from "../../lib/types";
 import styles from "../../styles/pages/dashboardProducts.module.css";
 
-export const Route = createFileRoute("/_authenticated/admin/products")({
-  component: ProductsAdminPage,
-});
+export default function ProductsAdminPage() {
+  const [data, setData] = useState<ProductsPage | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-function ProductsAdminPage() {
-  const queryClient = useQueryClient();
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["admin", "products"],
-    queryFn: async () => {
-      const res = await api.get<ProductsPage>("/products", {
+  const loadProducts = () => {
+    setIsLoading(true);
+    api
+      .get<ProductsPage>("/products", {
         params: { page: 0, size: 24, sort: "name,asc" },
-      });
-      return res.data;
-    },
-  });
+      })
+      .then((res) => setData(res.data))
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setIsLoading(false));
+  };
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => api.delete(`/products/${id}`),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["admin", "products"] }),
-  });
+  useEffect(loadProducts, []);
 
   const handleDelete = (id: number) => {
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
-      deleteMutation.mutate(id);
+      api.delete(`/products/${id}`).then(loadProducts).catch((err: Error) => setError(err.message));
     }
   };
 
@@ -41,9 +36,9 @@ function ProductsAdminPage() {
       </Link>
       <div className="d-flex flex-column container-fluid">
         {isLoading && <p className="p-3">Carregando produtos...</p>}
-        {isError && (
+        {error && (
           <p className="p-3 text-danger">
-            Erro ao carregar produtos: {(error as Error).message}
+            Erro ao carregar produtos: {error}
           </p>
         )}
         {data?.content.map((product) => (

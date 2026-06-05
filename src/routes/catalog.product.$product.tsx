@@ -1,28 +1,27 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ProductPrice } from "../components";
 import arrow from "../assets/blue_arrow.svg";
 import { api } from "../lib/api";
 import type { ProductItemProps } from "../lib/types";
 import styles from "../styles/pages/product.module.css";
 
-const productDetailQuery = (id: string) =>
-  queryOptions({
-    queryKey: ["product", id],
-    queryFn: async () => {
-      const res = await api.get<ProductItemProps>(`/products/${id}`);
-      return res.data;
-    },
-  });
+export default function ProductDetails() {
+  const { product } = useParams<{ product: string }>();
+  const [data, setData] = useState<ProductItemProps | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-export const Route = createFileRoute("/catalog/product/$product")({
-  ssr: false,
-  component: ProductDetails,
-});
+  useEffect(() => {
+    if (!product) return;
+    api
+      .get<ProductItemProps>(`/products/${product}`)
+      .then((res) => setData(res.data))
+      .catch((err: Error) => setError(err.message));
+  }, [product]);
 
-function ProductDetails() {
-  const { product } = Route.useParams();
-  const { data } = useSuspenseQuery(productDetailQuery(product));
+  if (error) return <p className="p-4 text-danger">Erro: {error}</p>;
+  if (!data) return <p className="p-4">Carregando produto...</p>;
+
   const { imgUrl, name, price, description } = data;
 
   return (

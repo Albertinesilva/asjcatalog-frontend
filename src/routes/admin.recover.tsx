@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import imageBackground from "../assets/auth_image.png";
 import styles from "../styles/pages/auth.module.css";
@@ -8,13 +8,7 @@ type RecoverFormFields = {
   emailConfirm: string;
 };
 
-export const Route = createFileRoute("/admin/recover")({
-  ssr: false,
-  head: () => ({ meta: [{ title: "Recuperação — DS Catalog" }] }),
-  component: RecoverPage,
-});
-
-function RecoverPage() {
+export default function RecoverPage() {
   const navigate = useNavigate();
   const {
     register,
@@ -27,7 +21,7 @@ function RecoverPage() {
 
   const onSubmit = async (_data: RecoverFormFields) => {
     // TODO: integrar com backend de recuperação quando disponível
-    navigate({ to: "/admin/auth" });
+    navigate("/admin/auth");
   };
 
   return (
