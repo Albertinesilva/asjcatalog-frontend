@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { api } from "../../lib/api";
 import type { Category, ProductItemProps } from "../../lib/types";
 
