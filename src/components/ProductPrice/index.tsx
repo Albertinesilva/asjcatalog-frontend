@@ -1,4 +1,4 @@
-import type { ProductPriceProps } from "@/@types";
+import type { ProductPriceProps } from "@/types";
 import styles from "./productprice.module.css";
 
 function formatPrice(raw: string | number) {
