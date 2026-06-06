@@ -6,8 +6,7 @@ pública (Home + Catálogo) e área administrativa autenticada via OAuth2 com
 CRUD de Produtos, Categorias e Usuários.
 
 > Stack: **Vite 6 (SPA) · React 19 · TypeScript 5 · React Router v6 ·
-> React Hook Form · Axios · Bootstrap 5 + Tailwind v4 · shadcn/ui ·
-> JWT (jwt-decode) · Zod**
+> React Hook Form · Axios · Bootstrap 5 · JWT (jwt-decode)**
 
 ---
 
@@ -49,14 +48,13 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 | Camada            | Tecnologia                                     |
 | ----------------- | ---------------------------------------------- |
-| Build             | Vite 6                                         |
+| Build             | Vite 5                                         |
 | UI Framework      | React 19 + TypeScript 5                        |
 | Roteamento        | React Router v6 (`react-router-dom`)           |
 | Estado/Dados      | `useState` + `useEffect` + Axios               |
-| Formulários       | React Hook Form + Zod                          |
+| Formulários       | React Hook Form                                |
 | HTTP              | Axios + query-string                           |
-| Estilo            | Bootstrap 5 + Tailwind v4 + CSS Modules        |
-| Componentes       | shadcn/ui (Radix) + ícones lucide-react        |
+| Estilo            | Bootstrap 5 + CSS Modules                      |
 | Auth              | JWT (Bearer) + `jwt-decode` + localStorage     |
 | Runtime           | Node.js ≥ 20.10.0                              |
 
@@ -66,6 +64,8 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 ```text
 src/
+├── @types/
+│   └── index.ts                # Tipos de domínio (Product, Category, User, Role…)
 ├── assets/                     # SVGs e imagens estáticas
 ├── components/
 │   ├── Navbar/                 # Top bar com hambúrguer mobile
@@ -75,34 +75,43 @@ src/
 │   ├── ProductItem/            # Card de produto (catálogo público)
 │   ├── ProductItemAdmin/       # Card de produto (admin)
 │   ├── ProductPrice/           # Renderização R$ X.XXX,XX
-│   └── ui/                     # shadcn/ui (button, dialog, form…)
-├── features/admin/
-│   └── ProductForm.tsx         # Formulário compartilhado new/edit
-├── lib/
+│   └── index.ts                # Barrel de exports
+├── pages/                      # Páginas (registradas em _app.tsx)
+│   ├── _app.tsx                # BrowserRouter + Routes + ProtectedRoute
+│   ├── index.tsx               # /
+│   ├── catalog/
+│   │   ├── index.tsx           # /catalog
+│   │   └── [product].tsx       # /catalog/product/:product
+│   └── admin/
+│       ├── auth/
+│       │   ├── index.tsx       # /admin/auth (login)
+│       │   ├── register.tsx    # /admin/register
+│       │   └── recover.tsx     # /admin/recover
+│       └── dashboard/
+│           ├── index.tsx       # /admin (redirect → /admin/products)
+│           └── pages/
+│               ├── products/
+│               │   ├── index.tsx        # /admin/products
+│               │   ├── new.tsx          # /admin/products/new
+│               │   ├── [id].tsx         # /admin/products/:id
+│               │   └── ProductForm.tsx  # Form compartilhado new/edit
+│               ├── categories/
+│               │   └── index.tsx        # /admin/categories
+│               └── users/
+│                   └── index.tsx        # /admin/users (ROLE_ADMIN)
+├── styles/
+│   ├── pages/                  # CSS Modules por página
+│   └── globals.css             # Bootstrap + tokens + estilos globais
+├── utils/
 │   ├── api.ts                  # axios instance + loginRequest
 │   ├── auth.ts                 # localStorage + JWT helpers
 │   ├── use-auth.ts             # hook reativo de sessão
-│   ├── types.ts                # tipos de domínio (Product, Category…)
-│   └── utils.ts                # cn() (clsx + tailwind-merge)
-├── routes/                     # Componentes de página (registrados em App.tsx)
-│   ├── index.tsx               # /
-│   ├── catalog.index.tsx       # /catalog
-│   ├── catalog.product.$product.tsx   # /catalog/product/:product
-│   ├── admin.auth.tsx          # /admin/auth (login)
-│   ├── admin.register.tsx      # /admin/register
-│   ├── admin.recover.tsx       # /admin/recover
-│   └── _authenticated/
-│       ├── admin.products.tsx       # /admin/products
-│       ├── admin.products.new.tsx   # /admin/products/new
-│       ├── admin.products.$id.tsx   # /admin/products/:id
-│       ├── admin.categories.tsx     # /admin/categories
-│       └── admin.users.tsx          # /admin/users (ROLE_ADMIN)
-├── styles/
-│   └── pages/                  # CSS Modules por página
-├── App.tsx                     # BrowserRouter + Routes + ProtectedRoute
-├── main.tsx                    # Entry point (createRoot)
-└── styles.css                  # Tailwind v4 + Bootstrap + tokens globais
+│   └── index.ts                # Barrel de exports
+└── main.tsx                    # Entry point (createRoot)
 ```
+
+> **Convenção de paths:** todo import usa o alias `@/*` (mapeado para
+> `src/*`). Ex.: `import { api } from "@/utils/api"`, `import type { Product } from "@/@types"`.
 
 ---
 
@@ -152,23 +161,24 @@ runtime do servidor (proxy).
 
 ## Roteamento (React Router)
 
-Todas as rotas são declaradas explicitamente em `src/App.tsx` com
-`<BrowserRouter>`, `<Routes>` e `<Route>`. Cada arquivo em `src/routes/`
-exporta um componente `default` que é montado em uma rota específica.
+Todas as rotas são declaradas explicitamente em `src/pages/_app.tsx` com
+`<BrowserRouter>`, `<Routes>` e `<Route>`. Cada arquivo em `src/pages/`
+exporta um componente `default` montado em uma rota específica.
 
 | Caminho                       | Componente                                          |
 | ----------------------------- | --------------------------------------------------- |
-| `/`                           | `routes/index.tsx`                                  |
-| `/catalog`                    | `routes/catalog.index.tsx`                          |
-| `/catalog/product/:product`   | `routes/catalog.product.$product.tsx`               |
-| `/admin/auth`                 | `routes/admin.auth.tsx`                             |
-| `/admin/register`             | `routes/admin.register.tsx`                         |
-| `/admin/recover`              | `routes/admin.recover.tsx`                          |
-| `/admin/products`             | `routes/_authenticated/admin.products.tsx`          |
-| `/admin/products/new`         | `routes/_authenticated/admin.products.new.tsx`      |
-| `/admin/products/:id`         | `routes/_authenticated/admin.products.$id.tsx`      |
-| `/admin/categories`           | `routes/_authenticated/admin.categories.tsx`        |
-| `/admin/users`                | `routes/_authenticated/admin.users.tsx`             |
+| `/`                           | `pages/index.tsx`                                   |
+| `/catalog`                    | `pages/catalog/index.tsx`                           |
+| `/catalog/product/:product`   | `pages/catalog/[product].tsx`                       |
+| `/admin/auth`                 | `pages/admin/auth/index.tsx`                        |
+| `/admin/register`             | `pages/admin/auth/register.tsx`                     |
+| `/admin/recover`              | `pages/admin/auth/recover.tsx`                      |
+| `/admin`                      | `pages/admin/dashboard/index.tsx` (redirect)        |
+| `/admin/products`             | `pages/admin/dashboard/pages/products/index.tsx`    |
+| `/admin/products/new`         | `pages/admin/dashboard/pages/products/new.tsx`      |
+| `/admin/products/:id`         | `pages/admin/dashboard/pages/products/[id].tsx`     |
+| `/admin/categories`           | `pages/admin/dashboard/pages/categories/index.tsx`  |
+| `/admin/users`                | `pages/admin/dashboard/pages/users/index.tsx`       |
 
 ### Boundary de autenticação
 
@@ -199,7 +209,7 @@ useEffect(() => {
 }, []);
 ```
 
-A instância `api` (em `src/lib/api.ts`):
+A instância `api` (em `src/utils/api.ts`):
 
 - Usa `baseURL = '/api/proxy'` em preview Lovable (`*.lovable.app`) e em
   dev local (o Vite faz proxy para `VITE_API_BASE_URL`).
@@ -223,7 +233,7 @@ username=...&password=...&grant_type=password
 → 200 { access_token, token_type, expires_in, scope, ... }
 ```
 
-O `access_token` é um JWT. `src/lib/auth.ts` expõe:
+O `access_token` é um JWT. `src/utils/auth.ts` expõe:
 
 | Função                | Responsabilidade                                     |
 | --------------------- | ---------------------------------------------------- |
@@ -235,7 +245,7 @@ O `access_token` é um JWT. `src/lib/auth.ts` expõe:
 | `hasAnyRole([...])`   | Verifica `authorities` (ex.: `ROLE_ADMIN`)           |
 | `logout()`            | Remove sessão + dispara evento `auth-change`         |
 
-O hook `useAuth()` (em `src/lib/use-auth.ts`) escuta `auth-change` e o
+O hook `useAuth()` (em `src/utils/use-auth.ts`) escuta `auth-change` e o
 evento nativo `storage` para re-renderizar componentes quando a sessão muda
 (login, logout, ou logout em outra aba).
 
@@ -273,9 +283,9 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
 
 - **Bootstrap 5** fornece grid e utilitários (`d-flex`, `container-fluid`).
 - **CSS Modules** (`*.module.css`) escopam estilos por componente/página.
-- **Tailwind v4 + shadcn/ui** ficam disponíveis para novos componentes;
-  tokens semânticos estão definidos em `src/styles.css` (oklch).
-- **Mobile-first**: globais em `dscatalog-globals.css` aplicam
+- **Tokens** e overrides de Bootstrap ficam em `src/styles/globals.css`
+  (variáveis CSS como `--dscatalog-primary`).
+- **Mobile-first**: globais em `globals.css` aplicam
   `overflow-x: hidden`, `safe-area-insets` (iOS notch),
   `input { font-size: 16px }` (impede zoom automático do iOS) e
   `-webkit-tap-highlight-color: transparent`.
@@ -292,9 +302,7 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   para um arquivo existente; build quebra caso contrário.
 - Componentes exportados por `default` em `src/components/<Nome>/index.tsx`
   e reexportados em `src/components/index.ts` para imports curtos.
-- Tipos de domínio em `src/lib/types.ts` (compartilhados front-API).
-- Não edite `src/components/ui/*` (shadcn) sem necessidade — são artefatos
-  padrão.
+- Tipos de domínio em `src/@types/index.ts` (compartilhados front-API).
 - Alias `@/*` aponta para `src/*` (configurado em `vite.config.ts` e
   `tsconfig.json`).
 - Lint + format: `eslint` + `prettier` (config em `eslint.config.js`).
@@ -332,11 +340,11 @@ login em `/admin/auth`.
 **Login funciona local mas falha em produção (CORS)**
 → Confirme que a chamada está indo pelo proxy (`baseURL` deve ser
 `/api/proxy` quando hostname termina em `lovable.app`). Veja
-`isLovablePreview()` em `src/lib/api.ts`.
+`isLovablePreview()` em `src/utils/api.ts`.
 
 **iOS faz zoom ao focar inputs**
 → Garantido por `input, textarea, select { font-size: 16px }` em
-`src/styles.css`. Se criar um input customizado, não reduza para menos de
+`src/styles/globals.css`. Se criar um input customizado, não reduza para menos de
 16px no estado desfocado em mobile.
 
 ---
