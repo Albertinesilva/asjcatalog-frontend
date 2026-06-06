@@ -1,5 +1,5 @@
 import arrow from "@/assets/arrow.svg";
-import type { ButtonIconProps } from "@/@types";
+import type { ButtonIconProps } from "@/types";
 import styles from "./buttonicon.module.css";
 
 export default function ButtonIcon({ label, type }: ButtonIconProps) {

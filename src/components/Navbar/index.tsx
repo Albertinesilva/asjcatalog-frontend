@@ -1,12 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
-import { useAuth } from "@/utils/use-auth";
-import { logout } from "@/utils/auth";
+import { useAuth } from "@/hooks/useAuth";
 import styles from "./navbar.module.css";
 
 export default function Navbar() {
-  const { authenticated, token } = useAuth();
+  const { authenticated, token, logout } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);

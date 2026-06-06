@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { hasAnyRole } from "@/utils/auth";
-import { useAuth } from "@/utils/use-auth";
+import { useRoles } from "@/hooks/useRoles";
 import styles from "./sidebar.module.css";
 
 export default function Sidebar() {
-  useAuth(); // re-render on auth change so role-gated items appear
-  const showUsers = hasAnyRole(["ROLE_ADMIN"]);
+  const { isAdmin } = useRoles();
+  const showUsers = isAdmin;
   const activeClass = `${styles.adminNavItem} active-sidebar-item`;
 
   return (
