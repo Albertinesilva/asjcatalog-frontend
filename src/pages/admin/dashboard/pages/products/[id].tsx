@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import ProductForm from "../../features/admin/ProductForm";
+import ProductForm from "./ProductForm";
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();

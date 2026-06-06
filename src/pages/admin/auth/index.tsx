@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { ButtonIcon } from "../components";
-import { loginRequest } from "../lib/api";
+import { loginRequest } from "@/utils/api";
 import {
   saveSessionData,
   isAuthenticated as checkAuth,
-} from "../lib/auth";
+} from "@/utils/auth";
 import imageBackground from "../assets/auth_image.png";
 import styles from "../styles/pages/auth.module.css";
 

@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
-import { useAuth } from "../../lib/use-auth";
-import { logout } from "../../lib/auth";
+import { useAuth } from "@/utils/use-auth";
+import { logout } from "@/utils/auth";
 import styles from "./navbar.module.css";
 
 export default function Navbar() {

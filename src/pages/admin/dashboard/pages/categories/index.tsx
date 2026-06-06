@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { api } from "../../lib/api";
-import type { Category } from "../../lib/types";
+import { api } from "@/utils/api";
+import type { Category } from "@/@types";
 
 export default function CategoriesAdminPage() {
   const [data, setData] = useState<Category[]>([]);

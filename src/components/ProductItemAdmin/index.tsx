@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./productitemadmin.module.css";
 
 import ProductPrice from "../ProductPrice";
-import type { Category, ProductItemProps } from "../../lib/types";
+import type { Category, ProductItemProps } from "@/@types";
 
 type Props = ProductItemProps & {
   onDelete?: (id: number) => void;

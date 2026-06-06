@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import type { NavLinkProps } from "../../lib/types";
+import type { NavLinkProps } from "@/@types";
 
 export default function NavbarLink({ target, label }: NavLinkProps) {
   return (

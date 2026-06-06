@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./productitem.module.css";
 import ProductPrice from "../ProductPrice";
-import type { ProductItemProps } from "../../lib/types";
+import type { ProductItemProps } from "@/@types";
 
 export default function ProductItem(product: ProductItemProps) {
   const { imgUrl, name, price, id } = product;
