@@ -56,7 +56,7 @@ export default function App() {
         <Route path="/admin/register" element={<RegisterPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="/admin/products" replace />} />
+            <Route index element={<DashboardPage />} />
             <Route path="products" element={<ProductsAdminPage />} />
             <Route path="products/new" element={<NewProductPage />} />
             <Route path="products/:id" element={<EditProductPage />} />
