@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { hasAnyRole } from "../../lib/auth";
-import { useAuth } from "../../lib/use-auth";
+import { hasAnyRole } from "@/utils/auth";
+import { useAuth } from "@/utils/use-auth";
 import styles from "./sidebar.module.css";
 
 export default function Sidebar() {

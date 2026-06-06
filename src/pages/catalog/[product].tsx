@@ -1,10 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ProductPrice } from "../components";
-import arrow from "../assets/blue_arrow.svg";
-import { api } from "../lib/api";
-import type { ProductItemProps } from "../lib/types";
-import styles from "../styles/pages/product.module.css";
+import { ProductPrice } from "@/components";
+import arrow from "@/assets/blue_arrow.svg";
+import { api } from "@/utils/api";
+import type { ProductItemProps } from "@/@types";
+import styles from "@/styles/pages/product.module.css";
 
 export default function ProductDetails() {
   const { product } = useParams<{ product: string }>();

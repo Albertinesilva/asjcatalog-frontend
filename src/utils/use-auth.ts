@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDecodedToken, isAuthenticated } from "./auth";
-import type { AccessToken } from "./types";
+import type { AccessToken } from "@/@types";
 
 export function useAuth() {
   const [state, setState] = useState<{

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { api } from "../../lib/api";
-import type { User } from "../../lib/types";
+import { api } from "@/utils/api";
+import type { User } from "@/@types";
 
 export default function UsersAdminPage() {
   const [data, setData] = useState<User[]>();

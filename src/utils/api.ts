@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "query-string";
 import { getSessionData, logout } from "./auth";
-import type { LoginResponse } from "./types";
+import type { LoginResponse } from "@/@types";
 
 export const API_BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ??

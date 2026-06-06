@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ProductItemAdmin } from "../../components";
-import { api } from "../../lib/api";
-import type { ProductsPage } from "../../lib/types";
-import styles from "../../styles/pages/dashboardProducts.module.css";
+import { ProductItemAdmin } from "@/components";
+import { api } from "@/utils/api";
+import type { ProductsPage } from "@/@types";
+import styles from "@/styles/pages/dashboardProducts.module.css";
 
 export default function ProductsAdminPage() {
   const [data, setData] = useState<ProductsPage | null>(null);

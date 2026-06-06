@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../lib/api";
-import type { Category, ProductItemProps } from "../../lib/types";
+import { api } from "@/utils/api";
+import type { Category, ProductItemProps } from "@/@types";
 
 type FormFields = {
   name: string;
