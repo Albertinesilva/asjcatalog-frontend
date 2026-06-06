@@ -64,54 +64,101 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 ```text
 src/
-├── @types/
-│   └── index.ts                # Tipos de domínio (Product, Category, User, Role…)
+├── api/                        # Camada HTTP (axios + chamadas cruas)
+│   ├── axios.ts                # Instância única + interceptors (Bearer / 401)
+│   ├── auth-api.ts             # POST /oauth2/token (Basic Auth client_id/secret)
+│   ├── user-api.ts             # /api/v1/users (CRUD + activate/deactivate)
+│   ├── product-api.ts          # /products (CRUD)
+│   └── category-api.ts         # /categories (CRUD)
 ├── assets/                     # SVGs e imagens estáticas
 ├── components/
+│   ├── ButtonIcon/             # Botão azul com seta (CTA)
 │   ├── Navbar/                 # Top bar com hambúrguer mobile
 │   ├── NavbarLink/             # Link com estado ativo
-│   ├── Sidebar/                # Nav lateral do /admin
-│   ├── ButtonIcon/             # Botão azul com seta (login/CTA)
-│   ├── ProductItem/            # Card de produto (catálogo público)
+│   ├── ProductItem/            # Card de produto (catálogo)
 │   ├── ProductItemAdmin/       # Card de produto (admin)
 │   ├── ProductPrice/           # Renderização R$ X.XXX,XX
+│   ├── Sidebar/                # Nav lateral do /admin
+│   ├── shared/                 # Componentes genéricos reutilizáveis
 │   └── index.ts                # Barrel de exports
-├── pages/                      # Páginas (registradas em _app.tsx)
-│   ├── _app.tsx                # BrowserRouter + Routes + ProtectedRoute
-│   ├── index.tsx               # /
-│   ├── catalog/
-│   │   ├── index.tsx           # /catalog
-│   │   └── [product].tsx       # /catalog/product/:product
-│   └── admin/
-│       ├── auth/
-│       │   ├── index.tsx       # /admin/auth (login)
-│       │   ├── register.tsx    # /admin/register
-│       │   └── recover.tsx     # /admin/recover
-│       └── dashboard/
-│           ├── index.tsx       # /admin (redirect → /admin/products)
-│           └── pages/
-│               ├── products/
-│               │   ├── index.tsx        # /admin/products
-│               │   ├── new.tsx          # /admin/products/new
-│               │   ├── [id].tsx         # /admin/products/:id
-│               │   └── ProductForm.tsx  # Form compartilhado new/edit
-│               ├── categories/
-│               │   └── index.tsx        # /admin/categories
-│               └── users/
-│                   └── index.tsx        # /admin/users (ROLE_ADMIN)
+├── contexts/
+│   └── AuthContext.tsx         # Estado global de sessão + login/logout
+├── hooks/
+│   ├── useAuth.ts              # Consome AuthContext
+│   ├── useRoles.ts             # hasRole / isAdmin / isOperator
+│   └── usePagination.ts        # Estado de paginação para Spring Page
+├── layouts/
+│   ├── AdminLayout.tsx         # Navbar + Sidebar + <Outlet />
+│   ├── AuthLayout.tsx          # Hero lateral + <Outlet />
+│   └── CatalogLayout.tsx       # Navbar + <Outlet />
+├── pages/
+│   ├── HomePage.tsx            # /
+│   ├── auth/
+│   │   ├── LoginPage.tsx       # /auth/login
+│   │   ├── RegisterPage.tsx    # /auth/register
+│   │   └── RecoverPage.tsx     # /auth/recover
+│   ├── admin/
+│   │   ├── DashboardPage.tsx   # /admin
+│   │   ├── users/
+│   │   │   ├── UserListPage.tsx
+│   │   │   ├── UserForm.tsx
+│   │   │   └── UserDetailsPage.tsx
+│   │   ├── products/
+│   │   │   ├── ProductListPage.tsx
+│   │   │   └── ProductForm.tsx
+│   │   └── categories/
+│   │       ├── CategoryListPage.tsx
+│   │       └── CategoryForm.tsx
+│   └── catalog/
+│       ├── CatalogPage.tsx
+│       └── ProductDetailsPage.tsx
+├── routes/
+│   ├── AppRoutes.tsx           # Mapa de rotas (BrowserRouter usado no App)
+│   ├── PrivateRoute.tsx        # Guard de autenticação
+│   ├── AdminRoute.tsx          # Guard ROLE_ADMIN
+│   └── OperatorRoute.tsx       # Guard ROLE_OPERATOR (ou superior)
+├── services/                   # Regras de negócio / orquestração
+│   ├── auth-service.ts         # login / logout / isAuthenticated / getCurrentUser
+│   ├── user-service.ts
+│   ├── product-service.ts
+│   └── category-service.ts
+├── types/
+│   ├── auth.ts                 # Role, LoginRequest/Response, AccessToken
+│   ├── user.ts                 # User, UserCreate/Update/Register
+│   ├── product.ts              # Product, ProductRequest, SpringPage<T>
+│   ├── category.ts
+│   └── index.ts                # Barrel
+├── utils/
+│   ├── constants.ts            # API_BASE_URL, CLIENT_ID/SECRET, ENDPOINTS
+│   ├── storage.ts              # get/save/removeAuthData (localStorage)
+│   └── permissions.ts          # decodeToken / isTokenValid / hasAnyRole
 ├── styles/
 │   ├── pages/                  # CSS Modules por página
 │   └── globals.css             # Bootstrap + tokens + estilos globais
-├── utils/
-│   ├── api.ts                  # axios instance + loginRequest
-│   ├── auth.ts                 # localStorage + JWT helpers
-│   ├── use-auth.ts             # hook reativo de sessão
-│   └── index.ts                # Barrel de exports
+├── App.tsx                     # Providers (BrowserRouter + AuthProvider) + AppRoutes
 └── main.tsx                    # Entry point (createRoot)
 ```
 
 > **Convenção de paths:** todo import usa o alias `@/*` (mapeado para
-> `src/*`). Ex.: `import { api } from "@/utils/api"`, `import type { Product } from "@/@types"`.
+> `src/*`). Ex.: `import { http } from "@/api/axios"`,
+> `import { useAuth } from "@/hooks/useAuth"`,
+> `import type { Product } from "@/types"`.
+
+### Camadas
+
+- **api/** — chamadas HTTP cruas. Sem lógica de UI ou estado. Toda
+  requisição autenticada usa `http` (Axios) de `api/axios.ts`, que injeta
+  `Authorization: Bearer` e desloga em `401`.
+- **services/** — fachada para componentes. Hoje encapsulam as `api/*` e
+  podem agregar regras (cache, validação, composição de endpoints).
+- **contexts/** — estado global (apenas auth por enquanto).
+- **hooks/** — leitura do contexto + utilitários reativos.
+- **routes/** — `AppRoutes` declara o mapa; `Private/Admin/OperatorRoute`
+  são guards baseados em `useAuth` + `useRoles`.
+- **layouts/** — wrappers visuais reutilizados por grupos de rotas.
+- **pages/** — componentes de página; consomem `services` + `hooks`.
+- **types/** — contratos do backend (`SpringPage<T>`, `User`, `Product`…).
+- **utils/** — helpers puros (constants, storage, permissions).
 
 ---
 
@@ -167,26 +214,36 @@ exporta um componente `default` montado em uma rota específica.
 
 | Caminho                       | Componente                                          |
 | ----------------------------- | --------------------------------------------------- |
-| `/`                           | `pages/index.tsx`                                   |
-| `/catalog`                    | `pages/catalog/index.tsx`                           |
-| `/catalog/product/:product`   | `pages/catalog/[product].tsx`                       |
-| `/admin/auth`                 | `pages/admin/auth/index.tsx`                        |
-| `/admin/register`             | `pages/admin/auth/register.tsx`                     |
-| `/admin/recover`              | `pages/admin/auth/recover.tsx`                      |
-| `/admin`                      | `pages/admin/dashboard/index.tsx` (redirect)        |
-| `/admin/products`             | `pages/admin/dashboard/pages/products/index.tsx`    |
-| `/admin/products/new`         | `pages/admin/dashboard/pages/products/new.tsx`      |
-| `/admin/products/:id`         | `pages/admin/dashboard/pages/products/[id].tsx`     |
-| `/admin/categories`           | `pages/admin/dashboard/pages/categories/index.tsx`  |
-| `/admin/users`                | `pages/admin/dashboard/pages/users/index.tsx`       |
+| `/`                           | `pages/HomePage.tsx`                                |
+| `/catalog`                    | `pages/catalog/CatalogPage.tsx`                     |
+| `/catalog/:productId`         | `pages/catalog/ProductDetailsPage.tsx`              |
+| `/auth/login`                 | `pages/auth/LoginPage.tsx`                          |
+| `/auth/register`              | `pages/auth/RegisterPage.tsx`                       |
+| `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
+| `/admin`                      | `pages/admin/DashboardPage.tsx`                     |
+| `/admin/products`             | `pages/admin/products/ProductListPage.tsx`          |
+| `/admin/products/new`         | `pages/admin/products/ProductForm.tsx` (`mode=create`) |
+| `/admin/products/:id`         | `pages/admin/products/ProductForm.tsx` (`mode=edit`) |
+| `/admin/categories`           | `pages/admin/categories/CategoryListPage.tsx`       |
+| `/admin/categories/new`       | `pages/admin/categories/CategoryForm.tsx`           |
+| `/admin/categories/:id`       | `pages/admin/categories/CategoryForm.tsx`           |
+| `/admin/users` (ADMIN)        | `pages/admin/users/UserListPage.tsx`                |
+| `/admin/users/new` (ADMIN)    | `pages/admin/users/UserForm.tsx`                    |
+| `/admin/users/:id` (ADMIN)    | `pages/admin/users/UserDetailsPage.tsx`             |
+| `/admin/users/:id/edit` (ADMIN) | `pages/admin/users/UserForm.tsx`                  |
+
+> As rotas legadas (`/admin/auth`, `/admin/register`, `/admin/recover`)
+> permanecem e fazem `Navigate` para os novos paths em `/auth/*`.
 
 ### Boundary de autenticação
 
-`App.tsx` define um componente `ProtectedRoute` que envolve toda a árvore
-`/admin/*` (exceto auth/register/recover). Ele chama `isAuthenticated()`
-(verifica JWT no localStorage + `exp`) e, se falso, redireciona para
-`/admin/auth` via `<Navigate to="/admin/auth" replace />`. O layout
-`AdminLayout` então renderiza `<Sidebar />` + `<Outlet />`.
+`routes/AppRoutes.tsx` envolve toda a árvore `/admin/*` com
+`<PrivateRoute />`. O guard consulta `useAuth()` (que lê o contexto
+`AuthProvider`) e, se não autenticado, redireciona para `/auth/login`
+preservando a rota original em `location.state.from`. Dentro do bloco
+protegido, `<AdminRoute />` adiciona o gate `ROLE_ADMIN` para
+`/admin/users/*`. O layout `AdminLayout` renderiza `<Navbar />` +
+`<Sidebar />` + `<Outlet />`.
 
 ---
 
@@ -209,7 +266,7 @@ useEffect(() => {
 }, []);
 ```
 
-A instância `api` (em `src/utils/api.ts`):
+A instância `http` (em `src/api/axios.ts`):
 
 - Usa `baseURL = '/api/proxy'` em preview Lovable (`*.lovable.app`) e em
   dev local (o Vite faz proxy para `VITE_API_BASE_URL`).
@@ -233,28 +290,44 @@ username=...&password=...&grant_type=password
 → 200 { access_token, token_type, expires_in, scope, ... }
 ```
 
-O `access_token` é um JWT. `src/utils/auth.ts` expõe:
+O `access_token` é um JWT. As responsabilidades estão distribuídas:
 
-| Função                | Responsabilidade                                     |
-| --------------------- | ---------------------------------------------------- |
-| `saveSessionData()`   | Persiste o token em `localStorage["authData"]`       |
-| `getSessionData()`    | Lê a sessão (SSR-safe: retorna `null` no servidor)   |
-| `getDecodedToken()`   | Decoda o JWT (`jwt-decode`) → `{ exp, user_name, authorities }` |
-| `isTokenValid()`      | Compara `exp` com `Date.now()`                       |
-| `isAuthenticated()`   | `getSessionData() && isTokenValid()`                 |
-| `hasAnyRole([...])`   | Verifica `authorities` (ex.: `ROLE_ADMIN`)           |
-| `logout()`            | Remove sessão + dispara evento `auth-change`         |
+| Módulo                          | Responsabilidade                                                 |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `utils/storage.ts`              | `get/save/removeAuthData` em `localStorage["authData"]`          |
+| `utils/permissions.ts`          | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator`|
+| `api/auth-api.ts`               | `requestToken()` → POST `/oauth2/token` (Basic Auth)             |
+| `services/auth-service.ts`      | `login / logout / isAuthenticated / getCurrentUser`              |
+| `contexts/AuthContext.tsx`      | Estado global reativo (`auth-change` + `storage`)                |
+| `hooks/useAuth.ts`              | Acesso ao contexto                                               |
+| `hooks/useRoles.ts`             | `isAdmin / isOperator / hasRole`                                 |
 
-O hook `useAuth()` (em `src/utils/use-auth.ts`) escuta `auth-change` e o
-evento nativo `storage` para re-renderizar componentes quando a sessão muda
-(login, logout, ou logout em outra aba).
+O `AuthProvider` (em `src/contexts/AuthContext.tsx`) escuta `auth-change`
+e `storage` para re-renderizar a árvore quando a sessão muda (login,
+logout ou logout em outra aba).
 
 ### Autorização por papel
 
-Itens da `Sidebar` e rotas como `/admin/users` chamam
-`hasAnyRole(["ROLE_ADMIN"])` para esconder/permitir acesso. Note que o
-gate é **client-side apenas** — a fonte de verdade é o backend, que rejeita
-requests sem o papel adequado com `403`.
+A `Sidebar` usa `useRoles()` para esconder o item "Usuários" para quem não
+for `ROLE_ADMIN`. A rota `/admin/users/*` é protegida por
+`<AdminRoute />`. Note que o gate é **client-side apenas** — a fonte de
+verdade é o backend, que rejeita requests sem o papel adequado com `403`.
+
+### Endpoints integrados
+
+| Domínio    | Endpoint                                  | Service                                  |
+| ---------- | ----------------------------------------- | ---------------------------------------- |
+| Auth       | `POST /oauth2/token`                      | `authService.login`                      |
+| Usuários   | `POST /api/v1/users/register`             | `userService.register`                   |
+| Usuários   | `GET /api/v1/users`                       | `userService.findAll`                    |
+| Usuários   | `GET /api/v1/users/{id}`                  | `userService.findById`                   |
+| Usuários   | `POST /api/v1/users`                      | `userService.create`                     |
+| Usuários   | `PUT /api/v1/users/{id}`                  | `userService.update`                     |
+| Usuários   | `PATCH /api/v1/users/{id}/activate`       | `userService.activate`                   |
+| Usuários   | `PATCH /api/v1/users/{id}/deactivate`     | `userService.deactivate`                 |
+| Usuários   | `DELETE /api/v1/users/{id}`               | `userService.delete`                     |
+| Produtos   | `GET/POST/PUT/DELETE /products`           | `productService.*`                       |
+| Categorias | `GET/POST/PUT/DELETE /categories`         | `categoryService.*`                      |
 
 ---
 
@@ -302,7 +375,9 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   para um arquivo existente; build quebra caso contrário.
 - Componentes exportados por `default` em `src/components/<Nome>/index.tsx`
   e reexportados em `src/components/index.ts` para imports curtos.
-- Tipos de domínio em `src/@types/index.ts` (compartilhados front-API).
+- Tipos de domínio em `src/types/*.ts` (re-exportados por `src/types/index.ts`).
+- Camadas com responsabilidade única: `api → services → pages`,
+  `contexts → hooks → componentes`.
 - Alias `@/*` aponta para `src/*` (configurado em `vite.config.ts` e
   `tsconfig.json`).
 - Lint + format: `eslint` + `prettier` (config em `eslint.config.js`).
@@ -334,13 +409,13 @@ instale Node 20.10+ e tente novamente.
 ou ajuste a variável.
 
 **`Unauthorized` (401) em chamadas autenticadas**
-→ Token JWT expirou. O interceptor faz logout automático em `401`; refaça
-login em `/admin/auth`.
+→ Token JWT expirou. O interceptor em `src/api/axios.ts` faz logout
+automático em `401` e redireciona para `/auth/login`.
 
 **Login funciona local mas falha em produção (CORS)**
 → Confirme que a chamada está indo pelo proxy (`baseURL` deve ser
 `/api/proxy` quando hostname termina em `lovable.app`). Veja
-`isLovablePreview()` em `src/utils/api.ts`.
+`isLovablePreview()` em `src/api/axios.ts`.
 
 **iOS faz zoom ao focar inputs**
 → Garantido por `input, textarea, select { font-size: 16px }` em
