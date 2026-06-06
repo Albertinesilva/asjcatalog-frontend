@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ProductItemAdmin } from "../../components";
+import { ProductItemAdmin } from "@/components";
 import { api } from "@/utils/api";
 import type { ProductsPage } from "@/@types";
 import styles from "../../styles/pages/dashboardProducts.module.css";

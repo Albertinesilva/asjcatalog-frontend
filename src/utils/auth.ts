@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import type { AccessToken, LoginResponse, Role } from "./types";
+import type { AccessToken, LoginResponse, Role } from "@/@types";
 
 const STORAGE_KEY = "authData";
 

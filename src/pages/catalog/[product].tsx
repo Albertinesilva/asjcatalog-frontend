@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ProductPrice } from "../components";
+import { ProductPrice } from "@/components";
 import arrow from "../assets/blue_arrow.svg";
 import { api } from "@/utils/api";
 import type { ProductItemProps } from "@/@types";

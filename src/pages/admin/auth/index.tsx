@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { ButtonIcon } from "../components";
+import { ButtonIcon } from "@/components";
 import { loginRequest } from "@/utils/api";
 import {
   saveSessionData,
