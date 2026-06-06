@@ -1,0 +1,90 @@
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import { authService } from "@/services/auth-service";
+import { decodeToken } from "@/utils/permissions";
+import type {
+  AccessToken,
+  AuthContextData,
+  LoginRequest,
+  Role,
+  User,
+} from "@/types";
+
+export const AuthContext = createContext<AuthContextData | null>(null);
+
+type State = {
+  authenticated: boolean;
+  token: AccessToken | null;
+  user: User | null;
+};
+
+function readState(): State {
+  const authenticated = authService.isAuthenticated();
+  return {
+    authenticated,
+    token: authenticated ? decodeToken() : null,
+    user: null,
+  };
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<State>(readState);
+
+  const refresh = useCallback(() => {
+    setState(readState());
+  }, []);
+
+  useEffect(() => {
+    refresh();
+    window.addEventListener("auth-change", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener("auth-change", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, [refresh]);
+
+  useEffect(() => {
+    if (!state.authenticated) return;
+    let cancelled = false;
+    authService.getCurrentUser().then((user) => {
+      if (!cancelled) setState((s) => ({ ...s, user }));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [state.authenticated]);
+
+  const login = useCallback(
+    async (credentials: LoginRequest) => {
+      await authService.login(credentials);
+      refresh();
+    },
+    [refresh],
+  );
+
+  const logout = useCallback(() => {
+    authService.logout();
+    refresh();
+  }, [refresh]);
+
+  const value = useMemo<AuthContextData>(
+    () => ({
+      authenticated: state.authenticated,
+      token: state.token,
+      user: state.user,
+      roles: (state.token?.authorities ?? []) as Role[],
+      login,
+      logout,
+    }),
+    [state, login, logout],
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
