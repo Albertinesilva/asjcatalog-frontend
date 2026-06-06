@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ProductItemAdmin } from "@/components";
 import { api } from "@/utils/api";
 import type { ProductsPage } from "@/@types";
-import styles from "../../styles/pages/dashboardProducts.module.css";
+import styles from "@/styles/pages/dashboardProducts.module.css";
 
 export default function ProductsAdminPage() {
   const [data, setData] = useState<ProductsPage | null>(null);

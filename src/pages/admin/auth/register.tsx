@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import imageBackground from "../assets/auth_image.png";
-import styles from "../styles/pages/auth.module.css";
+import imageBackground from "@/assets/auth_image.png";
+import styles from "@/styles/pages/auth.module.css";
 
 type RegisterFormFields = {
   firstName: string;

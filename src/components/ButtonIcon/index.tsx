@@ -1,4 +1,4 @@
-import arrow from "../../assets/arrow.svg";
+import arrow from "@/assets/arrow.svg";
 import type { ButtonIconProps } from "@/@types";
 import styles from "./buttonicon.module.css";
 

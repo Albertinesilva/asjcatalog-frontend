@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ProductItem } from "@/components";
 import { api } from "@/utils/api";
 import type { Category, ProductsPage } from "@/@types";
-import styles from "../styles/pages/catalog.module.css";
+import styles from "@/styles/pages/catalog.module.css";
 
 export default function CatalogPage() {
   const [data, setData] = useState<ProductsPage | null>(null);
