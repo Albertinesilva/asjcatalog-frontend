@@ -68,12 +68,9 @@ export default function CatalogPage() {
 
   return (
     <div className="container-fluid px-4 py-4">
-      <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
-
-      {loading && <p className="py-3">Carregando produtos...</p>}
-      {error && <p className="py-3 text-danger">Erro: {error}</p>}
-
-      <div className={`card-base border-radius-10 ${styles.filterCard}`}>
+      <div className={styles.headerRow}>
+        <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
+        <div className={`card-base border-radius-10 ${styles.filterCard}`}>
         <div className={styles.filterControls}>
           <div className={styles.searchWrapper}>
             <input
@@ -108,6 +105,10 @@ export default function CatalogPage() {
           </button>
         </div>
       </div>
+      </div>
+
+      {loading && <p className="py-3">Carregando produtos...</p>}
+      {error && <p className="py-3 text-danger">Erro: {error}</p>}
 
       <div className={styles.catalogProducts}>
         {filtered.length === 0 ? (
