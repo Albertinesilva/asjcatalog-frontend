@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { userService } from "@/services/user-service";
-import type { User } from "@/types";
+import type { UserDetails } from "@/types";
 
 export default function UserDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
