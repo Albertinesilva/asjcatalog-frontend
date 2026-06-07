@@ -66,7 +66,7 @@ export default function Navbar() {
 
           {authenticated && (
             <div className={styles.userBlock}>
-              <span className={styles.userName}>{token?.user_name}</span>
+              <span className={styles.userName}>{token?.username}</span>
               <button
                 type="button"
                 className="btn btn-outline-light btn-sm"
