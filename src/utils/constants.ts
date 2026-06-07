@@ -15,6 +15,6 @@ export const ENDPOINTS = {
   token: "/oauth2/token",
   users: "/api/v1/users",
   usersRegister: "/api/v1/users/register",
-  products: "/products",
-  categories: "/categories",
+  products: "/api/v1/products",
+  categories: "/api/v1/categories",
 } as const;
