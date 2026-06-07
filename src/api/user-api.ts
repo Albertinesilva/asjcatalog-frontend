@@ -3,6 +3,7 @@ import { ENDPOINTS } from "@/utils/constants";
 import type {
   SpringPage,
   User,
+  UserDetails,
   UserCreateRequest,
   UserRegisterRequest,
   UserUpdateRequest,
@@ -19,9 +20,16 @@ export const userApi = {
     http.put<User>(`${ENDPOINTS.users}/${id}`, data).then((r) => r.data),
 
   findById: (id: number) =>
-    http.get<User>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
+    http.get<UserDetails>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
 
-  findAll: (params: { page?: number; size?: number; sort?: string } = {}) =>
+  findAll: (
+    params: {
+      page?: number;
+      size?: number;
+      sort?: string;
+      firstName?: string;
+    } = {},
+  ) =>
     http
       .get<SpringPage<User> | User[]>(ENDPOINTS.users, {
         params: { page: 0, size: 20, sort: "firstName,asc", ...params },
