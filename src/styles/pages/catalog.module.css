@@ -27,6 +27,29 @@
   margin-bottom: 24px;
 }
 
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 992px) {
+  .headerRow {
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+  }
+  .headerRow .filterCard {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  .headerRow .catalogTitle {
+    margin: 0;
+    white-space: nowrap;
+  }
+}
+
 .catalogTitle {
   font-size: 1.25rem;
   font-weight: 800;
