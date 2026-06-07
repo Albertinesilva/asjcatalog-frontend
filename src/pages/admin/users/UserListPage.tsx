@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { userService } from "@/services/user-service";
 import type { User } from "@/types";
 
@@ -8,23 +8,30 @@ export default function UserListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
 
-  const load = () => {
+  const load = useCallback(() => {
     setIsLoading(true);
     userService
-      .findAll({ size: 50 })
+      .findAll({ size: 50, firstName: filter || undefined })
       .then((d) => setData(Array.isArray(d) ? d : d.content))
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
+  }, [filter]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFilter(search.trim());
   };
 
-  useEffect(load, []);
-
-  const filtered = data.filter((u) =>
-    `${u.firstName} ${u.lastName} ${u.email}`
-      .toLowerCase()
-      .includes(search.trim().toLowerCase()),
-  );
+  const handleClear = () => {
+    setSearch("");
+    setFilter("");
+  };
 
   const handleDelete = (id: number) => {
     if (!window.confirm("Excluir usuário?")) return;
@@ -44,7 +51,10 @@ export default function UserListPage() {
         >
           ADICIONAR
         </Link>
-        <div className="card-base border-radius-10 d-flex flex-column flex-md-row gap-2 flex-grow-1 p-2">
+        <form
+          onSubmit={handleSearch}
+          className="card-base border-radius-10 d-flex flex-column flex-md-row gap-2 flex-grow-1 p-2"
+        >
           <input
             className="form-control border-0 flex-grow-1"
             style={{ height: 46 }}
@@ -53,21 +63,28 @@ export default function UserListPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button
+            type="submit"
+            className="btn btn-primary"
+            style={{ height: 46, borderRadius: 10, minWidth: 120 }}
+          >
+            BUSCAR
+          </button>
+          <button
             type="button"
             className="btn btn-outline-secondary"
             style={{ height: 46, borderRadius: 10, minWidth: 150 }}
-            onClick={() => setSearch("")}
+            onClick={handleClear}
           >
             LIMPAR FILTRO
           </button>
-        </div>
+        </form>
       </div>
 
       {isLoading && <p>Carregando...</p>}
       {error && <p className="text-danger">Erro: {error}</p>}
 
       <div className="d-flex flex-column gap-3">
-        {filtered.map((u) => (
+        {data.map((u) => (
           <div
             key={u.id}
             className="card-base border-radius-10 d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 gap-2"

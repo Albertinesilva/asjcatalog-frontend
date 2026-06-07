@@ -10,6 +10,16 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
+  active: boolean;
+  roles?: UserRole[];
+};
+
+export type UserDetails = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  active: boolean;
   roles: UserRole[];
 };
 
@@ -21,12 +31,13 @@ export type UserRegisterRequest = {
 };
 
 export type UserCreateRequest = UserRegisterRequest & {
-  roles: { id: number }[];
+  roleIds: number[];
 };
 
 export type UserUpdateRequest = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  roles: { id: number }[];
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  roleIds?: number[];
 };

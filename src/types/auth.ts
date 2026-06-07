@@ -18,7 +18,7 @@ export type LoginResponse = {
 
 export type AccessToken = {
   exp: number;
-  user_name: string;
+  username: string;
   authorities: Role[];
 };
 

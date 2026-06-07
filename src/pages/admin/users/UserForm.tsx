@@ -49,7 +49,7 @@ export default function UserForm({ mode }: Props) {
           lastName: u.lastName,
           email: u.email,
           password: "",
-          roleIds: u.roles.map((r) => String(r.id)),
+          roleIds: (u.roles ?? []).map((r) => String(r.id)),
         }),
       )
       .catch((err: Error) => setSaveError(err.message));
@@ -57,7 +57,7 @@ export default function UserForm({ mode }: Props) {
 
   const onSubmit = async (data: FormFields) => {
     setSaveError(null);
-    const roles = data.roleIds.map((rid) => ({ id: Number(rid) }));
+    const roleIds = data.roleIds.map((rid) => Number(rid));
     try {
       if (mode === "create") {
         await userService.create({
@@ -65,14 +65,14 @@ export default function UserForm({ mode }: Props) {
           lastName: data.lastName,
           email: data.email,
           password: data.password,
-          roles,
+          roleIds,
         });
       } else if (id) {
         await userService.update(Number(id), {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          roles,
+          roleIds,
         });
       }
       navigate("/admin/users");

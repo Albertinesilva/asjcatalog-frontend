@@ -25,6 +25,10 @@ export function hasAnyRole(roles: Role[] = []): boolean {
   return roles.some((r) => decoded.authorities.includes(r));
 }
 
+export function hasRole(role: Role): boolean {
+  return hasAnyRole([role]);
+}
+
 export function isAdmin(): boolean {
   return hasAnyRole(["ROLE_ADMIN"]);
 }
