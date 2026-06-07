@@ -30,7 +30,7 @@ export default function UserDetailsPage() {
         </p>
         <p>
           <strong>Permissões:</strong>{" "}
-          {user.roles.map((r) => r.authority).join(", ") || "—"}
+          {(user.roles ?? []).map((r) => r.authority).join(", ") || "—"}
         </p>
         <div className="d-flex gap-2 mt-3">
           <Link
