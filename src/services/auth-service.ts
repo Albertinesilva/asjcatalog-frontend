@@ -22,11 +22,11 @@ export const authService = {
 
   async getCurrentUser(): Promise<User | null> {
     const decoded = decodeToken();
-    if (!decoded?.user_name) return null;
+    if (!decoded?.username) return null;
     try {
       const page = await userApi.findAll({ size: 1000 });
       const list = Array.isArray(page) ? page : page.content;
-      return list.find((u) => u.email === decoded.user_name) ?? null;
+      return list.find((u) => u.email === decoded.username) ?? null;
     } catch {
       return null;
     }
