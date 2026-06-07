@@ -12,18 +12,25 @@ export default function CatalogPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState<string>("");
+  const [page, setPage] = useState(0);
+  const pageSize = 10;
 
   useEffect(() => {
-    Promise.all([
-      productService.findAll({ page: 0, size: 12 }),
-      categoryService.findAll(),
-    ])
-      .then(([products, cats]) => {
-        setData(products);
-        setCategories(Array.isArray(cats) ? cats : cats.content);
-      })
+    setLoading(true);
+    productService
+      .findAll({ page, size: pageSize })
+      .then((products) => setData(products))
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
+  }, [page]);
+
+  useEffect(() => {
+    categoryService
+      .findAll()
+      .then((cats) =>
+        setCategories(Array.isArray(cats) ? cats : cats.content),
+      )
+      .catch(() => {});
   }, []);
 
   const filtered = useMemo(() => {
@@ -42,6 +49,22 @@ export default function CatalogPage() {
     setSearch("");
     setCategoryId("");
   };
+
+  const totalPages = data?.totalPages ?? 0;
+  const currentPage = page + 1;
+
+  const pagesToRender = useMemo(() => {
+    const items: (number | "dots")[] = [];
+    if (totalPages <= 0) return items;
+    if (totalPages <= 11) {
+      for (let i = 1; i <= totalPages; i++) items.push(i);
+      return items;
+    }
+    for (let i = 1; i <= 10; i++) items.push(i);
+    items.push("dots");
+    items.push(totalPages);
+    return items;
+  }, [totalPages]);
 
   return (
     <div className="container-fluid px-4 py-4">
@@ -97,6 +120,49 @@ export default function CatalogPage() {
           ))
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className={styles.pagination}>
+          <button
+            type="button"
+            className={styles.pageArrow}
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={page === 0}
+            aria-label="Página anterior"
+          >
+            ‹
+          </button>
+          {pagesToRender.map((item, idx) =>
+            item === "dots" ? (
+              <span key={`dots-${idx}`} className={styles.pageDots}>
+                ...
+              </span>
+            ) : (
+              <button
+                key={item}
+                type="button"
+                className={`${styles.pageDot} ${
+                  item === currentPage ? styles.pageDotActive : ""
+                }`}
+                onClick={() => setPage(item - 1)}
+              >
+                {item}
+              </button>
+            ),
+          )}
+          <button
+            type="button"
+            className={styles.pageArrow}
+            onClick={() =>
+              setPage((p) => Math.min(totalPages - 1, p + 1))
+            }
+            disabled={currentPage >= totalPages}
+            aria-label="Próxima página"
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   );
 }
