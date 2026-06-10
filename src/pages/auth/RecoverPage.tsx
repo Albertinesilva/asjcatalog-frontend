@@ -26,7 +26,7 @@ export default function RecoverPage() {
   return (
     <div className={`card-base ${styles.authCard}`}>
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>RECUPERAÇÃO</h2>
+        <h2 className={styles.formTitle}>RECUPERAÇÃO DE SENHA</h2>
 
         <div className={styles.fieldGroup}>
           <input
