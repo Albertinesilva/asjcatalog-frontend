@@ -29,4 +29,6 @@ export type AuthContextData = {
   roles: Role[];
   login: (credentials: LoginRequest) => Promise<void>;
   logout: () => void;
+  isAuthenticated: () => boolean;
+  hasRole: (role: Role) => boolean;
 };
