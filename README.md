@@ -322,6 +322,34 @@ for `ROLE_ADMIN`. A rota `/admin/users/*` é protegida por
 `<AdminRoute />`. Note que o gate é **client-side apenas** — a fonte de
 verdade é o backend, que rejeita requests sem o papel adequado com `403`.
 
+### Cadastro, ativação por e-mail e login
+
+Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
+
+1. **Cadastro** (`/auth/register`) — `RegisterPage` valida o formulário
+   com `react-hook-form` e chama `accountService.register()` →
+   `POST /api/v1/accounts/register`. Erros de validação retornados pelo
+   backend (`{ errors: [{ fieldName, message }] }`) são distribuídos nos
+   campos via `setError`. Em caso de sucesso o e-mail é salvo em
+   `localStorage["pendingActivationEmail"]` e o usuário é redirecionado.
+2. **Aguardando ativação** (`/auth/activation-pending`) —
+   `ActivationPendingPage` mostra o e-mail utilizado e oferece o botão
+   **Reenviar e-mail** (`POST /api/v1/accounts/resend-activation`).
+3. **Ativação** (`/activate-account?token=UUID`) —
+   `ActivateAccountPage` lê o `token` da query string, chama
+   `GET /api/v1/accounts/activate?token=...`, exibe SweetAlert de
+   sucesso e redireciona para o login. Se o token for inválido, exibe
+   erro e permite solicitar um novo e-mail.
+4. **Login OAuth2** (`/auth/login`) — `LoginPage` chama
+   `authService.login()` que envia `POST /oauth2/token` com Basic Auth
+   (`CLIENT_ID:CLIENT_SECRET`) e `grant_type=password`. O `access_token`
+   (JWT) é decodificado com `jwt-decode` para extrair `username` e
+   `authorities`, e gravado em `localStorage["authData"]`. O
+   `AuthProvider` propaga o estado para a aplicação inteira.
+
+Todos os feedbacks visuais (sucesso, erro, aviso, loading) passam pelo
+wrapper `utils/alerts.ts` — nenhuma página chama `Swal.fire` diretamente.
+
 ### Endpoints integrados
 
 | Domínio    | Endpoint                                  | Service                                  |
