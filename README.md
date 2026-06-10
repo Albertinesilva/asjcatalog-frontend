@@ -56,6 +56,7 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 | HTTP              | Axios + query-string                           |
 | Estilo            | Bootstrap 5 + CSS Modules                      |
 | Auth              | JWT (Bearer) + `jwt-decode` + localStorage     |
+| Alertas           | SweetAlert2 (via `utils/alerts.ts`)            |
 | Runtime           | Node.js ≥ 20.10.0                              |
 
 ---
@@ -67,6 +68,7 @@ src/
 ├── api/                        # Camada HTTP (axios + chamadas cruas)
 │   ├── axios.ts                # Instância única + interceptors (Bearer / 401)
 │   ├── auth-api.ts             # POST /oauth2/token (Basic Auth client_id/secret)
+│   ├── account-api.ts          # /api/v1/accounts (register/activate/resend)
 │   ├── user-api.ts             # /api/v1/users (CRUD + activate/deactivate)
 │   ├── product-api.ts          # /products (CRUD)
 │   └── category-api.ts         # /categories (CRUD)
@@ -96,7 +98,9 @@ src/
 │   ├── auth/
 │   │   ├── LoginPage.tsx       # /auth/login
 │   │   ├── RegisterPage.tsx    # /auth/register
-│   │   └── RecoverPage.tsx     # /auth/recover
+│   │   ├── RecoverPage.tsx     # /auth/recover
+│   │   ├── ActivationPendingPage.tsx  # /auth/activation-pending
+│   │   └── ActivateAccountPage.tsx    # /activate-account?token=...
 │   ├── admin/
 │   │   ├── DashboardPage.tsx   # /admin
 │   │   ├── users/
@@ -220,6 +224,8 @@ exporta um componente `default` montado em uma rota específica.
 | `/auth/login`                 | `pages/auth/LoginPage.tsx`                          |
 | `/auth/register`              | `pages/auth/RegisterPage.tsx`                       |
 | `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
+| `/auth/activation-pending`    | `pages/auth/ActivationPendingPage.tsx`              |
+| `/activate-account?token=`    | `pages/auth/ActivateAccountPage.tsx`                |
 | `/admin`                      | `pages/admin/DashboardPage.tsx`                     |
 | `/admin/products`             | `pages/admin/products/ProductListPage.tsx`          |
 | `/admin/products/new`         | `pages/admin/products/ProductForm.tsx` (`mode=create`) |
@@ -296,8 +302,11 @@ O `access_token` é um JWT. As responsabilidades estão distribuídas:
 | ------------------------------- | ---------------------------------------------------------------- |
 | `utils/storage.ts`              | `get/save/removeAuthData` em `localStorage["authData"]`          |
 | `utils/permissions.ts`          | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator`|
+| `utils/alerts.ts`               | Wrapper SweetAlert2 (success/error/warning/info/confirm/loading) |
 | `api/auth-api.ts`               | `requestToken()` → POST `/oauth2/token` (Basic Auth)             |
+| `api/account-api.ts`            | `register / activate / resendActivation` (`/api/v1/accounts/*`)  |
 | `services/auth-service.ts`      | `login / logout / isAuthenticated / getCurrentUser`              |
+| `services/account-service.ts`   | Re-exporta `accountApi` para uso nas páginas de cadastro/ativação|
 | `contexts/AuthContext.tsx`      | Estado global reativo (`auth-change` + `storage`)                |
 | `hooks/useAuth.ts`              | Acesso ao contexto                                               |
 | `hooks/useRoles.ts`             | `isAdmin / isOperator / hasRole`                                 |
@@ -318,7 +327,9 @@ verdade é o backend, que rejeita requests sem o papel adequado com `403`.
 | Domínio    | Endpoint                                  | Service                                  |
 | ---------- | ----------------------------------------- | ---------------------------------------- |
 | Auth       | `POST /oauth2/token`                      | `authService.login`                      |
-| Usuários   | `POST /api/v1/users/register`             | `userService.register`                   |
+| Contas     | `POST /api/v1/accounts/register`          | `accountService.register`                |
+| Contas     | `GET  /api/v1/accounts/activate?token=`   | `accountService.activate`                |
+| Contas     | `POST /api/v1/accounts/resend-activation` | `accountService.resendActivation`        |
 | Usuários   | `GET /api/v1/users`                       | `userService.findAll`                    |
 | Usuários   | `GET /api/v1/users/{id}`                  | `userService.findById`                   |
 | Usuários   | `POST /api/v1/users`                      | `userService.create`                     |
