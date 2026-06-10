@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { ButtonIcon } from "@/components";
 import { useAuth } from "@/hooks/useAuth";
+import { alerts } from "@/utils/alerts";
 import styles from "@/styles/pages/auth.module.css";
 
 type AuthFormFields = {
@@ -35,6 +36,10 @@ export default function LoginPage() {
     } catch (err) {
       console.error("Falha no login", err);
       setError("root", { message: "Usuário ou senha inválidos" });
+      await alerts.error(
+        "Falha no login",
+        "Verifique seu e-mail e senha e tente novamente.",
+      );
     }
   };
 

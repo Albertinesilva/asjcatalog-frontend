@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { userService } from "@/services/user-service";
+import { accountService } from "@/services/account-service";
+import { alerts } from "@/utils/alerts";
+import { savePendingEmail } from "@/utils/storage";
 import styles from "@/styles/pages/auth.module.css";
 
 type RegisterFormFields = {
@@ -14,28 +15,61 @@ type RegisterFormFields = {
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const [apiError, setApiError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormFields>();
 
   const passwordValue = watch("password");
 
   const onSubmit = async (data: RegisterFormFields) => {
-    setApiError(null);
     try {
-      await userService.register({
+      await accountService.register({
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         password: data.password,
       });
-      navigate("/auth/login");
+      savePendingEmail(data.email);
+      await alerts.success(
+        "Cadastro realizado!",
+        "Enviamos um e-mail de ativação para a sua conta.",
+      );
+      navigate("/auth/activation-pending");
     } catch (err) {
-      setApiError((err as Error).message);
+      const error = err as {
+        response?: {
+          status?: number;
+          data?: {
+            message?: string;
+            errors?: { fieldName: string; message: string }[];
+          };
+        };
+        message?: string;
+      };
+      const fieldErrors = error.response?.data?.errors;
+      if (Array.isArray(fieldErrors) && fieldErrors.length > 0) {
+        fieldErrors.forEach((fe) => {
+          setError(fe.fieldName as keyof RegisterFormFields, {
+            type: "server",
+            message: fe.message,
+          });
+        });
+        await alerts.error(
+          "Dados inválidos",
+          "Confira os campos destacados e tente novamente.",
+        );
+      } else {
+        await alerts.error(
+          "Falha no cadastro",
+          error.response?.data?.message ??
+            error.message ??
+            "Não foi possível concluir o cadastro.",
+        );
+      }
     }
   };
 
@@ -126,8 +160,6 @@ export default function RegisterPage() {
             </p>
           )}
         </div>
-
-        {apiError && <p className={styles.fieldError}>{apiError}</p>}
 
         <div className={styles.registerActions}>
           <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
