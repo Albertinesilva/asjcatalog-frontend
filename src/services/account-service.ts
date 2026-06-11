@@ -12,3 +12,11 @@ export async function activateAccount(token: string) {
 export async function resendActivation(email: string) {
   return accountApi.resendActivation(email);
 }
+
+export async function requestPasswordRecovery(email: string) {
+  return accountApi.requestPasswordRecovery(email);
+}
+
+export async function resetPassword(token: string, password: string) {
+  return accountApi.resetPassword(token, password);
+}
