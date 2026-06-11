@@ -100,7 +100,8 @@ src/
 │   │   ├── RegisterPage.tsx    # /auth/register
 │   │   ├── RecoverPage.tsx     # /auth/recover
 │   │   ├── ActivationPendingPage.tsx  # /auth/activation-pending
-│   │   └── ActivateAccountPage.tsx    # /activate-account?token=...
+│   │   ├── ActivateAccountPage.tsx    # /activate-account?token=...
+│   │   └── ResetPasswordPage.tsx      # /reset-password?token=...
 │   ├── admin/
 │   │   ├── DashboardPage.tsx   # /admin
 │   │   ├── users/
