@@ -22,16 +22,13 @@ export default function RecoverPage() {
 
   const onSubmit = async (data: RecoverFormFields) => {
     try {
-      alerts.loading("Enviando e-mail...");
       await accountApi.requestPasswordRecovery(data.email);
-      alerts.close();
       await alerts.success(
         "E-mail enviado",
         "Verifique sua caixa de entrada para redefinir sua senha.",
       );
       navigate("/auth/login");
     } catch (err) {
-      alerts.close();
       const error = err as { response?: { data?: { message?: string } } };
       await alerts.error(
         "Falha ao enviar",
