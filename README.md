@@ -227,6 +227,9 @@ exporta um componente `default` montado em uma rota específica.
 | `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
 | `/auth/activation-pending`    | `pages/auth/ActivationPendingPage.tsx`              |
 | `/activate-account?token=`    | `pages/auth/ActivateAccountPage.tsx`                |
+| `/forgot-password`            | `pages/auth/RecoverPage.tsx` (alias de `/auth/recover`) |
+| `/reset-password?token=`      | `pages/auth/ResetPasswordPage.tsx`                  |
+| `/auth/reset-password?token=` | `pages/auth/ResetPasswordPage.tsx`                  |
 | `/admin`                      | `pages/admin/DashboardPage.tsx`                     |
 | `/admin/products`             | `pages/admin/products/ProductListPage.tsx`          |
 | `/admin/products/new`         | `pages/admin/products/ProductForm.tsx` (`mode=create`) |
