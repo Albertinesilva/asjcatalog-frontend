@@ -29,16 +29,13 @@ export default function ResetPasswordPage() {
       return;
     }
     try {
-      alerts.loading("Redefinindo senha...");
       await accountApi.resetPassword(token, data.password);
-      alerts.close();
       await alerts.success(
         "Senha redefinida",
         "Faça login com sua nova senha.",
       );
       navigate("/auth/login");
     } catch (err) {
-      alerts.close();
       const error = err as { response?: { data?: { message?: string } } };
       await alerts.error(
         "Falha ao redefinir",
