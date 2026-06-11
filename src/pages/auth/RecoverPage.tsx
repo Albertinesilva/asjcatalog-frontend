@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { accountApi } from "@/api/account-api";
+import { alerts } from "@/utils/alerts";
 import styles from "@/styles/pages/auth.module.css";
 
 type RecoverFormFields = {
@@ -18,9 +20,25 @@ export default function RecoverPage() {
 
   const emailValue = watch("email");
 
-  const onSubmit = async (_data: RecoverFormFields) => {
-    // TODO: integrar com endpoint de recuperação quando disponível
-    navigate("/auth/login");
+  const onSubmit = async (data: RecoverFormFields) => {
+    try {
+      alerts.loading("Enviando e-mail...");
+      await accountApi.requestPasswordRecovery(data.email);
+      alerts.close();
+      await alerts.success(
+        "E-mail enviado",
+        "Verifique sua caixa de entrada para redefinir sua senha.",
+      );
+      navigate("/auth/login");
+    } catch (err) {
+      alerts.close();
+      const error = err as { response?: { data?: { message?: string } } };
+      await alerts.error(
+        "Falha ao enviar",
+        error.response?.data?.message ??
+          "Não foi possível enviar o e-mail de recuperação.",
+      );
+    }
   };
 
   return (

@@ -100,7 +100,8 @@ src/
 │   │   ├── RegisterPage.tsx    # /auth/register
 │   │   ├── RecoverPage.tsx     # /auth/recover
 │   │   ├── ActivationPendingPage.tsx  # /auth/activation-pending
-│   │   └── ActivateAccountPage.tsx    # /activate-account?token=...
+│   │   ├── ActivateAccountPage.tsx    # /activate-account?token=...
+│   │   └── ResetPasswordPage.tsx      # /reset-password?token=...
 │   ├── admin/
 │   │   ├── DashboardPage.tsx   # /admin
 │   │   ├── users/
@@ -226,6 +227,9 @@ exporta um componente `default` montado em uma rota específica.
 | `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
 | `/auth/activation-pending`    | `pages/auth/ActivationPendingPage.tsx`              |
 | `/activate-account?token=`    | `pages/auth/ActivateAccountPage.tsx`                |
+| `/forgot-password`            | `pages/auth/RecoverPage.tsx` (alias de `/auth/recover`) |
+| `/reset-password?token=`      | `pages/auth/ResetPasswordPage.tsx`                  |
+| `/auth/reset-password?token=` | `pages/auth/ResetPasswordPage.tsx`                  |
 | `/admin`                      | `pages/admin/DashboardPage.tsx`                     |
 | `/admin/products`             | `pages/admin/products/ProductListPage.tsx`          |
 | `/admin/products/new`         | `pages/admin/products/ProductForm.tsx` (`mode=create`) |
@@ -350,6 +354,21 @@ Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
 Todos os feedbacks visuais (sucesso, erro, aviso, loading) passam pelo
 wrapper `utils/alerts.ts` — nenhuma página chama `Swal.fire` diretamente.
 
+### Recuperação e redefinição de senha
+
+Fluxo das Fases 6 e 7 do plano de integração:
+
+1. **Esqueci a senha** (`/auth/recover` ou `/forgot-password`) —
+   `RecoverPage` chama `accountService.requestPasswordRecovery(email)` →
+   `POST /api/v1/accounts/password-recovery`. Em caso de sucesso exibe um
+   SweetAlert e redireciona para `/auth/login`.
+2. **Redefinir senha** (`/reset-password?token=UUID` ou
+   `/auth/reset-password?token=UUID`) — `ResetPasswordPage` lê o token
+   da URL, valida `password === confirmPassword` no frontend e chama
+   `accountService.resetPassword(token, password)` →
+   `POST /api/v1/accounts/reset-password`. Após sucesso o usuário é
+   levado para `/auth/login`.
+
 ### Endpoints integrados
 
 | Domínio    | Endpoint                                  | Service                                  |
@@ -358,6 +377,8 @@ wrapper `utils/alerts.ts` — nenhuma página chama `Swal.fire` diretamente.
 | Contas     | `POST /api/v1/accounts/register`          | `accountService.register`                |
 | Contas     | `GET  /api/v1/accounts/activate?token=`   | `accountService.activate`                |
 | Contas     | `POST /api/v1/accounts/resend-activation` | `accountService.resendActivation`        |
+| Contas     | `POST /api/v1/accounts/password-recovery` | `accountService.requestPasswordRecovery` |
+| Contas     | `POST /api/v1/accounts/reset-password`    | `accountService.resetPassword`           |
 | Usuários   | `GET /api/v1/users`                       | `userService.findAll`                    |
 | Usuários   | `GET /api/v1/users/{id}`                  | `userService.findById`                   |
 | Usuários   | `POST /api/v1/users`                      | `userService.create`                     |

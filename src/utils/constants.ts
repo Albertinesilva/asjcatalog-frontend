@@ -20,6 +20,8 @@ export const ENDPOINTS = {
   accountsRegister: "/api/v1/accounts/register",
   accountsActivate: "/api/v1/accounts/activate",
   accountsResend: "/api/v1/accounts/resend-activation",
+  accountsPasswordRecovery: "/api/v1/accounts/password-recovery",
+  accountsResetPassword: "/api/v1/accounts/reset-password",
 } as const;
 
 export const PENDING_EMAIL_KEY = "pendingActivationEmail";

@@ -15,4 +15,14 @@ export const accountApi = {
     http
       .post<void>(ENDPOINTS.accountsResend, { email })
       .then((r) => r.data),
+
+  requestPasswordRecovery: (email: string) =>
+    http
+      .post<void>(ENDPOINTS.accountsPasswordRecovery, { email })
+      .then((r) => r.data),
+
+  resetPassword: (token: string, password: string) =>
+    http
+      .post<void>(ENDPOINTS.accountsResetPassword, { token, password })
+      .then((r) => r.data),
 };

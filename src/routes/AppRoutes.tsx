@@ -14,6 +14,7 @@ import ProductDetailsPage from "@/pages/catalog/ProductDetailsPage";
 import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import RecoverPage from "@/pages/auth/RecoverPage";
+import ResetPasswordPage from "@/pages/auth/ResetPasswordPage";
 import ActivationPendingPage from "@/pages/auth/ActivationPendingPage";
 import ActivateAccountPage from "@/pages/auth/ActivateAccountPage";
 
@@ -48,11 +49,14 @@ export default function AppRoutes() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/recover" element={<RecoverPage />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
         <Route
           path="/auth/activation-pending"
           element={<ActivationPendingPage />}
         />
         <Route path="/activate-account" element={<ActivateAccountPage />} />
+        <Route path="/forgot-password" element={<RecoverPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
 
       <Route path="/admin/auth" element={<Navigate to="/auth/login" replace />} />
