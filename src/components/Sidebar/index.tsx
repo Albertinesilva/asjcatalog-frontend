@@ -17,7 +17,7 @@ export default function Sidebar() {
               isActive ? activeClass : styles.adminNavItem
             }
           >
-            Produtos
+            Meus Produtos
           </NavLink>
         </li>
         <li>
@@ -27,7 +27,7 @@ export default function Sidebar() {
               isActive ? activeClass : styles.adminNavItem
             }
           >
-            Categorias
+            Minhas Categorias
           </NavLink>
         </li>
         {showUsers && (
@@ -38,7 +38,7 @@ export default function Sidebar() {
                 isActive ? activeClass : styles.adminNavItem
               }
             >
-              Usuários
+              Meus Usuários
             </NavLink>
           </li>
         )}
