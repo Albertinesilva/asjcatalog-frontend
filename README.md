@@ -427,6 +427,18 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   scroll do body.
 - Páginas de auth, catálogo e detalhe usam breakpoints em 768px e 992px
   para reorganizar grid/colunas.
+- **Inputs de senha** (`<PasswordInput />`) renderizam um botão de olho
+  fixo à direita que alterna entre `type="password"` e `type="text"` para
+  permitir ao usuário visualizar a senha digitada. Compatível com
+  `react-hook-form` (`forwardRef` + spread de `register`). Usado em
+  `LoginPage`, `RegisterPage`, `ResetPasswordPage` e `admin/users/UserForm`.
+- **Mobile (Android/iOS)**: `index.html` define
+  `viewport-fit=cover`, `theme-color`, `apple-mobile-web-app-capable` e
+  `mobile-web-app-capable`, permitindo instalação na tela inicial com
+  status bar consistente. `globals.css` aplica `safe-area-insets` no body,
+  `input { font-size: 16px }` para evitar o zoom automático do iOS e
+  `-webkit-tap-highlight-color: transparent` para um feedback de toque
+  mais nativo.
 
 ---
 
