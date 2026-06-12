@@ -80,6 +80,7 @@ src/
 │   ├── ProductItem/            # Card de produto (catálogo)
 │   ├── ProductItemAdmin/       # Card de produto (admin)
 │   ├── ProductPrice/           # Renderização R$ X.XXX,XX
+│   ├── PasswordInput/          # Input de senha com botão olho (mostrar/ocultar)
 │   ├── Sidebar/                # Nav lateral do /admin
 │   ├── shared/                 # Componentes genéricos reutilizáveis
 │   └── index.ts                # Barrel de exports
