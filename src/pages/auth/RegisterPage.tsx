@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
+import { PasswordInput } from "@/components";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail } from "@/utils/storage";
 import styles from "@/styles/pages/auth.module.css";
@@ -121,8 +122,7 @@ export default function RegisterPage() {
         </div>
 
         <div className={styles.fieldGroup}>
-          <input
-            type="password"
+          <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Digite aqui a Senha"
             {...register("password", {
@@ -141,8 +141,7 @@ export default function RegisterPage() {
         </div>
 
         <div className={styles.fieldGroup}>
-          <input
-            type="password"
+          <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Repita aqui a Senha"
             {...register("passwordConfirm", {
