@@ -23,6 +23,32 @@
   letter-spacing: -0.015em;
 }
 
+.productDescription {
+  margin-top: 10px;
+  max-width: 520px;
+}
+
+.descTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6c757d;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.descText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9e9e9e;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (min-width: 992px) {
   .productCardImageAdmin {
     margin: 10px;

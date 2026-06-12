@@ -2,14 +2,20 @@ import { Link } from "react-router-dom";
 import styles from "./productitemadmin.module.css";
 
 import ProductPrice from "../ProductPrice";
-import type { Category, ProductItemProps } from "@/types";
+import type { ProductItemProps } from "@/types";
 
 type Props = ProductItemProps & {
+  description?: string;
   onDelete?: (id: number) => void;
 };
 
 export default function ProductItemAdmin(product: Props) {
-  const { imgUrl, name, price, id, categories, onDelete } = product;
+  const { imgUrl, name, price, id, description, onDelete } = product;
+
+  const desc = (description ?? "").trim();
+  const splitIdx = desc.search(/[.\n]/);
+  const firstLine = splitIdx > 0 ? desc.slice(0, splitIdx) : desc;
+  const rest = splitIdx > 0 ? desc.slice(splitIdx + 1).trim() : "";
 
   return (
     <div className={`card-base ${styles.productCardAdmin} container-fluid`}>
@@ -27,16 +33,12 @@ export default function ProductItemAdmin(product: Props) {
           <h3 className={styles.productCardNameAdmin}>{name}</h3>
           <ProductPrice price={String(price)} />
 
-          <div className="d-flex flex-wrap gap-2 mt-2">
-            {categories?.map((category: Category) => (
-              <span
-                key={category.id}
-                className="badge rounded-pill bg-secondary text-dark"
-              >
-                {category.name}
-              </span>
-            ))}
-          </div>
+          {desc && (
+            <div className={styles.productDescription}>
+              <p className={styles.descTitle}>{firstLine}</p>
+              {rest && <p className={styles.descText}>{rest}</p>}
+            </div>
+          )}
         </div>
         <div className="col-12 col-md-4 pt-3 d-flex flex-row-reverse flex-md-column justify-content-between align-items-md-end gap-2">
           <Link
