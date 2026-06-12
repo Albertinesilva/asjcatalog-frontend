@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountApi } from "@/api/account-api";
+import { PasswordInput } from "@/components";
 import { alerts } from "@/utils/alerts";
 import styles from "@/styles/pages/auth.module.css";
 
@@ -56,8 +57,7 @@ export default function ResetPasswordPage() {
         )}
 
         <div className={styles.fieldGroup}>
-          <input
-            type="password"
+          <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Nova senha"
             {...register("password", { required: true, minLength: 6 })}
@@ -71,8 +71,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className={styles.fieldGroup}>
-          <input
-            type="password"
+          <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Confirmar nova senha"
             {...register("confirmPassword", {

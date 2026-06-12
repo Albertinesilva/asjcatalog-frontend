@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { ButtonIcon } from "@/components";
+import { ButtonIcon, PasswordInput } from "@/components";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
 import styles from "@/styles/pages/auth.module.css";
@@ -69,8 +69,7 @@ export default function LoginPage() {
         </div>
 
         <div className={styles.fieldGroup}>
-          <input
-            type="password"
+          <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Senha"
             {...register("password", { required: true })}

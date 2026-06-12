@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "@/services/user-service";
+import { PasswordInput } from "@/components";
 import type { Role } from "@/types";
 
 const AVAILABLE_ROLES: { id: number; authority: Role }[] = [
@@ -129,8 +130,7 @@ export default function UserForm({ mode }: Props) {
             {mode === "create" && (
               <div className="col-12">
                 <label className="form-label">Senha</label>
-                <input
-                  type="password"
+                <PasswordInput
                   className="form-control"
                   {...register("password", {
                     required: "Senha é obrigatória",
