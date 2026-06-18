@@ -183,11 +183,27 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition: background-color 0.15s ease, transform 0.05s ease;
+  transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+}
+
+.submitBtn.submitBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.submitBtn.submitBtn:not(:disabled):hover,
+.submitBtn.submitBtn:not(:disabled):focus {
+  opacity: 1;
 }
 
 .submitBtn.submitBtn:active {
   transform: translateY(1px);
+}
+
+.activationIcon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
 }
 
 .recoverActions {

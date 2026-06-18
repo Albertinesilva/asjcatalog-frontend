@@ -47,6 +47,7 @@ export default function AppRoutes() {
 
       <Route element={<AuthLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/recover" element={<RecoverPage />} />
         <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
