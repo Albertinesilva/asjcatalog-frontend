@@ -427,8 +427,21 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   `-webkit-tap-highlight-color: transparent`.
 - **Navbar** colapsa em hambúrguer abaixo de 992px com overlay e trava de
   scroll do body.
-- Páginas de auth, catálogo e detalhe usam breakpoints em 768px e 992px
-  para reorganizar grid/colunas.
+- Páginas de auth, catálogo e detalhe usam breakpoints em **480px, 768px,
+  992px, 1200px e 1400px** para reorganizar grid/colunas progressivamente:
+  - Catálogo: 1 coluna (< 480px) → 2 colunas (≥ 480px) → 3 colunas
+    (≥ 768px) → 4 colunas (≥ 992px) → 5 colunas (≥ 1400px).
+  - Detalhe do produto (`product.module.css`): card único empilhado no
+    mobile com paddings reduzidos e `min-height` flexível; grid 1fr 1fr e
+    paddings ampliados a partir de 992px.
+  - Lista admin de produtos (`dashboardProducts.module.css`): sem
+    scroll interno em mobile/tablet (rola junto com a página); scroll
+    interno restrito a desktop (≥ 992px).
+  - Sidebar admin: rola horizontalmente em telas estreitas (< 768px) e
+    alinha verticalmente em desktop (≥ 992px).
+  - Filtros do catálogo: barra horizontal em desktop e empilhada em
+    mobile (campo de busca, select de categoria e botão LIMPAR FILTRO em
+    coluna abaixo de 768px).
 - **Inputs de senha** (`<PasswordInput />`) renderizam um botão de olho
   fixo à direita que alterna entre `type="password"` e `type="text"` para
   permitir ao usuário visualizar a senha digitada. Compatível com
