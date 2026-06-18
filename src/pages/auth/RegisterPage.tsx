@@ -37,7 +37,7 @@ export default function RegisterPage() {
       savePendingEmail(data.email);
       await alerts.success(
         "Cadastro realizado!",
-        "Enviamos um e-mail de ativação para a sua conta.",
+        `Enviamos um e-mail de ativação para:\n${data.email}\n\nVerifique sua caixa de entrada para ativar sua conta.`,
       );
       navigate("/auth/activation-pending");
     } catch (err) {
