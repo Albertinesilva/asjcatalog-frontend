@@ -78,10 +78,12 @@ src/
 │   ├── Navbar/                 # Top bar com hambúrguer mobile
 │   ├── NavbarLink/             # Link com estado ativo
 │   ├── ProductItem/            # Card de produto (catálogo)
-│   ├── ProductItemAdmin/       # Card de produto (admin)
+│   ├── ProductItemAdmin/       # Card de produto (admin) com descrição
+│   │                           # (1ª frase em negrito cinza + restante)
 │   ├── ProductPrice/           # Renderização R$ X.XXX,XX
 │   ├── PasswordInput/          # Input de senha com botão olho (mostrar/ocultar)
-│   ├── Sidebar/                # Nav lateral do /admin
+│   ├── Sidebar/                # Nav lateral do /admin (Meus Produtos /
+│   │                           # Minhas Categorias / Meus Usuários)
 │   ├── shared/                 # Componentes genéricos reutilizáveis
 │   └── index.ts                # Barrel de exports
 ├── contexts/
