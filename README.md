@@ -340,13 +340,25 @@ Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
    campos via `setError`. Em caso de sucesso o e-mail é salvo em
    `localStorage["pendingActivationEmail"]` e o usuário é redirecionado.
 2. **Aguardando ativação** (`/auth/activation-pending`) —
-   `ActivationPendingPage` mostra o e-mail utilizado e oferece o botão
-   **Reenviar e-mail** (`POST /api/v1/accounts/resend-activation`).
+   `ActivationPendingPage` (também acessível em `/activation-pending`)
+   mostra o e-mail utilizado e oferece o botão **Reenviar e-mail**
+   (`POST /api/v1/accounts/resend-activation`). O botão fica desabilitado
+   durante um **cooldown de 60s** persistido em
+   `localStorage["activationResendAvailableAt"]` (sobrevive a F5). O
+   contador é exibido no próprio botão (`REENVIAR DISPONÍVEL EM Ns`) e
+   reiniciado tanto em caso de sucesso quanto ao receber
+   `429 Too Many Requests` (rate-limit do backend), que aciona um
+   SweetAlert de aviso "Aguarde alguns instantes".
 3. **Ativação** (`/activate-account?token=UUID`) —
    `ActivateAccountPage` lê o `token` da query string, chama
-   `GET /api/v1/accounts/activate?token=...`, exibe SweetAlert de
-   sucesso e redireciona para o login. Se o token for inválido, exibe
-   erro e permite solicitar um novo e-mail.
+   `GET /api/v1/accounts/activate?token=...` e renderiza uma de cinco
+   telas conforme o status HTTP: **sucesso** (`204`, botão `IR PARA
+   LOGIN`), **link expirado** (`400`/`410`, botões `IR PARA LOGIN` +
+   `REENVIAR NOVO E-MAIL`), **link inválido** (`404`/`422`, botões
+   `IR PARA LOGIN` + `SOLICITAR NOVO E-MAIL`), **conta já ativada**
+   (`409`, botão `IR PARA LOGIN`) e **falha genérica** (demais erros).
+   O reenvio chamado a partir desta página também trata `429` exibindo
+   o SweetAlert "Aguarde alguns instantes".
 4. **Login OAuth2** (`/auth/login`) — `LoginPage` chama
    `authService.login()` que envia `POST /oauth2/token` com Basic Auth
    (`CLIENT_ID:CLIENT_SECRET`) e `grant_type=password`. O `access_token`
