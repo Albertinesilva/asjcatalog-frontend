@@ -342,14 +342,18 @@ Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
    `localStorage["pendingActivationEmail"]` e o usuário é redirecionado.
 2. **Aguardando ativação** (`/auth/activation-pending`) —
    `ActivationPendingPage` (também acessível em `/activation-pending`)
-   mostra o e-mail utilizado e oferece o botão **Reenviar e-mail**
+   exibe um ícone de envelope, o título "ATIVE SUA CONTA" e a mensagem
+   "Enviamos um e-mail de ativação para:" com o e-mail do usuário em
+   destaque. Orienta o usuário a verificar a caixa de entrada e a pasta
+   de spam, e oferece o botão **Reenviar e-mail**
    (`POST /api/v1/accounts/resend-activation`). O botão fica desabilitado
    durante um **cooldown de 60s** persistido em
    `localStorage["activationResendAvailableAt"]` (sobrevive a F5). O
-   contador é exibido no próprio botão (`REENVIAR DISPONÍVEL EM Ns`) e
-   reiniciado tanto em caso de sucesso quanto ao receber
+   contador é exibido no próprio botão (`REENVIAR EM Ns`), com opacidade
+   reduzida e cursor `not-allowed` enquanto ativo, e reiniciado tanto em
+   caso de sucesso (SweetAlert "E-mail enviado") quanto ao receber
    `429 Too Many Requests` (rate-limit do backend), que aciona um
-   SweetAlert de aviso "Aguarde alguns instantes".
+   SweetAlert "Aguarde um momento".
 3. **Ativação** (`/activate-account?token=UUID`) —
    `ActivateAccountPage` lê o `token` da query string, chama
    `GET /api/v1/accounts/activate?token=...` e renderiza uma de cinco
