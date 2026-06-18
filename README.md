@@ -434,6 +434,17 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   permitir ao usuário visualizar a senha digitada. Compatível com
   `react-hook-form` (`forwardRef` + spread de `register`). Usado em
   `LoginPage`, `RegisterPage`, `ResetPasswordPage` e `admin/users/UserForm`.
+- **Catálogo público** (`CatalogPage`) e **Meus Produtos do admin**
+  (`admin/products/ProductListPage`) compartilham a mesma barra de busca
+  com filtro por categoria e botão `LIMPAR FILTRO`, paginação numerada
+  com setas `‹ ›` e reticências (`...`) quando há mais de 11 páginas, e
+  estado vazio amigável quando a busca não retorna resultados.
+- **Resultado de busca do catálogo** ocupa a tela inteira, com botão
+  **Voltar** e descrição lateral, replicando o layout de detalhes do
+  produto.
+- **Navbar global**: presente em todas as áreas via `CatalogLayout`,
+  `AdminLayout` e `AuthLayout`, garantindo navegação consistente em
+  páginas públicas, administrativas e de autenticação.
 - **Mobile (Android/iOS)**: `index.html` define
   `viewport-fit=cover`, `theme-color`, `apple-mobile-web-app-capable` e
   `mobile-web-app-capable`, permitindo instalação na tela inicial com
