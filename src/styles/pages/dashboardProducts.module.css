@@ -37,10 +37,8 @@
 
 .productListContainer {
   width: 100%;
-  padding: 30px;
+  padding: 16px;
   margin: 0 auto;
-  max-height: calc(100vh - 158px);
-  overflow-y: scroll;
 }
 
 @media (min-width: 768px) {
@@ -49,10 +47,15 @@
     padding: 0 40px;
     margin: 0;
   }
+  .productListContainer {
+    padding: 24px;
+  }
 }
 
 @media (min-width: 992px) {
   .productListContainer {
+    padding: 30px;
     max-height: calc(100vh - 70px);
+    overflow-y: auto;
   }
 }

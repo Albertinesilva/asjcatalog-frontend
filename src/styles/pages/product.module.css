@@ -1,10 +1,10 @@
 .productDetailsContainer {
-  margin: 24px 0;
-  padding: 0 24px;
+  margin: 16px 0;
+  padding: 0 12px;
 }
 
 .productDetails {
-  padding: 28px 32px;
+  padding: 20px 18px;
 }
 
 .productDetailsGoback {
@@ -43,11 +43,11 @@
 .imgCard {
   border: 1px solid #e1e1e1;
   border-radius: 14px;
-  padding: 30px;
+  padding: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 320px;
+  min-height: 220px;
 }
 
 .productDetailsImage {
@@ -70,8 +70,8 @@
 .descriptionCard {
   border: 1px solid #e1e1e1;
   border-radius: 14px;
-  padding: 28px 30px;
-  min-height: 320px;
+  padding: 20px 18px;
+  min-height: auto;
 }
 
 .productDescriptionTitle {
@@ -98,5 +98,20 @@
 
   .productDetails {
     padding: 32px 40px 40px;
+  }
+
+  .imgCard {
+    padding: 30px;
+    min-height: 320px;
+  }
+
+  .descriptionCard {
+    padding: 28px 30px;
+    min-height: 320px;
+  }
+
+  .productDetailsContainer {
+    margin: 24px 0;
+    padding: 0 24px;
   }
 }

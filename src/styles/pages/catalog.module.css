@@ -5,17 +5,30 @@
   gap: 50px 25px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .catalogProducts {
     grid-template-columns: repeat(2, 1fr);
+    gap: 30px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .catalogProducts {
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px 20px;
   }
 }
 
 @media (min-width: 992px) {
   .catalogProducts {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px 20px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .catalogProducts {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
