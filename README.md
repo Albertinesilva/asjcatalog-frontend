@@ -226,6 +226,7 @@ exporta um componente `default` montado em uma rota específica.
 | `/catalog`                    | `pages/catalog/CatalogPage.tsx`                     |
 | `/catalog/:productId`         | `pages/catalog/ProductDetailsPage.tsx`              |
 | `/auth/login`                 | `pages/auth/LoginPage.tsx`                          |
+| `/login`                      | `pages/auth/LoginPage.tsx` (alias)                  |
 | `/auth/register`              | `pages/auth/RegisterPage.tsx`                       |
 | `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
 | `/auth/activation-pending`    | `pages/auth/ActivationPendingPage.tsx`              |
