@@ -35,6 +35,10 @@ export default function RegisterPage() {
         password: data.password,
       });
       savePendingEmail(data.email);
+      window.localStorage.setItem(
+        "activationResendAvailableAt",
+        String(Date.now() + 60_000),
+      );
       await alerts.success(
         "Cadastro realizado!",
         `Enviamos um e-mail de ativação para:\n${data.email}\n\nVerifique sua caixa de entrada para ativar sua conta.`,
