@@ -469,14 +469,18 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   com filtro por categoria e botão `LIMPAR FILTRO`, paginação numerada
   com setas `‹ ›` e reticências (`...`) quando há mais de 11 páginas, e
   estado vazio amigável quando a busca não retorna resultados.
-  A busca é feita **no backend** (parâmetros `name` e `categoryId` de
-  `GET /api/v1/products`), com **debounce de 350ms** no campo de texto e
-  reset automático para a página 0 sempre que o termo ou a categoria
-  mudam — garantindo que produtos fora da página atual (ex.: `Books`)
-  também sejam encontrados.
-- **Resultado de busca do catálogo** ocupa a tela inteira, com botão
-  **Voltar** e descrição lateral, replicando o layout de detalhes do
-  produto.
+  A busca e o filtro por categoria são **inteiramente server-side**
+  (`GET /api/v1/products?name=...&categoryIds=...`, compatível com o
+  `@RequestParam("categoryIds")` do backend Spring Boot), com
+  **debounce de 350ms** no campo de texto, reset automático para
+  `page=0` sempre que o termo ou a categoria mudam, e preservação dos
+  filtros durante a navegação entre páginas. Não há mais filtragem
+  local (`Array.filter`/`useMemo`) sobre os produtos carregados — o
+  frontend renderiza diretamente `data.content`, garantindo que
+  produtos em qualquer página (ex.: `Books`) sejam encontrados. O
+  comportamento de abrir automaticamente a tela de detalhes quando a
+  busca retorna um único produto foi removido: a grade é sempre
+  exibida e a navegação para detalhes ocorre apenas no clique.
 - **Navbar global**: presente em todas as áreas via `CatalogLayout`,
   `AdminLayout` e `AuthLayout`, garantindo navegação consistente em
   páginas públicas, administrativas e de autenticação.

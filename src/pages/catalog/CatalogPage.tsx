@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { ProductItem } from "@/components";
-import { ProductPrice } from "@/components";
-import arrow from "@/assets/blue_arrow.svg";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import type { Category, Product, SpringPage } from "@/types";
 import styles from "@/styles/pages/catalog.module.css";
-import productStyles from "@/styles/pages/product.module.css";
 
 export default function CatalogPage() {
   const [data, setData] = useState<SpringPage<Product> | null>(null);
@@ -15,7 +12,7 @@ export default function CatalogPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
+  const [categoryIds, setCategoryIds] = useState<string>("");
   const [page, setPage] = useState(0);
   const pageSize = 10;
 
@@ -28,7 +25,7 @@ export default function CatalogPage() {
   // Reset to first page whenever filters change
   useEffect(() => {
     setPage(0);
-  }, [debouncedSearch, categoryId]);
+  }, [debouncedSearch, categoryIds]);
 
   useEffect(() => {
     setLoading(true);
@@ -37,12 +34,12 @@ export default function CatalogPage() {
         page,
         size: pageSize,
         name: debouncedSearch,
-        categoryId: categoryId || "0",
+        categoryIds: categoryIds || "0",
       })
       .then((products) => setData(products))
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [page, debouncedSearch, categoryId]);
+  }, [page, debouncedSearch, categoryIds]);
 
   useEffect(() => {
     categoryService
@@ -53,18 +50,14 @@ export default function CatalogPage() {
       .catch(() => {});
   }, []);
 
-  // Backend already filters by name/categoryId; just use the page content.
-  const filtered = data?.content ?? [];
+  // Backend already filters by name/categoryIds; render the page content directly.
+  const products = data?.content ?? [];
 
   const clearFilters = () => {
     setSearch("");
     setDebouncedSearch("");
-    setCategoryId("");
+    setCategoryIds("");
   };
-
-  const hasActiveFilter = debouncedSearch.length > 0 || categoryId !== "";
-  const showSingleResult = hasActiveFilter && filtered.length === 1;
-  const singleProduct = showSingleResult ? filtered[0] : null;
 
   const totalPages = data?.totalPages ?? 0;
   const currentPage = page + 1;
@@ -102,8 +95,8 @@ export default function CatalogPage() {
           </div>
           <select
             className={`form-select ${styles.categorySelect}`}
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={categoryIds}
+            onChange={(e) => setCategoryIds(e.target.value)}
           >
             <option value="">Filtrar por Categoria</option>
             {categories.map((c) => (
@@ -126,58 +119,19 @@ export default function CatalogPage() {
       {loading && <p className="py-3">Carregando produtos...</p>}
       {error && <p className="py-3 text-danger">Erro: {error}</p>}
 
-      {singleProduct ? (
-        <div className={productStyles.productDetailsContainer}>
-          <div className={`card-base border-radius-10 ${productStyles.productDetails}`}>
-            <button
-              type="button"
-              onClick={clearFilters}
-              className={productStyles.productDetailsGoback}
-              style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
-            >
-              <img src={arrow} alt="Voltar" />
-              <span className={productStyles.textGoBack}>VOLTAR</span>
-            </button>
-            <div className={productStyles.detailsGrid}>
-              <div className={productStyles.leftColumn}>
-                <div className={productStyles.imgCard}>
-                  <img
-                    src={singleProduct.imgUrl}
-                    alt={singleProduct.name}
-                    className={productStyles.productDetailsImage}
-                  />
-                </div>
-                <h1 className={productStyles.productDetailsName}>
-                  {singleProduct.name}
-                </h1>
-                <ProductPrice price={String(singleProduct.price)} />
-              </div>
-              <div className={productStyles.descriptionCard}>
-                <h2 className={productStyles.productDescriptionTitle}>
-                  Descrição do Produto
-                </h2>
-                <p className={productStyles.productDescriptionText}>
-                  {singleProduct.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.catalogProducts}>
-          {filtered.length === 0 ? (
-            <p className="text-muted py-5 text-center">
-              Nenhum produto encontrado.
-            </p>
-          ) : (
-            filtered.map((product) => (
-              <ProductItem key={product.id} {...product} />
-            ))
-          )}
-        </div>
-      )}
+      <div className={styles.catalogProducts}>
+        {products.length === 0 ? (
+          <p className="text-muted py-5 text-center">
+            Nenhum produto encontrado.
+          </p>
+        ) : (
+          products.map((product) => (
+            <ProductItem key={product.id} {...product} />
+          ))
+        )}
+      </div>
 
-      {!singleProduct && totalPages > 1 && (
+      {totalPages > 1 && (
         <div className={styles.pagination}>
           <button
             type="button"
