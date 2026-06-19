@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductItemAdmin } from "@/components";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
@@ -13,20 +13,37 @@ export default function ProductListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryId, setCategoryId] = useState<string>("");
   const [page, setPage] = useState(0);
   const pageSize = 10;
 
-  const loadProducts = () => {
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 350);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedSearch, categoryId]);
+
+  const loadProducts = useCallback(() => {
     setIsLoading(true);
     productService
-      .findAll({ page, size: pageSize })
+      .findAll({
+        page,
+        size: pageSize,
+        name: debouncedSearch,
+        categoryId: categoryId || "0",
+      })
       .then(setData)
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
-  };
+  }, [page, debouncedSearch, categoryId]);
 
-  useEffect(loadProducts, [page]);
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   useEffect(() => {
     categoryService
@@ -46,19 +63,11 @@ export default function ProductListPage() {
     }
   };
 
-  const filtered = useMemo(() => {
-    return (data?.content ?? []).filter((p) => {
-      const matchName = p.name
-        .toLowerCase()
-        .includes(search.trim().toLowerCase());
-      const matchCat =
-        !categoryId || p.categories?.some((c) => String(c.id) === categoryId);
-      return matchName && matchCat;
-    });
-  }, [data?.content, search, categoryId]);
+  const filtered = data?.content ?? [];
 
   const clearFilters = () => {
     setSearch("");
+    setDebouncedSearch("");
     setCategoryId("");
   };
 
