@@ -3,10 +3,25 @@ import { ENDPOINTS } from "@/utils/constants";
 import type { Product, ProductRequest, SpringPage } from "@/types";
 
 export const productApi = {
-  findAll: (params: { page?: number; size?: number; sort?: string } = {}) =>
+  findAll: (
+    params: {
+      page?: number;
+      size?: number;
+      sort?: string;
+      name?: string;
+      categoryId?: string;
+    } = {},
+  ) =>
     http
       .get<SpringPage<Product>>(ENDPOINTS.products, {
-        params: { page: 0, size: 12, sort: "name,asc", ...params },
+        params: {
+          page: 0,
+          size: 12,
+          sort: "name,asc",
+          name: "",
+          categoryId: "0",
+          ...params,
+        },
       })
       .then((r) => r.data),
 

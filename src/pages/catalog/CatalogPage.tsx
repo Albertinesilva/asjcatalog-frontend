@@ -14,18 +14,35 @@ export default function CatalogPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryId, setCategoryId] = useState<string>("");
   const [page, setPage] = useState(0);
   const pageSize = 10;
 
+  // Debounce search input to avoid spamming the API on every keystroke
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 350);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  // Reset to first page whenever filters change
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedSearch, categoryId]);
+
   useEffect(() => {
     setLoading(true);
     productService
-      .findAll({ page, size: pageSize })
+      .findAll({
+        page,
+        size: pageSize,
+        name: debouncedSearch,
+        categoryId: categoryId || "0",
+      })
       .then((products) => setData(products))
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [page]);
+  }, [page, debouncedSearch, categoryId]);
 
   useEffect(() => {
     categoryService
@@ -36,24 +53,16 @@ export default function CatalogPage() {
       .catch(() => {});
   }, []);
 
-  const filtered = useMemo(() => {
-    return (data?.content ?? []).filter((p) => {
-      const matchName = p.name
-        .toLowerCase()
-        .includes(search.trim().toLowerCase());
-      const matchCat =
-        !categoryId ||
-        p.categories?.some((c) => String(c.id) === categoryId);
-      return matchName && matchCat;
-    });
-  }, [data?.content, search, categoryId]);
+  // Backend already filters by name/categoryId; just use the page content.
+  const filtered = data?.content ?? [];
 
   const clearFilters = () => {
     setSearch("");
+    setDebouncedSearch("");
     setCategoryId("");
   };
 
-  const hasActiveFilter = search.trim().length > 0 || categoryId !== "";
+  const hasActiveFilter = debouncedSearch.length > 0 || categoryId !== "";
   const showSingleResult = hasActiveFilter && filtered.length === 1;
   const singleProduct = showSingleResult ? filtered[0] : null;
 
