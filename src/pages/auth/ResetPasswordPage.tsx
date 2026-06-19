@@ -31,10 +31,7 @@ export default function ResetPasswordPage() {
     }
     try {
       await accountApi.resetPassword(token, data.password);
-      await alerts.success(
-        "Senha redefinida",
-        "Faça login com sua nova senha.",
-      );
+      await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
       navigate("/auth/login");
     } catch (err) {
       const error = err as { response?: { data?: { message?: string } } };
@@ -50,11 +47,7 @@ export default function ResetPasswordPage() {
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
         <h2 className={styles.formTitle}>REDEFINIR SENHA</h2>
 
-        {!token && (
-          <p className={styles.fieldError}>
-            Token de redefinição não informado na URL.
-          </p>
-        )}
+        {!token && <p className={styles.fieldError}>Token de redefinição não informado na URL.</p>}
 
         <div className={styles.fieldGroup}>
           <PasswordInput
@@ -83,9 +76,7 @@ export default function ResetPasswordPage() {
             <p className={styles.fieldError}>Confirme a senha</p>
           )}
           {errors.confirmPassword?.type === "validate" && (
-            <p className={styles.fieldError}>
-              {errors.confirmPassword.message}
-            </p>
+            <p className={styles.fieldError}>{errors.confirmPassword.message}</p>
           )}
         </div>
 

@@ -5,9 +5,7 @@ export default function NavbarLink({ target, label }: NavLinkProps) {
   return (
     <NavLink
       to={target}
-      className={({ isActive }: { isActive: boolean }) =>
-        isActive ? "active" : undefined
-      }
+      className={({ isActive }: { isActive: boolean }) => (isActive ? "active" : undefined)}
       end={target === "/"}
     >
       {label}

@@ -113,9 +113,7 @@ export default function ActivationPendingPage() {
 
         <h2 className={styles.formTitle}>ATIVE SUA CONTA</h2>
 
-        <p className={styles.passwordHint}>
-          Enviamos um e-mail de ativação para:
-        </p>
+        <p className={styles.passwordHint}>Enviamos um e-mail de ativação para:</p>
 
         <p
           style={{

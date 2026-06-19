@@ -13,14 +13,12 @@ export const userApi = {
   register: (data: UserRegisterRequest) =>
     http.post<User>(ENDPOINTS.usersRegister, data).then((r) => r.data),
 
-  create: (data: UserCreateRequest) =>
-    http.post<User>(ENDPOINTS.users, data).then((r) => r.data),
+  create: (data: UserCreateRequest) => http.post<User>(ENDPOINTS.users, data).then((r) => r.data),
 
   update: (id: number, data: UserUpdateRequest) =>
     http.put<User>(`${ENDPOINTS.users}/${id}`, data).then((r) => r.data),
 
-  findById: (id: number) =>
-    http.get<UserDetails>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
+  findById: (id: number) => http.get<UserDetails>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
 
   findAll: (
     params: {
@@ -42,6 +40,5 @@ export const userApi = {
   deactivate: (id: number) =>
     http.patch<User>(`${ENDPOINTS.users}/${id}/deactivate`).then((r) => r.data),
 
-  delete: (id: number) =>
-    http.delete<void>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
+  delete: (id: number) => http.delete<void>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
 };

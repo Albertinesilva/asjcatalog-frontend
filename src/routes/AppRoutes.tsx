@@ -51,10 +51,7 @@ export default function AppRoutes() {
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/recover" element={<RecoverPage />} />
         <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
-        <Route
-          path="/auth/activation-pending"
-          element={<ActivationPendingPage />}
-        />
+        <Route path="/auth/activation-pending" element={<ActivationPendingPage />} />
         <Route path="/activate-account" element={<ActivateAccountPage />} />
         <Route path="/activation-pending" element={<ActivationPendingPage />} />
         <Route path="/forgot-password" element={<RecoverPage />} />

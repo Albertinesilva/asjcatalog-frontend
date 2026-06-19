@@ -1,12 +1,11 @@
 import type { Category } from "./category";
 
-export type Product = {
+export type ProductResponse = {
   id: number;
   name: string;
   description: string;
   price: number;
   imgUrl: string;
-  date: string;
   categories: Category[];
 };
 
@@ -15,7 +14,7 @@ export type ProductRequest = {
   description: string;
   price: number;
   imgUrl: string;
-  categories: { id: number }[];
+  categoryIds: number[];
 };
 
 export type SpringPage<T> = {

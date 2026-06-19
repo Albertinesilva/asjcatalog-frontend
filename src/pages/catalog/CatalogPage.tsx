@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { ProductItem } from "@/components";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
-import type { Category, Product, SpringPage } from "@/types";
+import type { Category, ProductResponse, SpringPage } from "@/types";
 import styles from "@/styles/pages/catalog.module.css";
 
 export default function CatalogPage() {
-  const [data, setData] = useState<SpringPage<Product> | null>(null);
+  const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,9 +44,7 @@ export default function CatalogPage() {
   useEffect(() => {
     categoryService
       .findAll()
-      .then((cats) =>
-        setCategories(Array.isArray(cats) ? cats : cats.content),
-      )
+      .then((cats) => setCategories(Array.isArray(cats) ? cats : cats.content))
       .catch(() => {});
   }, []);
 
@@ -80,40 +78,40 @@ export default function CatalogPage() {
       <div className={styles.headerRow}>
         <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
         <div className={`card-base border-radius-10 ${styles.filterCard}`}>
-        <div className={styles.filterControls}>
-          <div className={styles.searchWrapper}>
-            <input
-              type="search"
-              className={`form-control ${styles.searchInput}`}
-              placeholder="Pesquisar Produto"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <span className={styles.searchIcon} aria-hidden>
-              ⌕
-            </span>
+          <div className={styles.filterControls}>
+            <div className={styles.searchWrapper}>
+              <input
+                type="search"
+                className={`form-control ${styles.searchInput}`}
+                placeholder="Pesquisar Produto"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <span className={styles.searchIcon} aria-hidden>
+                ⌕
+              </span>
+            </div>
+            <select
+              className={`form-select ${styles.categorySelect}`}
+              value={categoryIds}
+              onChange={(e) => setCategoryIds(e.target.value)}
+            >
+              <option value="">Filtrar por Categoria</option>
+              {categories.map((c) => (
+                <option key={c.id} value={String(c.id)}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className={`btn btn-outline-secondary ${styles.clearBtn}`}
+              onClick={clearFilters}
+            >
+              LIMPAR FILTRO
+            </button>
           </div>
-          <select
-            className={`form-select ${styles.categorySelect}`}
-            value={categoryIds}
-            onChange={(e) => setCategoryIds(e.target.value)}
-          >
-            <option value="">Filtrar por Categoria</option>
-            {categories.map((c) => (
-              <option key={c.id} value={String(c.id)}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            className={`btn btn-outline-secondary ${styles.clearBtn}`}
-            onClick={clearFilters}
-          >
-            LIMPAR FILTRO
-          </button>
         </div>
-      </div>
       </div>
 
       {loading && <p className="py-3">Carregando produtos...</p>}
@@ -121,13 +119,9 @@ export default function CatalogPage() {
 
       <div className={styles.catalogProducts}>
         {products.length === 0 ? (
-          <p className="text-muted py-5 text-center">
-            Nenhum produto encontrado.
-          </p>
+          <p className="text-muted py-5 text-center">Nenhum produto encontrado.</p>
         ) : (
-          products.map((product) => (
-            <ProductItem key={product.id} {...product} />
-          ))
+          products.map((product) => <ProductItem key={product.id} {...product} />)
         )}
       </div>
 
@@ -151,9 +145,7 @@ export default function CatalogPage() {
               <button
                 key={item}
                 type="button"
-                className={`${styles.pageDot} ${
-                  item === currentPage ? styles.pageDotActive : ""
-                }`}
+                className={`${styles.pageDot} ${item === currentPage ? styles.pageDotActive : ""}`}
                 onClick={() => setPage(item - 1)}
               >
                 {item}
@@ -163,9 +155,7 @@ export default function CatalogPage() {
           <button
             type="button"
             className={styles.pageArrow}
-            onClick={() =>
-              setPage((p) => Math.min(totalPages - 1, p + 1))
-            }
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage >= totalPages}
             aria-label="Próxima página"
           >

@@ -45,9 +45,7 @@ export default function CategoryForm({ mode }: Props) {
   return (
     <div className="container py-4">
       <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-4">
-          {mode === "create" ? "Adicionar Categoria" : "Editar Categoria"}
-        </h3>
+        <h3 className="mb-4">{mode === "create" ? "Adicionar Categoria" : "Editar Categoria"}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label">Nome</label>
@@ -55,17 +53,11 @@ export default function CategoryForm({ mode }: Props) {
               className="form-control"
               {...register("name", { required: "Nome é obrigatório" })}
             />
-            {errors.name && (
-              <small className="text-danger">{errors.name.message}</small>
-            )}
+            {errors.name && <small className="text-danger">{errors.name.message}</small>}
           </div>
           {saveError && <p className="text-danger">Erro: {saveError}</p>}
           <div className="d-flex gap-2">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
               {isSubmitting ? "Salvando..." : "Salvar"}
             </button>
             <button

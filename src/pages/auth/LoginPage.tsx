@@ -22,8 +22,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<AuthFormFields>();
 
-  const redirectTo =
-    (location.state as { from?: string } | null)?.from ?? "/admin";
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/admin";
 
   useEffect(() => {
     if (authenticated) navigate(redirectTo, { replace: true });
@@ -36,10 +35,7 @@ export default function LoginPage() {
     } catch (err) {
       console.error("Falha no login", err);
       setError("root", { message: "Usuário ou senha inválidos" });
-      await alerts.error(
-        "Falha no login",
-        "Verifique seu e-mail e senha e tente novamente.",
-      );
+      await alerts.error("Falha no login", "Verifique seu e-mail e senha e tente novamente.");
     }
   };
 
@@ -59,9 +55,7 @@ export default function LoginPage() {
             })}
           />
           {errors.username?.type === "required" && (
-            <p className={styles.fieldError}>
-              O preenchimento do email é obrigatório
-            </p>
+            <p className={styles.fieldError}>O preenchimento do email é obrigatório</p>
           )}
           {errors.username?.type === "pattern" && (
             <p className={styles.fieldError}>Insira um email válido!</p>
@@ -75,9 +69,7 @@ export default function LoginPage() {
             {...register("password", { required: true })}
           />
           {errors.password?.type === "required" && (
-            <p className={styles.fieldError}>
-              O preenchimento da senha é obrigatório
-            </p>
+            <p className={styles.fieldError}>O preenchimento da senha é obrigatório</p>
           )}
         </div>
 
@@ -85,15 +77,10 @@ export default function LoginPage() {
           Esqueci a senha?
         </Link>
 
-        {errors.root && (
-          <p className={styles.fieldError}>{errors.root.message}</p>
-        )}
+        {errors.root && <p className={styles.fieldError}>{errors.root.message}</p>}
 
         <div className={styles.submitWrap}>
-          <ButtonIcon
-            label={isSubmitting ? "entrando..." : "logar"}
-            type="submit"
-          />
+          <ButtonIcon label={isSubmitting ? "entrando..." : "logar"} type="submit" />
         </div>
 
         <div className={styles.notRegisteredWrap}>

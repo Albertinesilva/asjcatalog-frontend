@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
-import type { Category } from "@/types";
+import type { Category, ProductRequest } from "@/types";
 
 type FormFields = {
   name: string;
@@ -47,7 +47,7 @@ export default function ProductForm({ mode }: Props) {
 
   useEffect(() => {
     if (mode !== "edit" || !productId) return;
-    productService.findById(productId).then((p) => {
+    productService.findById(Number(productId)).then((p) => {
       reset({
         name: p.name,
         price: p.price,
@@ -61,12 +61,12 @@ export default function ProductForm({ mode }: Props) {
   const onSubmit = async (data: FormFields) => {
     setLoading(true);
     setSaveError(null);
-    const payload = {
+    const payload: ProductRequest = {
       name: data.name,
-      price: Number(data.price),
+      price: data.price,
       imgUrl: data.imgUrl,
       description: data.description,
-      categories: data.categoryIds.map((id) => ({ id: Number(id) })),
+      categoryIds: data.categoryIds.map(Number),
     };
     try {
       if (mode === "create") await productService.create(payload);
@@ -82,9 +82,7 @@ export default function ProductForm({ mode }: Props) {
   return (
     <div className="container py-4">
       <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-4">
-          {mode === "create" ? "Adicionar Produto" : "Editar Produto"}
-        </h3>
+        <h3 className="mb-4">{mode === "create" ? "Adicionar Produto" : "Editar Produto"}</h3>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row g-3">
@@ -94,9 +92,7 @@ export default function ProductForm({ mode }: Props) {
                 className="form-control"
                 {...register("name", { required: "Nome é obrigatório" })}
               />
-              {errors.name && (
-                <small className="text-danger">{errors.name.message}</small>
-              )}
+              {errors.name && <small className="text-danger">{errors.name.message}</small>}
             </div>
 
             <div className="col-md-6">
@@ -111,9 +107,7 @@ export default function ProductForm({ mode }: Props) {
                   min: { value: 0, message: "Deve ser positivo" },
                 })}
               />
-              {errors.price && (
-                <small className="text-danger">{errors.price.message}</small>
-              )}
+              {errors.price && <small className="text-danger">{errors.price.message}</small>}
             </div>
 
             <div className="col-12">
@@ -122,9 +116,7 @@ export default function ProductForm({ mode }: Props) {
                 className="form-control"
                 {...register("imgUrl", { required: "URL é obrigatória" })}
               />
-              {errors.imgUrl && (
-                <small className="text-danger">{errors.imgUrl.message}</small>
-              )}
+              {errors.imgUrl && <small className="text-danger">{errors.imgUrl.message}</small>}
             </div>
 
             <div className="col-12">
@@ -134,8 +126,7 @@ export default function ProductForm({ mode }: Props) {
                 className="form-select"
                 size={Math.min(6, categories.length + 1)}
                 {...register("categoryIds", {
-                  validate: (v) =>
-                    v.length > 0 || "Selecione pelo menos uma categoria",
+                  validate: (v) => v.length > 0 || "Selecione pelo menos uma categoria",
                 })}
               >
                 {categories.map((c) => (
@@ -144,14 +135,10 @@ export default function ProductForm({ mode }: Props) {
                   </option>
                 ))}
               </select>
-              <small className="text-muted">
-                Use Ctrl/Cmd para selecionar várias.
-              </small>
+              <small className="text-muted">Use Ctrl/Cmd para selecionar várias.</small>
               {errors.categoryIds && (
                 <div>
-                  <small className="text-danger">
-                    {errors.categoryIds.message as string}
-                  </small>
+                  <small className="text-danger">{errors.categoryIds.message as string}</small>
                 </div>
               )}
             </div>
@@ -166,23 +153,15 @@ export default function ProductForm({ mode }: Props) {
                 })}
               />
               {errors.description && (
-                <small className="text-danger">
-                  {errors.description.message}
-                </small>
+                <small className="text-danger">{errors.description.message}</small>
               )}
             </div>
           </div>
 
-          {saveError && (
-            <p className="text-danger mt-3">Erro ao salvar: {saveError}</p>
-          )}
+          {saveError && <p className="text-danger mt-3">Erro ao salvar: {saveError}</p>}
 
           <div className="d-flex gap-2 mt-4">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting || loading}
-            >
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting || loading}>
               {loading ? "Salvando..." : "Salvar"}
             </button>
             <button

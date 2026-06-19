@@ -1,20 +1,7 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { authService } from "@/services/auth-service";
 import { decodeToken } from "@/utils/permissions";
-import type {
-  AccessToken,
-  AuthContextData,
-  LoginRequest,
-  Role,
-  User,
-} from "@/types";
+import type { AccessToken, AuthContextData, LoginRequest, Role, User } from "@/types";
 
 export const AuthContext = createContext<AuthContextData | null>(null);
 
@@ -83,8 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       login,
       logout,
       isAuthenticated: () => state.authenticated,
-      hasRole: (role: Role) =>
-        (state.token?.authorities ?? []).includes(role),
+      hasRole: (role: Role) => (state.token?.authorities ?? []).includes(role),
     }),
     [state, login, logout],
   );

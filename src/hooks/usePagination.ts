@@ -23,12 +23,9 @@ export function usePagination(initialSize = 12) {
     setState((s) => ({ ...s, size, page: 0 }));
   }, []);
 
-  const setMeta = useCallback(
-    (meta: { totalPages: number; totalElements: number }) => {
-      setState((s) => ({ ...s, ...meta }));
-    },
-    [],
-  );
+  const setMeta = useCallback((meta: { totalPages: number; totalElements: number }) => {
+    setState((s) => ({ ...s, ...meta }));
+  }, []);
 
   return { ...state, goToPage, setSize, setMeta };
 }

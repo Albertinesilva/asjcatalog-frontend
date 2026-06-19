@@ -48,9 +48,7 @@ export default function ProductListPage() {
   useEffect(() => {
     categoryService
       .findAll()
-      .then((cats) =>
-        setCategories(Array.isArray(cats) ? cats : cats.content),
-      )
+      .then((cats) => setCategories(Array.isArray(cats) ? cats : cats.content))
       .catch(() => {});
   }, []);
 
@@ -90,10 +88,7 @@ export default function ProductListPage() {
   return (
     <div className={styles.productListContainer}>
       <div className={styles.toolbar}>
-        <Link
-          to="/admin/products/new"
-          className={`btn btn-primary ${styles.add}`}
-        >
+        <Link to="/admin/products/new" className={`btn btn-primary ${styles.add}`}>
           ADICIONAR
         </Link>
         <div className={`card-base border-radius-10 ${catalogStyles.filterCard}`}>
@@ -134,22 +129,12 @@ export default function ProductListPage() {
       </div>
       <div className="d-flex flex-column container-fluid">
         {isLoading && <p className="p-3">Carregando produtos...</p>}
-        {error && (
-          <p className="p-3 text-danger">
-            Erro ao carregar produtos: {error}
-          </p>
-        )}
+        {error && <p className="p-3 text-danger">Erro ao carregar produtos: {error}</p>}
         {products.map((product) => (
-          <ProductItemAdmin
-            key={product.id}
-            {...product}
-            onDelete={handleDelete}
-          />
+          <ProductItemAdmin key={product.id} {...product} onDelete={handleDelete} />
         ))}
         {!isLoading && products.length === 0 && (
-          <p className="text-muted py-5 text-center">
-            Nenhum produto encontrado.
-          </p>
+          <p className="text-muted py-5 text-center">Nenhum produto encontrado.</p>
         )}
       </div>
 
@@ -185,9 +170,7 @@ export default function ProductListPage() {
           <button
             type="button"
             className={catalogStyles.pageArrow}
-            onClick={() =>
-              setPage((p) => Math.min(totalPages - 1, p + 1))
-            }
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage >= totalPages}
             aria-label="Próxima página"
           >

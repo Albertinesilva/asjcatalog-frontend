@@ -7,22 +7,14 @@ export const accountApi = {
     http.post<User>(ENDPOINTS.accountsRegister, data).then((r) => r.data),
 
   activate: (token: string) =>
-    http
-      .get<void>(ENDPOINTS.accountsActivate, { params: { token } })
-      .then((r) => r.data),
+    http.get<void>(ENDPOINTS.accountsActivate, { params: { token } }).then((r) => r.data),
 
   resendActivation: (email: string) =>
-    http
-      .post<void>(ENDPOINTS.accountsResend, { email })
-      .then((r) => r.data),
+    http.post<void>(ENDPOINTS.accountsResend, { email }).then((r) => r.data),
 
   requestPasswordRecovery: (email: string) =>
-    http
-      .post<void>(ENDPOINTS.accountsPasswordRecovery, { email })
-      .then((r) => r.data),
+    http.post<void>(ENDPOINTS.accountsPasswordRecovery, { email }).then((r) => r.data),
 
   resetPassword: (token: string, password: string) =>
-    http
-      .post<void>(ENDPOINTS.accountsResetPassword, { token, password })
-      .then((r) => r.data),
+    http.post<void>(ENDPOINTS.accountsResetPassword, { token, password }).then((r) => r.data),
 };

@@ -5,14 +5,7 @@ import { alerts } from "@/utils/alerts";
 import { getPendingEmail, removePendingEmail } from "@/utils/storage";
 import styles from "@/styles/pages/auth.module.css";
 
-type Status =
-  | "loading"
-  | "success"
-  | "expired"
-  | "invalid"
-  | "already"
-  | "missing"
-  | "error";
+type Status = "loading" | "success" | "expired" | "invalid" | "already" | "missing" | "error";
 
 export default function ActivateAccountPage() {
   const [params] = useSearchParams();
@@ -65,10 +58,7 @@ export default function ActivateAccountPage() {
       alerts.loading("Reenviando...");
       await accountService.resendActivation(email);
       alerts.close();
-      await alerts.success(
-        "Novo e-mail enviado!",
-        `Verifique sua caixa de entrada (${email}).`,
-      );
+      await alerts.success("Novo e-mail enviado!", `Verifique sua caixa de entrada (${email}).`);
       navigate("/activation-pending");
     } catch (err) {
       alerts.close();
@@ -78,8 +68,7 @@ export default function ActivateAccountPage() {
       if (error.response?.status === 429) {
         await alerts.warning(
           "Aguarde alguns instantes",
-          error.response?.data?.message ??
-            "Você solicitou um novo e-mail recentemente.",
+          error.response?.data?.message ?? "Você solicitou um novo e-mail recentemente.",
         );
       } else {
         await alerts.error(
@@ -109,10 +98,7 @@ export default function ActivateAccountPage() {
               Sua conta foi ativada. Agora você pode realizar login.
             </p>
             <div className={styles.registerActions}>
-              <Link
-                to="/auth/login"
-                className={`btn btn-primary ${styles.submitBtn}`}
-              >
+              <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
                 IR PARA LOGIN
               </Link>
             </div>
@@ -168,10 +154,7 @@ export default function ActivateAccountPage() {
               Sua conta já está ativa. Você pode realizar login normalmente.
             </p>
             <div className={styles.registerActions}>
-              <Link
-                to="/auth/login"
-                className={`btn btn-primary ${styles.submitBtn}`}
-              >
+              <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
                 IR PARA LOGIN
               </Link>
             </div>
@@ -181,9 +164,7 @@ export default function ActivateAccountPage() {
         {status === "missing" && (
           <>
             <h2 className={styles.formTitle}>LINK INVÁLIDO</h2>
-            <p className={styles.fieldError}>
-              Link de ativação inválido: token não informado.
-            </p>
+            <p className={styles.fieldError}>Link de ativação inválido: token não informado.</p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
                 IR PARA LOGIN

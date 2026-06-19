@@ -1,6 +1,6 @@
 import { http } from "./axios";
 import { ENDPOINTS } from "@/utils/constants";
-import type { Product, ProductRequest, SpringPage } from "@/types";
+import type { ProductResponse, ProductRequest, SpringPage } from "@/types";
 
 export type ProductFilters = {
   page?: number;
@@ -21,18 +21,18 @@ export const productApi = {
       ...params,
     };
     return http
-      .get<SpringPage<Product>>(ENDPOINTS.products, { params: merged })
+      .get<SpringPage<ProductResponse>>(ENDPOINTS.products, { params: merged })
       .then((r) => r.data);
   },
 
   findById: (id: number | string) =>
-    http.get<Product>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
+    http.get<ProductResponse>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
 
   create: (data: ProductRequest) =>
-    http.post<Product>(ENDPOINTS.products, data).then((r) => r.data),
+    http.post<ProductResponse>(ENDPOINTS.products, data).then((r) => r.data),
 
   update: (id: number | string, data: ProductRequest) =>
-    http.put<Product>(`${ENDPOINTS.products}/${id}`, data).then((r) => r.data),
+    http.put<ProductResponse>(`${ENDPOINTS.products}/${id}`, data).then((r) => r.data),
 
   delete: (id: number | string) =>
     http.delete<void>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),

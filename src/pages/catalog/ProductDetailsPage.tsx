@@ -1,26 +1,85 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import type { AxiosError } from "axios";
+
 import { ProductPrice } from "@/components";
-import arrow from "@/assets/blue_arrow.svg";
 import { productService } from "@/services/product-service";
-import type { Product } from "@/types";
+
+import arrow from "@/assets/blue_arrow.svg";
+
+import type { ProductResponse } from "@/types";
+
 import styles from "@/styles/pages/product.module.css";
 
 export default function ProductDetailsPage() {
   const { productId } = useParams<{ productId: string }>();
-  const [data, setData] = useState<Product | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const [data, setData] = useState<ProductResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!productId) return;
-    productService
-      .findById(productId)
-      .then(setData)
-      .catch((err: Error) => setError(err.message));
+    const loadProduct = async () => {
+      try {
+        if (!productId) {
+          setNotFound(true);
+          return;
+        }
+
+        const id = Number(productId);
+
+        if (Number.isNaN(id)) {
+          setNotFound(true);
+          return;
+        }
+
+        const product = await productService.findById(id);
+
+        setData(product);
+      } catch (error: unknown) {
+        const err = error as AxiosError;
+
+        if (err.response?.status === 404) {
+          setNotFound(true);
+          return;
+        }
+
+        await Swal.fire({
+          icon: "error",
+          title: "Erro ao carregar produto",
+          text: "Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.",
+          confirmButtonText: "OK",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadProduct();
   }, [productId]);
 
-  if (error) return <p className="p-4 text-danger">Erro: {error}</p>;
-  if (!data) return <p className="p-4">Carregando produto...</p>;
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <p>Carregando produto...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !data) {
+    return (
+      <div className="container py-5 text-center">
+        <h2>Produto não encontrado</h2>
+
+        <p className="text-muted">O produto solicitado não existe ou não está mais disponível.</p>
+
+        <Link to="/catalog" className="btn btn-primary mt-3">
+          Voltar ao catálogo
+        </Link>
+      </div>
+    );
+  }
 
   const { imgUrl, name, price, description } = data;
 
@@ -31,22 +90,21 @@ export default function ProductDetailsPage() {
           <img src={arrow} alt="Voltar" />
           <span className={styles.textGoBack}>VOLTAR</span>
         </Link>
+
         <div className={styles.detailsGrid}>
           <div className={styles.leftColumn}>
             <div className={styles.imgCard}>
-              <img
-                src={imgUrl}
-                alt={name}
-                className={styles.productDetailsImage}
-              />
+              <img src={imgUrl} alt={name} className={styles.productDetailsImage} />
             </div>
+
             <h1 className={styles.productDetailsName}>{name}</h1>
+
             <ProductPrice price={String(price)} />
           </div>
+
           <div className={styles.descriptionCard}>
-            <h2 className={styles.productDescriptionTitle}>
-              Descrição do Produto
-            </h2>
+            <h2 className={styles.productDescriptionTitle}>Descrição do Produto</h2>
+
             <p className={styles.productDescriptionText}>{description}</p>
           </div>
         </div>

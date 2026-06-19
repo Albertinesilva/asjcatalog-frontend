@@ -7,23 +7,20 @@ export default function AuthLayout() {
   return (
     <>
       <Navbar />
-    <div className={styles.authContainer}>
-      <div className={styles.authInfo}>
-        <h1 className={styles.authInfoTitle}>
-          Divulgue seus produtos no DS Catalog
-        </h1>
-        <p className={styles.authInfoSubtitle}>
-          Faça parte do nosso catálogo de divulgação e aumente a venda dos seus
-          produtos.
-        </p>
-        <img
-          src={imageBackground}
-          alt="Pessoas divulgando produtos"
-          className={styles.authInfoImage}
-        />
+      <div className={styles.authContainer}>
+        <div className={styles.authInfo}>
+          <h1 className={styles.authInfoTitle}>Divulgue seus produtos no DS Catalog</h1>
+          <p className={styles.authInfoSubtitle}>
+            Faça parte do nosso catálogo de divulgação e aumente a venda dos seus produtos.
+          </p>
+          <img
+            src={imageBackground}
+            alt="Pessoas divulgando produtos"
+            className={styles.authInfoImage}
+          />
+        </div>
+        <Outlet />
       </div>
-      <Outlet />
-    </div>
     </>
   );
 }

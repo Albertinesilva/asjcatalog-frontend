@@ -12,12 +12,9 @@ export default function HomePage() {
         <div
           className={`col-lg-6 d-flex flex-column align-items-center mt-4 mt-md-0 ${styles.homeText}`}
         >
-          <h1 className={styles.textTitle}>
-            Conheça o melhor catálogo de produtos
-          </h1>
+          <h1 className={styles.textTitle}>Conheça o melhor catálogo de produtos</h1>
           <p className={styles.textSubtitle}>
-            Ajudaremos você a encontrar os melhores produtos disponíveis no
-            mercado.
+            Ajudaremos você a encontrar os melhores produtos disponíveis no mercado.
           </p>
           <Link to="/catalog">
             <ButtonIcon label="inicie agora a sua busca" type="button" />

@@ -97,10 +97,7 @@ export default function UserListPage() {
               {u.roles?.length ? (
                 <div className="mt-1 d-flex gap-1 flex-wrap">
                   {u.roles.map((r) => (
-                    <span
-                      key={r.id}
-                      className="badge bg-secondary text-dark"
-                    >
+                    <span key={r.id} className="badge bg-secondary text-dark">
                       {r.authority}
                     </span>
                   ))}

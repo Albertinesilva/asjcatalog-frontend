@@ -72,7 +72,9 @@
   letter-spacing: -0.015em;
   color: #263238;
   background-color: #ffffff;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .inputBase::placeholder {
@@ -162,7 +164,9 @@
   justify-content: center;
   text-decoration: none !important;
   padding: 0 16px;
-  transition: background-color 0.15s ease, transform 0.05s ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease;
 }
 
 .cancelBtn.cancelBtn:hover,
@@ -183,7 +187,10 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease,
+    opacity 0.15s ease;
 }
 
 .submitBtn.submitBtn:disabled {

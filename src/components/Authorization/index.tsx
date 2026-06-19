@@ -15,11 +15,7 @@ type AuthorizationProps = {
  * Lembrete: o backend continua sendo a proteção real — este componente
  * apenas oculta elementos da UI (menus, botões, links).
  */
-export default function Authorization({
-  roles,
-  children,
-  fallback = null,
-}: AuthorizationProps) {
+export default function Authorization({ roles, children, fallback = null }: AuthorizationProps) {
   const { hasAnyRole } = useRoles();
   return <>{hasAnyRole(roles) ? children : fallback}</>;
 }

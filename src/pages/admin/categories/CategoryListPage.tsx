@@ -20,9 +20,7 @@ export default function CategoryListPage() {
 
   useEffect(load, []);
 
-  const filtered = data.filter((c) =>
-    c.name.toLowerCase().includes(search.trim().toLowerCase()),
-  );
+  const filtered = data.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase()));
 
   const handleDelete = (id: number) => {
     if (!window.confirm("Excluir categoria?")) return;
@@ -62,9 +60,7 @@ export default function CategoryListPage() {
       </div>
 
       {isLoading && <p>Carregando...</p>}
-      {error && (
-        <p className="text-danger">Erro ao carregar categorias: {error}</p>
-      )}
+      {error && <p className="text-danger">Erro ao carregar categorias: {error}</p>}
 
       <div className="d-flex flex-column gap-3">
         {filtered.map((c) => (

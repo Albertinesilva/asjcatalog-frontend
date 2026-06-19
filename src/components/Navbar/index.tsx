@@ -49,9 +49,7 @@ export default function Navbar() {
           <span className={`${styles.bar} ${open ? styles.barBot : ""}`} />
         </button>
 
-        <div
-          className={`${styles.menuWrap} ${open ? styles.menuWrapOpen : ""}`}
-        >
+        <div className={`${styles.menuWrap} ${open ? styles.menuWrapOpen : ""}`}>
           <ul className={styles.mainMenu}>
             <li>
               <NavbarLink label="HOME" target="/" />
@@ -67,11 +65,7 @@ export default function Navbar() {
           {authenticated && (
             <div className={styles.userBlock}>
               <span className={styles.userName}>{token?.username}</span>
-              <button
-                type="button"
-                className="btn btn-outline-light btn-sm"
-                onClick={handleLogout}
-              >
+              <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
                 SAIR
               </button>
             </div>

@@ -35,10 +35,7 @@ export default function RegisterPage() {
         password: data.password,
       });
       savePendingEmail(data.email);
-      window.localStorage.setItem(
-        "activationResendAvailableAt",
-        String(Date.now() + 60_000),
-      );
+      window.localStorage.setItem("activationResendAvailableAt", String(Date.now() + 60_000));
       await alerts.success(
         "Cadastro realizado!",
         `Enviamos um e-mail de ativação para:\n${data.email}\n\nVerifique sua caixa de entrada para ativar sua conta.`,
@@ -63,16 +60,11 @@ export default function RegisterPage() {
             message: fe.message,
           });
         });
-        await alerts.error(
-          "Dados inválidos",
-          "Confira os campos destacados e tente novamente.",
-        );
+        await alerts.error("Dados inválidos", "Confira os campos destacados e tente novamente.");
       } else {
         await alerts.error(
           "Falha no cadastro",
-          error.response?.data?.message ??
-            error.message ??
-            "Não foi possível concluir o cadastro.",
+          error.response?.data?.message ?? error.message ?? "Não foi possível concluir o cadastro.",
         );
       }
     }
@@ -136,8 +128,7 @@ export default function RegisterPage() {
             })}
           />
           <p className={styles.passwordHint}>
-            A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um
-            número
+            A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
           </p>
           {errors.password?.type === "required" && (
             <p className={styles.fieldError}>A senha é obrigatória</p>
@@ -150,17 +141,14 @@ export default function RegisterPage() {
             placeholder="Repita aqui a Senha"
             {...register("passwordConfirm", {
               required: true,
-              validate: (value) =>
-                value === passwordValue || "As senhas não coincidem",
+              validate: (value) => value === passwordValue || "As senhas não coincidem",
             })}
           />
           {errors.passwordConfirm?.type === "required" && (
             <p className={styles.fieldError}>Confirme a senha</p>
           )}
           {errors.passwordConfirm?.type === "validate" && (
-            <p className={styles.fieldError}>
-              {errors.passwordConfirm.message}
-            </p>
+            <p className={styles.fieldError}>{errors.passwordConfirm.message}</p>
           )}
         </div>
 

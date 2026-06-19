@@ -85,9 +85,7 @@ export default function UserForm({ mode }: Props) {
   return (
     <div className="container py-4">
       <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-4">
-          {mode === "create" ? "Adicionar Usuário" : "Editar Usuário"}
-        </h3>
+        <h3 className="mb-4">{mode === "create" ? "Adicionar Usuário" : "Editar Usuário"}</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row g-3">
             <div className="col-md-6">
@@ -97,9 +95,7 @@ export default function UserForm({ mode }: Props) {
                 {...register("firstName", { required: "Nome é obrigatório" })}
               />
               {errors.firstName && (
-                <small className="text-danger">
-                  {errors.firstName.message}
-                </small>
+                <small className="text-danger">{errors.firstName.message}</small>
               )}
             </div>
             <div className="col-md-6">
@@ -110,11 +106,7 @@ export default function UserForm({ mode }: Props) {
                   required: "Sobrenome é obrigatório",
                 })}
               />
-              {errors.lastName && (
-                <small className="text-danger">
-                  {errors.lastName.message}
-                </small>
-              )}
+              {errors.lastName && <small className="text-danger">{errors.lastName.message}</small>}
             </div>
             <div className="col-12">
               <label className="form-label">Email</label>
@@ -123,9 +115,7 @@ export default function UserForm({ mode }: Props) {
                 className="form-control"
                 {...register("email", { required: "Email é obrigatório" })}
               />
-              {errors.email && (
-                <small className="text-danger">{errors.email.message}</small>
-              )}
+              {errors.email && <small className="text-danger">{errors.email.message}</small>}
             </div>
             {mode === "create" && (
               <div className="col-12">
@@ -138,9 +128,7 @@ export default function UserForm({ mode }: Props) {
                   })}
                 />
                 {errors.password && (
-                  <small className="text-danger">
-                    {errors.password.message}
-                  </small>
+                  <small className="text-danger">{errors.password.message}</small>
                 )}
               </div>
             )}
@@ -151,8 +139,7 @@ export default function UserForm({ mode }: Props) {
                 className="form-select"
                 size={AVAILABLE_ROLES.length}
                 {...register("roleIds", {
-                  validate: (v) =>
-                    v.length > 0 || "Selecione pelo menos uma permissão",
+                  validate: (v) => v.length > 0 || "Selecione pelo menos uma permissão",
                 })}
               >
                 {AVAILABLE_ROLES.map((r) => (
@@ -162,19 +149,13 @@ export default function UserForm({ mode }: Props) {
                 ))}
               </select>
               {errors.roleIds && (
-                <small className="text-danger">
-                  {errors.roleIds.message as string}
-                </small>
+                <small className="text-danger">{errors.roleIds.message as string}</small>
               )}
             </div>
           </div>
           {saveError && <p className="text-danger mt-3">Erro: {saveError}</p>}
           <div className="d-flex gap-2 mt-4">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
               {isSubmitting ? "Salvando..." : "Salvar"}
             </button>
             <button

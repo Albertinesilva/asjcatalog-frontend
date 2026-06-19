@@ -33,10 +33,7 @@ export default function UserDetailsPage() {
           {(user.roles ?? []).map((r) => r.authority).join(", ") || "—"}
         </p>
         <div className="d-flex gap-2 mt-3">
-          <Link
-            to={`/admin/users/${user.id}/edit`}
-            className="btn btn-primary"
-          >
+          <Link to={`/admin/users/${user.id}/edit`} className="btn btn-primary">
             Editar
           </Link>
           <Link to="/admin/users" className="btn btn-outline-secondary">

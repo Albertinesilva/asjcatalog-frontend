@@ -46,18 +46,18 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 ## Stack e dependências
 
-| Camada            | Tecnologia                                     |
-| ----------------- | ---------------------------------------------- |
-| Build             | Vite 5                                         |
-| UI Framework      | React 19 + TypeScript 5                        |
-| Roteamento        | React Router v6 (`react-router-dom`)           |
-| Estado/Dados      | `useState` + `useEffect` + Axios               |
-| Formulários       | React Hook Form                                |
-| HTTP              | Axios + query-string                           |
-| Estilo            | Bootstrap 5 + CSS Modules                      |
-| Auth              | JWT (Bearer) + `jwt-decode` + localStorage     |
-| Alertas           | SweetAlert2 (via `utils/alerts.ts`)            |
-| Runtime           | Node.js ≥ 20.10.0                              |
+| Camada       | Tecnologia                                 |
+| ------------ | ------------------------------------------ |
+| Build        | Vite 5                                     |
+| UI Framework | React 19 + TypeScript 5                    |
+| Roteamento   | React Router v6 (`react-router-dom`)       |
+| Estado/Dados | `useState` + `useEffect` + Axios           |
+| Formulários  | React Hook Form                            |
+| HTTP         | Axios + query-string                       |
+| Estilo       | Bootstrap 5 + CSS Modules                  |
+| Auth         | JWT (Bearer) + `jwt-decode` + localStorage |
+| Alertas      | SweetAlert2 (via `utils/alerts.ts`)        |
+| Runtime      | Node.js ≥ 20.10.0                          |
 
 ---
 
@@ -203,11 +203,11 @@ npm run preview              # serve o build localmente
 Todas são lidas via `import.meta.env.*` (build-time) ou `process.env.*` no
 runtime do servidor (proxy).
 
-| Variável                 | Default                  | Descrição                                  |
-| ------------------------ | ------------------------ | ------------------------------------------ |
-| `VITE_API_BASE_URL`      | `http://localhost:8080`  | URL base da API Spring DSCatalog           |
-| `VITE_CLIENT_ID`         | `myclientid`             | client_id usado no Basic Auth do `/oauth2/token` |
-| `VITE_CLIENT_SECRET`     | `myclientsecret`         | client_secret correspondente                |
+| Variável             | Default                 | Descrição                                        |
+| -------------------- | ----------------------- | ------------------------------------------------ |
+| `VITE_API_BASE_URL`  | `http://localhost:8080` | URL base da API Spring DSCatalog                 |
+| `VITE_CLIENT_ID`     | `myclientid`            | client_id usado no Basic Auth do `/oauth2/token` |
+| `VITE_CLIENT_SECRET` | `myclientsecret`        | client_secret correspondente                     |
 
 > Todas as variáveis usam o prefixo `VITE_*` e são embutidas no bundle
 > client-side. **Não coloque secrets reais** — para isso, use um backend.
@@ -220,31 +220,31 @@ Todas as rotas são declaradas explicitamente em `src/pages/_app.tsx` com
 `<BrowserRouter>`, `<Routes>` e `<Route>`. Cada arquivo em `src/pages/`
 exporta um componente `default` montado em uma rota específica.
 
-| Caminho                       | Componente                                          |
-| ----------------------------- | --------------------------------------------------- |
-| `/`                           | `pages/HomePage.tsx`                                |
-| `/catalog`                    | `pages/catalog/CatalogPage.tsx`                     |
-| `/catalog/:productId`         | `pages/catalog/ProductDetailsPage.tsx`              |
-| `/auth/login`                 | `pages/auth/LoginPage.tsx`                          |
-| `/login`                      | `pages/auth/LoginPage.tsx` (alias)                  |
-| `/auth/register`              | `pages/auth/RegisterPage.tsx`                       |
-| `/auth/recover`               | `pages/auth/RecoverPage.tsx`                        |
-| `/auth/activation-pending`    | `pages/auth/ActivationPendingPage.tsx`              |
-| `/activate-account?token=`    | `pages/auth/ActivateAccountPage.tsx`                |
-| `/forgot-password`            | `pages/auth/RecoverPage.tsx` (alias de `/auth/recover`) |
-| `/reset-password?token=`      | `pages/auth/ResetPasswordPage.tsx`                  |
-| `/auth/reset-password?token=` | `pages/auth/ResetPasswordPage.tsx`                  |
-| `/admin`                      | `pages/admin/DashboardPage.tsx`                     |
-| `/admin/products`             | `pages/admin/products/ProductListPage.tsx`          |
-| `/admin/products/new`         | `pages/admin/products/ProductForm.tsx` (`mode=create`) |
-| `/admin/products/:id`         | `pages/admin/products/ProductForm.tsx` (`mode=edit`) |
-| `/admin/categories`           | `pages/admin/categories/CategoryListPage.tsx`       |
-| `/admin/categories/new`       | `pages/admin/categories/CategoryForm.tsx`           |
-| `/admin/categories/:id`       | `pages/admin/categories/CategoryForm.tsx`           |
-| `/admin/users` (ADMIN)        | `pages/admin/users/UserListPage.tsx`                |
-| `/admin/users/new` (ADMIN)    | `pages/admin/users/UserForm.tsx`                    |
-| `/admin/users/:id` (ADMIN)    | `pages/admin/users/UserDetailsPage.tsx`             |
-| `/admin/users/:id/edit` (ADMIN) | `pages/admin/users/UserForm.tsx`                  |
+| Caminho                         | Componente                                              |
+| ------------------------------- | ------------------------------------------------------- |
+| `/`                             | `pages/HomePage.tsx`                                    |
+| `/catalog`                      | `pages/catalog/CatalogPage.tsx`                         |
+| `/catalog/:productId`           | `pages/catalog/ProductDetailsPage.tsx`                  |
+| `/auth/login`                   | `pages/auth/LoginPage.tsx`                              |
+| `/login`                        | `pages/auth/LoginPage.tsx` (alias)                      |
+| `/auth/register`                | `pages/auth/RegisterPage.tsx`                           |
+| `/auth/recover`                 | `pages/auth/RecoverPage.tsx`                            |
+| `/auth/activation-pending`      | `pages/auth/ActivationPendingPage.tsx`                  |
+| `/activate-account?token=`      | `pages/auth/ActivateAccountPage.tsx`                    |
+| `/forgot-password`              | `pages/auth/RecoverPage.tsx` (alias de `/auth/recover`) |
+| `/reset-password?token=`        | `pages/auth/ResetPasswordPage.tsx`                      |
+| `/auth/reset-password?token=`   | `pages/auth/ResetPasswordPage.tsx`                      |
+| `/admin`                        | `pages/admin/DashboardPage.tsx`                         |
+| `/admin/products`               | `pages/admin/products/ProductListPage.tsx`              |
+| `/admin/products/new`           | `pages/admin/products/ProductForm.tsx` (`mode=create`)  |
+| `/admin/products/:id`           | `pages/admin/products/ProductForm.tsx` (`mode=edit`)    |
+| `/admin/categories`             | `pages/admin/categories/CategoryListPage.tsx`           |
+| `/admin/categories/new`         | `pages/admin/categories/CategoryForm.tsx`               |
+| `/admin/categories/:id`         | `pages/admin/categories/CategoryForm.tsx`               |
+| `/admin/users` (ADMIN)          | `pages/admin/users/UserListPage.tsx`                    |
+| `/admin/users/new` (ADMIN)      | `pages/admin/users/UserForm.tsx`                        |
+| `/admin/users/:id` (ADMIN)      | `pages/admin/users/UserDetailsPage.tsx`                 |
+| `/admin/users/:id/edit` (ADMIN) | `pages/admin/users/UserForm.tsx`                        |
 
 > As rotas legadas (`/admin/auth`, `/admin/register`, `/admin/recover`)
 > permanecem e fazem `Navigate` para os novos paths em `/auth/*`.
@@ -306,18 +306,18 @@ username=...&password=...&grant_type=password
 
 O `access_token` é um JWT. As responsabilidades estão distribuídas:
 
-| Módulo                          | Responsabilidade                                                 |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `utils/storage.ts`              | `get/save/removeAuthData` em `localStorage["authData"]`          |
-| `utils/permissions.ts`          | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator`|
-| `utils/alerts.ts`               | Wrapper SweetAlert2 (success/error/warning/info/confirm/loading) |
-| `api/auth-api.ts`               | `requestToken()` → POST `/oauth2/token` (Basic Auth)             |
-| `api/account-api.ts`            | `register / activate / resendActivation` (`/api/v1/accounts/*`)  |
-| `services/auth-service.ts`      | `login / logout / isAuthenticated / getCurrentUser`              |
-| `services/account-service.ts`   | Re-exporta `accountApi` para uso nas páginas de cadastro/ativação|
-| `contexts/AuthContext.tsx`      | Estado global reativo (`auth-change` + `storage`)                |
-| `hooks/useAuth.ts`              | Acesso ao contexto                                               |
-| `hooks/useRoles.ts`             | `isAdmin / isOperator / hasRole`                                 |
+| Módulo                        | Responsabilidade                                                  |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `utils/storage.ts`            | `get/save/removeAuthData` em `localStorage["authData"]`           |
+| `utils/permissions.ts`        | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator` |
+| `utils/alerts.ts`             | Wrapper SweetAlert2 (success/error/warning/info/confirm/loading)  |
+| `api/auth-api.ts`             | `requestToken()` → POST `/oauth2/token` (Basic Auth)              |
+| `api/account-api.ts`          | `register / activate / resendActivation` (`/api/v1/accounts/*`)   |
+| `services/auth-service.ts`    | `login / logout / isAuthenticated / getCurrentUser`               |
+| `services/account-service.ts` | Re-exporta `accountApi` para uso nas páginas de cadastro/ativação |
+| `contexts/AuthContext.tsx`    | Estado global reativo (`auth-change` + `storage`)                 |
+| `hooks/useAuth.ts`            | Acesso ao contexto                                                |
+| `hooks/useRoles.ts`           | `isAdmin / isOperator / hasRole`                                  |
 
 O `AuthProvider` (em `src/contexts/AuthContext.tsx`) escuta `auth-change`
 e `storage` para re-renderizar a árvore quando a sessão muda (login,
@@ -358,7 +358,7 @@ Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
    `ActivateAccountPage` lê o `token` da query string, chama
    `GET /api/v1/accounts/activate?token=...` e renderiza uma de cinco
    telas conforme o status HTTP: **sucesso** (`204`, botão `IR PARA
-   LOGIN`), **link expirado** (`400`/`410`, botões `IR PARA LOGIN` +
+LOGIN`), **link expirado** (`400`/`410`, botões `IR PARA LOGIN` +
    `REENVIAR NOVO E-MAIL`), **link inválido** (`404`/`422`, botões
    `IR PARA LOGIN` + `SOLICITAR NOVO E-MAIL`), **conta já ativada**
    (`409`, botão `IR PARA LOGIN`) e **falha genérica** (demais erros).
@@ -511,15 +511,15 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
 
 ## Scripts
 
-| Script              | O que faz                                                  |
-| ------------------- | ---------------------------------------------------------- |
-| `npm run check-node`| Valida que o Node em uso é ≥ 20.10.0                       |
-| `npm run dev`       | Roda `check-node` e sobe o Vite dev server                 |
-| `npm run build`     | Build de produção (SPA estático em `dist/`)                |
-| `npm run build:dev` | Build em modo `development`                                |
-| `npm run preview`   | Serve o build localmente                                   |
-| `npm run lint`      | Roda ESLint em todo o projeto                              |
-| `npm run format`    | Aplica Prettier                                            |
+| Script               | O que faz                                   |
+| -------------------- | ------------------------------------------- |
+| `npm run check-node` | Valida que o Node em uso é ≥ 20.10.0        |
+| `npm run dev`        | Roda `check-node` e sobe o Vite dev server  |
+| `npm run build`      | Build de produção (SPA estático em `dist/`) |
+| `npm run build:dev`  | Build em modo `development`                 |
+| `npm run preview`    | Serve o build localmente                    |
+| `npm run lint`       | Roda ESLint em todo o projeto               |
+| `npm run format`     | Aplica Prettier                             |
 
 ---
 

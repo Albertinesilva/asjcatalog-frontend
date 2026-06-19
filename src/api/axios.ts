@@ -15,8 +15,7 @@ http.interceptors.request.use((config) => {
   const session = getAuthData();
   if (session?.access_token) {
     config.headers = config.headers ?? {};
-    (config.headers as Record<string, string>).Authorization =
-      `Bearer ${session.access_token}`;
+    (config.headers as Record<string, string>).Authorization = `Bearer ${session.access_token}`;
   }
   return config;
 });

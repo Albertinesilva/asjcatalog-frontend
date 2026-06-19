@@ -32,8 +32,7 @@ export default function RecoverPage() {
       const error = err as { response?: { data?: { message?: string } } };
       await alerts.error(
         "Falha ao enviar",
-        error.response?.data?.message ??
-          "Não foi possível enviar o e-mail de recuperação.",
+        error.response?.data?.message ?? "Não foi possível enviar o e-mail de recuperação.",
       );
     }
   };
@@ -68,8 +67,7 @@ export default function RecoverPage() {
             placeholder="Repita o Email Cadastrado"
             {...register("emailConfirm", {
               required: true,
-              validate: (value) =>
-                value === emailValue || "Os emails não coincidem",
+              validate: (value) => value === emailValue || "Os emails não coincidem",
             })}
           />
           {errors.emailConfirm?.type === "required" && (

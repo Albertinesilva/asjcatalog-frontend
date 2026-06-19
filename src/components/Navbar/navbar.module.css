@@ -51,7 +51,9 @@
   height: 2px;
   background: #ffffff;
   border-radius: 2px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .barTop {
