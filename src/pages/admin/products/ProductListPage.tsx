@@ -14,7 +14,7 @@ export default function ProductListPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
+  const [categoryIds, setCategoryIds] = useState<string>("");
   const [page, setPage] = useState(0);
   const pageSize = 10;
 
@@ -25,7 +25,7 @@ export default function ProductListPage() {
 
   useEffect(() => {
     setPage(0);
-  }, [debouncedSearch, categoryId]);
+  }, [debouncedSearch, categoryIds]);
 
   const loadProducts = useCallback(() => {
     setIsLoading(true);
@@ -34,12 +34,12 @@ export default function ProductListPage() {
         page,
         size: pageSize,
         name: debouncedSearch,
-        categoryId: categoryId || "0",
+        categoryIds: categoryIds || "0",
       })
       .then(setData)
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [page, debouncedSearch, categoryId]);
+  }, [page, debouncedSearch, categoryIds]);
 
   useEffect(() => {
     loadProducts();
@@ -63,12 +63,12 @@ export default function ProductListPage() {
     }
   };
 
-  const filtered = data?.content ?? [];
+  const products = data?.content ?? [];
 
   const clearFilters = () => {
     setSearch("");
     setDebouncedSearch("");
-    setCategoryId("");
+    setCategoryIds("");
   };
 
   const totalPages = data?.totalPages ?? 0;
@@ -112,8 +112,8 @@ export default function ProductListPage() {
             </div>
             <select
               className={`form-select ${catalogStyles.categorySelect}`}
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              value={categoryIds}
+              onChange={(e) => setCategoryIds(e.target.value)}
             >
               <option value="">Filtrar por Categoria</option>
               {categories.map((c) => (
@@ -139,14 +139,14 @@ export default function ProductListPage() {
             Erro ao carregar produtos: {error}
           </p>
         )}
-        {filtered.map((product) => (
+        {products.map((product) => (
           <ProductItemAdmin
             key={product.id}
             {...product}
             onDelete={handleDelete}
           />
         ))}
-        {!isLoading && filtered.length === 0 && (
+        {!isLoading && products.length === 0 && (
           <p className="text-muted py-5 text-center">
             Nenhum produto encontrado.
           </p>
