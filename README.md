@@ -469,6 +469,11 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
   com filtro por categoria e botão `LIMPAR FILTRO`, paginação numerada
   com setas `‹ ›` e reticências (`...`) quando há mais de 11 páginas, e
   estado vazio amigável quando a busca não retorna resultados.
+  A busca é feita **no backend** (parâmetros `name` e `categoryId` de
+  `GET /api/v1/products`), com **debounce de 350ms** no campo de texto e
+  reset automático para a página 0 sempre que o termo ou a categoria
+  mudam — garantindo que produtos fora da página atual (ex.: `Books`)
+  também sejam encontrados.
 - **Resultado de busca do catálogo** ocupa a tela inteira, com botão
   **Voltar** e descrição lateral, replicando o layout de detalhes do
   produto.
