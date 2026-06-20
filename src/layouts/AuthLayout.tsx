@@ -9,7 +9,7 @@ export default function AuthLayout() {
       <Navbar />
       <div className={styles.authContainer}>
         <div className={styles.authInfo}>
-          <h1 className={styles.authInfoTitle}>Divulgue seus produtos no DS Catalog</h1>
+          <h1 className={styles.authInfoTitle}>Divulgue seus produtos no ASJ Catalog</h1>
           <p className={styles.authInfoSubtitle}>
             Faça parte do nosso catálogo de divulgação e aumente a venda dos seus produtos.
           </p>

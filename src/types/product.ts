@@ -9,6 +9,8 @@ export type ProductResponse = {
   categories: Category[];
 };
 
+export type Product = ProductResponse;
+
 export type ProductRequest = {
   name: string;
   description: string;
