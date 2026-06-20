@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "@/hooks/useAuth";
 import styles from "./navbar.module.css";
+import logo from "@/assets/asj-logo.png";
 
 export default function Navbar() {
   const { authenticated, token, logout } = useAuth();
@@ -34,7 +35,12 @@ export default function Navbar() {
     <nav className={`navbar navbar-dark bg-primary ${styles.mainNav}`}>
       <div className={`container-fluid ${styles.navContent}`}>
         <Link to="/" className={styles.navLogoText}>
-          <h4 className="m-0">DS Catalog</h4>
+          <span className={styles.brand}>
+            <img src={logo} alt="ASJ Catalog" className={styles.brandLogo} width={32} height={32} />
+            <span className={styles.brandText}>
+              <strong>ASJ</strong> Catalog
+            </span>
+          </span>
         </Link>
 
         <button

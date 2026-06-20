@@ -1,7 +1,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
 /* ============================================================
- * DSCatalog global styles
+ * ASJ Catalog global styles
  * 1. Global variables
  * 2. Base styles
  * 3. Bootstrap overrides
@@ -10,17 +10,25 @@
 
 /* 1. Global variables */
 :root {
-  --dscatalog-primary: #407bff;
-  --dscatalog-body-bg: #f2f2f2;
-  --dscatalog-body-color: #263238;
+  --asj-primary: #1f6feb;
+  --asj-secondary: #7c3aed;
+  --asj-bg-dark: #0b1220;
+  --asj-surface: #f8fafc;
+  --asj-border: #e2e8f0;
+  --asj-body-bg: #f8fafc;
+  --asj-body-color: #0b1220;
+  /* legacy aliases for compatibility */
+  --dscatalog-primary: var(--asj-primary);
+  --dscatalog-body-bg: var(--asj-body-bg);
+  --dscatalog-body-color: var(--asj-body-color);
 }
 
 /* 2. Base styles */
 html,
 body {
-  font-family: "Open Sans", sans-serif;
-  background-color: var(--dscatalog-body-bg);
-  color: var(--dscatalog-body-color);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: var(--asj-body-bg);
+  color: var(--asj-body-color);
 }
 
 html,
@@ -56,6 +64,8 @@ h5,
 h6 {
   margin-bottom: 0;
   font-weight: 700;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  letter-spacing: -0.01em;
 }
 
 ul {
@@ -70,19 +80,19 @@ a {
 
 /* 3. Bootstrap overrides */
 .bg-primary {
-  background-color: var(--dscatalog-primary) !important;
+  background-color: var(--asj-primary) !important;
 }
 .text-primary {
-  color: var(--dscatalog-primary) !important;
+  color: var(--asj-primary) !important;
 }
 .btn-primary {
-  background-color: var(--dscatalog-primary) !important;
-  border-color: var(--dscatalog-primary) !important;
+  background-color: var(--asj-primary) !important;
+  border-color: var(--asj-primary) !important;
 }
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: #2f63d6 !important;
-  border-color: #2f63d6 !important;
+  background-color: #1857c4 !important;
+  border-color: #1857c4 !important;
 }
 
 /* 4. Shared utility classes */
@@ -91,8 +101,8 @@ a {
 }
 
 .active-sidebar-item {
-  background: rgba(64, 123, 255, 0.3) !important;
-  color: var(--dscatalog-primary) !important;
+  background: rgba(31, 111, 235, 0.15) !important;
+  color: var(--asj-primary) !important;
 }
 
 .card-base {
