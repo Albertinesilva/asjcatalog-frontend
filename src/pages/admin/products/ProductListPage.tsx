@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductItemAdmin } from "@/components";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
-import type { Category, Product, SpringPage } from "@/types";
+import type { Category, ProductResponse, SpringPage } from "@/types";
 import styles from "@/styles/pages/dashboardProducts.module.css";
 import catalogStyles from "@/styles/pages/catalog.module.css";
 
 export default function ProductListPage() {
-  const [data, setData] = useState<SpringPage<Product> | null>(null);
+  const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
