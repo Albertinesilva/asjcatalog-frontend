@@ -17,5 +17,5 @@ export type ProductPriceProps = {
   price: string;
 };
 
-export type { Product as ProductItemProps } from "./product";
+export type { ProductResponse as ProductItemProps } from "./product";
 export type { SpringPage as ProductsPage } from "./product";
