@@ -3,6 +3,8 @@ import { ENDPOINTS } from "@/utils/constants";
 import type { User, UserRegisterRequest } from "@/types";
 
 export const accountApi = {
+  me: () => http.get<User>(ENDPOINTS.accountsMe).then((r) => r.data),
+
   register: (data: UserRegisterRequest) =>
     http.post<User>(ENDPOINTS.accountsRegister, data).then((r) => r.data),
 

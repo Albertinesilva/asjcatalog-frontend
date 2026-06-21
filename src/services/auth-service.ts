@@ -1,7 +1,7 @@
 import { requestToken } from "@/api/auth-api";
-import { userApi } from "@/api/user-api";
+import { accountApi } from "@/api/account-api";
 import { getAuthData, removeAuthData, saveAuthData } from "@/utils/storage";
-import { decodeToken, isTokenValid } from "@/utils/permissions";
+import { isTokenValid } from "@/utils/permissions";
 import type { LoginRequest, User } from "@/types";
 
 export const authService = {
@@ -21,12 +21,8 @@ export const authService = {
   },
 
   async getCurrentUser(): Promise<User | null> {
-    const decoded = decodeToken();
-    if (!decoded?.username) return null;
     try {
-      const page = await userApi.findAll({ size: 1000 });
-      const list = Array.isArray(page) ? page : page.content;
-      return list.find((u) => u.email === decoded.username) ?? null;
+      return await accountApi.me();
     } catch {
       return null;
     }
