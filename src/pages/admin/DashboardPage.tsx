@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { useRoles } from "@/hooks/useRoles";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const { isAdmin } = useRoles();
+
+  const greetingName = user?.firstName ?? user?.email ?? "bem-vindo(a)";
 
   const items: { to: string; title: string; desc: string; show?: boolean }[] = [
     {
@@ -25,7 +29,8 @@ export default function DashboardPage() {
 
   return (
     <div className="container py-4">
-      <h3 className="mb-4">Dashboard</h3>
+      <h3 className="mb-1">Olá, {greetingName} 👋</h3>
+      <p className="text-muted mb-4">Bem-vindo ao painel administrativo do ASJ Catalog.</p>
       <div className="row g-3">
         {items
           .filter((i) => i.show !== false)
