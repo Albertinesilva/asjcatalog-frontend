@@ -6,7 +6,7 @@ import styles from "./navbar.module.css";
 import logo from "@/assets/asj-logo.png";
 
 export default function Navbar() {
-  const { authenticated, token, logout } = useAuth();
+  const { authenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
@@ -70,7 +70,9 @@ export default function Navbar() {
 
           {authenticated && (
             <div className={styles.userBlock}>
-              <span className={styles.userName}>{token?.username}</span>
+              <span className={styles.userName}>
+                {user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? ""}
+              </span>
               <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
                 SAIR
               </button>
