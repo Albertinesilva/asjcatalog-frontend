@@ -7,8 +7,14 @@ type PrivateRouteProps = {
 };
 
 export default function PrivateRoute({ roles }: PrivateRouteProps = {}) {
-  const { authenticated, hasRole } = useAuth();
+  const { authenticated, loading, hasRole } = useAuth();
   const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="container py-5 text-center text-muted">Carregando...</div>
+    );
+  }
 
   if (!authenticated) {
     return <Navigate to="/auth/login" replace state={{ from: location.pathname }} />;
