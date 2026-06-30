@@ -24,6 +24,7 @@ export type AccessToken = {
 
 export type AuthContextData = {
   authenticated: boolean;
+  loading: boolean;
   user: User | null;
   token: AccessToken | null;
   roles: Role[];
