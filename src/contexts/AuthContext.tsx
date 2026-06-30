@@ -9,6 +9,7 @@ type State = {
   authenticated: boolean;
   token: AccessToken | null;
   user: User | null;
+  loading: boolean;
 };
 
 function readState(): State {
@@ -17,6 +18,7 @@ function readState(): State {
     authenticated,
     token: authenticated ? decodeToken() : null,
     user: null,
+    loading: authenticated,
   };
 }
 
@@ -38,11 +40,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refresh]);
 
   useEffect(() => {
-    if (!state.authenticated) return;
+    if (!state.authenticated) {
+      if (state.loading) setState((s) => ({ ...s, loading: false }));
+      return;
+    }
     let cancelled = false;
-    authService.getCurrentUser().then((user) => {
-      if (!cancelled) setState((s) => ({ ...s, user }));
-    });
+    setState((s) => (s.loading ? s : { ...s, loading: true }));
+    authService
+      .getCurrentUser()
+      .then((user) => {
+        if (!cancelled) setState((s) => ({ ...s, user, loading: false }));
+      })
+      .catch(() => {
+        if (!cancelled) setState((s) => ({ ...s, loading: false }));
+      });
     return () => {
       cancelled = true;
     };
@@ -64,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextData>(
     () => ({
       authenticated: state.authenticated,
+      loading: state.loading,
       token: state.token,
       user: state.user,
       roles: (state.token?.authorities ?? []) as Role[],
