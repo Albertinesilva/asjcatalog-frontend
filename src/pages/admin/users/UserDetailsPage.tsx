@@ -1,23 +1,32 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { userService } from "@/services/user-service";
+import { LoadingState, ErrorState } from "@/components";
+import { getApiErrorMessage } from "@/utils/api-errors";
 import type { UserDetails } from "@/types";
 
 export default function UserDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<UserDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const load = () => {
     if (!id) return;
+    setIsLoading(true);
+    setError(null);
     userService
       .findById(Number(id))
       .then(setUser)
-      .catch((err: Error) => setError(err.message));
-  }, [id]);
+      .catch((err) => setError(getApiErrorMessage(err)))
+      .finally(() => setIsLoading(false));
+  };
 
-  if (error) return <p className="p-4 text-danger">Erro: {error}</p>;
-  if (!user) return <p className="p-4">Carregando...</p>;
+  useEffect(load, [id]);
+
+  if (isLoading) return <LoadingState />;
+  if (error) return <ErrorState message={error} onRetry={load} />;
+  if (!user) return null;
 
   return (
     <div className="container py-4">
