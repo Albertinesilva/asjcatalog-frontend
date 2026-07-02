@@ -32,4 +32,5 @@ export type AuthContextData = {
   logout: () => void;
   isAuthenticated: () => boolean;
   hasRole: (role: Role) => boolean;
+  refreshUser: () => Promise<void>;
 };
