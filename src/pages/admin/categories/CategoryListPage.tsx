@@ -1,95 +1,118 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { categoryService } from "@/services/category-service";
+import {
+  Authorization,
+  ConfirmDialog,
+  ErrorState,
+  LoadingState,
+  SearchInput,
+  TableToolbar,
+} from "@/components";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { getApiErrorMessage } from "@/utils/api-errors";
 import type { Category } from "@/types";
+import styles from "@/styles/action-buttons.module.css";
+import { CategoryTable } from "./components";
 
 export default function CategoryListPage() {
   const [data, setData] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
+  const debouncedName = useDebouncedValue(search.trim(), 400);
 
   const load = () => {
     setIsLoading(true);
+    setError(null);
     categoryService
       .findAll()
       .then(setData)
-      .catch((err: Error) => setError(err.message))
+      .catch((err) => setError(getApiErrorMessage(err)))
       .finally(() => setIsLoading(false));
   };
 
   useEffect(load, []);
 
-  const filtered = data.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase()));
+  const filtered = useMemo(() => {
+    const term = debouncedName.toLowerCase();
+    if (!term) return data;
+    return data.filter((c) => c.name.toLowerCase().includes(term));
+  }, [data, debouncedName]);
 
-  const handleDelete = (id: number) => {
-    if (!window.confirm("Excluir categoria?")) return;
-    categoryService
-      .delete(id)
-      .then(load)
-      .catch((err: Error) => setError(err.message));
+  const [pendingDelete, setPendingDelete] = useState<Category | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await categoryService.delete(pendingDelete.id);
+      setPendingDelete(null);
+      load();
+    } catch (err) {
+      setDeleteError(getApiErrorMessage(err));
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
     <div className="container-fluid py-4 px-3 px-md-4">
-      <div className="d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch align-items-md-center">
-        <Link
-          to="/admin/categories/new"
-          className="btn btn-primary fw-bold d-flex align-items-center justify-content-center"
-          style={{ minWidth: 180, height: 50, borderRadius: 10 }}
-        >
-          ADICIONAR
-        </Link>
-        <div className="card-base border-radius-10 d-flex flex-column flex-md-row gap-2 flex-grow-1 p-2">
-          <input
-            className="form-control border-0 flex-grow-1"
-            style={{ height: 46 }}
-            placeholder="Pesquisar Categoria"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            style={{ height: 46, borderRadius: 10, minWidth: 150 }}
-            onClick={() => setSearch("")}
-          >
-            LIMPAR FILTRO
-          </button>
-        </div>
+      <TableToolbar
+        title="Categorias"
+        subtitle="Gerencie as categorias do catálogo"
+        counter={filtered.length}
+      >
+        <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
+          <Link to="/admin/categories/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+            ADICIONAR
+          </Link>
+        </Authorization>
+      </TableToolbar>
+
+      <div className="mb-4">
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          onClear={() => setSearch("")}
+          placeholder="Pesquisar Categoria"
+          ariaLabel="Pesquisar categoria"
+        />
       </div>
 
-      {isLoading && <p>Carregando...</p>}
-      {error && <p className="text-danger">Erro ao carregar categorias: {error}</p>}
+      {deleteError && <ErrorState message={deleteError} />}
 
-      <div className="d-flex flex-column gap-3">
-        {filtered.map((c) => (
-          <div
-            key={c.id}
-            className="card-base border-radius-10 d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 gap-2"
-          >
-            <h5 className="m-0 fw-bold" style={{ color: "#263238" }}>
-              {c.name}
-            </h5>
-            <div className="d-flex gap-2 flex-wrap">
-              <Link
-                to={`/admin/categories/${c.id}`}
-                className="btn btn-outline-secondary fw-bold"
-                style={{ minWidth: 120, borderRadius: 10, color: "#9e9e9e" }}
-              >
-                EDITAR
-              </Link>
-              <button
-                className="btn btn-outline-danger fw-bold"
-                style={{ minWidth: 120, borderRadius: 10 }}
-                onClick={() => handleDelete(c.id)}
-              >
-                EXCLUIR
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      {isLoading ? (
+        <LoadingState />
+      ) : error ? (
+        <ErrorState message={error} onRetry={load} />
+      ) : (
+        <CategoryTable categories={filtered} onDelete={setPendingDelete} />
+      )}
+
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title="Excluir categoria"
+        description={
+          pendingDelete ? (
+            <p className="mb-0">
+              Tem certeza que deseja excluir <strong>{pendingDelete.name}</strong>? Esta ação não
+              pode ser desfeita.
+            </p>
+          ) : undefined
+        }
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        confirmingLabel="Excluindo..."
+        variant="danger"
+        isConfirming={isDeleting}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
