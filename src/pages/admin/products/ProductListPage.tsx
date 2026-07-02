@@ -1,183 +1,158 @@
-import { Link } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ProductItemAdmin } from "@/components";
+import { Link } from "react-router-dom";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
-import type { Category, ProductResponse, SpringPage } from "@/types";
-import styles from "@/styles/pages/dashboardProducts.module.css";
-import catalogStyles from "@/styles/pages/catalog.module.css";
+import {
+  Authorization,
+  ConfirmDialog,
+  ErrorState,
+  LoadingState,
+  Pagination,
+  SearchInput,
+  TableToolbar,
+} from "@/components";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { usePagedQuery } from "@/hooks/usePagedQuery";
+import { getApiErrorMessage } from "@/utils/api-errors";
+import type { Category, Paginated, ProductResponse } from "@/types";
+import styles from "@/styles/action-buttons.module.css";
+import { ProductTable } from "./components";
+import type { ProductFilters } from "./types";
 
 export default function ProductListPage() {
-  const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [categoryIds, setCategoryIds] = useState<string>("");
-  const [page, setPage] = useState(0);
-  const pageSize = 10;
+  const [categoryId, setCategoryId] = useState("");
+  const debouncedName = useDebouncedValue(search.trim(), 400);
 
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(search.trim()), 350);
-    return () => clearTimeout(t);
-  }, [search]);
+  const filters = useMemo<ProductFilters>(
+    () => ({ name: debouncedName, categoryId }),
+    [debouncedName, categoryId],
+  );
 
-  useEffect(() => {
-    setPage(0);
-  }, [debouncedSearch, categoryIds]);
-
-  const loadProducts = useCallback(() => {
-    setIsLoading(true);
-    productService
-      .findAll({
+  const fetcher = useCallback(
+    ({
+      page,
+      size,
+      filters,
+    }: {
+      page: number;
+      size: number;
+      filters: ProductFilters;
+    }): Promise<Paginated<ProductResponse>> =>
+      productService.findAll({
         page,
-        size: pageSize,
-        name: debouncedSearch,
-        categoryIds: categoryIds || "0",
-      })
-      .then(setData)
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setIsLoading(false));
-  }, [page, debouncedSearch, categoryIds]);
+        size,
+        name: filters.name || "",
+        categoryIds: filters.categoryId || "0",
+      }),
+    [],
+  );
 
-  useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+  const { data, isLoading, error, pagination, refetch } = usePagedQuery<
+    ProductResponse,
+    ProductFilters
+  >(fetcher, { initialSize: 10, filters });
 
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
-    categoryService
-      .findAll()
-      .then(setCategories)
-      .catch(() => {});
+    categoryService.findAll().then(setCategories).catch(() => {});
   }, []);
 
-  const handleDelete = (id: number) => {
-    if (window.confirm("Tem certeza que deseja excluir este produto?")) {
-      productService
-        .delete(id)
-        .then(loadProducts)
-        .catch((err: Error) => setError(err.message));
+  const [pendingDelete, setPendingDelete] = useState<ProductResponse | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await productService.delete(pendingDelete.id);
+      setPendingDelete(null);
+      refetch();
+    } catch (err) {
+      setDeleteError(getApiErrorMessage(err));
+    } finally {
+      setIsDeleting(false);
     }
   };
-
-  const products = data?.content ?? [];
-
-  const clearFilters = () => {
-    setSearch("");
-    setDebouncedSearch("");
-    setCategoryIds("");
-  };
-
-  const totalPages = data?.totalPages ?? 0;
-  const currentPage = page + 1;
-
-  const pagesToRender = useMemo(() => {
-    const items: (number | "dots")[] = [];
-    if (totalPages <= 0) return items;
-    if (totalPages <= 11) {
-      for (let i = 1; i <= totalPages; i++) items.push(i);
-      return items;
-    }
-    for (let i = 1; i <= 10; i++) items.push(i);
-    items.push("dots");
-    items.push(totalPages);
-    return items;
-  }, [totalPages]);
 
   return (
-    <div className={styles.productListContainer}>
-      <div className={styles.toolbar}>
-        <Link to="/admin/products/new" className={`btn btn-primary ${styles.add}`}>
-          ADICIONAR
-        </Link>
-        <div className={`card-base border-radius-10 ${catalogStyles.filterCard}`}>
-          <div className={catalogStyles.filterControls}>
-            <div className={catalogStyles.searchWrapper}>
-              <input
-                type="search"
-                className={`form-control ${catalogStyles.searchInput}`}
-                placeholder="Pesquisar Produto"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <span className={catalogStyles.searchIcon} aria-hidden>
-                ⌕
-              </span>
-            </div>
-            <select
-              className={`form-select ${catalogStyles.categorySelect}`}
-              value={categoryIds}
-              onChange={(e) => setCategoryIds(e.target.value)}
-            >
-              <option value="">Filtrar por Categoria</option>
-              {categories.map((c) => (
-                <option key={c.id} value={String(c.id)}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              className={`btn btn-outline-secondary ${catalogStyles.clearBtn}`}
-              onClick={clearFilters}
-            >
-              LIMPAR FILTRO
-            </button>
-          </div>
+    <div className="container-fluid py-4 px-3 px-md-4">
+      <TableToolbar
+        title="Meus Produtos"
+        subtitle="Gerencie o catálogo de produtos"
+        counter={pagination.totalElements}
+      >
+        <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
+          <Link to="/admin/products/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+            ADICIONAR
+          </Link>
+        </Authorization>
+      </TableToolbar>
+
+      <div className="mb-4 d-flex flex-column flex-md-row gap-2">
+        <div className="flex-grow-1">
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            onClear={() => setSearch("")}
+            placeholder="Pesquisar Produto"
+            ariaLabel="Pesquisar produto"
+          />
         </div>
-      </div>
-      <div className="d-flex flex-column container-fluid">
-        {isLoading && <p className="p-3">Carregando produtos...</p>}
-        {error && <p className="p-3 text-danger">Erro ao carregar produtos: {error}</p>}
-        {products.map((product) => (
-          <ProductItemAdmin key={product.id} {...product} onDelete={handleDelete} />
-        ))}
-        {!isLoading && products.length === 0 && (
-          <p className="text-muted py-5 text-center">Nenhum produto encontrado.</p>
-        )}
+        <select
+          className="form-select"
+          style={{ maxWidth: 260 }}
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          aria-label="Filtrar por categoria"
+        >
+          <option value="">Filtrar por Categoria</option>
+          {categories.map((c) => (
+            <option key={c.id} value={String(c.id)}>
+              {c.name}
+            </option>
+          ))}
+        </select>
       </div>
 
-      {totalPages > 1 && (
-        <div className={catalogStyles.pagination}>
-          <button
-            type="button"
-            className={catalogStyles.pageArrow}
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            aria-label="Página anterior"
-          >
-            ‹
-          </button>
-          {pagesToRender.map((item, idx) =>
-            item === "dots" ? (
-              <span key={`dots-${idx}`} className={catalogStyles.pageDots}>
-                ...
-              </span>
-            ) : (
-              <button
-                key={item}
-                type="button"
-                className={`${catalogStyles.pageDot} ${
-                  item === currentPage ? catalogStyles.pageDotActive : ""
-                }`}
-                onClick={() => setPage(item - 1)}
-              >
-                {item}
-              </button>
-            ),
-          )}
-          <button
-            type="button"
-            className={catalogStyles.pageArrow}
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={currentPage >= totalPages}
-            aria-label="Próxima página"
-          >
-            ›
-          </button>
-        </div>
+      {deleteError && <ErrorState message={deleteError} />}
+
+      {isLoading ? (
+        <LoadingState />
+      ) : error ? (
+        <ErrorState message={error} onRetry={refetch} />
+      ) : (
+        <>
+          <ProductTable products={data} onDelete={setPendingDelete} />
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onChange={pagination.goToPage}
+          />
+        </>
       )}
+
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title="Excluir produto"
+        description={
+          pendingDelete ? (
+            <p className="mb-0">
+              Tem certeza que deseja excluir <strong>{pendingDelete.name}</strong>? Esta ação não
+              pode ser desfeita.
+            </p>
+          ) : undefined
+        }
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        confirmingLabel="Excluindo..."
+        variant="danger"
+        isConfirming={isDeleting}
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
