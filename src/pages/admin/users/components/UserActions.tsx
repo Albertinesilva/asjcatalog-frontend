@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "@/styles/action-buttons.module.css";
 import type { User } from "@/types";
+import Authorization from "@/components/Authorization";
 
 type Props = {
   user: User;
@@ -19,13 +20,15 @@ export default function UserActions({ user, onDelete }: Props) {
       >
         EDITAR
       </Link>
-      <button
-        type="button"
-        className={`btn btn-outline-danger ${styles.actionBtn}`}
-        onClick={() => onDelete(user)}
-      >
-        EXCLUIR
-      </button>
+      <Authorization roles={["ROLE_ADMIN"]}>
+        <button
+          type="button"
+          className={`btn btn-outline-danger ${styles.actionBtn}`}
+          onClick={() => onDelete(user)}
+        >
+          EXCLUIR
+        </button>
+      </Authorization>
     </div>
   );
 }
