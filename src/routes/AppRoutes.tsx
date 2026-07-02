@@ -26,6 +26,7 @@ import CategoryForm from "@/pages/admin/categories/CategoryForm";
 import UserListPage from "@/pages/admin/users/UserListPage";
 import UserForm from "@/pages/admin/users/UserForm";
 import UserDetailsPage from "@/pages/admin/users/UserDetailsPage";
+import ProfilePage from "@/pages/account/ProfilePage";
 
 function NotFound() {
   return (
@@ -65,6 +66,7 @@ export default function AppRoutes() {
       <Route element={<PrivateRoute />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<DashboardPage />} />
+          <Route path="/admin/profile" element={<ProfilePage />} />
           <Route path="/admin/products" element={<ProductListPage />} />
           <Route path="/admin/products/new" element={<ProductForm mode="create" />} />
           <Route path="/admin/products/:id" element={<ProductForm mode="edit" />} />
