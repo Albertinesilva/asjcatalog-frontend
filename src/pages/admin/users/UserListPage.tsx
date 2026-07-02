@@ -112,7 +112,7 @@ export default function UserListPage() {
         confirmLabel="Excluir"
         cancelLabel="Cancelar"
         variant="danger"
-        isDeleting={isDeleting}
+        isConfirming={isDeleting}
         onCancel={() => setPendingDelete(null)}
         onConfirm={confirmDelete}
       />
