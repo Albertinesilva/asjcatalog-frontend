@@ -40,9 +40,7 @@ export default function ProductForm({ mode }: Props) {
   });
 
   useEffect(() => {
-    categoryService.findAll().then((data) => {
-      setCategories(Array.isArray(data) ? data : data.content);
-    });
+    categoryService.findAll().then(setCategories);
   }, []);
 
   useEffect(() => {

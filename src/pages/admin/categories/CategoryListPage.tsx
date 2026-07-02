@@ -13,7 +13,7 @@ export default function CategoryListPage() {
     setIsLoading(true);
     categoryService
       .findAll()
-      .then((d) => setData(Array.isArray(d) ? d : d.content))
+      .then(setData)
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
   };

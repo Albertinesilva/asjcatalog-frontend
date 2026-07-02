@@ -14,7 +14,7 @@ export default function UserListPage() {
     setIsLoading(true);
     userService
       .findAll({ size: 50, firstName: filter || undefined })
-      .then((d) => setData(Array.isArray(d) ? d : d.content))
+      .then((page) => setData(page.content))
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, [filter]);
