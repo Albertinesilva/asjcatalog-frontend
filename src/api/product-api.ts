@@ -1,8 +1,8 @@
 import { http } from "./axios";
 import { ENDPOINTS } from "@/utils/constants";
-import type { ProductResponse, ProductRequest, SpringPage } from "@/types";
+import type { Paginated, ProductResponse, ProductRequest, SpringPage } from "@/types";
 
-export type ProductFilters = {
+export type ProductQueryParams = {
   page?: number;
   size?: number;
   sort?: string;
@@ -11,7 +11,7 @@ export type ProductFilters = {
 };
 
 export const productApi = {
-  findAll: (params: ProductFilters = {}) => {
+  findAll: (params: ProductQueryParams = {}): Promise<Paginated<ProductResponse>> => {
     const merged = {
       page: 0,
       size: 12,
@@ -21,19 +21,33 @@ export const productApi = {
       ...params,
     };
     return http
-      .get<SpringPage<ProductResponse>>(ENDPOINTS.products, { params: merged })
-      .then((r) => r.data);
+      .get<SpringPage<ProductResponse> | ProductResponse[]>(ENDPOINTS.products, {
+        params: merged,
+      })
+      .then((r) => {
+        const data = r.data;
+        if (Array.isArray(data)) {
+          return {
+            content: data,
+            totalElements: data.length,
+            totalPages: 1,
+            number: 0,
+            size: data.length,
+          } satisfies SpringPage<ProductResponse>;
+        }
+        return data;
+      });
   },
 
-  findById: (id: number | string) =>
+  findById: (id: number) =>
     http.get<ProductResponse>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
 
   create: (data: ProductRequest) =>
     http.post<ProductResponse>(ENDPOINTS.products, data).then((r) => r.data),
 
-  update: (id: number | string, data: ProductRequest) =>
+  update: (id: number, data: ProductRequest) =>
     http.put<ProductResponse>(`${ENDPOINTS.products}/${id}`, data).then((r) => r.data),
 
-  delete: (id: number | string) =>
+  delete: (id: number) =>
     http.delete<void>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
 };
