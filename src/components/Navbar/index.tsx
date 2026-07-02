@@ -70,9 +70,9 @@ export default function Navbar() {
 
           {authenticated && (
             <div className={styles.userBlock}>
-              <span className={styles.userName}>
+              <Link to="/admin/profile" className={styles.userName}>
                 {user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? ""}
-              </span>
+              </Link>
               <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
                 SAIR
               </button>
