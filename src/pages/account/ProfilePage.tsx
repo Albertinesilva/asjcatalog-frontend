@@ -44,7 +44,7 @@ export default function ProfilePage() {
   if (loading && !user) {
     return (
       <div className="container py-4">
-        <LoadingState label="Carregando perfil..." />
+        <LoadingState message="Carregando perfil..." />
       </div>
     );
   }
