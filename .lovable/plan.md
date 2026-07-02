@@ -1,165 +1,135 @@
-## Objetivo
 
-Reorganizar o `src/` para a estrutura profissional pedida e implementar a camada de integração com o backend Spring Boot (OAuth2 Password Grant + CRUD de usuários), conforme o PDF.
+# Fase 4 — Planejamento Arquitetural do Módulo Produtos
 
-## Nova estrutura de pastas
+Migração do módulo `Produtos` para o padrão consolidado no módulo `Users` (Architecture Freeze v1). **Sem implementação nesta etapa.**
 
-```text
-src/
-├── api/                # Camada HTTP (axios + chamadas cruas)
-│   ├── axios.ts
-│   ├── auth-api.ts
-│   ├── user-api.ts
-│   ├── product-api.ts
-│   └── category-api.ts
-├── assets/
-├── components/
-│   ├── ButtonIcon/
-│   ├── Navbar/
-│   ├── NavbarLink/
-│   ├── ProductItem/
-│   ├── ProductItemAdmin/
-│   ├── ProductPrice/
-│   ├── Sidebar/
-│   └── shared/         # componentes reutilizáveis genéricos
-├── contexts/
-│   └── AuthContext.tsx
-├── hooks/
-│   ├── useAuth.ts
-│   ├── useRoles.ts
-│   └── usePagination.ts
-├── layouts/
-│   ├── AdminLayout.tsx
-│   ├── AuthLayout.tsx
-│   └── CatalogLayout.tsx
-├── pages/
-│   ├── HomePage.tsx
-│   ├── auth/
-│   │   ├── LoginPage.tsx
-│   │   ├── RegisterPage.tsx
-│   │   └── RecoverPage.tsx
-│   ├── admin/
-│   │   ├── DashboardPage.tsx
-│   │   ├── users/
-│   │   │   ├── UserListPage.tsx
-│   │   │   ├── UserForm.tsx
-│   │   │   └── UserDetailsPage.tsx
-│   │   ├── products/
-│   │   │   ├── ProductListPage.tsx
-│   │   │   └── ProductForm.tsx
-│   │   └── categories/
-│   │       ├── CategoryListPage.tsx
-│   │       └── CategoryForm.tsx
-│   └── catalog/
-│       ├── CatalogPage.tsx
-│       └── ProductDetailsPage.tsx
-├── routes/
-│   ├── AppRoutes.tsx
-│   ├── PrivateRoute.tsx
-│   ├── AdminRoute.tsx
-│   └── OperatorRoute.tsx
-├── services/           # Regras de negócio + orquestração
-│   ├── auth-service.ts
-│   ├── user-service.ts
-│   ├── product-service.ts
-│   └── category-service.ts
-├── types/
-│   ├── auth.ts
-│   ├── user.ts
-│   ├── product.ts
-│   └── category.ts
-├── utils/
-│   ├── storage.ts
-│   ├── permissions.ts
-│   └── constants.ts
-├── styles/             # CSS modules e globals (mantido)
-├── App.tsx
-└── main.tsx
-```
+---
 
-Pastas atuais removidas/renomeadas: `src/@types/` → `src/types/`, `src/pages/_app.tsx` → `src/App.tsx` (apenas providers), `src/utils/api.ts|auth.ts|use-auth.ts` realocados para `api/`, `services/`, `contexts/`, `hooks/`.
-
-## Camadas e responsabilidades
-
-- **types/**: contratos do backend (`LoginRequest`, `LoginResponse`, `AccessToken`, `User`, `Role`, `Product`, `Category`, `SpringPage<T>`).
-- **utils/constants.ts**: `API_BASE_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `TOKEN_KEY`, rotas de endpoints.
-- **utils/storage.ts**: `getAuthData`, `saveAuthData`, `removeAuthData` (localStorage).
-- **utils/permissions.ts**: `decodeToken`, `isTokenValid`, `hasAnyRole`.
-- **api/axios.ts**: instância única `http`. Request interceptor injeta `Authorization: Bearer`. Response interceptor: em 401 limpa sessão e redireciona para `/auth/login`.
-- **api/auth-api.ts**: `requestToken({username,password})` → POST `/oauth2/token` com Basic Auth (axios cru, sem interceptor).
-- **api/user-api.ts**: `registerUser`, `createUser`, `updateUser`, `findUserById`, `findAllUsers(page,size)`, `activateUser`, `deactivateUser`, `deleteUser` (rotas `/api/v1/users*` do PDF).
-- **api/product-api.ts** e **api/category-api.ts**: CRUD `/products` e `/categories`.
-- **services/auth-service.ts**: `login`, `logout`, `getCurrentUser`, `isAuthenticated` (consome `auth-api` + `storage` + `permissions`).
-- **services/user-service.ts / product-service.ts / category-service.ts**: orquestram chamadas das `api/*` e expõem para as páginas.
-- **contexts/AuthContext.tsx**: estado global `{ authenticated, user, roles }`, listeners de `auth-change`/`storage`, métodos `login/logout`.
-- **hooks/useAuth.ts**: consome o contexto.
-- **hooks/useRoles.ts**: `hasRole(role)`, `isAdmin`, `isOperator`.
-- **hooks/usePagination.ts**: estado de paginação (page, size, totalPages, handlers) para Spring `Page`.
-
-## Layouts e rotas
-
-- **layouts/AuthLayout.tsx**: split com imagem (atual `/admin/auth`).
-- **layouts/AdminLayout.tsx**: `Navbar` + `Sidebar` + `<Outlet/>`.
-- **layouts/CatalogLayout.tsx**: `Navbar` + `<Outlet/>`.
-- **routes/PrivateRoute.tsx**: exige autenticação.
-- **routes/AdminRoute.tsx**: exige `ROLE_ADMIN`.
-- **routes/OperatorRoute.tsx**: exige `ROLE_OPERATOR` (ou superior).
-- **routes/AppRoutes.tsx**: mapa de rotas usando os layouts e guards.
-
-Mapa de rotas:
+## 1. Estrutura final de pastas
 
 ```text
-/                          HomePage (CatalogLayout)
-/catalog                   CatalogPage
-/catalog/:productId        ProductDetailsPage
-/auth/login                LoginPage
-/auth/register             RegisterPage
-/auth/recover              RecoverPage
-/admin                     DashboardPage           [Private]
-/admin/products            ProductListPage         [Private]
-/admin/products/new        ProductForm             [Private]
-/admin/products/:id        ProductForm             [Private]
-/admin/categories          CategoryListPage        [Private]
-/admin/categories/new|:id  CategoryForm            [Private]
-/admin/users               UserListPage            [Admin]
-/admin/users/new           UserForm                [Admin]
-/admin/users/:id           UserDetailsPage         [Admin/Operator self]
-/admin/users/:id/edit      UserForm                [Admin]
+src/pages/admin/products/
+├── ProductListPage.tsx        # Orquestradora (toolbar + filtros + tabela + paginação + diálogo)
+├── ProductForm.tsx            # Formulário de criação/edição (mantido, revisado se necessário)
+├── types.ts                   # ProductFilters { name: string; categoryId: string }
+└── components/
+    ├── index.ts               # barrel do módulo
+    ├── ProductTable.tsx
+    ├── ProductTableRow.tsx
+    ├── ProductActions.tsx
+    ├── ProductCategoryBadge.tsx
+    └── ProductPrice.tsx
 ```
 
-## Integração com backend (conforme PDF)
+Somente `ProductForm.tsx` permanece fora do fluxo de listagem. Tudo em `components/` é **específico do domínio Produtos** e não vaza para `src/components/shared/`.
 
-- Login: `POST /oauth2/token` com `grant_type=password`, Basic Auth `client_id:client_secret`. Salvar `access_token` no localStorage.
-- Usuários: `POST /api/v1/users/register` (público), `GET|POST /api/v1/users`, `GET|PUT|DELETE /api/v1/users/{id}`, `PATCH /api/v1/users/{id}/activate|deactivate`.
-- Produtos/Categorias: mantém endpoints atuais (`/products`, `/categories`).
-- jwt-decode para `authorities` e `username`.
-- Interceptor 401 → logout + redirect login.
+---
 
-## UI/Páginas
+## 2. Componentes compartilhados reutilizados (`src/components`)
 
-- `LoginPage`, `RegisterPage`, `RecoverPage`: portar conteúdo atual de `src/pages/admin/auth/*` para o novo `pages/auth/*` sob `AuthLayout`. `RegisterPage` passa a chamar `POST /api/v1/users/register` de verdade.
-- `DashboardPage`: cards de atalho para Produtos/Categorias/Usuários.
-- `UserListPage`: tabela com paginação (`usePagination`), botões ativar/desativar/excluir, gating por `ROLE_ADMIN`.
-- `UserForm`: criação/edição (nome, email, senha, roles select múltiplo).
-- `UserDetailsPage`: visualização readonly.
-- `ProductListPage` / `ProductForm` / `CategoryListPage` / `CategoryForm`: portar/expandir o que já existe usando os novos services.
-- `Sidebar` passa a usar `useRoles` para esconder "Usuários" para não-admins.
+Todos consumidos **sem modificação** via barrel `@/components`:
 
-## App.tsx e main.tsx
+- `Pagination`
+- `TableToolbar`
+- `SearchInput`
+- `ConfirmDialog`
+- `LoadingState`
+- `ErrorState`
+- `EmptyState`
+- `Authorization`
 
-- `App.tsx`: envolve `<BrowserRouter>` + `<AuthProvider>` + `<AppRoutes/>` e carrega bootstrap JS bundle.
-- `main.tsx`: monta `<App/>` e importa `styles/globals.css` + `bootstrap/dist/css/bootstrap.min.css`.
+Nenhum wrapper local será criado.
 
-## Execução
+---
 
-1. Criar `types/`, `utils/`, `api/`, `services/`, `contexts/`, `hooks/`, `layouts/`, `routes/`.
-2. Mover componentes existentes para os novos lugares (sem mexer no visual). Atualizar imports.
-3. Reescrever páginas dentro de `pages/auth`, `pages/admin/*`, `pages/catalog/*`.
-4. Apagar pastas obsoletas: `src/@types/`, `src/pages/_app.tsx`, `src/pages/admin/dashboard/`, `src/utils/api.ts|auth.ts|use-auth.ts|index.ts`, `src/pages/index.tsx` (substituído por `pages/HomePage.tsx`), `src/pages/admin/auth/`, `src/pages/catalog/[product].tsx`.
-5. Atualizar `vite.config.ts` se necessário (alias `@` já existe) e `README.md` com nova árvore + endpoints integrados.
+## 3. Componentes específicos do módulo Produtos
 
-## Fora de escopo
+| Componente | Responsabilidade |
+|---|---|
+| `ProductTable` | Renderiza `<table>` responsiva; recebe `items`, `onEdit`, `onDelete`. Sem lógica de fetch. |
+| `ProductTableRow` | Apenas renderização de dados de uma linha (imagem, nome, categorias, preço, data). |
+| `ProductActions` | Botões Editar/Excluir da linha, com `<Authorization>` nos destrutivos. Isolado de `ProductTableRow`. |
+| `ProductCategoryBadge` | Badge de categoria (várias por produto) — apresentação pura. |
+| `ProductPrice` | Formatação monetária BRL centralizada. |
 
-- Não implementar refresh token automático nem recuperação de senha real (backend não documentado no PDF).
-- Não alterar estilos visuais — apenas reorganização + integração.
-- Não criar testes automatizados nesta etapa.
+Justificativa: cada componente tem responsabilidade única, permitindo evolução independente e reuso interno em futura tela de detalhes admin.
+
+---
+
+## 4. Hooks
+
+- **`usePagedQuery`** (global, genérico): orquestra fetch + `SpringPage` + reset de página ao mudar filtros. `queryFn` recebe `{ page, size, ...ProductFilters }` e chama `productService.findAll`.
+- **`usePagination`** (global): utilizado **internamente** por `usePagedQuery` — não instanciado diretamente na página.
+- **`useDebouncedValue`** (global): aplicado ao input de busca (`name`) com 350ms.
+
+**Nenhum hook específico do domínio Produtos será criado.**
+
+---
+
+## 5. Fluxo de listagem
+
+```text
+SearchInput (name) ──► useDebouncedValue ──┐
+Select categoria ──────────────────────────┼──► ProductFilters
+                                           │
+                            usePagedQuery(queryFn=productService.findAll, filters)
+                                           │
+                                           ▼
+                                  SpringPage<ProductResponse>
+                                           │
+                                           ▼
+                                     ProductTable
+                                           │
+                                           ▼
+                                      Pagination
+```
+
+Mudança em qualquer filtro → `usePagedQuery` reseta `page=0` automaticamente.
+
+---
+
+## 6. Estados de interface
+
+| Estado | Componente compartilhado |
+|---|---|
+| Carregando | `LoadingState` |
+| Erro de fetch | `ErrorState` (com `retry` → `refetch` de `usePagedQuery`) |
+| Lista vazia (com/sem filtro) | `EmptyState` |
+| Confirmação de exclusão | `ConfirmDialog` (`confirmingLabel="Excluindo..."`) |
+
+Toda mensagem via `getApiErrorMessage` de `@/utils/api-errors`.
+
+---
+
+## 7. Authorization
+
+Regras alinhadas ao backend Spring Boot:
+
+| Ação | Guard |
+|---|---|
+| Listar / visualizar produtos | Rota já protegida por `RoleRoute` (`OPERATOR` ou `ADMIN`) |
+| Botão "ADICIONAR" | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>` |
+| Botão "Editar" (linha) | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>` |
+| Botão "Excluir" (linha) | `<Authorization roles={["ROLE_ADMIN"]}>` |
+
+Compatível com o padrão adotado em `UserActions`.
+
+---
+
+## 8. Critérios de sucesso
+
+- `ProductListPage` é **puramente orquestradora** (sem JSX de tabela, filtro ou paginação inline).
+- Zero modificações em `src/components/shared/*` ou em qualquer hook global.
+- Zero duplicação: nada de `catalog.module.css` reaproveitado como paginação/busca — usa componentes compartilhados.
+- Estrutura, tipagem e padrão de imports idênticos ao módulo `Users`.
+- Módulo Produtos vira o **segundo caso de uso validado** do template, servindo de referência para Categorias e Dashboard.
+
+---
+
+## Fora do escopo
+
+Não altera: infraestrutura compartilhada, `AuthContext`, rotas, APIs, Design System, `ProductForm` (salvo ajustes triviais de import).
+
+---
+
+**Aguardando aprovação para iniciar a implementação da Fase 4.**
