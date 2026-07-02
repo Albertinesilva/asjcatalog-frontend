@@ -15,7 +15,7 @@ type Options<F> = {
  * - `usePagination` continua sendo a única fonte de estado da página/size.
  * - Este hook adiciona: dados, loading, error, reset ao trocar filtros e refetch.
  */
-export function usePagedQuery<T, F extends Record<string, unknown>>(
+export function usePagedQuery<T, F extends object>(
   fetcher: Fetcher<T, F>,
   { initialSize = 12, filters }: Options<F>,
 ) {

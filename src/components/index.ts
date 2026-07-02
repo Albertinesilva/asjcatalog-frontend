@@ -6,6 +6,7 @@ export { default as ProductItem } from "./ProductItem";
 export { default as ProductItemAdmin } from "./ProductItemAdmin";
 export { default as ProductPrice } from "./ProductPrice";
 export { default as PasswordInput } from "./PasswordInput";
+export { default as Authorization } from "./Authorization";
 export { default as LoadingState } from "./shared/LoadingState";
 export { default as ErrorState } from "./shared/ErrorState";
 export { default as EmptyState } from "./shared/EmptyState";
