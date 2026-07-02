@@ -1,27 +1,29 @@
 import { useCallback, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { userService } from "@/services/user-service";
-import { LoadingState, ErrorState } from "@/components";
+import {
+  LoadingState,
+  ErrorState,
+  Pagination,
+  ConfirmDialog,
+  TableToolbar,
+  SearchInput,
+} from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-errors";
-import type { SpringPage, User } from "@/types";
-import {
-  UserToolbar,
-  UserFilters,
-  UserTable,
-  UserPagination,
-  UserDeleteDialog,
-} from "./components";
-
-type UserFiltersState = { firstName: string };
+import type { Paginated, User } from "@/types";
+import styles from "@/styles/action-buttons.module.css";
+import { UserTable } from "./components";
+import type { UserFilters } from "./types";
 
 export default function UserListPage() {
   const [search, setSearch] = useState("");
   const debounced = useDebouncedValue(search.trim(), 400);
-  const filters = useMemo<UserFiltersState>(() => ({ firstName: debounced }), [debounced]);
+  const filters = useMemo<UserFilters>(() => ({ firstName: debounced }), [debounced]);
 
   const fetcher = useCallback(
-    ({ page, size, filters }: { page: number; size: number; filters: UserFiltersState }): Promise<SpringPage<User>> =>
+    ({ page, size, filters }: { page: number; size: number; filters: UserFilters }): Promise<Paginated<User>> =>
       userService.findAll({
         page,
         size,
@@ -30,7 +32,7 @@ export default function UserListPage() {
     [],
   );
 
-  const { data, isLoading, error, pagination, refetch } = usePagedQuery<User, UserFiltersState>(
+  const { data, isLoading, error, pagination, refetch } = usePagedQuery<User, UserFilters>(
     fetcher,
     { initialSize: 12, filters },
   );
@@ -56,16 +58,27 @@ export default function UserListPage() {
 
   return (
     <div className="container-fluid py-4 px-3 px-md-4">
-      <div className="d-flex flex-column flex-md-row gap-3 mb-4 align-items-stretch align-items-md-center">
-        <UserToolbar />
-        <UserFilters
+      <TableToolbar
+        title="Usuários"
+        subtitle="Gerencie os usuários do sistema"
+        counter={pagination.totalElements}
+      >
+        <Link to="/admin/users/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+          ADICIONAR
+        </Link>
+      </TableToolbar>
+
+      <div className="mb-4">
+        <SearchInput
           value={search}
           onChange={setSearch}
           onClear={() => setSearch("")}
+          placeholder="Pesquisar por nome"
+          ariaLabel="Pesquisar por nome"
         />
       </div>
 
-      {deleteError && <p className="text-danger">{deleteError}</p>}
+      {deleteError && <ErrorState message={deleteError} />}
 
       {isLoading ? (
         <LoadingState />
@@ -74,7 +87,7 @@ export default function UserListPage() {
       ) : (
         <>
           <UserTable users={data} onDelete={setPendingDelete} />
-          <UserPagination
+          <Pagination
             page={pagination.page}
             totalPages={pagination.totalPages}
             onChange={pagination.goToPage}
@@ -82,8 +95,23 @@ export default function UserListPage() {
         </>
       )}
 
-      <UserDeleteDialog
-        user={pendingDelete}
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title="Excluir usuário"
+        description={
+          pendingDelete ? (
+            <p className="mb-0">
+              Tem certeza que deseja excluir{" "}
+              <strong>
+                {pendingDelete.firstName} {pendingDelete.lastName}
+              </strong>
+              ? Esta ação não pode ser desfeita.
+            </p>
+          ) : undefined
+        }
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        variant="danger"
         isDeleting={isDeleting}
         onCancel={() => setPendingDelete(null)}
         onConfirm={confirmDelete}
