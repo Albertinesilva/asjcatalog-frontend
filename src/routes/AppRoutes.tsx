@@ -66,7 +66,9 @@ export default function AppRoutes() {
       <Route element={<PrivateRoute />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<DashboardPage />} />
-          <Route path="/admin/profile" element={<ProfilePage />} />
+          <Route path="/account/profile" element={<ProfilePage />} />
+          <Route path="/admin/profile" element={<Navigate to="/account/profile" replace />} />
+          <Route path="/admin/perfil" element={<Navigate to="/account/profile" replace />} />
           <Route path="/admin/products" element={<ProductListPage />} />
           <Route path="/admin/products/new" element={<ProductForm mode="create" />} />
           <Route path="/admin/products/:id" element={<ProductForm mode="edit" />} />

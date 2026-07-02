@@ -1,7 +1,7 @@
-# DS Catalog
+# ASJ Catalog
 
 Catálogo de produtos — front-end em **React 19 + Vite + React Router**
-consumindo uma API REST Spring Boot (DSCatalog). O projeto inclui área
+consumindo uma API REST Spring Boot (ASJ Catalog). O projeto inclui área
 pública (Home + Catálogo) e área administrativa autenticada via OAuth2 com
 CRUD de Produtos, Categorias e Usuários.
 
@@ -30,7 +30,7 @@ CRUD de Produtos, Categorias e Usuários.
 
 ## Visão geral
 
-O DS Catalog é um SPA que serve dois públicos:
+O ASJ Catalog é um SPA que serve dois públicos:
 
 - **Área pública** (`/`, `/catalog`, `/catalog/product/:id`) — qualquer
   visitante pode navegar pelo catálogo, filtrar produtos e ver detalhes.
@@ -38,7 +38,7 @@ O DS Catalog é um SPA que serve dois públicos:
   Operadores fazem CRUD de produtos/categorias; administradores gerenciam
   usuários.
 
-O front consome a API Spring Boot do projeto **DSCatalog** (endpoints
+O front consome a API Spring Boot do projeto **ASJ Catalog** (endpoints
 `/oauth2/token`, `/products`, `/categories`, `/users`). Em desenvolvimento,
 o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
@@ -192,7 +192,7 @@ npm run preview              # serve o build localmente
 ```
 
 > O front espera que a API Spring Boot esteja rodando em
-> `http://localhost:8080` por padrão. Suba o backend DSCatalog (ou aponte
+> `http://localhost:8080` por padrão. Suba o backend ASJ Catalog (ou aponte
 > `VITE_API_BASE_URL` para outra URL) antes de testar fluxos autenticados
 > ou listagens de produto.
 
@@ -205,7 +205,7 @@ runtime do servidor (proxy).
 
 | Variável             | Default                 | Descrição                                        |
 | -------------------- | ----------------------- | ------------------------------------------------ |
-| `VITE_API_BASE_URL`  | `http://localhost:8080` | URL base da API Spring DSCatalog                 |
+| `VITE_API_BASE_URL`  | `http://localhost:8080` | URL base da API Spring ASJ Catalog                 |
 | `VITE_CLIENT_ID`     | `myclientid`            | client_id usado no Basic Auth do `/oauth2/token` |
 | `VITE_CLIENT_SECRET` | `myclientsecret`        | client_secret correspondente                     |
 
@@ -437,7 +437,7 @@ Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
 - **Bootstrap 5** fornece grid e utilitários (`d-flex`, `container-fluid`).
 - **CSS Modules** (`*.module.css`) escopam estilos por componente/página.
 - **Tokens** e overrides de Bootstrap ficam em `src/styles/globals.css`
-  (variáveis CSS como `--dscatalog-primary`).
+  (variáveis CSS como `--asj-primary`).
 - **Mobile-first**: globais em `globals.css` aplicam
   `overflow-x: hidden`, `safe-area-insets` (iOS notch),
   `input { font-size: 16px }` (impede zoom automático do iOS) e
