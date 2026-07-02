@@ -48,7 +48,7 @@ export default function ProductListPage() {
   useEffect(() => {
     categoryService
       .findAll()
-      .then((cats) => setCategories(Array.isArray(cats) ? cats : cats.content))
+      .then(setCategories)
       .catch(() => {});
   }, []);
 
