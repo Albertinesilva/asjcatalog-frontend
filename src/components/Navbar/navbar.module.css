@@ -157,6 +157,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.userName:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 .backdrop {

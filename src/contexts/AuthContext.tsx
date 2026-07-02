@@ -72,6 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refresh();
   }, [refresh]);
 
+  const refreshUser = useCallback(async () => {
+    if (!authService.isAuthenticated()) return;
+    const user = await authService.getCurrentUser();
+    setState((s) => ({ ...s, user, loading: false }));
+  }, []);
+
   const value = useMemo<AuthContextData>(
     () => ({
       authenticated: state.authenticated,
@@ -83,8 +89,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       isAuthenticated: () => state.authenticated,
       hasRole: (role: Role) => (state.token?.authorities ?? []).includes(role),
+      refreshUser,
     }),
-    [state, login, logout],
+    [state, login, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
