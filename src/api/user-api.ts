@@ -20,6 +20,10 @@ export const userApi = {
 
   findById: (id: number) => http.get<UserDetails>(`${ENDPOINTS.users}/${id}`).then((r) => r.data),
 
+  /**
+   * Retorna sempre um SpringPage<User>, normalizando quando o backend
+   * responde apenas com um array (endpoint não paginado).
+   */
   findAll: (
     params: {
       page?: number;
@@ -27,12 +31,24 @@ export const userApi = {
       sort?: string;
       firstName?: string;
     } = {},
-  ) =>
-    http
-      .get<SpringPage<User> | User[]>(ENDPOINTS.users, {
-        params: { page: 0, size: 20, sort: "firstName,asc", ...params },
-      })
-      .then((r) => r.data),
+  ): Promise<SpringPage<User>> => {
+    const merged = { page: 0, size: 20, sort: "firstName,asc", ...params };
+    return http
+      .get<SpringPage<User> | User[]>(ENDPOINTS.users, { params: merged })
+      .then((r) => {
+        const data = r.data;
+        if (Array.isArray(data)) {
+          return {
+            content: data,
+            totalElements: data.length,
+            totalPages: 1,
+            number: 0,
+            size: data.length,
+          } satisfies SpringPage<User>;
+        }
+        return data;
+      });
+  },
 
   activate: (id: number) =>
     http.patch<User>(`${ENDPOINTS.users}/${id}/activate`).then((r) => r.data),

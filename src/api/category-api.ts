@@ -3,8 +3,14 @@ import { ENDPOINTS } from "@/utils/constants";
 import type { Category, CategoryRequest } from "@/types";
 
 export const categoryApi = {
-  findAll: () =>
-    http.get<{ content: Category[] } | Category[]>(ENDPOINTS.categories).then((r) => r.data),
+  /**
+   * Retorna sempre um array de categorias, normalizando o formato
+   * retornado pelo backend (Spring Page ou lista pura).
+   */
+  findAll: (): Promise<Category[]> =>
+    http
+      .get<{ content: Category[] } | Category[]>(ENDPOINTS.categories)
+      .then((r) => (Array.isArray(r.data) ? r.data : (r.data?.content ?? []))),
 
   findById: (id: number) => http.get<Category>(`${ENDPOINTS.categories}/${id}`).then((r) => r.data),
 
