@@ -68,7 +68,7 @@ export default function ProductForm({ mode }: Props) {
     };
     try {
       if (mode === "create") await productService.create(payload);
-      else if (productId) await productService.update(productId, payload);
+      else if (productId) await productService.update(Number(productId), payload);
       navigate("/admin/products");
     } catch (err) {
       setSaveError((err as Error).message);
