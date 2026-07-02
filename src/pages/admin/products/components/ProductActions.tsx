@@ -11,6 +11,12 @@ type Props = {
 export default function ProductActions({ product, onDelete }: Props) {
   return (
     <div className="d-flex gap-2 flex-wrap">
+      <Link
+        to={`/catalog/${product.id}`}
+        className={`btn btn-outline-primary ${styles.actionBtn}`}
+      >
+        VER
+      </Link>
       <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
         <Link
           to={`/admin/products/${product.id}`}
