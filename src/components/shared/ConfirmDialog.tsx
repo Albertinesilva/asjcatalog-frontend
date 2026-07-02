@@ -8,6 +8,7 @@ type Props = {
   description?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
+  confirmingLabel?: string;
   variant?: Variant;
   isConfirming?: boolean;
   onConfirm: () => void;
@@ -29,6 +30,7 @@ export default function ConfirmDialog({
   description,
   confirmLabel = "Confirmar",
   cancelLabel = "Cancelar",
+  confirmingLabel = "Processando...",
   variant = "danger",
   isConfirming = false,
   onConfirm,
@@ -98,7 +100,7 @@ export default function ConfirmDialog({
               onClick={onConfirm}
               disabled={isConfirming}
             >
-              {isConfirming ? "Processando..." : confirmLabel}
+              {isConfirming ? confirmingLabel : confirmLabel}
             </button>
           </div>
         </div>

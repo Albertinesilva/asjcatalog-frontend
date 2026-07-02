@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "@/styles/action-buttons.module.css";
 import type { User } from "@/types";
-import Authorization from "@/components/Authorization";
+import { Authorization } from "@/components";
 
 type Props = {
   user: User;
