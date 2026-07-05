@@ -1,6 +1,14 @@
 import { forwardRef, useState, type InputHTMLAttributes } from "react";
-import styles from "./passwordinput.module.css";
+import { cn } from "@/components/ui";
 
+/**
+ * PasswordInput — Fase 10.2.
+ *
+ * Contrato público inalterado: aceita todos os atributos nativos de
+ * <input> (exceto `type`) e um `wrapperClassName`. Internamente foi
+ * migrado para Tailwind + tokens semânticos; o CSS Module legado foi
+ * removido.
+ */
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   wrapperClassName?: string;
 };
@@ -38,19 +46,26 @@ const PasswordInput = forwardRef<HTMLInputElement, Props>(
   ({ wrapperClassName, className, ...rest }, ref) => {
     const [visible, setVisible] = useState(false);
     return (
-      <div className={`${styles.wrapper} ${wrapperClassName ?? ""}`}>
+      <div className={cn("relative block w-full", wrapperClassName)}>
         <input
           {...rest}
           ref={ref}
           type={visible ? "text" : "password"}
-          className={`${className ?? ""} ${styles.input}`}
+          className={cn(className, "!pr-12 w-full")}
         />
         <button
           type="button"
-          className={styles.toggle}
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Ocultar senha" : "Mostrar senha"}
+          aria-pressed={visible}
           tabIndex={-1}
+          className={cn(
+            "absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center",
+            "h-9 w-9 rounded-md bg-transparent border-0 text-foreground-muted cursor-pointer",
+            "transition-colors duration-DEFAULT ease-standard",
+            "hover:text-accent hover:bg-accent/10",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          )}
         >
           <EyeIcon off={visible} />
         </button>
