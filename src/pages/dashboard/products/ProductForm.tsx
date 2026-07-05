@@ -5,6 +5,8 @@ import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
+import { Button, Card, Input } from "@/components/ui";
+import { inputBaseClasses } from "@/components/ui/Input";
 
 type FormFields = {
   name: string;
@@ -84,96 +86,94 @@ export default function ProductForm({ mode }: Props) {
   };
 
   return (
-    <div className="card-base p-4 border-radius-10">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row g-3">
-            <div className="col-md-6">
-              <label className="form-label">Nome</label>
-              <input
-                className="form-control"
-                {...register("name", { required: "Nome é obrigatório" })}
-              />
-              {errors.name && <small className="text-danger">{errors.name.message}</small>}
-            </div>
+    <Card padding="lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+          <Input
+            label="Nome"
+            required
+            error={errors.name?.message}
+            {...register("name", { required: "Nome é obrigatório" })}
+          />
+          <Input
+            label="Preço"
+            type="number"
+            step="0.01"
+            required
+            error={errors.price?.message}
+            {...register("price", {
+              required: "Preço é obrigatório",
+              valueAsNumber: true,
+              min: { value: 0, message: "Deve ser positivo" },
+            })}
+          />
+        </div>
 
-            <div className="col-md-6">
-              <label className="form-label">Preço</label>
-              <input
-                type="number"
-                step="0.01"
-                className="form-control"
-                {...register("price", {
-                  required: "Preço é obrigatório",
-                  valueAsNumber: true,
-                  min: { value: 0, message: "Deve ser positivo" },
-                })}
-              />
-              {errors.price && <small className="text-danger">{errors.price.message}</small>}
-            </div>
+        <Input
+          label="URL da Imagem"
+          required
+          error={errors.imgUrl?.message}
+          {...register("imgUrl", { required: "URL é obrigatória" })}
+        />
 
-            <div className="col-12">
-              <label className="form-label">URL da Imagem</label>
-              <input
-                className="form-control"
-                {...register("imgUrl", { required: "URL é obrigatória" })}
-              />
-              {errors.imgUrl && <small className="text-danger">{errors.imgUrl.message}</small>}
-            </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="product-categories" className="text-small font-medium text-foreground">
+            Categorias <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+          </label>
+          <select
+            id="product-categories"
+            multiple
+            className={`${inputBaseClasses} h-auto py-2`}
+            size={Math.min(6, categories.length + 1)}
+            aria-invalid={errors.categoryIds ? true : undefined}
+            {...register("categoryIds", {
+              validate: (v) => v.length > 0 || "Selecione pelo menos uma categoria",
+            })}
+          >
+            {categories.map((c) => (
+              <option key={c.id} value={String(c.id)}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          {errors.categoryIds ? (
+            <p className="text-small text-danger">{errors.categoryIds.message as string}</p>
+          ) : (
+            <p className="text-small text-foreground-muted">Use Ctrl/Cmd para selecionar várias.</p>
+          )}
+        </div>
 
-            <div className="col-12">
-              <label className="form-label">Categorias</label>
-              <select
-                multiple
-                className="form-select"
-                size={Math.min(6, categories.length + 1)}
-                {...register("categoryIds", {
-                  validate: (v) => v.length > 0 || "Selecione pelo menos uma categoria",
-                })}
-              >
-                {categories.map((c) => (
-                  <option key={c.id} value={String(c.id)}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-              <small className="text-muted">Use Ctrl/Cmd para selecionar várias.</small>
-              {errors.categoryIds && (
-                <div>
-                  <small className="text-danger">{errors.categoryIds.message as string}</small>
-                </div>
-              )}
-            </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="product-description" className="text-small font-medium text-foreground">
+            Descrição <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+          </label>
+          <textarea
+            id="product-description"
+            rows={4}
+            className={`${inputBaseClasses} h-auto py-2 resize-y`}
+            aria-invalid={errors.description ? true : undefined}
+            {...register("description", { required: "Descrição é obrigatória" })}
+          />
+          {errors.description && (
+            <p className="text-small text-danger">{errors.description.message}</p>
+          )}
+        </div>
 
-            <div className="col-12">
-              <label className="form-label">Descrição</label>
-              <textarea
-                className="form-control"
-                rows={4}
-                {...register("description", {
-                  required: "Descrição é obrigatória",
-                })}
-              />
-              {errors.description && (
-                <small className="text-danger">{errors.description.message}</small>
-              )}
-            </div>
-          </div>
+        {saveError && (
+          <p className="text-small text-danger m-0" role="alert">
+            Erro ao salvar: {saveError}
+          </p>
+        )}
 
-          {saveError && <p className="text-danger mt-3">Erro ao salvar: {saveError}</p>}
-
-          <div className="d-flex gap-2 mt-4">
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting || loading}>
-              {loading ? "Salvando..." : "Salvar"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => navigate("/dashboard/products")}
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-    </div>
+        <div className="flex flex-wrap gap-sm pt-sm">
+          <Button type="submit" variant="primary" loading={isSubmitting || loading}>
+            {loading ? "Salvando..." : "Salvar"}
+          </Button>
+          <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/products")}>
+            Cancelar
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }

@@ -18,7 +18,7 @@ export default function CategoryTable({ categories, onDelete }: Props) {
   }
 
   return (
-    <div className="d-flex flex-column gap-3">
+    <div className="flex flex-col gap-sm">
       {categories.map((c) => (
         <CategoryTableRow key={c.id} category={c} onDelete={onDelete} />
       ))}

@@ -16,7 +16,8 @@ import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import type { Category, Paginated, ProductResponse } from "@/types";
-import styles from "@/styles/action-buttons.module.css";
+import { buttonClasses } from "@/components/ui";
+import { inputBaseClasses } from "@/components/ui/Input";
 import { ProductTable } from "./components";
 import type { ProductFilters } from "./types";
 
@@ -85,14 +86,14 @@ export default function ProductListPage() {
         counter={pagination.totalElements}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
-          <Link to="/dashboard/products/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
-            ADICIONAR
+          <Link to="/dashboard/products/new" className={buttonClasses("primary", "md")}>
+            Adicionar
           </Link>
         </Authorization>
       </TableToolbar>
 
-      <div className="mb-4 d-flex flex-column flex-md-row gap-2">
-        <div className="flex-grow-1">
+      <div className="mb-lg flex flex-col md:flex-row gap-sm">
+        <div className="flex-1">
           <SearchInput
             value={search}
             onChange={setSearch}
@@ -102,8 +103,7 @@ export default function ProductListPage() {
           />
         </div>
         <select
-          className="form-select"
-          style={{ maxWidth: 260 }}
+          className={`${inputBaseClasses} md:max-w-[260px]`}
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           aria-label="Filtrar por categoria"

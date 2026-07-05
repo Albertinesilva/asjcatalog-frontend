@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import styles from "@/styles/action-buttons.module.css";
 import type { User } from "@/types";
 import { Authorization } from "@/components";
+import { Button, buttonClasses } from "@/components/ui";
 
 type Props = {
   user: User;
@@ -10,24 +10,17 @@ type Props = {
 
 export default function UserActions({ user, onDelete }: Props) {
   return (
-    <div className="d-flex gap-2 flex-wrap">
-      <Link to={`/dashboard/users/${user.id}`} className={`btn btn-outline-primary ${styles.actionBtn}`}>
-        VER
+    <div className="flex flex-wrap gap-sm">
+      <Link to={`/dashboard/users/${user.id}`} className={buttonClasses("outline", "sm")}>
+        Ver
       </Link>
-      <Link
-        to={`/dashboard/users/${user.id}/edit`}
-        className={`btn btn-outline-secondary ${styles.actionBtn} ${styles.actionBtnMuted}`}
-      >
-        EDITAR
+      <Link to={`/dashboard/users/${user.id}/edit`} className={buttonClasses("secondary", "sm")}>
+        Editar
       </Link>
       <Authorization roles={["ROLE_ADMIN"]}>
-        <button
-          type="button"
-          className={`btn btn-outline-danger ${styles.actionBtn}`}
-          onClick={() => onDelete(user)}
-        >
-          EXCLUIR
-        </button>
+        <Button type="button" variant="danger" size="sm" onClick={() => onDelete(user)}>
+          Excluir
+        </Button>
       </Authorization>
     </div>
   );

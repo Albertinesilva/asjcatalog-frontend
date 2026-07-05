@@ -1,4 +1,5 @@
 import type { User } from "@/types";
+import { Card } from "@/components/ui";
 import UserRoleBadge from "./UserRoleBadge";
 import UserActions from "./UserActions";
 
@@ -7,23 +8,35 @@ type Props = {
   onDelete: (user: User) => void;
 };
 
+function initials(first: string, last: string) {
+  return `${first?.[0] ?? ""}${last?.[0] ?? ""}`.toUpperCase() || "?";
+}
+
 export default function UserTableRow({ user, onDelete }: Props) {
   return (
-    <div className="card-base border-radius-10 d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 gap-2">
-      <div>
-        <h5 className="m-0 fw-bold" style={{ color: "#263238" }}>
-          {user.firstName} {user.lastName}
-        </h5>
-        <small className="text-muted">{user.email}</small>
-        {user.roles?.length ? (
-          <div className="mt-1 d-flex gap-1 flex-wrap">
-            {user.roles.map((r) => (
-              <UserRoleBadge key={r.id} role={r.authority} />
-            ))}
-          </div>
-        ) : null}
+    <Card padding="md" className="flex flex-col md:flex-row md:items-center md:justify-between gap-md transition-colors hover:border-primary/40">
+      <div className="flex items-center gap-md min-w-0">
+        <span
+          aria-hidden="true"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-heading font-semibold text-small"
+        >
+          {initials(user.firstName, user.lastName)}
+        </span>
+        <div className="min-w-0">
+          <h3 className="m-0 font-heading font-semibold text-subtitle text-foreground truncate">
+            {user.firstName} {user.lastName}
+          </h3>
+          <p className="m-0 text-small text-foreground-muted truncate">{user.email}</p>
+          {user.roles?.length ? (
+            <div className="mt-xs flex flex-wrap gap-xs">
+              {user.roles.map((r) => (
+                <UserRoleBadge key={r.id} role={r.authority} />
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
       <UserActions user={user} onDelete={onDelete} />
-    </div>
+    </Card>
   );
 }

@@ -6,5 +6,9 @@ const formatter = new Intl.NumberFormat("pt-BR", {
 });
 
 export default function ProductPrice({ value }: Props) {
-  return <span className="fw-bold" style={{ color: "#2e7d32" }}>{formatter.format(value)}</span>;
+  return (
+    <span className="font-heading font-bold text-title text-success">
+      {formatter.format(value)}
+    </span>
+  );
 }
