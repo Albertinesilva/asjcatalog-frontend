@@ -2,11 +2,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "@/hooks/useAuth";
+import { useRoles } from "@/hooks/useRoles";
 import styles from "./navbar.module.css";
 import logo from "@/assets/asj-logo.png";
 
 export default function Navbar() {
   const { authenticated, user, logout } = useAuth();
+  const { isAdmin } = useRoles();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
@@ -64,14 +66,23 @@ export default function Navbar() {
               <NavbarLink label="CATÁLOGO" target="/catalog" />
             </li>
             <li>
-              <NavbarLink label="ADMIN" target="/dashboard" />
+              {authenticated ? (
+                <NavbarLink label="DASHBOARD" target="/dashboard" />
+              ) : (
+                <NavbarLink label="LOGIN" target="/auth/login" />
+              )}
             </li>
           </ul>
 
           {authenticated && (
             <div className={styles.userBlock}>
               <Link to="/account/profile" className={styles.userName}>
-                {user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? ""}
+                <span className={styles.userGreeting}>
+                  {user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? ""}
+                </span>
+                <span className={styles.userRole}>
+                  {isAdmin ? "Administrador" : "Operador"}
+                </span>
               </Link>
               <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
                 SAIR
