@@ -1,6 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Navbar, Sidebar } from "@/components";
-import styles from "./dashboardLayout.module.css";
 
 type Crumb = { label: string; to?: string };
 
@@ -51,34 +50,60 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
   return { title: "Dashboard", crumbs: [{ label: "Dashboard" }] };
 }
 
+/**
+ * DashboardLayout — Fase 10.3.
+ *
+ * Modernizado para linguagem SaaS: shell em `bg-background`, sidebar
+ * lateral no desktop, header dedicado com breadcrumb elegante e área
+ * principal com largura controlada. Sem Bootstrap. Sem CSS Module.
+ * O contrato (Navbar + Sidebar + Outlet + breadcrumb) foi preservado.
+ */
 export default function DashboardLayout() {
   const { pathname } = useLocation();
   const { title, crumbs } = resolveBreadcrumb(pathname);
   const year = new Date().getFullYear();
 
   return (
-    <div className={styles.shell}>
+    <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
-      <div className={`${styles.body} d-flex flex-column flex-lg-row`}>
+      <div className="flex flex-col lg:flex-row flex-1 min-h-0">
         <Sidebar />
-        <main className={styles.main}>
-          <header className={styles.header}>
-            <nav aria-label="Breadcrumb" className={styles.breadcrumb}>
+        <main className="flex flex-col flex-1 min-w-0">
+          <header className="bg-surface border-b border-border px-md py-md lg:px-xl lg:py-lg">
+            <nav
+              aria-label="Breadcrumb"
+              className="flex flex-wrap items-center gap-xs text-caption uppercase tracking-wider text-foreground-muted"
+            >
               {crumbs.map((c, i) => (
-                <span key={`${c.label}-${i}`}>
-                  {i > 0 && <span className={styles.sep}>/</span>}
-                  {c.to ? <Link to={c.to}>{c.label}</Link> : <span>{c.label}</span>}
+                <span key={`${c.label}-${i}`} className="inline-flex items-center gap-xs">
+                  {i > 0 && <span aria-hidden className="text-border">/</span>}
+                  {c.to ? (
+                    <Link
+                      to={c.to}
+                      className="text-foreground-muted transition-colors duration-DEFAULT ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
+                    >
+                      {c.label}
+                    </Link>
+                  ) : (
+                    <span className="text-foreground">{c.label}</span>
+                  )}
                 </span>
               ))}
             </nav>
-            <div className={styles.headerRow}>
-              <h1 className={styles.title}>{title}</h1>
+            <div className="mt-sm flex flex-col md:flex-row md:items-center md:justify-between gap-sm">
+              <h1 className="font-heading text-h2 text-foreground m-0">{title}</h1>
             </div>
           </header>
-          <section className={styles.content}>
-            <Outlet />
+
+          <section className="flex-1 px-md py-md lg:px-xl lg:py-xl">
+            <div className="mx-auto w-full max-w-[1200px]">
+              <Outlet />
+            </div>
           </section>
-          <footer className={styles.footer}>ASJ Catalog · © {year}</footer>
+
+          <footer className="bg-surface border-t border-border px-md py-md lg:px-xl text-center text-caption text-foreground-muted">
+            ASJ Catalog · © {year}
+          </footer>
         </main>
       </div>
     </div>
