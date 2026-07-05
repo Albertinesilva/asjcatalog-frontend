@@ -3,14 +3,9 @@ import { useEffect, useState } from "react";
 import { userService } from "@/services/user-service";
 import { LoadingState, ErrorState } from "@/components";
 import { getApiErrorMessage } from "@/utils/api-errors";
-import type { Role, UserDetails } from "@/types";
+import type { UserDetails } from "@/types";
 import { Card, buttonClasses } from "@/components/ui";
 import UserRoleBadge from "./components/UserRoleBadge";
-
-const ROLE_LABELS: Record<Role, string> = {
-  ROLE_ADMIN: "Administrador",
-  ROLE_OPERATOR: "Operador",
-};
 
 export default function UserDetailsPage() {
   const { id } = useParams<{ id: string }>();
