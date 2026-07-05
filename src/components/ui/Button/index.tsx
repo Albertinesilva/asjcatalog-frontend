@@ -21,13 +21,13 @@ type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   type?: "button" | "submit" | "reset";
 };
 
-const base =
+export const buttonBaseClasses =
   "inline-flex items-center justify-center gap-2 font-heading font-semibold whitespace-nowrap " +
   "select-none rounded-md border transition-colors duration-DEFAULT ease-standard " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
   "focus-visible:ring-offset-background disabled:opacity-60 disabled:cursor-not-allowed";
 
-const variants: Record<ButtonVariant, string> = {
+export const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-primary-foreground border-transparent hover:bg-primary-hover active:bg-primary-hover",
   secondary:
@@ -40,12 +40,16 @@ const variants: Record<ButtonVariant, string> = {
     "bg-transparent text-foreground border-transparent hover:bg-surface-hover",
 };
 
-const sizes: Record<ButtonSize, string> = {
+export const buttonSizeClasses: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-small",
   md: "h-10 px-4 text-small",
   lg: "h-12 px-6 text-body",
   icon: "h-10 w-10 p-0",
 };
+
+export function buttonClasses(variant: ButtonVariant = "primary", size: ButtonSize = "md") {
+  return `${buttonBaseClasses} ${buttonVariantClasses[variant]} ${buttonSizeClasses[size]}`;
+}
 
 const Spinner = () => (
   <svg
@@ -92,9 +96,9 @@ const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       disabled={isDisabled}
       aria-busy={ariaBusy ?? loading ? true : undefined}
       className={cn(
-        base,
-        variants[variant],
-        sizes[size],
+        buttonBaseClasses,
+        buttonVariantClasses[variant],
+        buttonSizeClasses[size],
         fullWidth && "w-full",
         className,
       )}
