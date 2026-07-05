@@ -83,9 +83,7 @@ export default function UserForm({ mode }: Props) {
   };
 
   return (
-    <div className="container py-4">
-      <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-4">{mode === "create" ? "Adicionar Usuário" : "Editar Usuário"}</h3>
+    <div className="card-base p-4 border-radius-10">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row g-3">
             <div className="col-md-6">
@@ -167,7 +165,6 @@ export default function UserForm({ mode }: Props) {
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 }

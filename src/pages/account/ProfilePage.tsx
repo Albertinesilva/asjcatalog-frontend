@@ -43,17 +43,13 @@ export default function ProfilePage() {
 
   if (loading && !user) {
     return (
-      <div className="container py-4">
-        <LoadingState message="Carregando perfil..." />
-      </div>
+      <LoadingState message="Carregando perfil..." />
     );
   }
 
   if (!user) {
     return (
-      <div className="container py-4">
-        <ErrorState message="Não foi possível carregar seu perfil." />
-      </div>
+      <ErrorState message="Não foi possível carregar seu perfil." />
     );
   }
 
@@ -112,8 +108,7 @@ export default function ProfilePage() {
   } = passwordForm;
 
   return (
-    <div className="container py-4">
-      <h3 className="mb-1">Meu Perfil</h3>
+    <div>
       <p className="text-muted mb-4">Gerencie seus dados pessoais e credenciais de acesso.</p>
 
       <div className="row g-4">

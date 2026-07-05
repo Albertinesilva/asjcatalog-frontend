@@ -29,8 +29,7 @@ export default function UserDetailsPage() {
   if (!user) return null;
 
   return (
-    <div className="container py-4">
-      <div className="card-base p-4 border-radius-10">
+    <div className="card-base p-4 border-radius-10">
         <h3 className="mb-3">
           {user.firstName} {user.lastName}
         </h3>
@@ -49,7 +48,6 @@ export default function UserDetailsPage() {
             Voltar
           </Link>
         </div>
-      </div>
     </div>
   );
 }

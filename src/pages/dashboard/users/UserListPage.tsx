@@ -57,7 +57,7 @@ export default function UserListPage() {
   };
 
   return (
-    <div className="container-fluid py-4 px-3 px-md-4">
+    <div>
       <TableToolbar
         title="Usuários"
         subtitle="Gerencie os usuários do sistema"
