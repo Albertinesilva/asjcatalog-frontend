@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ProductItem } from "@/components";
+import { ProductItem, LoadingState, ErrorState, EmptyState } from "@/components";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import type { Category, ProductResponse, SpringPage } from "@/types";
@@ -114,16 +114,22 @@ export default function CatalogPage() {
         </div>
       </div>
 
-      {loading && <p className="py-3">Carregando produtos...</p>}
-      {error && <p className="py-3 text-danger">Erro: {error}</p>}
-
-      <div className={styles.catalogProducts}>
-        {products.length === 0 ? (
-          <p className="text-muted py-5 text-center">Nenhum produto encontrado.</p>
-        ) : (
-          products.map((product) => <ProductItem key={product.id} {...product} />)
-        )}
-      </div>
+      {loading ? (
+        <LoadingState message="Carregando produtos..." />
+      ) : error ? (
+        <ErrorState message={error} />
+      ) : (
+        <div className={styles.catalogProducts}>
+          {products.length === 0 ? (
+            <EmptyState
+              title="Nenhum produto encontrado"
+              description="Tente ajustar os filtros de busca."
+            />
+          ) : (
+            products.map((product) => <ProductItem key={product.id} {...product} />)
+          )}
+        </div>
+      )}
 
       {totalPages > 1 && (
         <div className={styles.pagination}>
