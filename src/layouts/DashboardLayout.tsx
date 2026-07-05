@@ -1,7 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Navbar, Sidebar } from "@/components";
-import { useAuth } from "@/hooks/useAuth";
-import { useRoles } from "@/hooks/useRoles";
 import styles from "./dashboardLayout.module.css";
 
 type Crumb = { label: string; to?: string };
@@ -55,11 +53,7 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
 
 export default function DashboardLayout() {
   const { pathname } = useLocation();
-  const { user } = useAuth();
-  const { isAdmin } = useRoles();
   const { title, crumbs } = resolveBreadcrumb(pathname);
-  const displayName = user?.firstName ?? user?.email ?? "";
-  const roleLabel = isAdmin ? "Administrador" : "Operador";
   const year = new Date().getFullYear();
 
   return (
@@ -79,12 +73,6 @@ export default function DashboardLayout() {
             </nav>
             <div className={styles.headerRow}>
               <h1 className={styles.title}>{title}</h1>
-              {displayName && (
-                <span className={styles.userTag} aria-label="Usuário autenticado">
-                  <strong>{displayName}</strong>
-                  <span>{roleLabel}</span>
-                </span>
-              )}
             </div>
           </header>
           <section className={styles.content}>
