@@ -13,7 +13,7 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import type { Category } from "@/types";
-import styles from "@/styles/action-buttons.module.css";
+import { buttonClasses } from "@/components/ui";
 import { CategoryTable } from "./components";
 
 export default function CategoryListPage() {
@@ -68,13 +68,13 @@ export default function CategoryListPage() {
         counter={filtered.length}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
-          <Link to="/dashboard/categories/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
-            ADICIONAR
+          <Link to="/dashboard/categories/new" className={buttonClasses("primary", "md")}>
+            Adicionar
           </Link>
         </Authorization>
       </TableToolbar>
 
-      <div className="mb-4">
+      <div className="mb-lg">
         <SearchInput
           value={search}
           onChange={setSearch}
