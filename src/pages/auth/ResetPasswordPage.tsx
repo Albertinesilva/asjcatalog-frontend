@@ -53,13 +53,22 @@ export default function ResetPasswordPage() {
           <PasswordInput
             className={`form-control ${styles.inputBase}`}
             placeholder="Nova senha"
-            {...register("password", { required: true, minLength: 6 })}
+            {...register("password", {
+              required: true,
+              minLength: 8,
+              pattern: /^(?=.*\d).{8,}$/,
+            })}
           />
+          <p className={styles.passwordHint}>
+            A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
+          </p>
           {errors.password?.type === "required" && (
             <p className={styles.fieldError}>A senha é obrigatória</p>
           )}
-          {errors.password?.type === "minLength" && (
-            <p className={styles.fieldError}>Mínimo de 6 caracteres</p>
+          {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
+            <p className={styles.fieldError}>
+              A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
+            </p>
           )}
         </div>
 

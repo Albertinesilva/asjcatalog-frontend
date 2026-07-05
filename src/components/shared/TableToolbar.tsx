@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type Props = {
-  title: string;
+  title?: string;
   subtitle?: string;
   counter?: number;
   children?: ReactNode;
@@ -18,15 +18,23 @@ export default function TableToolbar({ title, subtitle, counter, children, class
       className={`d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-center justify-content-between mb-4 ${className}`}
     >
       <div>
-        <h4 className="m-0 fw-bold" style={{ color: "#263238" }}>
-          {title}
-          {typeof counter === "number" && (
-            <span className="badge bg-secondary ms-2" style={{ fontSize: "0.7em" }}>
-              {counter}
+        {title ? (
+          <h4 className="m-0 fw-bold" style={{ color: "#263238" }}>
+            {title}
+            {typeof counter === "number" && (
+              <span className="badge bg-secondary ms-2" style={{ fontSize: "0.7em" }}>
+                {counter}
+              </span>
+            )}
+          </h4>
+        ) : (
+          typeof counter === "number" && (
+            <span className="badge bg-secondary" style={{ fontSize: "0.85em" }}>
+              {counter} {counter === 1 ? "item" : "itens"}
             </span>
-          )}
-        </h4>
-        {subtitle && <small className="text-muted">{subtitle}</small>}
+          )
+        )}
+        {subtitle && <small className="text-muted d-block">{subtitle}</small>}
       </div>
       {children && <div className="d-flex gap-2 flex-wrap">{children}</div>}
     </div>

@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "@/services/user-service";
 import { PasswordInput } from "@/components";
+import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 
-const AVAILABLE_ROLES: { id: number; authority: Role }[] = [
-  { id: 1, authority: "ROLE_OPERATOR" },
-  { id: 2, authority: "ROLE_ADMIN" },
+const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
+  { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
+  { id: 2, authority: "ROLE_ADMIN", label: "Administrador" },
 ];
 
 type FormFields = {
@@ -68,6 +69,7 @@ export default function UserForm({ mode }: Props) {
           password: data.password,
           roleIds,
         });
+        await alerts.success("Usuário criado", "Usuário criado com sucesso.");
       } else if (id) {
         await userService.update(Number(id), {
           firstName: data.firstName,
@@ -75,6 +77,7 @@ export default function UserForm({ mode }: Props) {
           email: data.email,
           roleIds,
         });
+        await alerts.success("Usuário atualizado", "Usuário atualizado com sucesso.");
       }
       navigate("/dashboard/users");
     } catch (err) {
@@ -142,7 +145,7 @@ export default function UserForm({ mode }: Props) {
               >
                 {AVAILABLE_ROLES.map((r) => (
                   <option key={r.id} value={String(r.id)}>
-                    {r.authority}
+                    {r.label}
                   </option>
                 ))}
               </select>

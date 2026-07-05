@@ -14,6 +14,7 @@ import {
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-errors";
+import { alerts } from "@/utils/alerts";
 import type { Category, Paginated, ProductResponse } from "@/types";
 import styles from "@/styles/action-buttons.module.css";
 import { ProductTable } from "./components";
@@ -70,6 +71,7 @@ export default function ProductListPage() {
       await productService.delete(pendingDelete.id);
       setPendingDelete(null);
       refetch();
+      await alerts.success("Produto removido", "Produto removido com sucesso.");
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
@@ -80,8 +82,6 @@ export default function ProductListPage() {
   return (
     <div>
       <TableToolbar
-        title="Meus Produtos"
-        subtitle="Gerencie o catálogo de produtos"
         counter={pagination.totalElements}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>

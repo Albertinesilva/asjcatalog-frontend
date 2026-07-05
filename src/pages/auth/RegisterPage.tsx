@@ -133,6 +133,11 @@ export default function RegisterPage() {
           {errors.password?.type === "required" && (
             <p className={styles.fieldError}>A senha é obrigatória</p>
           )}
+          {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
+            <p className={styles.fieldError}>
+              A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
+            </p>
+          )}
         </div>
 
         <div className={styles.fieldGroup}>

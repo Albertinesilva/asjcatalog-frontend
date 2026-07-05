@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import type { AxiosError } from "axios";
 
-import { ProductPrice } from "@/components";
+import { ProductPrice, LoadingState, EmptyState } from "@/components";
 import { productService } from "@/services/product-service";
 
 import arrow from "@/assets/blue_arrow.svg";
@@ -61,23 +61,21 @@ export default function ProductDetailsPage() {
 
   if (loading) {
     return (
-      <div className="container py-5 text-center">
-        <p>Carregando produto...</p>
-      </div>
+      <LoadingState message="Carregando produto..." />
     );
   }
 
   if (notFound || !data) {
     return (
-      <div className="container py-5 text-center">
-        <h2>Produto não encontrado</h2>
-
-        <p className="text-muted">O produto solicitado não existe ou não está mais disponível.</p>
-
-        <Link to="/catalog" className="btn btn-primary mt-3">
-          Voltar ao catálogo
-        </Link>
-      </div>
+      <EmptyState
+        title="Produto não encontrado"
+        description="O produto solicitado não existe ou não está mais disponível."
+        action={
+          <Link to="/catalog" className="btn btn-primary">
+            Voltar ao catálogo
+          </Link>
+        }
+      />
     );
   }
 

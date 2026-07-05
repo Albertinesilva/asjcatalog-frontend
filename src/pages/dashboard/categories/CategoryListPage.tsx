@@ -11,6 +11,7 @@ import {
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { getApiErrorMessage } from "@/utils/api-errors";
+import { alerts } from "@/utils/alerts";
 import type { Category } from "@/types";
 import styles from "@/styles/action-buttons.module.css";
 import { CategoryTable } from "./components";
@@ -53,6 +54,7 @@ export default function CategoryListPage() {
       await categoryService.delete(pendingDelete.id);
       setPendingDelete(null);
       load();
+      await alerts.success("Categoria removida", "Categoria removida com sucesso.");
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
@@ -63,8 +65,6 @@ export default function CategoryListPage() {
   return (
     <div>
       <TableToolbar
-        title="Categorias"
-        subtitle="Gerencie as categorias do catálogo"
         counter={filtered.length}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>

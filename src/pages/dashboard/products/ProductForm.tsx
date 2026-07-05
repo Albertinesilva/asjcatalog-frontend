@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
+import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
 
 type FormFields = {
@@ -67,8 +68,13 @@ export default function ProductForm({ mode }: Props) {
       categoryIds: data.categoryIds.map(Number),
     };
     try {
-      if (mode === "create") await productService.create(payload);
-      else if (productId) await productService.update(Number(productId), payload);
+      if (mode === "create") {
+        await productService.create(payload);
+        await alerts.success("Produto criado", "Produto criado com sucesso.");
+      } else if (productId) {
+        await productService.update(Number(productId), payload);
+        await alerts.success("Produto atualizado", "Produto atualizado com sucesso.");
+      }
       navigate("/dashboard/products");
     } catch (err) {
       setSaveError((err as Error).message);
