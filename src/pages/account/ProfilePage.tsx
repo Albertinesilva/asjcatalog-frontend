@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
 import { PasswordInput, LoadingState, ErrorState } from "@/components";
 import { getApiErrorMessage } from "@/utils/api-errors";
+import { alerts } from "@/utils/alerts";
 
 type ProfileFields = {
   firstName: string;
@@ -66,6 +67,7 @@ export default function ProfilePage() {
       });
       await refreshUser();
       setProfileFeedback({ kind: "success", message: "Perfil atualizado com sucesso." });
+      await alerts.success("Perfil atualizado", "Perfil atualizado com sucesso.");
     } catch (err) {
       setProfileFeedback({
         kind: "error",
@@ -87,6 +89,7 @@ export default function ProfilePage() {
       });
       passwordForm.reset({ password: "", confirmPassword: "" });
       setPasswordFeedback({ kind: "success", message: "Senha alterada com sucesso." });
+      await alerts.success("Senha alterada", "Senha alterada com sucesso.");
     } catch (err) {
       setPasswordFeedback({
         kind: "error",
@@ -208,8 +211,15 @@ export default function ProfilePage() {
                     required: "Informe a nova senha",
                     minLength: { value: 8, message: "Mínimo 8 caracteres" },
                     maxLength: { value: 72, message: "Máximo 72 caracteres" },
+                    pattern: {
+                      value: /^(?=.*\d).{8,}$/,
+                      message: "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+                    },
                   })}
                 />
+                <small className="text-muted d-block mt-1">
+                  A senha deve ter no mínimo 8 caracteres e conter pelo menos um número.
+                </small>
                 {passwordErrors.password && (
                   <small className="text-danger">{passwordErrors.password.message}</small>
                 )}
