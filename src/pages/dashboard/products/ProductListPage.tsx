@@ -80,8 +80,6 @@ export default function ProductListPage() {
   return (
     <div>
       <TableToolbar
-        title="Meus Produtos"
-        subtitle="Gerencie o catálogo de produtos"
         counter={pagination.totalElements}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
