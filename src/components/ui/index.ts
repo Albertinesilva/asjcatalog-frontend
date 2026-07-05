@@ -10,7 +10,7 @@
  * Migration policy: legacy CSS Modules and Bootstrap keep working until
  * Phase 10.6. New UI code should import from `@/components/ui`.
  */
-export { default as Button } from "./Button";
+export { default as Button, buttonClasses, buttonBaseClasses, buttonVariantClasses, buttonSizeClasses } from "./Button";
 export type { ButtonVariant, ButtonSize } from "./Button";
 export { default as Input, inputBaseClasses } from "./Input";
 export { default as Card } from "./Card";
