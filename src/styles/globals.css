@@ -1,11 +1,112 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+/* Tailwind CSS layers — Phase 10.1 foundation.
+ * Preflight is disabled in tailwind.config.ts to avoid regressing
+ * Bootstrap styling during the incremental migration. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+ * Design Tokens (Phase 10.1)
+ * ------------------------------------------------------------
+ * All tokens are exposed as HSL triplets so Tailwind utilities
+ * can apply `<alpha-value>` (e.g. `bg-primary/50`).
+ *
+ * Naming is SEMANTIC. Components MUST consume these tokens via
+ * Tailwind utilities (bg-background, text-foreground, bg-primary,
+ * border-border, ...) and never reference raw palette colors.
+ *
+ * Raw palette (Navy Trust — Phase 9):
+ *   Primary    #1F3A5F     Accent    #2563EB
+ *   Success    #16A34A     Warning   #F59E0B
+ *   Danger     #DC2626     Muted     #64748B
+ *   Background #F8FAFC     Surface   #FFFFFF
+ *   Border     #E2E8F0     Dark      #0F172A
+ *
+ * Dark mode scaffolding: `.dark` overrides are provided but the
+ * toggle mechanism is intentionally NOT wired up in Phase 10.1.
+ * ============================================================ */
+:root {
+  /* Surfaces */
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --foreground-muted: 215 16% 47%;
+
+  --surface: 0 0% 100%;
+  --surface-hover: 210 40% 96%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  /* Brand */
+  --primary: 214 51% 25%;
+  --primary-hover: 214 51% 20%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 215 16% 47%;
+  --secondary-foreground: 0 0% 100%;
+
+  --accent: 221 83% 53%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Status */
+  --success: 142 71% 36%;
+  --warning: 38 92% 50%;
+  --danger: 0 74% 51%;
+
+  /* Structure */
+  --border: 214 32% 91%;
+  --ring: 221 83% 53%;
+  --overlay: 222 47% 11%;
+
+  /* Form inputs */
+  --input: 0 0% 100%;
+  --input-border: 214 32% 91%;
+}
+
+.dark {
+  /* Reserved for Phase 10 dark theme. Do not consume yet. */
+  --background: 222 47% 6%;
+  --foreground: 210 40% 98%;
+  --foreground-muted: 215 20% 65%;
+
+  --surface: 222 47% 9%;
+  --surface-hover: 222 47% 12%;
+
+  --card: 222 47% 9%;
+  --card-foreground: 210 40% 98%;
+
+  --primary: 221 83% 60%;
+  --primary-hover: 221 83% 55%;
+  --primary-foreground: 222 47% 6%;
+
+  --secondary: 215 20% 65%;
+  --secondary-foreground: 222 47% 6%;
+
+  --accent: 221 83% 60%;
+  --accent-foreground: 222 47% 6%;
+
+  --border: 222 47% 18%;
+  --ring: 221 83% 60%;
+  --overlay: 0 0% 0%;
+
+  --input: 222 47% 9%;
+  --input-border: 222 47% 18%;
+}
+
 /* ============================================================
  * ASJ Catalog global styles
  * 1. Global variables
  * 2. Base styles
  * 3. Bootstrap overrides
  * 4. Shared utility classes
+ *
+ * NOTE (Phase 10.1): the `--asj-*` variables below are DEPRECATED
+ * but preserved for backwards compatibility with CSS Modules and
+ * legacy Bootstrap overrides. New styles MUST use the semantic
+ * tokens declared above and consumed through Tailwind utilities.
+ * These aliases will be removed in Phase 10.6.
  * ============================================================ */
 
 /* 1. Global variables */
