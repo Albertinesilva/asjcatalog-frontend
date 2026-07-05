@@ -14,7 +14,7 @@ import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import type { Paginated, User } from "@/types";
-import styles from "@/styles/action-buttons.module.css";
+import { buttonClasses } from "@/components/ui";
 import { UserTable } from "./components";
 import type { UserFilters } from "./types";
 
@@ -63,12 +63,12 @@ export default function UserListPage() {
       <TableToolbar
         counter={pagination.totalElements}
       >
-        <Link to="/dashboard/users/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
-          ADICIONAR
+        <Link to="/dashboard/users/new" className={buttonClasses("primary", "md")}>
+          Adicionar
         </Link>
       </TableToolbar>
 
-      <div className="mb-4">
+      <div className="mb-lg">
         <SearchInput
           value={search}
           onChange={setSearch}
