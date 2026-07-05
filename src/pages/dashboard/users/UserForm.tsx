@@ -5,6 +5,8 @@ import { userService } from "@/services/user-service";
 import { PasswordInput } from "@/components";
 import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
+import { Button, Card, Input } from "@/components/ui";
+import { inputBaseClasses } from "@/components/ui/Input";
 
 const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
   { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
@@ -86,88 +88,86 @@ export default function UserForm({ mode }: Props) {
   };
 
   return (
-    <div className="card-base p-4 border-radius-10">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row g-3">
-            <div className="col-md-6">
-              <label className="form-label">Nome</label>
-              <input
-                className="form-control"
-                {...register("firstName", { required: "Nome é obrigatório" })}
-              />
-              {errors.firstName && (
-                <small className="text-danger">{errors.firstName.message}</small>
-              )}
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Sobrenome</label>
-              <input
-                className="form-control"
-                {...register("lastName", {
-                  required: "Sobrenome é obrigatório",
-                })}
-              />
-              {errors.lastName && <small className="text-danger">{errors.lastName.message}</small>}
-            </div>
-            <div className="col-12">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                {...register("email", { required: "Email é obrigatório" })}
-              />
-              {errors.email && <small className="text-danger">{errors.email.message}</small>}
-            </div>
-            {mode === "create" && (
-              <div className="col-12">
-                <label className="form-label">Senha</label>
-                <PasswordInput
-                  className="form-control"
-                  {...register("password", {
-                    required: "Senha é obrigatória",
-                    minLength: { value: 8, message: "Mínimo 8 caracteres" },
-                  })}
-                />
-                {errors.password && (
-                  <small className="text-danger">{errors.password.message}</small>
-                )}
-              </div>
+    <Card padding="lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+          <Input
+            label="Nome"
+            required
+            error={errors.firstName?.message}
+            {...register("firstName", { required: "Nome é obrigatório" })}
+          />
+          <Input
+            label="Sobrenome"
+            required
+            error={errors.lastName?.message}
+            {...register("lastName", { required: "Sobrenome é obrigatório" })}
+          />
+        </div>
+        <Input
+          label="Email"
+          type="email"
+          required
+          error={errors.email?.message}
+          {...register("email", { required: "Email é obrigatório" })}
+        />
+        {mode === "create" && (
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="user-password" className="text-small font-medium text-foreground">
+              Senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+            </label>
+            <PasswordInput
+              id="user-password"
+              autoComplete="new-password"
+              className={inputBaseClasses}
+              {...register("password", {
+                required: "Senha é obrigatória",
+                minLength: { value: 8, message: "Mínimo 8 caracteres" },
+              })}
+            />
+            {errors.password && (
+              <p className="text-small text-danger">{errors.password.message}</p>
             )}
-            <div className="col-12">
-              <label className="form-label">Permissões</label>
-              <select
-                multiple
-                className="form-select"
-                size={AVAILABLE_ROLES.length}
-                {...register("roleIds", {
-                  validate: (v) => v.length > 0 || "Selecione pelo menos uma permissão",
-                })}
-              >
-                {AVAILABLE_ROLES.map((r) => (
-                  <option key={r.id} value={String(r.id)}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-              {errors.roleIds && (
-                <small className="text-danger">{errors.roleIds.message as string}</small>
-              )}
-            </div>
           </div>
-          {saveError && <p className="text-danger mt-3">Erro: {saveError}</p>}
-          <div className="d-flex gap-2 mt-4">
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? "Salvando..." : "Salvar"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => navigate("/dashboard/users")}
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-    </div>
+        )}
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="user-roles" className="text-small font-medium text-foreground">
+            Permissões <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+          </label>
+          <select
+            id="user-roles"
+            multiple
+            className={`${inputBaseClasses} h-auto py-2`}
+            size={AVAILABLE_ROLES.length}
+            aria-invalid={errors.roleIds ? true : undefined}
+            {...register("roleIds", {
+              validate: (v) => v.length > 0 || "Selecione pelo menos uma permissão",
+            })}
+          >
+            {AVAILABLE_ROLES.map((r) => (
+              <option key={r.id} value={String(r.id)}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+          {errors.roleIds && (
+            <p className="text-small text-danger">{errors.roleIds.message as string}</p>
+          )}
+        </div>
+        {saveError && (
+          <p className="text-small text-danger m-0" role="alert">
+            Erro: {saveError}
+          </p>
+        )}
+        <div className="flex flex-wrap gap-sm pt-sm">
+          <Button type="submit" variant="primary" loading={isSubmitting}>
+            {isSubmitting ? "Salvando..." : "Salvar"}
+          </Button>
+          <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/users")}>
+            Cancelar
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }
