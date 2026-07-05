@@ -4,6 +4,8 @@ import { userService } from "@/services/user-service";
 import { LoadingState, ErrorState } from "@/components";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import type { Role, UserDetails } from "@/types";
+import { Card, buttonClasses } from "@/components/ui";
+import UserRoleBadge from "./components/UserRoleBadge";
 
 const ROLE_LABELS: Record<Role, string> = {
   ROLE_ADMIN: "Administrador",
@@ -34,26 +36,37 @@ export default function UserDetailsPage() {
   if (!user) return null;
 
   return (
-    <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-3">
+    <Card padding="lg" className="max-w-3xl flex flex-col gap-md">
+      <div>
+        <h2 className="m-0 font-heading font-bold text-h2 text-foreground">
           {user.firstName} {user.lastName}
-        </h3>
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Permissões:</strong>{" "}
-          {(user.roles ?? []).map((r) => ROLE_LABELS[r.authority] ?? r.authority).join(", ") ||
-            "—"}
-        </p>
-        <div className="d-flex gap-2 mt-3">
-          <Link to={`/dashboard/users/${user.id}/edit`} className="btn btn-primary">
-            Editar
-          </Link>
-          <Link to="/dashboard/users" className="btn btn-outline-secondary">
-            Voltar
-          </Link>
-        </div>
-    </div>
+        </h2>
+        <p className="mt-xs mb-0 text-body text-foreground-muted">{user.email}</p>
+      </div>
+
+      <div className="flex flex-col gap-xs">
+        <span className="text-caption uppercase tracking-wider text-foreground-muted font-heading font-semibold">
+          Permissões
+        </span>
+        {user.roles?.length ? (
+          <div className="flex flex-wrap gap-xs">
+            {user.roles.map((r) => (
+              <UserRoleBadge key={r.id} role={r.authority} />
+            ))}
+          </div>
+        ) : (
+          <p className="m-0 text-small text-foreground-muted">—</p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-sm pt-sm">
+        <Link to={`/dashboard/users/${user.id}/edit`} className={buttonClasses("primary", "md")}>
+          Editar
+        </Link>
+        <Link to="/dashboard/users" className={buttonClasses("secondary", "md")}>
+          Voltar
+        </Link>
+      </div>
+    </Card>
   );
 }
