@@ -59,8 +59,6 @@ export default function UserListPage() {
   return (
     <div>
       <TableToolbar
-        title="Usuários"
-        subtitle="Gerencie os usuários do sistema"
         counter={pagination.totalElements}
       >
         <Link to="/dashboard/users/new" className={`btn btn-primary ${styles.actionBtnLg}`}>

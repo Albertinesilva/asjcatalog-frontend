@@ -63,8 +63,6 @@ export default function CategoryListPage() {
   return (
     <div>
       <TableToolbar
-        title="Categorias"
-        subtitle="Gerencie as categorias do catálogo"
         counter={filtered.length}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
