@@ -13,7 +13,7 @@ export default function CategoryActions({ category, onDelete }: Props) {
     <div className="d-flex gap-2 flex-wrap">
       <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
         <Link
-          to={`/admin/categories/${category.id}`}
+          to={`/dashboard/categories/${category.id}`}
           className={`btn btn-outline-secondary ${styles.actionBtn} ${styles.actionBtnMuted}`}
         >
           EDITAR

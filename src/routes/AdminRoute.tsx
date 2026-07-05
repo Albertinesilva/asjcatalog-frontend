@@ -5,5 +5,5 @@ import RoleRoute from "./RoleRoute";
  * Novos guards devem preferir <RoleRoute roles={[...]} />.
  */
 export default function AdminRoute() {
-  return <RoleRoute roles={["ROLE_ADMIN"]} redirectTo="/admin" />;
+  return <RoleRoute roles={["ROLE_ADMIN"]} redirectTo="/dashboard" />;
 }

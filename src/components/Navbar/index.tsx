@@ -64,7 +64,7 @@ export default function Navbar() {
               <NavbarLink label="CATÁLOGO" target="/catalog" />
             </li>
             <li>
-              <NavbarLink label="ADMIN" target="/admin" />
+              <NavbarLink label="ADMIN" target="/dashboard" />
             </li>
           </ul>
 

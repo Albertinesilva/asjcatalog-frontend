@@ -21,7 +21,7 @@ export default function PrivateRoute({ roles }: PrivateRouteProps = {}) {
   }
 
   if (roles && roles.length > 0 && !roles.some((r) => hasRole(r))) {
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;

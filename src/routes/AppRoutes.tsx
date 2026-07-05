@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import CatalogLayout from "@/layouts/CatalogLayout";
-import AdminLayout from "@/layouts/AdminLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 
 import PrivateRoute from "./PrivateRoute";
@@ -18,14 +18,14 @@ import ResetPasswordPage from "@/pages/auth/ResetPasswordPage";
 import ActivationPendingPage from "@/pages/auth/ActivationPendingPage";
 import ActivateAccountPage from "@/pages/auth/ActivateAccountPage";
 
-import DashboardPage from "@/pages/admin/DashboardPage";
-import ProductListPage from "@/pages/admin/products/ProductListPage";
-import ProductForm from "@/pages/admin/products/ProductForm";
-import CategoryListPage from "@/pages/admin/categories/CategoryListPage";
-import CategoryForm from "@/pages/admin/categories/CategoryForm";
-import UserListPage from "@/pages/admin/users/UserListPage";
-import UserForm from "@/pages/admin/users/UserForm";
-import UserDetailsPage from "@/pages/admin/users/UserDetailsPage";
+import DashboardPage from "@/pages/dashboard/DashboardPage";
+import ProductListPage from "@/pages/dashboard/products/ProductListPage";
+import ProductForm from "@/pages/dashboard/products/ProductForm";
+import CategoryListPage from "@/pages/dashboard/categories/CategoryListPage";
+import CategoryForm from "@/pages/dashboard/categories/CategoryForm";
+import UserListPage from "@/pages/dashboard/users/UserListPage";
+import UserForm from "@/pages/dashboard/users/UserForm";
+import UserDetailsPage from "@/pages/dashboard/users/UserDetailsPage";
 import ProfilePage from "@/pages/account/ProfilePage";
 
 function NotFound() {
@@ -64,21 +64,21 @@ export default function AppRoutes() {
       <Route path="/admin/recover" element={<Navigate to="/auth/recover" replace />} />
 
       <Route element={<PrivateRoute />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<DashboardPage />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/account/profile" element={<ProfilePage />} />
-          <Route path="/admin/products" element={<ProductListPage />} />
-          <Route path="/admin/products/new" element={<ProductForm mode="create" />} />
-          <Route path="/admin/products/:id" element={<ProductForm mode="edit" />} />
-          <Route path="/admin/categories" element={<CategoryListPage />} />
-          <Route path="/admin/categories/new" element={<CategoryForm mode="create" />} />
-          <Route path="/admin/categories/:id" element={<CategoryForm mode="edit" />} />
+          <Route path="/dashboard/products" element={<ProductListPage />} />
+          <Route path="/dashboard/products/new" element={<ProductForm mode="create" />} />
+          <Route path="/dashboard/products/:id" element={<ProductForm mode="edit" />} />
+          <Route path="/dashboard/categories" element={<CategoryListPage />} />
+          <Route path="/dashboard/categories/new" element={<CategoryForm mode="create" />} />
+          <Route path="/dashboard/categories/:id" element={<CategoryForm mode="edit" />} />
 
           <Route element={<AdminRoute />}>
-            <Route path="/admin/users" element={<UserListPage />} />
-            <Route path="/admin/users/new" element={<UserForm mode="create" />} />
-            <Route path="/admin/users/:id" element={<UserDetailsPage />} />
-            <Route path="/admin/users/:id/edit" element={<UserForm mode="edit" />} />
+            <Route path="/dashboard/users" element={<UserListPage />} />
+            <Route path="/dashboard/users/new" element={<UserForm mode="create" />} />
+            <Route path="/dashboard/users/:id" element={<UserDetailsPage />} />
+            <Route path="/dashboard/users/:id/edit" element={<UserForm mode="edit" />} />
           </Route>
         </Route>
       </Route>

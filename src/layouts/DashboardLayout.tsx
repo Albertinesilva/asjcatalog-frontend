@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Navbar, Sidebar } from "@/components";
 
-export default function AdminLayout() {
+export default function DashboardLayout() {
   return (
     <>
       <Navbar />

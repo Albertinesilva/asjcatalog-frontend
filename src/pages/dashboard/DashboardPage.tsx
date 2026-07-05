@@ -96,17 +96,17 @@ export default function DashboardPage() {
 
   const shortcuts: { to: string; title: string; desc: string; show?: boolean }[] = [
     {
-      to: "/admin/products/new",
+      to: "/dashboard/products/new",
       title: "Novo produto",
       desc: "Cadastrar um produto no catálogo.",
     },
     {
-      to: "/admin/categories/new",
+      to: "/dashboard/categories/new",
       title: "Nova categoria",
       desc: "Criar uma categoria para organizar produtos.",
     },
     {
-      to: "/admin/users/new",
+      to: "/dashboard/users/new",
       title: "Novo usuário",
       desc: "Adicionar um novo usuário administrativo.",
       show: isAdmin,
@@ -140,7 +140,7 @@ export default function DashboardPage() {
               value={state.products}
               hint="Total cadastrado no catálogo"
               loading={state.loading}
-              to="/admin/products"
+              to="/dashboard/products"
             />
           </div>
           <div className="col-12 col-sm-6 col-lg-4">
@@ -149,7 +149,7 @@ export default function DashboardPage() {
               value={state.categories}
               hint="Categorias disponíveis"
               loading={state.loading}
-              to="/admin/categories"
+              to="/dashboard/categories"
             />
           </div>
           {isAdmin && (
@@ -159,7 +159,7 @@ export default function DashboardPage() {
                 value={state.users}
                 hint="Contas administrativas ativas"
                 loading={state.loading}
-                to="/admin/users"
+                to="/dashboard/users"
               />
             </div>
           )}
