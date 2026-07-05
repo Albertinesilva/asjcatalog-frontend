@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
+import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { getPendingEmail, removePendingEmail } from "@/utils/storage";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type Status = "loading" | "success" | "expired" | "invalid" | "already" | "missing" | "error";
 
@@ -79,128 +80,112 @@ export default function ActivateAccountPage() {
     }
   };
 
+  const hintCenter = `${authFieldHint} text-center`;
+
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <div className={styles.loginForm}>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <div className="flex flex-col gap-md">
         {status === "loading" && (
           <>
-            <h2 className={styles.formTitle}>Ativando sua conta</h2>
-            <p className={styles.passwordHint} style={{ textAlign: "center" }}>
-              Validando seu token, aguarde...
-            </p>
+            <h2 className={authFormTitle}>Ativando sua conta</h2>
+            <p className={hintCenter}>Validando seu token, aguarde...</p>
           </>
         )}
 
         {status === "success" && (
           <>
-            <h2 className={styles.formTitle}>Conta ativada com sucesso</h2>
-            <p className={styles.passwordHint} style={{ textAlign: "center" }}>
-              Sua conta foi ativada. Agora você pode realizar login.
-            </p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
+            <h2 className={authFormTitle}>Conta ativada com sucesso</h2>
+            <p className={hintCenter}>Sua conta foi ativada. Agora você pode realizar login.</p>
+            <Link to="/auth/login" className="w-full">
+              <Button type="button" size="lg" fullWidth>
                 Ir para login
-              </Link>
-            </div>
+              </Button>
+            </Link>
           </>
         )}
 
         {status === "expired" && (
           <>
-            <h2 className={styles.formTitle}>Link expirado</h2>
-            <p className={styles.passwordHint} style={{ textAlign: "center" }}>
-              {errorMsg ?? "O link de ativação expirou."}
-            </p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                Ir para login
+            <h2 className={authFormTitle}>Link expirado</h2>
+            <p className={hintCenter}>{errorMsg ?? "O link de ativação expirou."}</p>
+            <div className="flex gap-sm mt-sm">
+              <Link to="/auth/login" className="flex-1">
+                <Button type="button" variant="outline" size="lg" fullWidth>
+                  Ir para login
+                </Button>
               </Link>
-              <button
-                type="button"
-                className={`btn btn-primary ${styles.submitBtn}`}
-                onClick={resend}
-              >
+              <Button type="button" size="lg" onClick={resend} className="flex-1">
                 Reenviar novo e-mail
-              </button>
+              </Button>
             </div>
           </>
         )}
 
         {status === "invalid" && (
           <>
-            <h2 className={styles.formTitle}>Link inválido</h2>
-            <p className={styles.passwordHint} style={{ textAlign: "center" }}>
-              O link utilizado não é válido.
-            </p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                Ir para login
+            <h2 className={authFormTitle}>Link inválido</h2>
+            <p className={hintCenter}>O link utilizado não é válido.</p>
+            <div className="flex gap-sm mt-sm">
+              <Link to="/auth/login" className="flex-1">
+                <Button type="button" variant="outline" size="lg" fullWidth>
+                  Ir para login
+                </Button>
               </Link>
-              <button
-                type="button"
-                className={`btn btn-primary ${styles.submitBtn}`}
-                onClick={resend}
-              >
+              <Button type="button" size="lg" onClick={resend} className="flex-1">
                 Solicitar novo e-mail
-              </button>
+              </Button>
             </div>
           </>
         )}
 
         {status === "already" && (
           <>
-            <h2 className={styles.formTitle}>Conta já ativada</h2>
-            <p className={styles.passwordHint} style={{ textAlign: "center" }}>
-              Sua conta já está ativa. Você pode realizar login normalmente.
-            </p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
+            <h2 className={authFormTitle}>Conta já ativada</h2>
+            <p className={hintCenter}>Sua conta já está ativa. Você pode realizar login normalmente.</p>
+            <Link to="/auth/login" className="w-full">
+              <Button type="button" size="lg" fullWidth>
                 Ir para login
-              </Link>
-            </div>
+              </Button>
+            </Link>
           </>
         )}
 
         {status === "missing" && (
           <>
-            <h2 className={styles.formTitle}>Link inválido</h2>
-            <p className={styles.fieldError}>Link de ativação inválido: token não informado.</p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                Ir para login
+            <h2 className={authFormTitle}>Link inválido</h2>
+            <p className={authFieldError}>Link de ativação inválido: token não informado.</p>
+            <div className="flex gap-sm mt-sm">
+              <Link to="/auth/login" className="flex-1">
+                <Button type="button" variant="outline" size="lg" fullWidth>
+                  Ir para login
+                </Button>
               </Link>
-              <button
-                type="button"
-                className={`btn btn-primary ${styles.submitBtn}`}
-                onClick={resend}
-              >
+              <Button type="button" size="lg" onClick={resend} className="flex-1">
                 Solicitar novo e-mail
-              </button>
+              </Button>
             </div>
           </>
         )}
 
         {status === "error" && (
           <>
-            <h2 className={styles.formTitle}>Falha na ativação</h2>
-            <p className={styles.fieldError}>
+            <h2 className={authFormTitle}>Falha na ativação</h2>
+            <p className={authFieldError}>
               {errorMsg ?? "Não foi possível ativar sua conta no momento."}
             </p>
-            <div className={styles.registerActions}>
-              <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                Ir para login
+            <div className="flex gap-sm mt-sm">
+              <Link to="/auth/login" className="flex-1">
+                <Button type="button" variant="outline" size="lg" fullWidth>
+                  Ir para login
+                </Button>
               </Link>
-              <button
-                type="button"
-                className={`btn btn-primary ${styles.submitBtn}`}
-                onClick={resend}
-              >
+              <Button type="button" size="lg" onClick={resend} className="flex-1">
                 Reenviar e-mail
-              </button>
+              </Button>
             </div>
           </>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountApi } from "@/api/account-api";
+import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldError, authFormTitle } from "./_ui";
 
 type RecoverFormFields = {
   email: string;
@@ -38,59 +39,61 @@ export default function RecoverPage() {
   };
 
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>Recuperar senha</h2>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <h2 className={authFormTitle}>Recuperar senha</h2>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
-            type="text"
-            className={`form-control ${styles.inputBase}`}
-            placeholder="Digite o Email Cadastrado"
+            type="email"
+            autoComplete="email"
+            className={inputBaseClasses}
+            placeholder="Digite o email cadastrado"
+            aria-label="Email"
             {...register("email", {
               required: true,
               pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
             })}
           />
           {errors.email?.type === "required" && (
-            <p className={styles.fieldError}>O email é obrigatório</p>
+            <p className={authFieldError}>O email é obrigatório</p>
           )}
           {errors.email?.type === "pattern" && (
-            <p className={styles.fieldError}>Insira um email válido!</p>
+            <p className={authFieldError}>Insira um email válido!</p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
-            type="text"
-            className={`form-control ${styles.inputBase}`}
-            placeholder="Repita o Email Cadastrado"
+            type="email"
+            autoComplete="email"
+            className={inputBaseClasses}
+            placeholder="Repita o email cadastrado"
+            aria-label="Confirmar email"
             {...register("emailConfirm", {
               required: true,
               validate: (value) => value === emailValue || "Os emails não coincidem",
             })}
           />
           {errors.emailConfirm?.type === "required" && (
-            <p className={styles.fieldError}>Confirme o email</p>
+            <p className={authFieldError}>Confirme o email</p>
           )}
           {errors.emailConfirm?.type === "validate" && (
-            <p className={styles.fieldError}>{errors.emailConfirm.message}</p>
+            <p className={authFieldError}>{errors.emailConfirm.message}</p>
           )}
         </div>
 
-        <div className={styles.recoverActions}>
-          <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            Cancelar
+        <div className="flex gap-sm mt-sm">
+          <Link to="/auth/login" className="flex-1">
+            <Button type="button" variant="outline" size="lg" fullWidth>
+              Cancelar
+            </Button>
           </Link>
-          <button
-            type="submit"
-            className={`btn btn-primary ${styles.submitBtn}`}
-            disabled={isSubmitting}
-          >
+          <Button type="submit" size="lg" loading={isSubmitting} className="flex-1">
             {isSubmitting ? "Enviando..." : "Enviar"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

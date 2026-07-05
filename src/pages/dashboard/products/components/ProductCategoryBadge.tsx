@@ -1,19 +1,15 @@
+import { Badge } from "@/components/ui";
+
 type Props = { name: string };
 
+/**
+ * ProductCategoryBadge — Fase 10.4.
+ * Migrado para o Badge do Design System.
+ */
 export default function ProductCategoryBadge({ name }: Props) {
   return (
-    <span
-      className="badge rounded-pill text-uppercase"
-      style={{
-        backgroundColor: "#e6f7f2",
-        color: "#1a8a6d",
-        fontWeight: 600,
-        letterSpacing: "0.03em",
-        padding: "6px 12px",
-        fontSize: 11,
-      }}
-    >
+    <Badge variant="outline" className="uppercase tracking-wider">
       {name}
-    </span>
+    </Badge>
   );
 }

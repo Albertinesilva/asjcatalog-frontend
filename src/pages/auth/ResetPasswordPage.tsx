@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountApi } from "@/api/account-api";
 import { PasswordInput } from "@/components";
+import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type FormFields = {
   password: string;
@@ -43,65 +44,75 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>Redefinir senha</h2>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <h2 className={authFormTitle}>Redefinir senha</h2>
 
-        {!token && <p className={styles.fieldError}>Token de redefinição não informado na URL.</p>}
+        {!token && (
+          <p className={authFieldError}>Token de redefinição não informado na URL.</p>
+        )}
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <PasswordInput
-            className={`form-control ${styles.inputBase}`}
+            className={inputBaseClasses}
             placeholder="Nova senha"
+            autoComplete="new-password"
+            aria-label="Nova senha"
             {...register("password", {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
             })}
           />
-          <p className={styles.passwordHint}>
+          <p className={authFieldHint}>
             A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
           </p>
           {errors.password?.type === "required" && (
-            <p className={styles.fieldError}>A senha é obrigatória</p>
+            <p className={authFieldError}>A senha é obrigatória</p>
           )}
           {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
-            <p className={styles.fieldError}>
+            <p className={authFieldError}>
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <PasswordInput
-            className={`form-control ${styles.inputBase}`}
+            className={inputBaseClasses}
             placeholder="Confirmar nova senha"
+            autoComplete="new-password"
+            aria-label="Confirmar nova senha"
             {...register("confirmPassword", {
               required: true,
               validate: (v) => v === passwordValue || "As senhas não coincidem",
             })}
           />
           {errors.confirmPassword?.type === "required" && (
-            <p className={styles.fieldError}>Confirme a senha</p>
+            <p className={authFieldError}>Confirme a senha</p>
           )}
           {errors.confirmPassword?.type === "validate" && (
-            <p className={styles.fieldError}>{errors.confirmPassword.message}</p>
+            <p className={authFieldError}>{errors.confirmPassword.message}</p>
           )}
         </div>
 
-        <div className={styles.recoverActions}>
-          <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            Cancelar
+        <div className="flex gap-sm mt-sm">
+          <Link to="/auth/login" className="flex-1">
+            <Button type="button" variant="outline" size="lg" fullWidth>
+              Cancelar
+            </Button>
           </Link>
-          <button
+          <Button
             type="submit"
-            className={`btn btn-primary ${styles.submitBtn}`}
+            size="lg"
+            loading={isSubmitting}
             disabled={isSubmitting || !token}
+            className="flex-1"
           >
             {isSubmitting ? "Enviando..." : "Redefinir"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

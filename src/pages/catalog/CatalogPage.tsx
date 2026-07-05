@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { ProductItem, LoadingState, ErrorState, EmptyState } from "@/components";
+import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import type { Category, ProductResponse, SpringPage } from "@/types";
-import styles from "@/styles/pages/catalog.module.css";
 
 export default function CatalogPage() {
   const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
@@ -73,69 +73,88 @@ export default function CatalogPage() {
     return items;
   }, [totalPages]);
 
+  const pageBtn =
+    "inline-flex items-center justify-center w-9 h-9 rounded-full text-small font-semibold " +
+    "transition-colors duration-DEFAULT ease-standard " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
   return (
-    <div className="container-fluid px-4 py-4">
-      <div className={styles.headerRow}>
-        <h3 className={styles.catalogTitle}>Catálogo de produtos</h3>
-        <div className={`card-base border-radius-10 ${styles.filterCard}`}>
-          <div className={styles.filterControls}>
-            <div className={styles.searchWrapper}>
-              <input
-                type="search"
-                className={`form-control ${styles.searchInput}`}
-                placeholder="Pesquisar Produto"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <span className={styles.searchIcon} aria-hidden>
-                ⌕
-              </span>
-            </div>
-            <select
-              className={`form-select ${styles.categorySelect}`}
-              value={categoryIds}
-              onChange={(e) => setCategoryIds(e.target.value)}
-            >
-              <option value="">Filtrar por Categoria</option>
-              {categories.map((c) => (
-                <option key={c.id} value={String(c.id)}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              className={`btn btn-outline-secondary ${styles.clearBtn}`}
-              onClick={clearFilters}
-            >
-              Limpar filtros
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="w-full mx-auto max-w-[1400px] px-md py-lg lg:px-xl lg:py-xl">
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-lg">
+        <h1 className="font-heading text-h2 text-foreground m-0">Catálogo de produtos</h1>
+        <Card
+          padding="none"
+          elevated={false}
+          bordered
+          className="flex-1 md:max-w-[720px] flex flex-col md:flex-row md:items-stretch overflow-hidden"
+        >
+          <input
+            type="search"
+            className={cn(
+              inputBaseClasses,
+              "flex-1 border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none",
+            )}
+            placeholder="Pesquisar produto"
+            aria-label="Pesquisar produto"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select
+            className={cn(
+              inputBaseClasses,
+              "flex-1 border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none",
+            )}
+            value={categoryIds}
+            onChange={(e) => setCategoryIds(e.target.value)}
+            aria-label="Filtrar por categoria"
+          >
+            <option value="">Filtrar por categoria</option>
+            {categories.map((c) => (
+              <option key={c.id} value={String(c.id)}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <Button
+            type="button"
+            variant="ghost"
+            size="md"
+            onClick={clearFilters}
+            className="rounded-none md:min-w-[160px] text-foreground-muted hover:text-accent"
+          >
+            Limpar filtros
+          </Button>
+        </Card>
+      </header>
 
       {loading ? (
         <LoadingState message="Carregando produtos..." />
       ) : error ? (
         <ErrorState message={error} />
+      ) : products.length === 0 ? (
+        <EmptyState
+          title="Nenhum produto encontrado"
+          description="Tente ajustar os filtros de busca."
+        />
       ) : (
-        <div className={styles.catalogProducts}>
-          {products.length === 0 ? (
-            <EmptyState
-              title="Nenhum produto encontrado"
-              description="Tente ajustar os filtros de busca."
-            />
-          ) : (
-            products.map((product) => <ProductItem key={product.id} {...product} />)
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-md">
+          {products.map((product) => (
+            <ProductItem key={product.id} {...product} />
+          ))}
         </div>
       )}
 
       {totalPages > 1 && (
-        <div className={styles.pagination}>
+        <nav
+          aria-label="Paginação"
+          className="mt-xl mb-xl flex items-center justify-center flex-wrap gap-xs"
+        >
           <button
             type="button"
-            className={styles.pageArrow}
+            className={cn(
+              pageBtn,
+              "bg-surface border border-border text-foreground-muted hover:bg-surface-hover disabled:opacity-40 disabled:cursor-not-allowed",
+            )}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
             aria-label="Página anterior"
@@ -144,15 +163,25 @@ export default function CatalogPage() {
           </button>
           {pagesToRender.map((item, idx) =>
             item === "dots" ? (
-              <span key={`dots-${idx}`} className={styles.pageDots}>
-                ...
+              <span
+                key={`dots-${idx}`}
+                className="px-xs text-small font-semibold text-foreground-muted"
+                aria-hidden
+              >
+                …
               </span>
             ) : (
               <button
                 key={item}
                 type="button"
-                className={`${styles.pageDot} ${item === currentPage ? styles.pageDotActive : ""}`}
                 onClick={() => setPage(item - 1)}
+                aria-current={item === currentPage ? "page" : undefined}
+                className={cn(
+                  pageBtn,
+                  item === currentPage
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface border border-border text-foreground hover:bg-surface-hover",
+                )}
               >
                 {item}
               </button>
@@ -160,14 +189,17 @@ export default function CatalogPage() {
           )}
           <button
             type="button"
-            className={styles.pageArrow}
+            className={cn(
+              pageBtn,
+              "bg-surface border border-border text-foreground-muted hover:bg-surface-hover disabled:opacity-40 disabled:cursor-not-allowed",
+            )}
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage >= totalPages}
             aria-label="Próxima página"
           >
             ›
           </button>
-        </div>
+        </nav>
       )}
     </div>
   );

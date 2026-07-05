@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { ButtonIcon, PasswordInput } from "@/components";
+import { PasswordInput } from "@/components";
+import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldError, authFormTitle } from "./_ui";
 
 type AuthFormFields = {
   username: string;
@@ -40,56 +41,66 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>Entrar</h2>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <h2 className={authFormTitle}>Entrar</h2>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
-            type="text"
-            className={`form-control ${styles.inputBase}`}
+            type="email"
+            autoComplete="email"
+            className={inputBaseClasses}
             placeholder="Email"
+            aria-label="Email"
             {...register("username", {
               required: true,
               pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
             })}
           />
           {errors.username?.type === "required" && (
-            <p className={styles.fieldError}>O preenchimento do email é obrigatório</p>
+            <p className={authFieldError}>O preenchimento do email é obrigatório</p>
           )}
           {errors.username?.type === "pattern" && (
-            <p className={styles.fieldError}>Insira um email válido!</p>
+            <p className={authFieldError}>Insira um email válido!</p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <PasswordInput
-            className={`form-control ${styles.inputBase}`}
+            className={cn(inputBaseClasses)}
             placeholder="Senha"
+            autoComplete="current-password"
+            aria-label="Senha"
             {...register("password", { required: true })}
           />
           {errors.password?.type === "required" && (
-            <p className={styles.fieldError}>O preenchimento da senha é obrigatório</p>
+            <p className={authFieldError}>O preenchimento da senha é obrigatório</p>
           )}
         </div>
 
-        <Link to="/auth/recover" className={styles.loginLinkRecover}>
+        <Link
+          to="/auth/recover"
+          className="self-start text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+        >
           Esqueci a senha?
         </Link>
 
-        {errors.root && <p className={styles.fieldError}>{errors.root.message}</p>}
+        {errors.root && <p className={authFieldError}>{errors.root.message}</p>}
 
-        <div className={styles.submitWrap}>
-          <ButtonIcon label={isSubmitting ? "Entrando..." : "Entrar"} type="submit" />
-        </div>
+        <Button type="submit" size="lg" fullWidth loading={isSubmitting}>
+          {isSubmitting ? "Entrando..." : "Entrar"}
+        </Button>
 
-        <div className={styles.notRegisteredWrap}>
-          <span className={styles.notRegistered}>Ainda não tem conta?</span>
-          <Link to="/auth/register" className={styles.loginLinkRegister}>
+        <p className="text-center text-small text-foreground-muted m-0">
+          Ainda não tem conta?{" "}
+          <Link
+            to="/auth/register"
+            className="font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
             Cadastrar
           </Link>
-        </div>
+        </p>
       </form>
-    </div>
+    </Card>
   );
 }
