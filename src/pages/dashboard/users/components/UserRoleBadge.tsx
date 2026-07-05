@@ -1,7 +1,7 @@
 import type { Role } from "@/types";
 
 const LABELS: Record<Role, string> = {
-  ROLE_ADMIN: "Admin",
+  ROLE_ADMIN: "Administrador",
   ROLE_OPERATOR: "Operador",
 };
 
