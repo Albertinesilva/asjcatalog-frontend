@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
+import { Button, Card, Input } from "@/components/ui";
 
 type FormFields = { name: string };
 type Props = { mode: "create" | "edit" };
@@ -46,30 +47,28 @@ export default function CategoryForm({ mode }: Props) {
   };
 
   return (
-    <div className="card-base p-4 border-radius-10">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-3">
-            <label className="form-label">Nome</label>
-            <input
-              className="form-control"
-              {...register("name", { required: "Nome é obrigatório" })}
-            />
-            {errors.name && <small className="text-danger">{errors.name.message}</small>}
-          </div>
-          {saveError && <p className="text-danger">Erro: {saveError}</p>}
-          <div className="d-flex gap-2">
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? "Salvando..." : "Salvar"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => navigate("/dashboard/categories")}
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-    </div>
+    <Card padding="lg" className="max-w-2xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
+        <Input
+          label="Nome"
+          required
+          error={errors.name?.message}
+          {...register("name", { required: "Nome é obrigatório" })}
+        />
+        {saveError && (
+          <p className="text-small text-danger m-0" role="alert">
+            Erro: {saveError}
+          </p>
+        )}
+        <div className="flex flex-wrap gap-sm pt-sm">
+          <Button type="submit" variant="primary" loading={isSubmitting}>
+            {isSubmitting ? "Salvando..." : "Salvar"}
+          </Button>
+          <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/categories")}>
+            Cancelar
+          </Button>
+        </div>
+      </form>
+    </Card>
   );
 }
