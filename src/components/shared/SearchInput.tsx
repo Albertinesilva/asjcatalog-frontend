@@ -1,3 +1,5 @@
+import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
@@ -11,6 +13,8 @@ type Props = {
 /**
  * Input de busca controlado + botão limpar.
  * Não faz debounce — use `useDebouncedValue` no consumidor.
+ *
+ * Fase 10.2: migrado para Tailwind + Design System (Card / Input / Button).
  */
 export default function SearchInput({
   value,
@@ -18,7 +22,7 @@ export default function SearchInput({
   onClear,
   placeholder = "Pesquisar",
   ariaLabel = "Pesquisar",
-  clearLabel = "LIMPAR FILTRO",
+  clearLabel = "Limpar filtro",
   className = "",
 }: Props) {
   const handleClear = () => {
@@ -27,24 +31,29 @@ export default function SearchInput({
   };
 
   return (
-    <div className={`card-base border-radius-10 d-flex flex-column flex-md-row gap-2 flex-grow-1 p-2 ${className}`}>
+    <Card
+      padding="sm"
+      bordered
+      elevated={false}
+      className={cn("flex flex-col md:flex-row gap-sm flex-grow", className)}
+    >
       <input
         type="search"
-        className="form-control border-0 flex-grow-1"
-        style={{ height: 46 }}
+        className={cn(inputBaseClasses, "flex-grow border-transparent bg-transparent shadow-none")}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label={ariaLabel}
       />
-      <button
+      <Button
         type="button"
-        className="btn btn-outline-secondary"
-        style={{ height: 46, borderRadius: 10, minWidth: 150 }}
+        variant="secondary"
+        size="md"
         onClick={handleClear}
+        className="md:min-w-[150px]"
       >
         {clearLabel}
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 }

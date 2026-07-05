@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from "react";
+import { Button, Card, type ButtonVariant } from "@/components/ui";
 
 type Variant = "danger" | "primary" | "warning";
 
@@ -22,8 +23,15 @@ type Props = {
  * - Foco inicial no botão Cancelar (menos destrutivo)
  * - aria-labelledby / aria-describedby ligados ao título/descrição
  *
- * Usa apenas Bootstrap — nenhuma dependência extra.
+ * Fase 10.2: migrado para Tailwind + Card/Button do Design System.
+ * Nenhuma dependência do modal Bootstrap.
  */
+const variantToButton: Record<Variant, ButtonVariant> = {
+  danger: "danger",
+  primary: "primary",
+  warning: "primary",
+};
+
 export default function ConfirmDialog({
   open,
   title,
@@ -50,7 +58,6 @@ export default function ConfirmDialog({
     };
     document.addEventListener("keydown", onKey);
 
-    // Foco inicial no Cancelar (opção segura).
     const t = setTimeout(() => cancelRef.current?.focus(), 0);
 
     return () => {
@@ -64,47 +71,50 @@ export default function ConfirmDialog({
 
   return (
     <div
-      className="modal d-block"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={description ? descId : undefined}
-      style={{ background: "rgba(0,0,0,0.4)" }}
+      className="fixed inset-0 z-modal flex items-center justify-center p-md bg-overlay/50"
       onClick={onCancel}
     >
-      <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-content border-radius-10">
-          <div className="modal-header">
-            <h5 className="modal-title" id={titleId}>
-              {title}
-            </h5>
-          </div>
-          {description && (
-            <div className="modal-body" id={descId}>
-              {typeof description === "string" ? <p className="mb-0">{description}</p> : description}
-            </div>
-          )}
-          <div className="modal-footer">
-            <button
-              ref={cancelRef}
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={onCancel}
-              disabled={isConfirming}
-            >
-              {cancelLabel}
-            </button>
-            <button
-              type="button"
-              className={`btn btn-${variant}`}
-              onClick={onConfirm}
-              disabled={isConfirming}
-            >
-              {isConfirming ? confirmingLabel : confirmLabel}
-            </button>
-          </div>
+      <Card
+        padding="none"
+        elevated
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-lg overflow-hidden"
+      >
+        <div className="px-lg py-md border-b border-border">
+          <h5 id={titleId} className="font-heading text-title text-foreground m-0">
+            {title}
+          </h5>
         </div>
-      </div>
+        {description && (
+          <div id={descId} className="px-lg py-md text-body text-foreground">
+            {typeof description === "string" ? <p className="m-0">{description}</p> : description}
+          </div>
+        )}
+        <div className="px-lg py-md border-t border-border flex justify-end gap-sm">
+          <Button
+            ref={cancelRef}
+            type="button"
+            variant="secondary"
+            onClick={onCancel}
+            disabled={isConfirming}
+          >
+            {cancelLabel}
+          </Button>
+          <Button
+            type="button"
+            variant={variantToButton[variant]}
+            onClick={onConfirm}
+            loading={isConfirming}
+            disabled={isConfirming}
+          >
+            {isConfirming ? confirmingLabel : confirmLabel}
+          </Button>
+        </div>
+      </Card>
     </div>
   );
 }

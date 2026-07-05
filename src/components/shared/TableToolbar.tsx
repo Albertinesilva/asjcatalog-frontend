@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Badge, cn } from "@/components/ui";
 
 type Props = {
   title?: string;
@@ -11,32 +12,34 @@ type Props = {
 /**
  * Cabeçalho reutilizável para listagens administrativas.
  * Slot `children` recebe as ações (botões, links, filtros).
+ *
+ * Fase 10.2: migrado para Tailwind + Badge do Design System.
  */
 export default function TableToolbar({ title, subtitle, counter, children, className = "" }: Props) {
+  const hasCounter = typeof counter === "number";
   return (
     <div
-      className={`d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-center justify-content-between mb-4 ${className}`}
+      className={cn(
+        "flex flex-col md:flex-row gap-md items-stretch md:items-center justify-between mb-lg",
+        className,
+      )}
     >
-      <div>
+      <div className="flex flex-col gap-xs">
         {title ? (
-          <h4 className="m-0 fw-bold" style={{ color: "#263238" }}>
+          <h4 className="m-0 font-heading font-bold text-h3 text-foreground inline-flex items-center gap-sm">
             {title}
-            {typeof counter === "number" && (
-              <span className="badge bg-secondary ms-2" style={{ fontSize: "0.7em" }}>
-                {counter}
-              </span>
-            )}
+            {hasCounter && <Badge variant="default">{counter}</Badge>}
           </h4>
         ) : (
-          typeof counter === "number" && (
-            <span className="badge bg-secondary" style={{ fontSize: "0.85em" }}>
+          hasCounter && (
+            <Badge variant="default">
               {counter} {counter === 1 ? "item" : "itens"}
-            </span>
+            </Badge>
           )
         )}
-        {subtitle && <small className="text-muted d-block">{subtitle}</small>}
+        {subtitle && <small className="text-small text-foreground-muted">{subtitle}</small>}
       </div>
-      {children && <div className="d-flex gap-2 flex-wrap">{children}</div>}
+      {children && <div className="flex gap-sm flex-wrap">{children}</div>}
     </div>
   );
 }
