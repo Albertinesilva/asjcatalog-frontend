@@ -160,33 +160,13 @@ export default function DashboardPage() {
     };
   }, [isAdmin]);
 
-  const shortcuts: { to: string; title: string; desc: string; icon: IconName; show?: boolean }[] = [
-    {
-      to: "/dashboard/products/new",
-      title: "Novo produto",
-      desc: "Adicionar um novo produto ao catálogo.",
-      icon: "plus",
-    },
-    {
-      to: "/dashboard/categories/new",
-      title: "Nova categoria",
-      desc: "Criar uma categoria para organizar o catálogo.",
-      icon: "tag",
-    },
-    {
-      to: "/dashboard/users/new",
-      title: "Novo usuário",
-      desc: "Cadastrar um usuário com acesso à plataforma.",
-      icon: "users",
-      show: isAdmin,
-    },
-    {
-      to: "/catalog",
-      title: "Ver catálogo público",
-      desc: "Visualizar o catálogo como um visitante.",
-      icon: "eye",
-    },
-  ].filter((i) => i.show !== false);
+  type Shortcut = { to: string; title: string; desc: string; icon: IconName; show?: boolean };
+  const shortcuts: Shortcut[] = ([
+    { to: "/dashboard/products/new", title: "Novo produto", desc: "Adicionar um novo produto ao catálogo.", icon: "plus" as IconName },
+    { to: "/dashboard/categories/new", title: "Nova categoria", desc: "Criar uma categoria para organizar o catálogo.", icon: "tag" as IconName },
+    { to: "/dashboard/users/new", title: "Novo usuário", desc: "Cadastrar um usuário com acesso à plataforma.", icon: "users" as IconName, show: isAdmin },
+    { to: "/catalog", title: "Ver catálogo público", desc: "Visualizar o catálogo como um visitante.", icon: "eye" as IconName },
+  ] as Shortcut[]).filter((i) => i.show !== false);
 
   return (
     <div className="flex flex-col gap-xl">
