@@ -166,6 +166,21 @@
   text-decoration: underline;
 }
 
+.userGreeting {
+  display: block;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.userRole {
+  display: block;
+  font-size: 11px;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
 .backdrop {
   position: fixed;
   inset: 0;
