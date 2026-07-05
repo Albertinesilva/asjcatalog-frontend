@@ -2,9 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
 import { PasswordInput } from "@/components";
+import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail } from "@/utils/storage";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
   firstName: string;
@@ -71,105 +72,113 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>Criar conta</h2>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <h2 className={authFormTitle}>Criar conta</h2>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
             type="text"
-            className={`form-control ${styles.inputBase}`}
+            autoComplete="given-name"
+            className={inputBaseClasses}
             placeholder="Nome"
+            aria-label="Nome"
             {...register("firstName", { required: true, maxLength: 80 })}
           />
           {errors.firstName?.type === "required" && (
-            <p className={styles.fieldError}>O nome é obrigatório</p>
+            <p className={authFieldError}>O nome é obrigatório</p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
             type="text"
-            className={`form-control ${styles.inputBase}`}
+            autoComplete="family-name"
+            className={inputBaseClasses}
             placeholder="Sobrenome"
+            aria-label="Sobrenome"
             {...register("lastName", { required: true, maxLength: 80 })}
           />
           {errors.lastName?.type === "required" && (
-            <p className={styles.fieldError}>O sobrenome é obrigatório</p>
+            <p className={authFieldError}>O sobrenome é obrigatório</p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <input
-            type="text"
-            className={`form-control ${styles.inputBase}`}
+            type="email"
+            autoComplete="email"
+            className={inputBaseClasses}
             placeholder="Email"
+            aria-label="Email"
             {...register("email", {
               required: true,
               pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
             })}
           />
           {errors.email?.type === "required" && (
-            <p className={styles.fieldError}>O email é obrigatório</p>
+            <p className={authFieldError}>O email é obrigatório</p>
           )}
           {errors.email?.type === "pattern" && (
-            <p className={styles.fieldError}>Insira um email válido!</p>
+            <p className={authFieldError}>Insira um email válido!</p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <PasswordInput
-            className={`form-control ${styles.inputBase}`}
-            placeholder="Digite aqui a Senha"
+            className={inputBaseClasses}
+            placeholder="Digite aqui a senha"
+            autoComplete="new-password"
+            aria-label="Senha"
             {...register("password", {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
             })}
           />
-          <p className={styles.passwordHint}>
+          <p className={authFieldHint}>
             A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
           </p>
           {errors.password?.type === "required" && (
-            <p className={styles.fieldError}>A senha é obrigatória</p>
+            <p className={authFieldError}>A senha é obrigatória</p>
           )}
           {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
-            <p className={styles.fieldError}>
+            <p className={authFieldError}>
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className="flex flex-col gap-1.5">
           <PasswordInput
-            className={`form-control ${styles.inputBase}`}
-            placeholder="Repita aqui a Senha"
+            className={inputBaseClasses}
+            placeholder="Repita a senha"
+            autoComplete="new-password"
+            aria-label="Confirmar senha"
             {...register("passwordConfirm", {
               required: true,
               validate: (value) => value === passwordValue || "As senhas não coincidem",
             })}
           />
           {errors.passwordConfirm?.type === "required" && (
-            <p className={styles.fieldError}>Confirme a senha</p>
+            <p className={authFieldError}>Confirme a senha</p>
           )}
           {errors.passwordConfirm?.type === "validate" && (
-            <p className={styles.fieldError}>{errors.passwordConfirm.message}</p>
+            <p className={authFieldError}>{errors.passwordConfirm.message}</p>
           )}
         </div>
 
-        <div className={styles.registerActions}>
-          <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            Cancelar
+        <div className="flex gap-sm mt-sm">
+          <Link to="/auth/login" className="flex-1">
+            <Button type="button" variant="outline" size="lg" fullWidth>
+              Cancelar
+            </Button>
           </Link>
-          <button
-            type="submit"
-            className={`btn btn-primary ${styles.submitBtn}`}
-            disabled={isSubmitting}
-          >
+          <Button type="submit" size="lg" loading={isSubmitting} className="flex-1">
             {isSubmitting ? "Cadastrando..." : "Cadastrar"}
-          </button>
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 }

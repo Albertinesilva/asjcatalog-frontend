@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { accountService } from "@/services/account-service";
+import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { getPendingEmail } from "@/utils/storage";
-import styles from "@/styles/pages/auth.module.css";
+import { authFieldHint, authFormTitle } from "./_ui";
 
 const COOLDOWN_KEY = "activationResendAvailableAt";
 const COOLDOWN_MS = 60_000;
@@ -92,66 +93,62 @@ export default function ActivationPendingPage() {
   };
 
   return (
-    <div className={`card-base ${styles.authCard}`}>
-      <div className={styles.loginForm}>
-        <div className={styles.activationIcon}>
+    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+      <div className="flex flex-col gap-md">
+        <div className="flex justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="56"
             height="56"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#407bff"
+            stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="text-accent"
+            aria-hidden
           >
             <rect width="20" height="16" x="2" y="4" rx="2" />
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
           </svg>
         </div>
 
-        <h2 className={styles.formTitle}>Ative sua conta</h2>
+        <h2 className={authFormTitle}>Ative sua conta</h2>
 
-        <p className={styles.passwordHint}>Enviamos um e-mail de ativação para:</p>
-
-        <p
-          style={{
-            fontWeight: 700,
-            textAlign: "center",
-            margin: "8px 0 24px",
-            color: "#263238",
-            fontSize: "1rem",
-          }}
-        >
+        <p className={`${authFieldHint} text-center`}>Enviamos um e-mail de ativação para:</p>
+        <p className="text-center text-body font-semibold text-foreground m-0 -mt-xs mb-sm">
           {email ?? "(e-mail não informado)"}
         </p>
-
-        <p className={styles.passwordHint}>
+        <p className={`${authFieldHint} text-center`}>
           Acesse sua caixa de entrada e clique no link de ativação enviado.
         </p>
-        <p className={styles.passwordHint}>
+        <p className={`${authFieldHint} text-center`}>
           Caso não encontre o e-mail, verifique também sua pasta de spam.
         </p>
 
-        <div className={styles.registerActions}>
-          <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            Ir para login
+        <div className="flex gap-sm mt-sm">
+          <Link to="/auth/login" className="flex-1">
+            <Button type="button" variant="outline" size="lg" fullWidth>
+              Ir para login
+            </Button>
           </Link>
-          <button
+          <Button
             type="button"
-            className={`btn btn-primary ${styles.submitBtn}`}
+            size="lg"
             onClick={handleResend}
             disabled={sending || remaining > 0}
+            loading={sending}
+            className="flex-1"
           >
             {sending
               ? "Reenviando..."
               : remaining > 0
                 ? `Reenviar em ${remaining}s`
                 : "Reenviar e-mail"}
-          </button>
+          </Button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
