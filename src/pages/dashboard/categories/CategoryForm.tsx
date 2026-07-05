@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { categoryService } from "@/services/category-service";
+import { alerts } from "@/utils/alerts";
 
 type FormFields = { name: string };
 type Props = { mode: "create" | "edit" };
@@ -30,11 +31,13 @@ export default function CategoryForm({ mode }: Props) {
     try {
       if (mode === "create") {
         await categoryService.create({ name: data.name });
+        await alerts.success("Categoria criada", "Categoria criada com sucesso.");
       } else if (id) {
         await categoryService.update(Number(id), {
           id: Number(id),
           name: data.name,
         });
+        await alerts.success("Categoria atualizada", "Categoria atualizada com sucesso.");
       }
       navigate("/dashboard/categories");
     } catch (err) {
