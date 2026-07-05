@@ -60,16 +60,16 @@ export default function Navbar() {
         <div className={`${styles.menuWrap} ${open ? styles.menuWrapOpen : ""}`}>
           <ul className={styles.mainMenu}>
             <li>
-              <NavbarLink label="HOME" target="/" />
+              <NavbarLink label="Início" target="/" />
             </li>
             <li>
-              <NavbarLink label="CATÁLOGO" target="/catalog" />
+              <NavbarLink label="Catálogo" target="/catalog" />
             </li>
             <li>
               {authenticated ? (
-                <NavbarLink label="DASHBOARD" target="/dashboard" />
+                <NavbarLink label="Dashboard" target="/dashboard" />
               ) : (
-                <NavbarLink label="LOGIN" target="/auth/login" />
+                <NavbarLink label="Entrar" target="/auth/login" />
               )}
             </li>
           </ul>
@@ -85,7 +85,7 @@ export default function Navbar() {
                 </span>
               </Link>
               <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
-                SAIR
+                Sair
               </button>
             </div>
           )}

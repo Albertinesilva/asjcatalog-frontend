@@ -45,14 +45,14 @@ export default function ProductItemAdmin(product: Props) {
             to={`/dashboard/products/${id}`}
             className="btn btn-outline-secondary btn-block border-radius-10 col-6"
           >
-            EDITAR
+            Editar
           </Link>
           <button
             type="button"
             className="btn btn-outline-danger btn-block border-radius-10 col-6 "
             onClick={() => onDelete?.(id)}
           >
-            EXCLUIR
+            Excluir
           </button>
         </div>
       </div>

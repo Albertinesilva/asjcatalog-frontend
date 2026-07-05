@@ -17,10 +17,6 @@
   --asj-border: #e2e8f0;
   --asj-body-bg: #f8fafc;
   --asj-body-color: #0b1220;
-  /* legacy aliases for compatibility */
-  --dscatalog-primary: var(--asj-primary);
-  --dscatalog-body-bg: var(--asj-body-bg);
-  --dscatalog-body-color: var(--asj-body-color);
 }
 
 /* 2. Base styles */

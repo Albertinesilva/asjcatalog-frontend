@@ -9,13 +9,14 @@ export default function AuthLayout() {
       <Navbar />
       <div className={styles.authContainer}>
         <div className={styles.authInfo}>
-          <h1 className={styles.authInfoTitle}>Divulgue seus produtos no ASJ Catalog</h1>
+          <h1 className={styles.authInfoTitle}>Gerencie seu catálogo com o ASJ Catalog</h1>
           <p className={styles.authInfoSubtitle}>
-            Faça parte do nosso catálogo de divulgação e aumente a venda dos seus produtos.
+            Acesse sua conta para administrar produtos, categorias e usuários em um
+            ambiente centralizado e profissional.
           </p>
           <img
             src={imageBackground}
-            alt="Pessoas divulgando produtos"
+            alt="Ilustração da plataforma ASJ Catalog"
             className={styles.authInfoImage}
           />
         </div>

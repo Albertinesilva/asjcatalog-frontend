@@ -73,7 +73,7 @@ export default function RegisterPage() {
   return (
     <div className={`card-base ${styles.authCard}`}>
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>CADASTRO</h2>
+        <h2 className={styles.formTitle}>Criar conta</h2>
 
         <div className={styles.fieldGroup}>
           <input
@@ -159,14 +159,14 @@ export default function RegisterPage() {
 
         <div className={styles.registerActions}>
           <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            CANCELAR
+            Cancelar
           </Link>
           <button
             type="submit"
             className={`btn btn-primary ${styles.submitBtn}`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "CADASTRANDO..." : "CADASTRAR"}
+            {isSubmitting ? "Cadastrando..." : "Cadastrar"}
           </button>
         </div>
       </form>

@@ -1,12 +1,14 @@
 # ASJ Catalog
 
-Catálogo de produtos — front-end em **React 19 + Vite + React Router**
-consumindo uma API REST Spring Boot (ASJ Catalog). O projeto inclui área
-pública (Home + Catálogo) e área administrativa autenticada via OAuth2 com
-CRUD de Produtos, Categorias e Usuários.
+**ASJ Catalog** é uma plataforma profissional para gestão e organização
+de catálogos de produtos, com controle centralizado e administração
+simplificada. O front-end é um SPA em **React 19 + Vite + React Router**
+que consome uma API REST OAuth2, oferecendo uma área pública (Home e
+Catálogo) e uma área autenticada (Dashboard) com CRUD de Produtos,
+Categorias e Usuários.
 
-> Stack: **Vite 6 (SPA) · React 19 · TypeScript 5 · React Router v6 ·
-> React Hook Form · Axios · Bootstrap 5 · JWT (jwt-decode)**
+> Stack: **Vite · React 19 · TypeScript 5 · React Router v6 ·
+> React Hook Form · Axios · Bootstrap 5 · JWT (jwt-decode) · SweetAlert2**
 
 ---
 
@@ -17,30 +19,31 @@ CRUD de Produtos, Categorias e Usuários.
 3. [Estrutura de pastas](#estrutura-de-pastas)
 4. [Como rodar localmente](#como-rodar-localmente)
 5. [Variáveis de ambiente](#variáveis-de-ambiente)
-6. [Roteamento (React Router)](#roteamento-react-router)
+6. [Roteamento](#roteamento)
 7. [Camada de dados e API](#camada-de-dados-e-api)
 8. [Autenticação e autorização](#autenticação-e-autorização)
 9. [Proxy de API (dev)](#proxy-de-api-dev)
-10. [Design system e responsividade](#design-system-e-responsividade)
+10. [Design tokens e responsividade](#design-tokens-e-responsividade)
 11. [Convenções de código](#convenções-de-código)
 12. [Scripts](#scripts)
-13. [Troubleshooting](#troubleshooting)
+13. [Roadmap](#roadmap)
 
 ---
 
 ## Visão geral
 
-O ASJ Catalog é um SPA que serve dois públicos:
+O ASJ Catalog atende dois públicos:
 
-- **Área pública** (`/`, `/catalog`, `/catalog/product/:id`) — qualquer
-  visitante pode navegar pelo catálogo, filtrar produtos e ver detalhes.
-- **Área administrativa** (`/admin/*`) — protegida por autenticação JWT.
-  Operadores fazem CRUD de produtos/categorias; administradores gerenciam
-  usuários.
+- **Área pública** (`/`, `/catalog`, `/catalog/:productId`) — qualquer
+  visitante pode navegar pelo catálogo, filtrar produtos e visualizar
+  os detalhes de cada item.
+- **Área autenticada — Dashboard** (`/dashboard/*`) — protegida por
+  autenticação JWT. Operadores gerenciam Produtos e Categorias;
+  administradores também gerenciam Usuários.
 
-O front consome a API Spring Boot do projeto **ASJ Catalog** (endpoints
-`/oauth2/token`, `/products`, `/categories`, `/users`). Em desenvolvimento,
-o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
+O objetivo do produto é oferecer uma superfície simples e consistente
+para catalogação e administração, sem incorporar comportamentos de
+marketplace ou e-commerce.
 
 ---
 
@@ -48,10 +51,9 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 | Camada       | Tecnologia                                 |
 | ------------ | ------------------------------------------ |
-| Build        | Vite 5                                     |
-| UI Framework | React 19 + TypeScript 5                    |
-| Roteamento   | React Router v6 (`react-router-dom`)       |
-| Estado/Dados | `useState` + `useEffect` + Axios           |
+| Build        | Vite                                       |
+| UI           | React 19 + TypeScript 5                    |
+| Roteamento   | React Router v6                            |
 | Formulários  | React Hook Form                            |
 | HTTP         | Axios + query-string                       |
 | Estilo       | Bootstrap 5 + CSS Modules                  |
@@ -65,234 +67,114 @@ o Vite faz proxy de `/api/proxy/*` para o backend local, contornando CORS.
 
 ```text
 src/
-├── api/                        # Camada HTTP (axios + chamadas cruas)
-│   ├── axios.ts                # Instância única + interceptors (Bearer / 401)
-│   ├── auth-api.ts             # POST /oauth2/token (Basic Auth client_id/secret)
-│   ├── account-api.ts          # /api/v1/accounts (register/activate/resend)
-│   ├── user-api.ts             # /api/v1/users (CRUD + activate/deactivate)
-│   ├── product-api.ts          # /products (CRUD)
-│   └── category-api.ts         # /categories (CRUD)
-├── assets/                     # SVGs e imagens estáticas
-├── components/
-│   ├── ButtonIcon/             # Botão azul com seta (CTA)
-│   ├── Navbar/                 # Top bar com hambúrguer mobile
-│   ├── NavbarLink/             # Link com estado ativo
-│   ├── ProductItem/            # Card de produto (catálogo)
-│   ├── ProductItemAdmin/       # Card de produto (admin) com descrição
-│   │                           # (1ª frase em negrito cinza + restante)
-│   ├── ProductPrice/           # Renderização R$ X.XXX,XX
-│   ├── PasswordInput/          # Input de senha com botão olho (mostrar/ocultar)
-│   ├── Sidebar/                # Nav lateral do /admin (Meus Produtos /
-│   │                           # Minhas Categorias / Meus Usuários)
-│   ├── shared/                 # Componentes genéricos reutilizáveis
-│   └── index.ts                # Barrel de exports
-├── contexts/
-│   └── AuthContext.tsx         # Estado global de sessão + login/logout
-├── hooks/
-│   ├── useAuth.ts              # Consome AuthContext
-│   ├── useRoles.ts             # hasRole / isAdmin / isOperator
-│   └── usePagination.ts        # Estado de paginação para Spring Page
-├── layouts/
-│   ├── AdminLayout.tsx         # Navbar + Sidebar + <Outlet />
-│   ├── AuthLayout.tsx          # Hero lateral + <Outlet />
-│   └── CatalogLayout.tsx       # Navbar + <Outlet />
+├── api/                # Camada HTTP (Axios + chamadas cruas)
+├── assets/             # Imagens e ícones
+├── components/         # Componentes de UI
+│   └── shared/         # Componentes genéricos reutilizáveis
+├── contexts/           # Estado global (AuthContext)
+├── hooks/              # Hooks reativos e utilitários
+├── layouts/            # AuthLayout, CatalogLayout, DashboardLayout
 ├── pages/
-│   ├── HomePage.tsx            # /
-│   ├── auth/
-│   │   ├── LoginPage.tsx       # /auth/login
-│   │   ├── RegisterPage.tsx    # /auth/register
-│   │   ├── RecoverPage.tsx     # /auth/recover
-│   │   ├── ActivationPendingPage.tsx  # /auth/activation-pending
-│   │   ├── ActivateAccountPage.tsx    # /activate-account?token=...
-│   │   └── ResetPasswordPage.tsx      # /reset-password?token=...
-│   ├── admin/
-│   │   ├── DashboardPage.tsx   # /admin
-│   │   ├── users/
-│   │   │   ├── UserListPage.tsx
-│   │   │   ├── UserForm.tsx
-│   │   │   └── UserDetailsPage.tsx
-│   │   ├── products/
-│   │   │   ├── ProductListPage.tsx
-│   │   │   └── ProductForm.tsx
-│   │   └── categories/
-│   │       ├── CategoryListPage.tsx
-│   │       └── CategoryForm.tsx
-│   └── catalog/
-│       ├── CatalogPage.tsx
-│       └── ProductDetailsPage.tsx
-├── routes/
-│   ├── AppRoutes.tsx           # Mapa de rotas (BrowserRouter usado no App)
-│   ├── PrivateRoute.tsx        # Guard de autenticação
-│   ├── AdminRoute.tsx          # Guard ROLE_ADMIN
-│   └── OperatorRoute.tsx       # Guard ROLE_OPERATOR (ou superior)
-├── services/                   # Regras de negócio / orquestração
-│   ├── auth-service.ts         # login / logout / isAuthenticated / getCurrentUser
-│   ├── user-service.ts
-│   ├── product-service.ts
-│   └── category-service.ts
-├── types/
-│   ├── auth.ts                 # Role, LoginRequest/Response, AccessToken
-│   ├── user.ts                 # User, UserCreate/Update/Register
-│   ├── product.ts              # Product, ProductRequest, SpringPage<T>
-│   ├── category.ts
-│   └── index.ts                # Barrel
-├── utils/
-│   ├── constants.ts            # API_BASE_URL, CLIENT_ID/SECRET, ENDPOINTS
-│   ├── storage.ts              # get/save/removeAuthData (localStorage)
-│   └── permissions.ts          # decodeToken / isTokenValid / hasAnyRole
-├── styles/
-│   ├── pages/                  # CSS Modules por página
-│   └── globals.css             # Bootstrap + tokens + estilos globais
-├── App.tsx                     # Providers (BrowserRouter + AuthProvider) + AppRoutes
-└── main.tsx                    # Entry point (createRoot)
+│   ├── HomePage.tsx
+│   ├── auth/           # login, register, recover, reset, activation
+│   ├── account/        # ProfilePage (/account/profile)
+│   ├── catalog/        # Catálogo público
+│   └── dashboard/      # Área autenticada (produtos, categorias, usuários)
+├── routes/             # AppRoutes + guards (PrivateRoute, AdminRoute)
+├── services/           # Orquestração e regras de negócio
+├── styles/             # globals.css + CSS Modules por página
+├── types/              # Contratos do backend
+└── utils/              # Constantes, storage, permissions, alerts
 ```
 
-> **Convenção de paths:** todo import usa o alias `@/*` (mapeado para
-> `src/*`). Ex.: `import { http } from "@/api/axios"`,
-> `import { useAuth } from "@/hooks/useAuth"`,
-> `import type { Product } from "@/types"`.
-
-### Camadas
-
-- **api/** — chamadas HTTP cruas. Sem lógica de UI ou estado. Toda
-  requisição autenticada usa `http` (Axios) de `api/axios.ts`, que injeta
-  `Authorization: Bearer` e desloga em `401`.
-- **services/** — fachada para componentes. Hoje encapsulam as `api/*` e
-  podem agregar regras (cache, validação, composição de endpoints).
-- **contexts/** — estado global (apenas auth por enquanto).
-- **hooks/** — leitura do contexto + utilitários reativos.
-- **routes/** — `AppRoutes` declara o mapa; `Private/Admin/OperatorRoute`
-  são guards baseados em `useAuth` + `useRoles`.
-- **layouts/** — wrappers visuais reutilizados por grupos de rotas.
-- **pages/** — componentes de página; consomem `services` + `hooks`.
-- **types/** — contratos do backend (`SpringPage<T>`, `User`, `Product`…).
-- **utils/** — helpers puros (constants, storage, permissions).
+O alias `@/*` aponta para `src/*` e é usado em todos os imports.
 
 ---
 
 ## Como rodar localmente
 
-Pré-requisitos: **Node.js ≥ 20.10.0** e **npm** (o `engine-strict=true` em
-`.npmrc` bloqueia versões inferiores). Use `nvm use` para alinhar com o
-`.nvmrc`.
+Pré-requisitos: **Node.js ≥ 20.10.0**.
 
 ```bash
-# 1. Instalar dependências
 npm install
-
-# 2. Variáveis de ambiente (opcional; ver seção abaixo)
-cp .env.example .env.local   # se existir
-
-# 3. Dev server (Vite)
-npm run dev                  # http://localhost:5173
-
-# 4. Build de produção
-npm run build
-npm run preview              # serve o build localmente
+npm run dev       # Vite dev server
+npm run build     # build de produção
+npm run preview   # serve o build localmente
 ```
 
-> O front espera que a API Spring Boot esteja rodando em
-> `http://localhost:8080` por padrão. Suba o backend ASJ Catalog (ou aponte
-> `VITE_API_BASE_URL` para outra URL) antes de testar fluxos autenticados
-> ou listagens de produto.
+O front espera a API rodando (por padrão em `http://localhost:8080`).
+Ajuste `VITE_API_BASE_URL` se necessário.
 
 ---
 
 ## Variáveis de ambiente
 
-Todas são lidas via `import.meta.env.*` (build-time) ou `process.env.*` no
-runtime do servidor (proxy).
-
 | Variável             | Default                 | Descrição                                        |
 | -------------------- | ----------------------- | ------------------------------------------------ |
-| `VITE_API_BASE_URL`  | `http://localhost:8080` | URL base da API Spring ASJ Catalog                 |
+| `VITE_API_BASE_URL`  | `http://localhost:8080` | URL base da API                                  |
 | `VITE_CLIENT_ID`     | `myclientid`            | client_id usado no Basic Auth do `/oauth2/token` |
 | `VITE_CLIENT_SECRET` | `myclientsecret`        | client_secret correspondente                     |
 
-> Todas as variáveis usam o prefixo `VITE_*` e são embutidas no bundle
-> client-side. **Não coloque secrets reais** — para isso, use um backend.
+Todas as variáveis usam o prefixo `VITE_*` e são embutidas no bundle
+client-side. **Não use secrets reais** nessas variáveis.
 
 ---
 
-## Roteamento (React Router)
+## Roteamento
 
-Todas as rotas são declaradas explicitamente em `src/pages/_app.tsx` com
-`<BrowserRouter>`, `<Routes>` e `<Route>`. Cada arquivo em `src/pages/`
-exporta um componente `default` montado em uma rota específica.
+Todas as rotas são declaradas em `src/routes/AppRoutes.tsx`. Rotas
+principais:
 
-| Caminho                         | Componente                                              |
-| ------------------------------- | ------------------------------------------------------- |
-| `/`                             | `pages/HomePage.tsx`                                    |
-| `/catalog`                      | `pages/catalog/CatalogPage.tsx`                         |
-| `/catalog/:productId`           | `pages/catalog/ProductDetailsPage.tsx`                  |
-| `/auth/login`                   | `pages/auth/LoginPage.tsx`                              |
-| `/login`                        | `pages/auth/LoginPage.tsx` (alias)                      |
-| `/auth/register`                | `pages/auth/RegisterPage.tsx`                           |
-| `/auth/recover`                 | `pages/auth/RecoverPage.tsx`                            |
-| `/auth/activation-pending`      | `pages/auth/ActivationPendingPage.tsx`                  |
-| `/activate-account?token=`      | `pages/auth/ActivateAccountPage.tsx`                    |
-| `/forgot-password`              | `pages/auth/RecoverPage.tsx` (alias de `/auth/recover`) |
-| `/reset-password?token=`        | `pages/auth/ResetPasswordPage.tsx`                      |
-| `/auth/reset-password?token=`   | `pages/auth/ResetPasswordPage.tsx`                      |
-| `/admin`                        | `pages/admin/DashboardPage.tsx`                         |
-| `/admin/products`               | `pages/admin/products/ProductListPage.tsx`              |
-| `/admin/products/new`           | `pages/admin/products/ProductForm.tsx` (`mode=create`)  |
-| `/admin/products/:id`           | `pages/admin/products/ProductForm.tsx` (`mode=edit`)    |
-| `/admin/categories`             | `pages/admin/categories/CategoryListPage.tsx`           |
-| `/admin/categories/new`         | `pages/admin/categories/CategoryForm.tsx`               |
-| `/admin/categories/:id`         | `pages/admin/categories/CategoryForm.tsx`               |
-| `/admin/users` (ADMIN)          | `pages/admin/users/UserListPage.tsx`                    |
-| `/admin/users/new` (ADMIN)      | `pages/admin/users/UserForm.tsx`                        |
-| `/admin/users/:id` (ADMIN)      | `pages/admin/users/UserDetailsPage.tsx`                 |
-| `/admin/users/:id/edit` (ADMIN) | `pages/admin/users/UserForm.tsx`                        |
+| Caminho                          | Página                                     |
+| -------------------------------- | ------------------------------------------ |
+| `/`                              | Home                                       |
+| `/catalog`                       | Catálogo público                           |
+| `/catalog/:productId`            | Detalhe do produto                         |
+| `/auth/login`                    | Entrar                                     |
+| `/auth/register`                 | Criar conta                                |
+| `/auth/recover`                  | Recuperar senha                            |
+| `/auth/reset-password?token=`    | Redefinir senha                            |
+| `/auth/activation-pending`       | Aguardando ativação                        |
+| `/activate-account?token=`       | Ativação de conta                          |
+| `/dashboard`                     | Dashboard (visão geral)                    |
+| `/dashboard/products`            | Lista de produtos                          |
+| `/dashboard/products/new`        | Novo produto                               |
+| `/dashboard/products/:id`        | Editar produto                             |
+| `/dashboard/categories`          | Lista de categorias                        |
+| `/dashboard/categories/new`      | Nova categoria                             |
+| `/dashboard/categories/:id`      | Editar categoria                           |
+| `/dashboard/users` (ADMIN)       | Lista de usuários                          |
+| `/dashboard/users/new` (ADMIN)   | Novo usuário                               |
+| `/dashboard/users/:id` (ADMIN)   | Detalhes do usuário                        |
+| `/dashboard/users/:id/edit`      | Editar usuário (ADMIN)                     |
+| `/account/profile`               | Meu Perfil                                 |
 
-> As rotas legadas (`/admin/auth`, `/admin/register`, `/admin/recover`)
-> permanecem e fazem `Navigate` para os novos paths em `/auth/*`.
-
-### Boundary de autenticação
-
-`routes/AppRoutes.tsx` envolve toda a árvore `/admin/*` com
-`<PrivateRoute />`. O guard consulta `useAuth()` (que lê o contexto
-`AuthProvider`) e, se não autenticado, redireciona para `/auth/login`
-preservando a rota original em `location.state.from`. Dentro do bloco
-protegido, `<AdminRoute />` adiciona o gate `ROLE_ADMIN` para
-`/admin/users/*`. O layout `AdminLayout` renderiza `<Navbar />` +
-`<Sidebar />` + `<Outlet />`.
+Toda a árvore `/dashboard/*` e `/account/profile` é protegida por
+`<PrivateRoute />`. As rotas de usuários adicionam o gate `<AdminRoute />`.
+Rotas antigas em `/admin/*` seguem apenas como redirecionamento temporário
+para os novos caminhos em `/dashboard/*`.
 
 ---
 
 ## Camada de dados e API
 
-Padrão simples com **Axios + hooks nativos do React**. Cada página gerencia
-o ciclo `loading / data / error` via `useState` + `useEffect`:
-
-```ts
-const [data, setData] = useState<ProductsPage | null>(null);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState<string | null>(null);
-
-useEffect(() => {
-  api
-    .get<ProductsPage>("/products", { params: { page: 0, size: 12 } })
-    .then((res) => setData(res.data))
-    .catch((err: Error) => setError(err.message))
-    .finally(() => setLoading(false));
-}, []);
-```
+Padrão simples com **Axios + hooks nativos do React**. Cada página
+gerencia o ciclo `loading / data / error` via `useState` + `useEffect`
+(ou via `usePagedQuery` nas listagens paginadas).
 
 A instância `http` (em `src/api/axios.ts`):
 
-- Usa `baseURL = '/api/proxy'` em preview Lovable (`*.lovable.app`) e em
-  dev local (o Vite faz proxy para `VITE_API_BASE_URL`).
+- Usa `baseURL = "/api/proxy"` em preview e dev local (Vite faz proxy
+  para `VITE_API_BASE_URL`).
 - Interceptor de request injeta `Authorization: Bearer <access_token>`
   quando há sessão.
-- Interceptor de response chama `logout()` em `401` (sessão expirada).
+- Interceptor de response chama `logout()` em `401`.
 
 ---
 
 ## Autenticação e autorização
 
-Fluxo OAuth2 **password grant** contra o backend Spring:
+Fluxo OAuth2 **password grant**:
 
 ```text
 POST /oauth2/token
@@ -304,110 +186,55 @@ username=...&password=...&grant_type=password
 → 200 { access_token, token_type, expires_in, scope, ... }
 ```
 
-O `access_token` é um JWT. As responsabilidades estão distribuídas:
+Responsabilidades distribuídas:
 
 | Módulo                        | Responsabilidade                                                  |
 | ----------------------------- | ----------------------------------------------------------------- |
 | `utils/storage.ts`            | `get/save/removeAuthData` em `localStorage["authData"]`           |
 | `utils/permissions.ts`        | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator` |
-| `utils/alerts.ts`             | Wrapper SweetAlert2 (success/error/warning/info/confirm/loading)  |
-| `api/auth-api.ts`             | `requestToken()` → POST `/oauth2/token` (Basic Auth)              |
-| `api/account-api.ts`          | `register / activate / resendActivation` (`/api/v1/accounts/*`)   |
+| `utils/alerts.ts`             | Wrapper SweetAlert2                                               |
+| `api/auth-api.ts`             | `requestToken()` → POST `/oauth2/token`                           |
+| `api/account-api.ts`          | `register / activate / resendActivation / recovery / reset`       |
 | `services/auth-service.ts`    | `login / logout / isAuthenticated / getCurrentUser`               |
-| `services/account-service.ts` | Re-exporta `accountApi` para uso nas páginas de cadastro/ativação |
 | `contexts/AuthContext.tsx`    | Estado global reativo (`auth-change` + `storage`)                 |
 | `hooks/useAuth.ts`            | Acesso ao contexto                                                |
 | `hooks/useRoles.ts`           | `isAdmin / isOperator / hasRole`                                  |
 
-O `AuthProvider` (em `src/contexts/AuthContext.tsx`) escuta `auth-change`
-e `storage` para re-renderizar a árvore quando a sessão muda (login,
-logout ou logout em outra aba).
+O `AuthProvider` escuta `auth-change` e `storage` para reagir a
+login/logout — inclusive quando ocorrem em outra aba.
 
-### Autorização por papel
+### Fluxos de conta
 
-A `Sidebar` usa `useRoles()` para esconder o item "Usuários" para quem não
-for `ROLE_ADMIN`. A rota `/admin/users/*` é protegida por
-`<AdminRoute />`. Note que o gate é **client-side apenas** — a fonte de
-verdade é o backend, que rejeita requests sem o papel adequado com `403`.
+- **Cadastro** (`/auth/register`) → `POST /api/v1/accounts/register`,
+  seguido de redirecionamento para `/auth/activation-pending`.
+- **Aguardando ativação** — orienta o usuário a conferir o e-mail e
+  oferece reenviar o link, com cooldown de 60s persistido em
+  `localStorage`.
+- **Ativação** (`/activate-account?token=`) — trata os status
+  `success`, `expired`, `invalid`, `already` e `error`.
+- **Recuperação/Redefinição** — `POST /api/v1/accounts/password-recovery`
+  e `POST /api/v1/accounts/reset-password`.
+- **Login OAuth2** — `POST /oauth2/token` com Basic Auth
+  (`CLIENT_ID:CLIENT_SECRET`).
 
-### Cadastro, ativação por e-mail e login
-
-Fluxo completo do novo usuário (Fases 3 a 6 do plano de integração):
-
-1. **Cadastro** (`/auth/register`) — `RegisterPage` valida o formulário
-   com `react-hook-form` e chama `accountService.register()` →
-   `POST /api/v1/accounts/register`. Erros de validação retornados pelo
-   backend (`{ errors: [{ fieldName, message }] }`) são distribuídos nos
-   campos via `setError`. Em caso de sucesso o e-mail é salvo em
-   `localStorage["pendingActivationEmail"]` e o usuário é redirecionado.
-2. **Aguardando ativação** (`/auth/activation-pending`) —
-   `ActivationPendingPage` (também acessível em `/activation-pending`)
-   exibe um ícone de envelope, o título "ATIVE SUA CONTA" e a mensagem
-   "Enviamos um e-mail de ativação para:" com o e-mail do usuário em
-   destaque. Orienta o usuário a verificar a caixa de entrada e a pasta
-   de spam, e oferece o botão **Reenviar e-mail**
-   (`POST /api/v1/accounts/resend-activation`). O botão fica desabilitado
-   durante um **cooldown de 60s** persistido em
-   `localStorage["activationResendAvailableAt"]` (sobrevive a F5). O
-   contador é exibido no próprio botão (`REENVIAR EM Ns`), com opacidade
-   reduzida e cursor `not-allowed` enquanto ativo, e reiniciado tanto em
-   caso de sucesso (SweetAlert "E-mail enviado") quanto ao receber
-   `429 Too Many Requests` (rate-limit do backend), que aciona um
-   SweetAlert "Aguarde um momento".
-3. **Ativação** (`/activate-account?token=UUID`) —
-   `ActivateAccountPage` lê o `token` da query string, chama
-   `GET /api/v1/accounts/activate?token=...` e renderiza uma de cinco
-   telas conforme o status HTTP: **sucesso** (`204`, botão `IR PARA
-LOGIN`), **link expirado** (`400`/`410`, botões `IR PARA LOGIN` +
-   `REENVIAR NOVO E-MAIL`), **link inválido** (`404`/`422`, botões
-   `IR PARA LOGIN` + `SOLICITAR NOVO E-MAIL`), **conta já ativada**
-   (`409`, botão `IR PARA LOGIN`) e **falha genérica** (demais erros).
-   O reenvio chamado a partir desta página também trata `429` exibindo
-   o SweetAlert "Aguarde alguns instantes".
-4. **Login OAuth2** (`/auth/login`) — `LoginPage` chama
-   `authService.login()` que envia `POST /oauth2/token` com Basic Auth
-   (`CLIENT_ID:CLIENT_SECRET`) e `grant_type=password`. O `access_token`
-   (JWT) é decodificado com `jwt-decode` para extrair `username` e
-   `authorities`, e gravado em `localStorage["authData"]`. O
-   `AuthProvider` propaga o estado para a aplicação inteira.
-
-Todos os feedbacks visuais (sucesso, erro, aviso, loading) passam pelo
-wrapper `utils/alerts.ts` — nenhuma página chama `Swal.fire` diretamente.
-
-### Recuperação e redefinição de senha
-
-Fluxo das Fases 6 e 7 do plano de integração:
-
-1. **Esqueci a senha** (`/auth/recover` ou `/forgot-password`) —
-   `RecoverPage` chama `accountService.requestPasswordRecovery(email)` →
-   `POST /api/v1/accounts/password-recovery`. Em caso de sucesso exibe um
-   SweetAlert e redireciona para `/auth/login`.
-2. **Redefinir senha** (`/reset-password?token=UUID` ou
-   `/auth/reset-password?token=UUID`) — `ResetPasswordPage` lê o token
-   da URL, valida `password === confirmPassword` no frontend e chama
-   `accountService.resetPassword(token, password)` →
-   `POST /api/v1/accounts/reset-password`. Após sucesso o usuário é
-   levado para `/auth/login`.
+O gate de papel é **client-side apenas** — a fonte de verdade é o
+backend, que rejeita requests sem o papel adequado com `403`.
 
 ### Endpoints integrados
 
-| Domínio    | Endpoint                                  | Service                                  |
-| ---------- | ----------------------------------------- | ---------------------------------------- |
-| Auth       | `POST /oauth2/token`                      | `authService.login`                      |
-| Contas     | `POST /api/v1/accounts/register`          | `accountService.register`                |
-| Contas     | `GET  /api/v1/accounts/activate?token=`   | `accountService.activate`                |
-| Contas     | `POST /api/v1/accounts/resend-activation` | `accountService.resendActivation`        |
-| Contas     | `POST /api/v1/accounts/password-recovery` | `accountService.requestPasswordRecovery` |
-| Contas     | `POST /api/v1/accounts/reset-password`    | `accountService.resetPassword`           |
-| Usuários   | `GET /api/v1/users`                       | `userService.findAll`                    |
-| Usuários   | `GET /api/v1/users/{id}`                  | `userService.findById`                   |
-| Usuários   | `POST /api/v1/users`                      | `userService.create`                     |
-| Usuários   | `PUT /api/v1/users/{id}`                  | `userService.update`                     |
-| Usuários   | `PATCH /api/v1/users/{id}/activate`       | `userService.activate`                   |
-| Usuários   | `PATCH /api/v1/users/{id}/deactivate`     | `userService.deactivate`                 |
-| Usuários   | `DELETE /api/v1/users/{id}`               | `userService.delete`                     |
-| Produtos   | `GET/POST/PUT/DELETE /products`           | `productService.*`                       |
-| Categorias | `GET/POST/PUT/DELETE /categories`         | `categoryService.*`                      |
+| Domínio    | Endpoint                                  |
+| ---------- | ----------------------------------------- |
+| Auth       | `POST /oauth2/token`                      |
+| Contas     | `POST /api/v1/accounts/register`          |
+| Contas     | `GET  /api/v1/accounts/activate?token=`   |
+| Contas     | `POST /api/v1/accounts/resend-activation` |
+| Contas     | `POST /api/v1/accounts/password-recovery` |
+| Contas     | `POST /api/v1/accounts/reset-password`    |
+| Usuários   | `GET/POST/PUT/DELETE /api/v1/users`       |
+| Usuários   | `PATCH /api/v1/users/{id}/activate`       |
+| Usuários   | `PATCH /api/v1/users/{id}/deactivate`     |
+| Produtos   | `GET/POST/PUT/DELETE /products`           |
+| Categorias | `GET/POST/PUT/DELETE /categories`         |
 
 ---
 
@@ -427,126 +254,61 @@ server: {
 }
 ```
 
-Isso evita problemas de **CORS** e **mixed-content** (HTTPS → HTTP local).
-Em produção/SPA estático, a chamada vai direto para `VITE_API_BASE_URL`.
+Isso evita problemas de **CORS** e **mixed-content** (HTTPS → HTTP).
 
 ---
 
-## Design system e responsividade
+## Design tokens e responsividade
 
-- **Bootstrap 5** fornece grid e utilitários (`d-flex`, `container-fluid`).
-- **CSS Modules** (`*.module.css`) escopam estilos por componente/página.
-- **Tokens** e overrides de Bootstrap ficam em `src/styles/globals.css`
-  (variáveis CSS como `--asj-primary`).
-- **Mobile-first**: globais em `globals.css` aplicam
-  `overflow-x: hidden`, `safe-area-insets` (iOS notch),
-  `input { font-size: 16px }` (impede zoom automático do iOS) e
-  `-webkit-tap-highlight-color: transparent`.
-- **Navbar** colapsa em hambúrguer abaixo de 992px com overlay e trava de
-  scroll do body.
-- Páginas de auth, catálogo e detalhe usam breakpoints em **480px, 768px,
-  992px, 1200px e 1400px** para reorganizar grid/colunas progressivamente:
-  - Catálogo: 1 coluna (< 480px) → 2 colunas (≥ 480px) → 3 colunas
-    (≥ 768px) → 4 colunas (≥ 992px) → 5 colunas (≥ 1400px).
-  - Detalhe do produto (`product.module.css`): card único empilhado no
-    mobile com paddings reduzidos e `min-height` flexível; grid 1fr 1fr e
-    paddings ampliados a partir de 992px.
-  - Lista admin de produtos (`dashboardProducts.module.css`): sem
-    scroll interno em mobile/tablet (rola junto com a página); scroll
-    interno restrito a desktop (≥ 992px).
-  - Sidebar admin: rola horizontalmente em telas estreitas (< 768px) e
-    alinha verticalmente em desktop (≥ 992px).
-  - Filtros do catálogo: barra horizontal em desktop e empilhada em
-    mobile (campo de busca, select de categoria e botão LIMPAR FILTRO em
-    coluna abaixo de 768px).
-- **Inputs de senha** (`<PasswordInput />`) renderizam um botão de olho
-  fixo à direita que alterna entre `type="password"` e `type="text"` para
-  permitir ao usuário visualizar a senha digitada. Compatível com
-  `react-hook-form` (`forwardRef` + spread de `register`). Usado em
-  `LoginPage`, `RegisterPage`, `ResetPasswordPage` e `admin/users/UserForm`.
-- **Catálogo público** (`CatalogPage`) e **Meus Produtos do admin**
-  (`admin/products/ProductListPage`) compartilham a mesma barra de busca
-  com filtro por categoria e botão `LIMPAR FILTRO`, paginação numerada
-  com setas `‹ ›` e reticências (`...`) quando há mais de 11 páginas, e
-  estado vazio amigável quando a busca não retorna resultados.
-  A busca e o filtro por categoria são **inteiramente server-side**
-  (`GET /api/v1/products?name=...&categoryIds=...`, compatível com o
-  `@RequestParam("categoryIds")` do backend Spring Boot), com
-  **debounce de 350ms** no campo de texto, reset automático para
-  `page=0` sempre que o termo ou a categoria mudam, e preservação dos
-  filtros durante a navegação entre páginas. Não há mais filtragem
-  local (`Array.filter`/`useMemo`) sobre os produtos carregados — o
-  frontend renderiza diretamente `data.content`, garantindo que
-  produtos em qualquer página (ex.: `Books`) sejam encontrados. O
-  comportamento de abrir automaticamente a tela de detalhes quando a
-  busca retorna um único produto foi removido: a grade é sempre
-  exibida e a navegação para detalhes ocorre apenas no clique.
-- **Navbar global**: presente em todas as áreas via `CatalogLayout`,
-  `AdminLayout` e `AuthLayout`, garantindo navegação consistente em
-  páginas públicas, administrativas e de autenticação.
-- **Mobile (Android/iOS)**: `index.html` define
-  `viewport-fit=cover`, `theme-color`, `apple-mobile-web-app-capable` e
-  `mobile-web-app-capable`, permitindo instalação na tela inicial com
-  status bar consistente. `globals.css` aplica `safe-area-insets` no body,
-  `input { font-size: 16px }` para evitar o zoom automático do iOS e
-  `-webkit-tap-highlight-color: transparent` para um feedback de toque
-  mais nativo.
+- **Design tokens provisórios** vivem em `src/styles/globals.css`
+  (`--asj-primary`, `--asj-secondary`, `--asj-bg-dark`, `--asj-surface`,
+  `--asj-border`, `--asj-body-bg`, `--asj-body-color`). Esses tokens
+  ficam congelados até a definição formal do Design System (Fase 10).
+- **Bootstrap 5** fornece grid e utilitários.
+- **CSS Modules** (`*.module.css`) escopam estilos por página/componente.
+- Mobile-first: `safe-area-insets`, `input { font-size: 16px }`
+  (evita zoom no iOS), `-webkit-tap-highlight-color: transparent`.
+- **Navbar** colapsa em hambúrguer abaixo de 992px.
+- **Catálogo**: barra de busca com filtro por categoria e paginação
+  numerada — busca e filtro são inteiramente server-side, com debounce
+  de 350ms e reset automático de página ao mudar filtros.
 
 ---
 
 ## Convenções de código
 
-- **TypeScript estrito** (`strict: true`). Todo import precisa resolver
-  para um arquivo existente; build quebra caso contrário.
-- Componentes exportados por `default` em `src/components/<Nome>/index.tsx`
-  e reexportados em `src/components/index.ts` para imports curtos.
-- Tipos de domínio em `src/types/*.ts` (re-exportados por `src/types/index.ts`).
+- **TypeScript estrito** (`strict: true`).
+- Componentes exportados como `default` em
+  `src/components/<Nome>/index.tsx` e reexportados em
+  `src/components/index.ts`.
+- Tipos de domínio em `src/types/*.ts`.
 - Camadas com responsabilidade única: `api → services → pages`,
   `contexts → hooks → componentes`.
-- Alias `@/*` aponta para `src/*` (configurado em `vite.config.ts` e
+- Alias `@/*` para `src/*` (configurado em `vite.config.ts` e
   `tsconfig.json`).
-- Lint + format: `eslint` + `prettier` (config em `eslint.config.js`).
+- Lint + format: `eslint` + `prettier`.
+- **Architecture Freeze v2** em vigor: rotas, hooks, services, APIs,
+  layouts estruturais e componentes compartilhados não são alterados
+  fora das fases dedicadas.
 
 ---
 
 ## Scripts
 
-| Script               | O que faz                                   |
-| -------------------- | ------------------------------------------- |
-| `npm run check-node` | Valida que o Node em uso é ≥ 20.10.0        |
-| `npm run dev`        | Roda `check-node` e sobe o Vite dev server  |
-| `npm run build`      | Build de produção (SPA estático em `dist/`) |
-| `npm run build:dev`  | Build em modo `development`                 |
-| `npm run preview`    | Serve o build localmente                    |
-| `npm run lint`       | Roda ESLint em todo o projeto               |
-| `npm run format`     | Aplica Prettier                             |
+| Script            | O que faz                                    |
+| ----------------- | -------------------------------------------- |
+| `npm run dev`     | Sobe o Vite dev server                       |
+| `npm run build`   | Build de produção (SPA estático em `dist/`)  |
+| `npm run preview` | Serve o build localmente                     |
+| `npm run lint`    | Roda ESLint em todo o projeto                |
+| `npm run format`  | Aplica Prettier                              |
 
 ---
 
-## Troubleshooting
+## Roadmap
 
-**`EBADENGINE` no `npm install`**
-→ Sua versão do Node é menor que 20.10.0. Rode `nvm use` (lê `.nvmrc`) ou
-instale Node 20.10+ e tente novamente.
-
-**`Failed to fetch` ou `NetworkError` no `/catalog`**
-→ Backend Spring não está rodando em `VITE_API_BASE_URL`. Suba o backend
-ou ajuste a variável.
-
-**`Unauthorized` (401) em chamadas autenticadas**
-→ Token JWT expirou. O interceptor em `src/api/axios.ts` faz logout
-automático em `401` e redireciona para `/auth/login`.
-
-**Login funciona local mas falha em produção (CORS)**
-→ Confirme que a chamada está indo pelo proxy (`baseURL` deve ser
-`/api/proxy` quando hostname termina em `lovable.app`). Veja
-`isLovablePreview()` em `src/api/axios.ts`.
-
-**iOS faz zoom ao focar inputs**
-→ Garantido por `input, textarea, select { font-size: 16px }` em
-`src/styles/globals.css`. Se criar um input customizado, não reduza para menos de
-16px no estado desfocado em mobile.
-
----
-
-Construído na Lovable com **React + Vite**.
+- **Fase 10 — Design System + Tailwind**: consolidação de paleta,
+  tipografia, componentes (botões, inputs, cards, badges, tabelas),
+  espaçamentos, sombras, tokens e animações.
+- **Fase 11+**: expansão do Dashboard com histórico de atividades,
+  notificações e relatórios.

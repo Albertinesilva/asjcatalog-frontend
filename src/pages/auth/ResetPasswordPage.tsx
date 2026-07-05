@@ -45,7 +45,7 @@ export default function ResetPasswordPage() {
   return (
     <div className={`card-base ${styles.authCard}`}>
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>REDEFINIR SENHA</h2>
+        <h2 className={styles.formTitle}>Redefinir senha</h2>
 
         {!token && <p className={styles.fieldError}>Token de redefinição não informado na URL.</p>}
 
@@ -91,14 +91,14 @@ export default function ResetPasswordPage() {
 
         <div className={styles.recoverActions}>
           <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            CANCELAR
+            Cancelar
           </Link>
           <button
             type="submit"
             className={`btn btn-primary ${styles.submitBtn}`}
             disabled={isSubmitting || !token}
           >
-            {isSubmitting ? "ENVIANDO..." : "REDEFINIR"}
+            {isSubmitting ? "Enviando..." : "Redefinir"}
           </button>
         </div>
       </form>

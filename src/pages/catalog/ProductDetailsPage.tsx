@@ -86,7 +86,7 @@ export default function ProductDetailsPage() {
       <div className={`card-base border-radius-10 ${styles.productDetails}`}>
         <Link to="/catalog" className={styles.productDetailsGoback}>
           <img src={arrow} alt="Voltar" />
-          <span className={styles.textGoBack}>VOLTAR</span>
+          <span className={styles.textGoBack}>Voltar</span>
         </Link>
 
         <div className={styles.detailsGrid}>
@@ -101,7 +101,7 @@ export default function ProductDetailsPage() {
           </div>
 
           <div className={styles.descriptionCard}>
-            <h2 className={styles.productDescriptionTitle}>Descrição do Produto</h2>
+            <h2 className={styles.productDescriptionTitle}>Descrição do produto</h2>
 
             <p className={styles.productDescriptionText}>{description}</p>
           </div>

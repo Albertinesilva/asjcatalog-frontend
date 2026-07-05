@@ -40,7 +40,7 @@ export default function RecoverPage() {
   return (
     <div className={`card-base ${styles.authCard}`}>
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>RECUPERAÇÃO DE SENHA</h2>
+        <h2 className={styles.formTitle}>Recuperar senha</h2>
 
         <div className={styles.fieldGroup}>
           <input
@@ -80,14 +80,14 @@ export default function RecoverPage() {
 
         <div className={styles.recoverActions}>
           <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            CANCELAR
+            Cancelar
           </Link>
           <button
             type="submit"
             className={`btn btn-primary ${styles.submitBtn}`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "ENVIANDO..." : "ENVIAR"}
+            {isSubmitting ? "Enviando..." : "Enviar"}
           </button>
         </div>
       </form>

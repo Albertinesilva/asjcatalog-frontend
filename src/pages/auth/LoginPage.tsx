@@ -42,7 +42,7 @@ export default function LoginPage() {
   return (
     <div className={`card-base ${styles.authCard}`}>
       <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
-        <h2 className={styles.formTitle}>LOGIN</h2>
+        <h2 className={styles.formTitle}>Entrar</h2>
 
         <div className={styles.fieldGroup}>
           <input
@@ -80,13 +80,13 @@ export default function LoginPage() {
         {errors.root && <p className={styles.fieldError}>{errors.root.message}</p>}
 
         <div className={styles.submitWrap}>
-          <ButtonIcon label={isSubmitting ? "entrando..." : "logar"} type="submit" />
+          <ButtonIcon label={isSubmitting ? "Entrando..." : "Entrar"} type="submit" />
         </div>
 
         <div className={styles.notRegisteredWrap}>
-          <span className={styles.notRegistered}>Não tem Cadastro?</span>
+          <span className={styles.notRegistered}>Ainda não tem conta?</span>
           <Link to="/auth/register" className={styles.loginLinkRegister}>
-            CADASTRAR
+            Cadastrar
           </Link>
         </div>
       </form>
