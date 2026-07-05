@@ -18,7 +18,7 @@ export default function ProductTable({ products, onDelete }: Props) {
   }
 
   return (
-    <div className="d-flex flex-column gap-3">
+    <div className="flex flex-col gap-sm">
       {products.map((p) => (
         <ProductTableRow key={p.id} product={p} onDelete={onDelete} />
       ))}
