@@ -5,6 +5,8 @@ import { userService } from "@/services/user-service";
 import { PasswordInput, LoadingState, ErrorState } from "@/components";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
+import { Button, Card, Input } from "@/components/ui";
+import { inputBaseClasses } from "@/components/ui/Input";
 
 type ProfileFields = {
   firstName: string;
@@ -111,155 +113,138 @@ export default function ProfilePage() {
   } = passwordForm;
 
   return (
-    <div>
-      <p className="text-muted mb-4">Gerencie seus dados pessoais e credenciais de acesso.</p>
+    <div className="flex flex-col gap-lg">
+      <p className="text-body text-foreground-muted m-0">
+        Gerencie seus dados pessoais e credenciais de acesso.
+      </p>
 
-      <div className="row g-4">
-        <div className="col-12 col-lg-7">
-          <div className="card-base border-radius-10 p-4">
-            <h5 className="fw-bold mb-3">Dados pessoais</h5>
-            <form onSubmit={handleProfileSubmit(onSaveProfile)} noValidate>
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <label className="form-label" htmlFor="firstName">
-                    Nome
-                  </label>
-                  <input
-                    id="firstName"
-                    className="form-control"
-                    {...registerProfile("firstName", {
-                      required: "Nome é obrigatório",
-                      maxLength: { value: 100, message: "Máximo 100 caracteres" },
-                    })}
-                  />
-                  {profileErrors.firstName && (
-                    <small className="text-danger">{profileErrors.firstName.message}</small>
-                  )}
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label" htmlFor="lastName">
-                    Sobrenome
-                  </label>
-                  <input
-                    id="lastName"
-                    className="form-control"
-                    {...registerProfile("lastName", {
-                      required: "Sobrenome é obrigatório",
-                      maxLength: { value: 100, message: "Máximo 100 caracteres" },
-                    })}
-                  />
-                  {profileErrors.lastName && (
-                    <small className="text-danger">{profileErrors.lastName.message}</small>
-                  )}
-                </div>
-                <div className="col-12">
-                  <label className="form-label" htmlFor="email">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="form-control"
-                    {...registerProfile("email", {
-                      required: "Email é obrigatório",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Email inválido",
-                      },
-                      maxLength: { value: 255, message: "Máximo 255 caracteres" },
-                    })}
-                  />
-                  {profileErrors.email && (
-                    <small className="text-danger">{profileErrors.email.message}</small>
-                  )}
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+        <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
+          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Dados pessoais</h2>
+          <form onSubmit={handleProfileSubmit(onSaveProfile)} noValidate className="flex flex-col gap-md">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+              <Input
+                label="Nome"
+                id="firstName"
+                required
+                error={profileErrors.firstName?.message}
+                {...registerProfile("firstName", {
+                  required: "Nome é obrigatório",
+                  maxLength: { value: 100, message: "Máximo 100 caracteres" },
+                })}
+              />
+              <Input
+                label="Sobrenome"
+                id="lastName"
+                required
+                error={profileErrors.lastName?.message}
+                {...registerProfile("lastName", {
+                  required: "Sobrenome é obrigatório",
+                  maxLength: { value: 100, message: "Máximo 100 caracteres" },
+                })}
+              />
+            </div>
+            <Input
+              label="Email"
+              id="email"
+              type="email"
+              required
+              error={profileErrors.email?.message}
+              {...registerProfile("email", {
+                required: "Email é obrigatório",
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Email inválido" },
+                maxLength: { value: 255, message: "Máximo 255 caracteres" },
+              })}
+            />
+
+            {profileFeedback && (
+              <div
+                role="status"
+                className={
+                  "rounded-md border px-md py-sm text-small " +
+                  (profileFeedback.kind === "success"
+                    ? "border-success/40 bg-success/10 text-foreground"
+                    : "border-danger/40 bg-danger/10 text-danger")
+                }
+              >
+                {profileFeedback.message}
               </div>
+            )}
 
-              {profileFeedback && (
-                <div
-                  className={`alert mt-3 mb-0 ${
-                    profileFeedback.kind === "success" ? "alert-success" : "alert-danger"
-                  }`}
-                  role="status"
-                >
-                  {profileFeedback.message}
-                </div>
-              )}
+            <div className="pt-sm">
+              <Button type="submit" variant="primary" loading={savingProfile}>
+                {savingProfile ? "Salvando..." : "Salvar alterações"}
+              </Button>
+            </div>
+          </form>
+        </Card>
 
-              <div className="mt-4">
-                <button type="submit" className="btn btn-primary" disabled={savingProfile}>
-                  {savingProfile ? "Salvando..." : "Salvar alterações"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div className="col-12 col-lg-5">
-          <div className="card-base border-radius-10 p-4">
-            <h5 className="fw-bold mb-3">Alterar senha</h5>
-            <form onSubmit={handlePasswordSubmit(onChangePassword)} noValidate>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="password">
-                  Nova senha
-                </label>
-                <PasswordInput
-                  id="password"
-                  className="form-control"
-                  autoComplete="new-password"
-                  {...registerPassword("password", {
-                    required: "Informe a nova senha",
-                    minLength: { value: 8, message: "Mínimo 8 caracteres" },
-                    maxLength: { value: 72, message: "Máximo 72 caracteres" },
-                    pattern: {
-                      value: /^(?=.*\d).{8,}$/,
-                      message: "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
-                    },
-                  })}
-                />
-                <small className="text-muted d-block mt-1">
+        <Card padding="lg" className="lg:col-span-5 flex flex-col gap-md">
+          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Alterar senha</h2>
+          <form onSubmit={handlePasswordSubmit(onChangePassword)} noValidate className="flex flex-col gap-md">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="password" className="text-small font-medium text-foreground">
+                Nova senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+              </label>
+              <PasswordInput
+                id="password"
+                autoComplete="new-password"
+                className={inputBaseClasses}
+                {...registerPassword("password", {
+                  required: "Informe a nova senha",
+                  minLength: { value: 8, message: "Mínimo 8 caracteres" },
+                  maxLength: { value: 72, message: "Máximo 72 caracteres" },
+                  pattern: {
+                    value: /^(?=.*\d).{8,}$/,
+                    message: "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+                  },
+                })}
+              />
+              {passwordErrors.password ? (
+                <p className="text-small text-danger">{passwordErrors.password.message}</p>
+              ) : (
+                <p className="text-small text-foreground-muted">
                   A senha deve ter no mínimo 8 caracteres e conter pelo menos um número.
-                </small>
-                {passwordErrors.password && (
-                  <small className="text-danger">{passwordErrors.password.message}</small>
-                )}
-              </div>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="confirmPassword">
-                  Confirmar senha
-                </label>
-                <PasswordInput
-                  id="confirmPassword"
-                  className="form-control"
-                  autoComplete="new-password"
-                  {...registerPassword("confirmPassword", {
-                    required: "Confirme a nova senha",
-                  })}
-                />
-                {passwordErrors.confirmPassword && (
-                  <small className="text-danger">{passwordErrors.confirmPassword.message}</small>
-                )}
-              </div>
-
-              {passwordFeedback && (
-                <div
-                  className={`alert mt-3 mb-0 ${
-                    passwordFeedback.kind === "success" ? "alert-success" : "alert-danger"
-                  }`}
-                  role="status"
-                >
-                  {passwordFeedback.message}
-                </div>
+                </p>
               )}
+            </div>
 
-              <div className="mt-4">
-                <button type="submit" className="btn btn-primary" disabled={savingPassword}>
-                  {savingPassword ? "Alterando..." : "Alterar senha"}
-                </button>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="confirmPassword" className="text-small font-medium text-foreground">
+                Confirmar senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+              </label>
+              <PasswordInput
+                id="confirmPassword"
+                autoComplete="new-password"
+                className={inputBaseClasses}
+                {...registerPassword("confirmPassword", { required: "Confirme a nova senha" })}
+              />
+              {passwordErrors.confirmPassword && (
+                <p className="text-small text-danger">{passwordErrors.confirmPassword.message}</p>
+              )}
+            </div>
+
+            {passwordFeedback && (
+              <div
+                role="status"
+                className={
+                  "rounded-md border px-md py-sm text-small " +
+                  (passwordFeedback.kind === "success"
+                    ? "border-success/40 bg-success/10 text-foreground"
+                    : "border-danger/40 bg-danger/10 text-danger")
+                }
+              >
+                {passwordFeedback.message}
               </div>
-            </form>
-          </div>
-        </div>
+            )}
+
+            <div className="pt-sm">
+              <Button type="submit" variant="primary" loading={savingPassword}>
+                {savingPassword ? "Alterando..." : "Alterar senha"}
+              </Button>
+            </div>
+          </form>
+        </Card>
       </div>
     </div>
   );
