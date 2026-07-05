@@ -12,6 +12,7 @@ import {
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-errors";
+import { alerts } from "@/utils/alerts";
 import type { Paginated, User } from "@/types";
 import styles from "@/styles/action-buttons.module.css";
 import { UserTable } from "./components";
@@ -49,6 +50,7 @@ export default function UserListPage() {
       await userService.delete(pendingDelete.id);
       setPendingDelete(null);
       refetch();
+      await alerts.success("Usuário removido", "Usuário removido com sucesso.");
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
