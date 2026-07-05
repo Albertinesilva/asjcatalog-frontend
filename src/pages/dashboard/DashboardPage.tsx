@@ -55,7 +55,7 @@ export default function DashboardPage() {
   const { isAdmin } = useRoles();
   const [state, setState] = useState<MetricState>(INITIAL);
 
-  const greetingName = user?.firstName ?? user?.email ?? "bem-vindo(a)";
+  const greetingName = user?.firstName ?? user?.email ?? "usuário(a)";
 
   useEffect(() => {
     let cancelled = false;
@@ -98,30 +98,30 @@ export default function DashboardPage() {
     {
       to: "/dashboard/products/new",
       title: "Novo produto",
-      desc: "Cadastrar um produto no catálogo.",
+      desc: "Adicionar um novo produto ao catálogo.",
     },
     {
       to: "/dashboard/categories/new",
       title: "Nova categoria",
-      desc: "Criar uma categoria para organizar produtos.",
+      desc: "Criar uma categoria para organizar o catálogo.",
     },
     {
       to: "/dashboard/users/new",
       title: "Novo usuário",
-      desc: "Adicionar um novo usuário administrativo.",
+      desc: "Cadastrar um usuário com acesso à plataforma.",
       show: isAdmin,
     },
     {
       to: "/catalog",
-      title: "Ver catálogo",
-      desc: "Abrir a visão pública do catálogo.",
+      title: "Ver catálogo público",
+      desc: "Visualizar o catálogo como um visitante.",
     },
   ].filter((i) => i.show !== false);
 
   return (
     <div>
       <p className="text-muted mb-4">
-        Olá, {greetingName} 👋 — bem-vindo ao painel administrativo do ASJ Catalog.
+        Olá, {greetingName}. Bem-vindo(a) ao painel de gestão do ASJ Catalog.
       </p>
 
       {state.error && (
@@ -191,9 +191,10 @@ export default function DashboardPage() {
           Atividade recente
         </h5>
         <div className="card-base border-radius-10 p-4 text-muted">
-          <p className="mb-1 fw-semibold">Em breve</p>
+          <p className="mb-1 fw-semibold">Acompanhamento em preparação</p>
           <p className="m-0 small">
-            O histórico de atividades e notificações do sistema será exibido nesta área.
+            Em breve esta área exibirá o histórico de alterações no catálogo, cadastros
+            recentes e notificações da plataforma.
           </p>
         </div>
       </section>

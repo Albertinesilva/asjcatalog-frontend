@@ -84,7 +84,7 @@ export default function ActivateAccountPage() {
       <div className={styles.loginForm}>
         {status === "loading" && (
           <>
-            <h2 className={styles.formTitle}>ATIVANDO SUA CONTA</h2>
+            <h2 className={styles.formTitle}>Ativando sua conta</h2>
             <p className={styles.passwordHint} style={{ textAlign: "center" }}>
               Validando seu token, aguarde...
             </p>
@@ -93,13 +93,13 @@ export default function ActivateAccountPage() {
 
         {status === "success" && (
           <>
-            <h2 className={styles.formTitle}>CONTA ATIVADA COM SUCESSO!</h2>
+            <h2 className={styles.formTitle}>Conta ativada com sucesso</h2>
             <p className={styles.passwordHint} style={{ textAlign: "center" }}>
               Sua conta foi ativada. Agora você pode realizar login.
             </p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
             </div>
           </>
@@ -107,20 +107,20 @@ export default function ActivateAccountPage() {
 
         {status === "expired" && (
           <>
-            <h2 className={styles.formTitle}>LINK EXPIRADO</h2>
+            <h2 className={styles.formTitle}>Link expirado</h2>
             <p className={styles.passwordHint} style={{ textAlign: "center" }}>
               {errorMsg ?? "O link de ativação expirou."}
             </p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
               <button
                 type="button"
                 className={`btn btn-primary ${styles.submitBtn}`}
                 onClick={resend}
               >
-                REENVIAR NOVO E-MAIL
+                Reenviar novo e-mail
               </button>
             </div>
           </>
@@ -128,20 +128,20 @@ export default function ActivateAccountPage() {
 
         {status === "invalid" && (
           <>
-            <h2 className={styles.formTitle}>LINK INVÁLIDO</h2>
+            <h2 className={styles.formTitle}>Link inválido</h2>
             <p className={styles.passwordHint} style={{ textAlign: "center" }}>
               O link utilizado não é válido.
             </p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
               <button
                 type="button"
                 className={`btn btn-primary ${styles.submitBtn}`}
                 onClick={resend}
               >
-                SOLICITAR NOVO E-MAIL
+                Solicitar novo e-mail
               </button>
             </div>
           </>
@@ -149,13 +149,13 @@ export default function ActivateAccountPage() {
 
         {status === "already" && (
           <>
-            <h2 className={styles.formTitle}>CONTA JÁ ATIVADA</h2>
+            <h2 className={styles.formTitle}>Conta já ativada</h2>
             <p className={styles.passwordHint} style={{ textAlign: "center" }}>
               Sua conta já está ativa. Você pode realizar login normalmente.
             </p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn btn-primary ${styles.submitBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
             </div>
           </>
@@ -163,18 +163,18 @@ export default function ActivateAccountPage() {
 
         {status === "missing" && (
           <>
-            <h2 className={styles.formTitle}>LINK INVÁLIDO</h2>
+            <h2 className={styles.formTitle}>Link inválido</h2>
             <p className={styles.fieldError}>Link de ativação inválido: token não informado.</p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
               <button
                 type="button"
                 className={`btn btn-primary ${styles.submitBtn}`}
                 onClick={resend}
               >
-                SOLICITAR NOVO E-MAIL
+                Solicitar novo e-mail
               </button>
             </div>
           </>
@@ -182,20 +182,20 @@ export default function ActivateAccountPage() {
 
         {status === "error" && (
           <>
-            <h2 className={styles.formTitle}>FALHA NA ATIVAÇÃO</h2>
+            <h2 className={styles.formTitle}>Falha na ativação</h2>
             <p className={styles.fieldError}>
               {errorMsg ?? "Não foi possível ativar sua conta no momento."}
             </p>
             <div className={styles.registerActions}>
               <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-                IR PARA LOGIN
+                Ir para login
               </Link>
               <button
                 type="button"
                 className={`btn btn-primary ${styles.submitBtn}`}
                 onClick={resend}
               >
-                REENVIAR E-MAIL
+                Reenviar e-mail
               </button>
             </div>
           </>

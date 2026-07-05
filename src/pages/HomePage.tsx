@@ -12,18 +12,19 @@ export default function HomePage() {
         <div
           className={`col-lg-6 d-flex flex-column align-items-center mt-4 mt-md-0 ${styles.homeText}`}
         >
-          <h1 className={styles.textTitle}>Bem-vindo ao ASJ Catalog</h1>
+          <h1 className={styles.textTitle}>ASJ Catalog</h1>
           <p className={styles.textSubtitle}>
-            Explore nosso catálogo de produtos e encontre com facilidade tudo o que você procura.
+            Plataforma profissional para gestão e organização de catálogos de produtos,
+            com controle centralizado e administração simplificada.
           </p>
           <Link to="/catalog">
-            <ButtonIcon label="explorar catálogo" type="button" />
+            <ButtonIcon label="Acessar catálogo" type="button" />
           </Link>
         </div>
         <div
           className={`col-lg-6 d-flex align-items-center justify-content-center align-items-lg-center justify-content-lg-start ${styles.homeImgContainer}`}
         >
-          <img src={homeImage} alt="Home Page" />
+          <img src={homeImage} alt="Ilustração do ASJ Catalog" />
         </div>
       </div>
     </div>

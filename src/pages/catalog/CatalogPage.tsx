@@ -108,7 +108,7 @@ export default function CatalogPage() {
               className={`btn btn-outline-secondary ${styles.clearBtn}`}
               onClick={clearFilters}
             >
-              LIMPAR FILTRO
+              Limpar filtros
             </button>
           </div>
         </div>

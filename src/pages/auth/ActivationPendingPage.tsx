@@ -111,7 +111,7 @@ export default function ActivationPendingPage() {
           </svg>
         </div>
 
-        <h2 className={styles.formTitle}>ATIVE SUA CONTA</h2>
+        <h2 className={styles.formTitle}>Ative sua conta</h2>
 
         <p className={styles.passwordHint}>Enviamos um e-mail de ativação para:</p>
 
@@ -136,7 +136,7 @@ export default function ActivationPendingPage() {
 
         <div className={styles.registerActions}>
           <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
-            IR PARA LOGIN
+            Ir para login
           </Link>
           <button
             type="button"
@@ -145,10 +145,10 @@ export default function ActivationPendingPage() {
             disabled={sending || remaining > 0}
           >
             {sending
-              ? "REENVIANDO..."
+              ? "Reenviando..."
               : remaining > 0
-                ? `REENVIAR EM ${remaining}s`
-                : "REENVIAR E-MAIL"}
+                ? `Reenviar em ${remaining}s`
+                : "Reenviar e-mail"}
           </button>
         </div>
       </div>

@@ -32,7 +32,9 @@ function NotFound() {
   return (
     <div className="container py-5 text-center">
       <h1>404</h1>
-      <p>Página não encontrada.</p>
+      <p className="text-muted">
+        A página solicitada não existe ou foi movida no ASJ Catalog.
+      </p>
     </div>
   );
 }
