@@ -26,6 +26,14 @@ import typography from "@tailwindcss/typography";
 export default {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  /**
+   * Preflight is intentionally disabled in Phase 10.1 to guarantee zero
+   * visual regression while Bootstrap and legacy CSS Modules coexist.
+   * It will be re-enabled in Phase 10.6, once Bootstrap is fully removed.
+   */
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     // Standard Tailwind breakpoints (documented for reference).
     // sm: 640, md: 768, lg: 1024, xl: 1280, 2xl: 1536.
