@@ -7,41 +7,44 @@ export default function Sidebar() {
   const showUsers = isAdmin;
   const activeClass = `${styles.adminNavItem} active-sidebar-item`;
 
+  const itemClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? activeClass : styles.adminNavItem;
+
   return (
     <div className={styles.adminNavContainer}>
       <ul>
         <li>
-          <NavLink
-            to="/dashboard/products"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive ? activeClass : styles.adminNavItem
-            }
-          >
-            Meus Produtos
+          <NavLink to="/dashboard" end className={itemClass}>
+            Dashboard
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/dashboard/categories"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive ? activeClass : styles.adminNavItem
-            }
-          >
-            Minhas Categorias
+          <NavLink to="/dashboard/products" className={itemClass}>
+            Produtos
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/dashboard/categories" className={itemClass}>
+            Categorias
           </NavLink>
         </li>
         {showUsers && (
           <li>
-            <NavLink
-              to="/dashboard/users"
-              className={({ isActive }: { isActive: boolean }) =>
-                isActive ? activeClass : styles.adminNavItem
-              }
-            >
-              Meus Usuários
+            <NavLink to="/dashboard/users" className={itemClass}>
+              Usuários
             </NavLink>
           </li>
         )}
+        <li>
+          <NavLink to="/account/profile" className={itemClass}>
+            Meu Perfil
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/catalog" className={itemClass}>
+            Catálogo Público
+          </NavLink>
+        </li>
       </ul>
     </div>
   );

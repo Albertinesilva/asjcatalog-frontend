@@ -119,9 +119,10 @@ export default function DashboardPage() {
   ].filter((i) => i.show !== false);
 
   return (
-    <div className="container py-4">
-      <h3 className="mb-1">Olá, {greetingName} 👋</h3>
-      <p className="text-muted mb-4">Bem-vindo ao painel administrativo do ASJ Catalog.</p>
+    <div>
+      <p className="text-muted mb-4">
+        Olá, {greetingName} 👋 — bem-vindo ao painel administrativo do ASJ Catalog.
+      </p>
 
       {state.error && (
         <div className="alert alert-warning" role="alert">
@@ -166,7 +167,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section aria-labelledby="shortcuts-title">
+      <section aria-labelledby="shortcuts-title" className="mb-4">
         <h5 id="shortcuts-title" className="fw-bold mb-3">
           Atalhos
         </h5>
@@ -182,6 +183,18 @@ export default function DashboardPage() {
               </Link>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="activity-title">
+        <h5 id="activity-title" className="fw-bold mb-3">
+          Atividade recente
+        </h5>
+        <div className="card-base border-radius-10 p-4 text-muted">
+          <p className="mb-1 fw-semibold">Em breve</p>
+          <p className="m-0 small">
+            O histórico de atividades e notificações do sistema será exibido nesta área.
+          </p>
         </div>
       </section>
     </div>
