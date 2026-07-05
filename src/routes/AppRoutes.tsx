@@ -63,6 +63,12 @@ export default function AppRoutes() {
       <Route path="/admin/register" element={<Navigate to="/auth/register" replace />} />
       <Route path="/admin/recover" element={<Navigate to="/auth/recover" replace />} />
 
+      {/* Compatibilidade temporária: rotas legadas /admin/* redirecionam para /dashboard/* */}
+      <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/admin/products/*" element={<Navigate to="/dashboard/products" replace />} />
+      <Route path="/admin/categories/*" element={<Navigate to="/dashboard/categories" replace />} />
+      <Route path="/admin/users/*" element={<Navigate to="/dashboard/users" replace />} />
+
       <Route element={<PrivateRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
