@@ -1,6 +1,9 @@
 import type { ProductPriceProps } from "@/types";
-import styles from "./productprice.module.css";
 
+/**
+ * ProductPrice — Fase 10.4.
+ * Formatação BRL com hierarquia visual, migrado para Tailwind + tokens.
+ */
 function formatPrice(raw: string | number) {
   const n = Number(raw);
   if (Number.isNaN(n)) return { integer: String(raw), decimals: "00" };
@@ -12,10 +15,10 @@ function formatPrice(raw: string | number) {
 export default function ProductPrice({ price }: ProductPriceProps) {
   const { integer, decimals } = formatPrice(price);
   return (
-    <div className={styles.productPriceContainer}>
-      <span className={styles.currency}>R$</span>
-      <h3 className={styles.priceInteger}>{integer}</h3>
-      <span className={styles.priceDecimals}>,{decimals}</span>
+    <div className="flex items-baseline gap-1 mt-md">
+      <span className="text-small font-semibold text-foreground-muted">R$</span>
+      <span className="font-heading text-h3 font-bold text-primary leading-none">{integer}</span>
+      <span className="text-small font-semibold text-primary">,{decimals}</span>
     </div>
   );
 }
