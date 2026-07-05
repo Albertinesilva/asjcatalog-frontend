@@ -61,7 +61,7 @@ export default function CategoryListPage() {
   };
 
   return (
-    <div className="container-fluid py-4 px-3 px-md-4">
+    <div>
       <TableToolbar
         title="Categorias"
         subtitle="Gerencie as categorias do catálogo"

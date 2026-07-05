@@ -43,9 +43,7 @@ export default function CategoryForm({ mode }: Props) {
   };
 
   return (
-    <div className="container py-4">
-      <div className="card-base p-4 border-radius-10">
-        <h3 className="mb-4">{mode === "create" ? "Adicionar Categoria" : "Editar Categoria"}</h3>
+    <div className="card-base p-4 border-radius-10">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label">Nome</label>
@@ -69,7 +67,6 @@ export default function CategoryForm({ mode }: Props) {
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 }

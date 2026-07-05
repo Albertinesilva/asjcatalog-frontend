@@ -78,7 +78,7 @@ export default function ProductListPage() {
   };
 
   return (
-    <div className="container-fluid py-4 px-3 px-md-4">
+    <div>
       <TableToolbar
         title="Meus Produtos"
         subtitle="Gerencie o catálogo de produtos"
