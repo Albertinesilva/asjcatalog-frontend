@@ -135,7 +135,7 @@ export default function ActivationPendingPage() {
         </p>
 
         <div className={styles.registerActions}>
-          <Link to="/login" className={`btn ${styles.cancelBtn}`}>
+          <Link to="/auth/login" className={`btn ${styles.cancelBtn}`}>
             IR PARA LOGIN
           </Link>
           <button
