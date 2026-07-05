@@ -69,7 +69,7 @@ export default function ProductForm({ mode }: Props) {
     try {
       if (mode === "create") await productService.create(payload);
       else if (productId) await productService.update(Number(productId), payload);
-      navigate("/admin/products");
+      navigate("/dashboard/products");
     } catch (err) {
       setSaveError((err as Error).message);
     } finally {
@@ -165,7 +165,7 @@ export default function ProductForm({ mode }: Props) {
             <button
               type="button"
               className="btn btn-outline-secondary"
-              onClick={() => navigate("/admin/products")}
+              onClick={() => navigate("/dashboard/products")}
             >
               Cancelar
             </button>

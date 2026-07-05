@@ -16,7 +16,7 @@ type Props = {
  * (AdminRoute, OperatorRoute) por uma única implementação com
  * comportamento consistente de `loading` e redirect.
  */
-export default function RoleRoute({ roles = [], redirectTo = "/admin" }: Props) {
+export default function RoleRoute({ roles = [], redirectTo = "/dashboard" }: Props) {
   const { authenticated, loading } = useAuth();
   const { hasAnyRole } = useRoles();
 

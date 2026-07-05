@@ -11,11 +11,11 @@ type Props = {
 export default function UserActions({ user, onDelete }: Props) {
   return (
     <div className="d-flex gap-2 flex-wrap">
-      <Link to={`/admin/users/${user.id}`} className={`btn btn-outline-primary ${styles.actionBtn}`}>
+      <Link to={`/dashboard/users/${user.id}`} className={`btn btn-outline-primary ${styles.actionBtn}`}>
         VER
       </Link>
       <Link
-        to={`/admin/users/${user.id}/edit`}
+        to={`/dashboard/users/${user.id}/edit`}
         className={`btn btn-outline-secondary ${styles.actionBtn} ${styles.actionBtnMuted}`}
       >
         EDITAR

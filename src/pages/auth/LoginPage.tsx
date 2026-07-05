@@ -22,7 +22,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<AuthFormFields>();
 
-  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/admin";
+  const redirectTo = (location.state as { from?: string } | null)?.from ?? "/dashboard";
 
   useEffect(() => {
     if (authenticated) navigate(redirectTo, { replace: true });

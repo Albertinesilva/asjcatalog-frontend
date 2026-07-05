@@ -85,7 +85,7 @@ export default function ProductListPage() {
         counter={pagination.totalElements}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
-          <Link to="/admin/products/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+          <Link to="/dashboard/products/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
             ADICIONAR
           </Link>
         </Authorization>

@@ -12,7 +12,7 @@ export default function Sidebar() {
       <ul>
         <li>
           <NavLink
-            to="/admin/products"
+            to="/dashboard/products"
             className={({ isActive }: { isActive: boolean }) =>
               isActive ? activeClass : styles.adminNavItem
             }
@@ -22,7 +22,7 @@ export default function Sidebar() {
         </li>
         <li>
           <NavLink
-            to="/admin/categories"
+            to="/dashboard/categories"
             className={({ isActive }: { isActive: boolean }) =>
               isActive ? activeClass : styles.adminNavItem
             }
@@ -33,7 +33,7 @@ export default function Sidebar() {
         {showUsers && (
           <li>
             <NavLink
-              to="/admin/users"
+              to="/dashboard/users"
               className={({ isActive }: { isActive: boolean }) =>
                 isActive ? activeClass : styles.adminNavItem
               }

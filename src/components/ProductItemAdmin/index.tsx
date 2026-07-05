@@ -42,7 +42,7 @@ export default function ProductItemAdmin(product: Props) {
         </div>
         <div className="col-12 col-md-4 pt-3 d-flex flex-row-reverse flex-md-column justify-content-between align-items-md-end gap-2">
           <Link
-            to={`/admin/products/${id}`}
+            to={`/dashboard/products/${id}`}
             className="btn btn-outline-secondary btn-block border-radius-10 col-6"
           >
             EDITAR

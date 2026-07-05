@@ -63,7 +63,7 @@ export default function UserListPage() {
         subtitle="Gerencie os usuários do sistema"
         counter={pagination.totalElements}
       >
-        <Link to="/admin/users/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+        <Link to="/dashboard/users/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
           ADICIONAR
         </Link>
       </TableToolbar>

@@ -76,7 +76,7 @@ export default function UserForm({ mode }: Props) {
           roleIds,
         });
       }
-      navigate("/admin/users");
+      navigate("/dashboard/users");
     } catch (err) {
       setSaveError((err as Error).message);
     }
@@ -161,7 +161,7 @@ export default function UserForm({ mode }: Props) {
             <button
               type="button"
               className="btn btn-outline-secondary"
-              onClick={() => navigate("/admin/users")}
+              onClick={() => navigate("/dashboard/users")}
             >
               Cancelar
             </button>

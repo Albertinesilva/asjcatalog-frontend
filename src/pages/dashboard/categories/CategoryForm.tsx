@@ -36,7 +36,7 @@ export default function CategoryForm({ mode }: Props) {
           name: data.name,
         });
       }
-      navigate("/admin/categories");
+      navigate("/dashboard/categories");
     } catch (err) {
       setSaveError((err as Error).message);
     }
@@ -63,7 +63,7 @@ export default function CategoryForm({ mode }: Props) {
             <button
               type="button"
               className="btn btn-outline-secondary"
-              onClick={() => navigate("/admin/categories")}
+              onClick={() => navigate("/dashboard/categories")}
             >
               Cancelar
             </button>

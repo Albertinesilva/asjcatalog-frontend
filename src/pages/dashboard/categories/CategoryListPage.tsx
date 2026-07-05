@@ -68,7 +68,7 @@ export default function CategoryListPage() {
         counter={filtered.length}
       >
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
-          <Link to="/admin/categories/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
+          <Link to="/dashboard/categories/new" className={`btn btn-primary ${styles.actionBtnLg}`}>
             ADICIONAR
           </Link>
         </Authorization>

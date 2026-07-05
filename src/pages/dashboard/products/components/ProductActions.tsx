@@ -19,7 +19,7 @@ export default function ProductActions({ product, onDelete }: Props) {
       </Link>
       <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
         <Link
-          to={`/admin/products/${product.id}`}
+          to={`/dashboard/products/${product.id}`}
           className={`btn btn-outline-secondary ${styles.actionBtn} ${styles.actionBtnMuted}`}
         >
           EDITAR
