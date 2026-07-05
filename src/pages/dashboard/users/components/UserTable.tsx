@@ -18,7 +18,7 @@ export default function UserTable({ users, onDelete }: Props) {
   }
 
   return (
-    <div className="d-flex flex-column gap-3">
+    <div className="flex flex-col gap-sm">
       {users.map((u) => (
         <UserTableRow key={u.id} user={u} onDelete={onDelete} />
       ))}
