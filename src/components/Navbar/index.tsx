@@ -3,8 +3,23 @@ import { useEffect, useState } from "react";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useRoles } from "@/hooks/useRoles";
-import styles from "./navbar.module.css";
+import { Button, cn } from "@/components/ui";
 import logo from "@/assets/asj-logo.png";
+
+/**
+ * Navbar — Fase 10.3.
+ *
+ * Barra superior modernizada em Tailwind + tokens semânticos.
+ * Sem Bootstrap; sem CSS Module. Comportamento (menu mobile, lock de
+ * scroll, fechamento em navegação, logout) preservado integralmente.
+ */
+function getInitials(user: { firstName?: string; email?: string } | null | undefined): string {
+  if (!user) return "?";
+  const name = user.firstName?.trim();
+  if (name) return name.charAt(0).toUpperCase();
+  const email = user.email?.trim();
+  return email ? email.charAt(0).toUpperCase() : "?";
+}
 
 export default function Navbar() {
   const { authenticated, user, logout } = useAuth();
@@ -13,12 +28,10 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
 
-  // Close menu on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Lock body scroll while menu is open on mobile
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.body.style.overflow = open ? "hidden" : "";
@@ -33,75 +46,180 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const roleLabel = isAdmin ? "Administrador" : "Operador";
+  const greeting = user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? "";
+
   return (
-    <nav className={`navbar navbar-dark bg-primary ${styles.mainNav}`}>
-      <div className={`container-fluid ${styles.navContent}`}>
-        <Link to="/" className={styles.navLogoText}>
-          <span className={styles.brand}>
-            <img src={logo} alt="ASJ Catalog" className={styles.brandLogo} width={32} height={32} />
-            <span className={styles.brandText}>
-              <strong>ASJ</strong> Catalog
-            </span>
+    <nav
+      aria-label="Navegação principal"
+      className="sticky top-0 z-sticky bg-primary text-primary-foreground border-b border-primary-hover/40 backdrop-blur"
+    >
+      <div className="h-16 lg:h-[70px] px-md lg:px-xl flex items-center justify-between gap-md">
+        {/* Brand */}
+        <Link
+          to="/"
+          className="inline-flex items-center gap-sm font-heading text-body-lg text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60 rounded-sm"
+        >
+          <img
+            src={logo}
+            alt=""
+            aria-hidden
+            width={32}
+            height={32}
+            className="w-8 h-8 drop-shadow-sm"
+          />
+          <span className="tracking-tight">
+            <strong className="font-bold mr-1">ASJ</strong>Catalog
           </span>
         </Link>
 
-        <button
-          type="button"
-          className={styles.menuToggle}
-          aria-label="Abrir menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className={`${styles.bar} ${open ? styles.barTop : ""}`} />
-          <span className={`${styles.bar} ${open ? styles.barMid : ""}`} />
-          <span className={`${styles.bar} ${open ? styles.barBot : ""}`} />
-        </button>
+        {/* Desktop menu */}
+        <ul className="hidden lg:flex items-center gap-xl m-0 p-0 list-none">
+          <li>
+            <NavbarLink label="Início" target="/" />
+          </li>
+          <li>
+            <NavbarLink label="Catálogo" target="/catalog" />
+          </li>
+          <li>
+            {authenticated ? (
+              <NavbarLink label="Dashboard" target="/dashboard" />
+            ) : (
+              <NavbarLink label="Entrar" target="/auth/login" />
+            )}
+          </li>
+        </ul>
 
-        <div className={`${styles.menuWrap} ${open ? styles.menuWrapOpen : ""}`}>
-          <ul className={styles.mainMenu}>
-            <li>
-              <NavbarLink label="Início" target="/" />
-            </li>
-            <li>
-              <NavbarLink label="Catálogo" target="/catalog" />
-            </li>
-            <li>
-              {authenticated ? (
-                <NavbarLink label="Dashboard" target="/dashboard" />
-              ) : (
-                <NavbarLink label="Entrar" target="/auth/login" />
-              )}
-            </li>
-          </ul>
-
-          {authenticated && (
-            <div className={styles.userBlock}>
-              <Link to="/account/profile" className={styles.userName}>
-                <span className={styles.userGreeting}>
-                  {user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? ""}
+        {/* Desktop user block */}
+        <div className="hidden lg:flex items-center gap-md min-w-[180px] justify-end">
+          {authenticated ? (
+            <>
+              <Link
+                to="/account/profile"
+                className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+              >
+                <span
+                  aria-hidden
+                  className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-foreground/15 text-primary-foreground font-heading font-semibold text-small"
+                >
+                  {getInitials(user)}
                 </span>
-                <span className={styles.userRole}>
-                  {isAdmin ? "Administrador" : "Operador"}
+                <span className="flex flex-col leading-tight">
+                  <span className="text-small font-semibold text-primary-foreground truncate max-w-[160px]">
+                    {greeting}
+                  </span>
+                  <span className="text-caption uppercase tracking-wider text-primary-foreground/70">
+                    {roleLabel}
+                  </span>
                 </span>
               </Link>
-              <button type="button" className="btn btn-outline-light btn-sm" onClick={handleLogout}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+              >
                 Sair
-              </button>
-            </div>
+              </Button>
+            </>
+          ) : (
+            <div aria-hidden className="w-[100px]" />
           )}
         </div>
 
-        {!authenticated && <div className={styles.endSpacer} aria-hidden />}
+        {/* Mobile toggle */}
+        <button
+          type="button"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="lg:hidden inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+        >
+          <span
+            className={cn(
+              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+              open && "translate-y-[7px] rotate-45",
+            )}
+          />
+          <span
+            className={cn(
+              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-opacity duration-fast ease-standard",
+              open && "opacity-0",
+            )}
+          />
+          <span
+            className={cn(
+              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+              open && "-translate-y-[7px] -rotate-45",
+            )}
+          />
+        </button>
       </div>
 
+      {/* Mobile menu */}
       {open && (
         <button
           type="button"
-          className={styles.backdrop}
           aria-label="Fechar menu"
           onClick={() => setOpen(false)}
+          className="lg:hidden fixed inset-0 z-overlay bg-overlay/40 border-0 p-0 cursor-default"
         />
       )}
+      <div
+        className={cn(
+          "lg:hidden fixed left-0 right-0 top-16 z-overlay bg-primary text-primary-foreground shadow-lg border-t border-primary-hover/40",
+          "flex-col gap-md px-md py-md",
+          open ? "flex" : "hidden",
+        )}
+      >
+        <ul className="flex flex-col m-0 p-0 list-none divide-y divide-primary-foreground/10">
+          <li>
+            <NavbarLink label="Início" target="/" />
+          </li>
+          <li className="pt-sm mt-sm">
+            <NavbarLink label="Catálogo" target="/catalog" />
+          </li>
+          <li className="pt-sm mt-sm">
+            {authenticated ? (
+              <NavbarLink label="Dashboard" target="/dashboard" />
+            ) : (
+              <NavbarLink label="Entrar" target="/auth/login" />
+            )}
+          </li>
+        </ul>
+
+        {authenticated && (
+          <div className="flex items-center justify-between gap-sm pt-md border-t border-primary-foreground/10">
+            <Link
+              to="/account/profile"
+              className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+            >
+              <span
+                aria-hidden
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary-foreground/15 text-primary-foreground font-heading font-semibold text-small"
+              >
+                {getInitials(user)}
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-small font-semibold text-primary-foreground">{greeting}</span>
+                <span className="text-caption uppercase tracking-wider text-primary-foreground/70">
+                  {roleLabel}
+                </span>
+              </span>
+            </Link>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30"
+            >
+              Sair
+            </Button>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
