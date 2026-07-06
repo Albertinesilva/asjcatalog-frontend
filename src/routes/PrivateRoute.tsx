@@ -12,7 +12,9 @@ export default function PrivateRoute({ roles }: PrivateRouteProps = {}) {
 
   if (loading) {
     return (
-      <div className="container py-5 text-center text-muted">Carregando...</div>
+      <div className="mx-auto max-w-[1200px] py-2xl px-md text-center text-foreground-muted">
+        Carregando...
+      </div>
     );
   }
 

@@ -30,9 +30,9 @@ import ProfilePage from "@/pages/account/ProfilePage";
 
 function NotFound() {
   return (
-    <div className="container py-5 text-center">
-      <h1>404</h1>
-      <p className="text-muted">
+    <div className="mx-auto max-w-[720px] py-3xl px-md text-center flex flex-col items-center gap-md animate-fade-in">
+      <h1 className="font-heading text-display text-primary m-0">404</h1>
+      <p className="text-body text-foreground-muted m-0">
         A página solicitada não existe ou foi movida no ASJ Catalog.
       </p>
     </div>
