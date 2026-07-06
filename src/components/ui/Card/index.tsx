@@ -2,10 +2,9 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/components/ui/cn";
 
 /**
- * Card — ASJ Design System (Phase 10.2)
+ * Card — ASJ Design System.
  *
- * Standard surface primitive. Replaces (progressively) legacy classes
- * `card-base`, `border-radius-10` and `border-radius-20`.
+ * Standard surface primitive of the ASJ Catalog Design System.
  */
 type Padding = "none" | "sm" | "md" | "lg";
 

@@ -16,11 +16,6 @@ export type NavLinkProps = {
   label: string;
 };
 
-export type ButtonIconProps = {
-  label: string;
-  type: "button" | "submit";
-};
-
 export type ProductPriceProps = {
   price: string;
 };

@@ -3,37 +3,16 @@ import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 
 /**
- * ASJ Catalog — Tailwind CSS configuration (Phase 10.1)
- * ----------------------------------------------------------------
- * This file establishes the Design System foundation.
+ * ASJ Catalog — Tailwind CSS configuration.
  *
- * Principles:
- *  - Components MUST consume only semantic tokens (bg-background,
- *    text-foreground, bg-primary, etc.), never raw color names
- *    (bg-blue-500, text-slate-900, etc.).
- *  - Raw palette values live only in `src/styles/globals.css` as CSS
- *    custom properties. Tailwind maps them into semantic utilities.
- *  - Dark mode is scaffolded via the `class` strategy but is NOT
- *    activated in Phase 10.1. No component toggles theme yet.
- *  - Bootstrap and existing CSS Modules continue to work. Migration
- *    to Tailwind happens incrementally in Phases 10.2–10.6.
- *
- * Deprecation policy:
- *  - The legacy `--asj-*` CSS variables remain in globals.css for
- *    backwards compatibility until Phase 10.6.
- * ----------------------------------------------------------------
+ * Only semantic tokens declared in `src/styles/globals.css` should be
+ * consumed by components. Bootstrap and legacy CSS Modules have been
+ * removed (Phase 10.6); preflight is enabled and dark mode is
+ * scaffolded through the `class` strategy.
  */
 export default {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
-  /**
-   * Preflight is intentionally disabled in Phase 10.1 to guarantee zero
-   * visual regression while Bootstrap and legacy CSS Modules coexist.
-   * It will be re-enabled in Phase 10.6, once Bootstrap is fully removed.
-   */
-  corePlugins: {
-    preflight: false,
-  },
   theme: {
     // Standard Tailwind breakpoints (documented for reference).
     // sm: 640, md: 768, lg: 1024, xl: 1280, 2xl: 1536.
@@ -150,6 +129,27 @@ export default {
         standard: "cubic-bezier(0.2, 0, 0, 1)",
         entrance: "cubic-bezier(0, 0, 0.2, 1)",
         exit: "cubic-bezier(0.4, 0, 1, 1)",
+      },
+
+      /* --- Keyframes / animations (microinteractions) --------- */
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(6px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.96)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-400px 0" },
+          "100%": { backgroundPosition: "400px 0" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 220ms cubic-bezier(0, 0, 0.2, 1) both",
+        "scale-in": "scale-in 180ms cubic-bezier(0.2, 0, 0, 1) both",
+        shimmer: "shimmer 1.4s linear infinite",
       },
     },
   },

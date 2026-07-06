@@ -1,3 +1,5 @@
+import { cn } from "@/components/ui";
+
 type Props = {
   /** Página atual (0-based, padrão Spring). */
   page: number;
@@ -25,19 +27,25 @@ function buildPages(current: number, total: number): (number | "…")[] {
  * Paginação numérica genérica (0-based) para qualquer recurso paginado.
  * Desacoplada do domínio — recebe apenas page/totalPages/onChange.
  */
+const dotBase =
+  "inline-flex items-center justify-center h-9 min-w-9 px-2 rounded-full text-small font-heading font-semibold " +
+  "transition-colors duration-DEFAULT ease-standard " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background " +
+  "disabled:opacity-50 disabled:cursor-not-allowed";
+
 export default function Pagination({ page, totalPages, onChange, ariaLabel = "Paginação" }: Props) {
   if (totalPages <= 1) return null;
   const pages = buildPages(page, totalPages);
 
   return (
-    <nav aria-label={ariaLabel} className="d-flex justify-content-center mt-4">
-      <ul className="pagination mb-0">
-        <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
+    <nav aria-label={ariaLabel} className="flex justify-center mt-lg">
+      <ul className="flex items-center gap-xs list-none m-0 p-0">
+        <li>
           <button
             type="button"
-            className="page-link"
+            className={cn(dotBase, "bg-surface text-foreground-muted border border-border hover:bg-surface-hover")}
             onClick={() => onChange(page - 1)}
-            aria-label="Anterior"
+            aria-label="Página anterior"
             disabled={page === 0}
           >
             ‹
@@ -45,23 +53,33 @@ export default function Pagination({ page, totalPages, onChange, ariaLabel = "Pa
         </li>
         {pages.map((p, i) =>
           p === "…" ? (
-            <li key={`e-${i}`} className="page-item disabled">
-              <span className="page-link">…</span>
+            <li key={`e-${i}`} className="text-foreground-muted px-1 select-none">
+              …
             </li>
           ) : (
-            <li key={p} className={`page-item ${p === page ? "active" : ""}`}>
-              <button type="button" className="page-link" onClick={() => onChange(p)}>
+            <li key={p}>
+              <button
+                type="button"
+                aria-current={p === page ? "page" : undefined}
+                onClick={() => onChange(p)}
+                className={cn(
+                  dotBase,
+                  p === page
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface text-foreground-muted border border-border hover:bg-surface-hover hover:text-foreground",
+                )}
+              >
                 {p + 1}
               </button>
             </li>
           ),
         )}
-        <li className={`page-item ${page >= totalPages - 1 ? "disabled" : ""}`}>
+        <li>
           <button
             type="button"
-            className="page-link"
+            className={cn(dotBase, "bg-surface text-foreground-muted border border-border hover:bg-surface-hover")}
             onClick={() => onChange(page + 1)}
-            aria-label="Próxima"
+            aria-label="Próxima página"
             disabled={page >= totalPages - 1}
           >
             ›
