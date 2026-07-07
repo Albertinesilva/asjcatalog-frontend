@@ -12,8 +12,7 @@ type Props = {
 };
 
 /**
- * Guard genérico baseado em roles. Substitui guards específicos
- * (AdminRoute, OperatorRoute) por uma única implementação com
+ * Guard genérico baseado em roles. Implementação única com
  * comportamento consistente de `loading` e redirect.
  */
 export default function RoleRoute({ roles = [], redirectTo = "/dashboard" }: Props) {
