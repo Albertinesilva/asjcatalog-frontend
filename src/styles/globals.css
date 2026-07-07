@@ -1,10 +1,8 @@
 /**
- * ASJ Catalog — Global stylesheet (Phase 10.6).
+ * ASJ Catalog — Global stylesheet.
  *
- * Legacy Bootstrap import, `--asj-*` compatibility tokens and legacy
- * utility classes (`card-base`, `input-base`, `border-radius-10`, ...)
- * were removed. Tailwind preflight is now active and the application
- * depends exclusively on the ASJ Design System tokens.
+ * The application depends exclusively on the ASJ Design System tokens
+ * and Tailwind utilities. No third-party CSS frameworks are used.
  */
 @tailwind base;
 @tailwind components;

@@ -33,8 +33,7 @@ export default function LoginPage() {
     try {
       await login(data);
       navigate(redirectTo, { replace: true });
-    } catch (err) {
-      console.error("Falha no login", err);
+    } catch {
       setError("root", { message: "Usuário ou senha inválidos" });
       await alerts.error("Falha no login", "Verifique seu e-mail e senha e tente novamente.");
     }

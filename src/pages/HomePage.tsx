@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Badge, Button, Card } from "@/components/ui";
-import homeImage from "@/assets/homeimage.svg";
+import homeImage from "@/assets/home-illustration.jpg";
 
 /**
  * HomePage — Fase 10.4.
@@ -57,9 +57,11 @@ export default function HomePage() {
           <div className="flex items-center justify-center lg:justify-end">
             <img
               src={homeImage}
-              alt="Ilustração da plataforma ASJ Catalog"
-              className="w-full max-w-[440px] h-auto"
-              loading="lazy"
+              alt="Interface do catálogo digital ASJ Catalog com produtos e métricas"
+              width={1200}
+              height={1024}
+              fetchPriority="high"
+              className="w-full max-w-[520px] h-auto rounded-lg"
             />
           </div>
         </div>
