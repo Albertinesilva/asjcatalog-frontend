@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dscatalog.lovable.app/sitemap.xml

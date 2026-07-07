@@ -1,0 +1,14 @@
+{
+  "name": "ASJ Catalog",
+  "short_name": "ASJ Catalog",
+  "description": "Plataforma profissional para gestão e organização de catálogos de produtos.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f8fc",
+  "theme_color": "#1F6FEB",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
