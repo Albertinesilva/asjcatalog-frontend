@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "@/components";
-import imageBackground from "@/assets/auth_image.png";
+import imageBackground from "@/assets/auth-illustration.jpg";
 
 /**
  * AuthLayout — Fase 10.3.
@@ -13,7 +13,7 @@ export default function AuthLayout() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
-      <div className="flex-1 w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
+      <main className="flex-1 w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl lg:gap-2xl items-center">
           <section className="flex flex-col gap-md max-w-[520px] mx-auto lg:mx-0">
             <h1 className="font-heading text-h1 lg:text-display text-foreground m-0">
@@ -25,8 +25,11 @@ export default function AuthLayout() {
             </p>
             <img
               src={imageBackground}
-              alt="Ilustração da plataforma ASJ Catalog"
-              className="w-full max-w-[460px] h-auto mt-md"
+              alt=""
+              aria-hidden="true"
+              width={1024}
+              height={1024}
+              className="w-full max-w-[460px] h-auto mt-md rounded-lg"
               loading="lazy"
             />
           </section>
@@ -34,7 +37,7 @@ export default function AuthLayout() {
             <Outlet />
           </section>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
