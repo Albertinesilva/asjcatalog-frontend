@@ -4,6 +4,15 @@ import Swal, { type SweetAlertOptions, type SweetAlertResult } from "sweetalert2
  * Wrapper centralizado de SweetAlert2.
  * Nenhuma página deve importar `sweetalert2` diretamente —
  * sempre utilize os helpers deste arquivo.
+ *
+ * Estratégia (RC2.1):
+ * - Utiliza SOMENTE a Promise oficial retornada por `Swal.fire()`,
+ *   que já representa a interação do usuário (confirm / cancel / dismiss).
+ * - NÃO envolvemos `Swal.fire` em uma Promise paralela dependente de
+ *   `didClose` — esse callback pode nunca disparar quando ocorre troca
+ *   de rota / desmontagem de componentes durante a animação de saída,
+ *   travando `await` e impedindo `navigate()`.
+ * - `heightAuto: false` evita scroll-lock residual no <body> após navegação.
  */
 
 const baseTheme = {
@@ -11,30 +20,10 @@ const baseTheme = {
   cancelButtonColor: "#9E9E9E",
 };
 
-/**
- * Executa Swal.fire garantindo que:
- * - qualquer modal aberto anteriormente seja fechado antes;
- * - a Promise só resolva depois que o `didClose` do SweetAlert2
- *   for disparado (animação de saída concluída + DOM removido);
- * - o `heightAuto` seja desabilitado, evitando scroll lock residual
- *   no <body> após a navegação para outra rota.
- */
-async function fire(options: SweetAlertOptions): Promise<SweetAlertResult> {
-  if (Swal.isVisible()) {
-    Swal.close();
-  }
-  return new Promise<SweetAlertResult>((resolve) => {
-    let result: SweetAlertResult | undefined;
-    Swal.fire({
-      heightAuto: false,
-      ...options,
-      didClose: () => {
-        options.didClose?.();
-        resolve(result ?? ({ isConfirmed: false, isDenied: false, isDismissed: true } as SweetAlertResult));
-      },
-    }).then((r) => {
-      result = r;
-    });
+function fire(options: SweetAlertOptions): Promise<SweetAlertResult> {
+  return Swal.fire({
+    heightAuto: false,
+    ...options,
   });
 }
 

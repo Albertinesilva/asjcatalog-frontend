@@ -1,6 +1,5 @@
-import { lazy, Suspense, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import Swal from "sweetalert2";
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import CatalogLayout from "@/layouts/CatalogLayout";
 import AuthLayout from "@/layouts/AuthLayout";
@@ -35,16 +34,6 @@ const UserDetailsPage = lazy(() => import("@/pages/dashboard/users/UserDetailsPa
 const ProfilePage = lazy(() => import("@/pages/account/ProfilePage"));
 
 export default function AppRoutes() {
-  const location = useLocation();
-
-  // Safety net: whenever the route changes, make sure no SweetAlert2 modal
-  // (backdrop, focus trap or scroll lock) remains from the previous page.
-  useEffect(() => {
-    if (Swal.isVisible()) {
-      Swal.close();
-    }
-  }, [location.pathname]);
-
   return (
     <Suspense fallback={<LoadingState />}>
       <Routes>
