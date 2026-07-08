@@ -48,9 +48,7 @@ export default function ResetPasswordPage() {
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>Redefinir senha</h2>
 
-        {!token && (
-          <p className={authFieldError}>Token de redefinição não informado na URL.</p>
-        )}
+        {!token && <p className={authFieldError}>Token de redefinição não informado na URL.</p>}
 
         <div className="flex flex-col gap-1.5">
           <PasswordInput

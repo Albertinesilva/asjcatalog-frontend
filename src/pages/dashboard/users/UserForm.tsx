@@ -114,7 +114,10 @@ export default function UserForm({ mode }: Props) {
         {mode === "create" && (
           <div className="flex flex-col gap-1.5">
             <label htmlFor="user-password" className="text-small font-medium text-foreground">
-              Senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+              Senha{" "}
+              <span aria-hidden="true" className="text-danger ml-0.5">
+                *
+              </span>
             </label>
             <PasswordInput
               id="user-password"
@@ -125,14 +128,15 @@ export default function UserForm({ mode }: Props) {
                 minLength: { value: 8, message: "Mínimo 8 caracteres" },
               })}
             />
-            {errors.password && (
-              <p className="text-small text-danger">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-small text-danger">{errors.password.message}</p>}
           </div>
         )}
         <div className="flex flex-col gap-1.5">
           <label htmlFor="user-roles" className="text-small font-medium text-foreground">
-            Permissões <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+            Permissões{" "}
+            <span aria-hidden="true" className="text-danger ml-0.5">
+              *
+            </span>
           </label>
           <select
             id="user-roles"

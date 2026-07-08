@@ -30,14 +30,10 @@ export const buttonBaseClasses =
 export const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-primary-foreground border-transparent hover:bg-primary-hover active:bg-primary-hover",
-  secondary:
-    "bg-surface text-foreground border-border hover:bg-surface-hover",
-  outline:
-    "bg-transparent text-primary border-primary hover:bg-primary/10",
-  danger:
-    "bg-danger text-primary-foreground border-transparent hover:bg-danger/90",
-  ghost:
-    "bg-transparent text-foreground border-transparent hover:bg-surface-hover",
+  secondary: "bg-surface text-foreground border-border hover:bg-surface-hover",
+  outline: "bg-transparent text-primary border-primary hover:bg-primary/10",
+  danger: "bg-danger text-primary-foreground border-transparent hover:bg-danger/90",
+  ghost: "bg-transparent text-foreground border-transparent hover:bg-surface-hover",
 };
 
 export const buttonSizeClasses: Record<ButtonSize, string> = {
@@ -94,7 +90,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       ref={ref}
       type={type}
       disabled={isDisabled}
-      aria-busy={ariaBusy ?? loading ? true : undefined}
+      aria-busy={(ariaBusy ?? loading) ? true : undefined}
       className={cn(
         buttonBaseClasses,
         buttonVariantClasses[variant],

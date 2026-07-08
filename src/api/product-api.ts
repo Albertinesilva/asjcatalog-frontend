@@ -48,6 +48,5 @@ export const productApi = {
   update: (id: number, data: ProductRequest) =>
     http.put<ProductResponse>(`${ENDPOINTS.products}/${id}`, data).then((r) => r.data),
 
-  delete: (id: number) =>
-    http.delete<void>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
+  delete: (id: number) => http.delete<void>(`${ENDPOINTS.products}/${id}`).then((r) => r.data),
 };

@@ -45,15 +45,11 @@ export default function ProfilePage() {
   }, [user, profileForm]);
 
   if (loading && !user) {
-    return (
-      <LoadingState message="Carregando perfil..." />
-    );
+    return <LoadingState message="Carregando perfil..." />;
   }
 
   if (!user) {
-    return (
-      <ErrorState message="Não foi possível carregar seu perfil." />
-    );
+    return <ErrorState message="Não foi possível carregar seu perfil." />;
   }
 
   const currentRoleIds = (user.roles ?? []).map((r) => r.id);
@@ -121,7 +117,11 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
         <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
           <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Dados pessoais</h2>
-          <form onSubmit={handleProfileSubmit(onSaveProfile)} noValidate className="flex flex-col gap-md">
+          <form
+            onSubmit={handleProfileSubmit(onSaveProfile)}
+            noValidate
+            className="flex flex-col gap-md"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
               <Input
                 label="Nome"
@@ -181,10 +181,17 @@ export default function ProfilePage() {
 
         <Card padding="lg" className="lg:col-span-5 flex flex-col gap-md">
           <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Alterar senha</h2>
-          <form onSubmit={handlePasswordSubmit(onChangePassword)} noValidate className="flex flex-col gap-md">
+          <form
+            onSubmit={handlePasswordSubmit(onChangePassword)}
+            noValidate
+            className="flex flex-col gap-md"
+          >
             <div className="flex flex-col gap-1.5">
               <label htmlFor="password" className="text-small font-medium text-foreground">
-                Nova senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+                Nova senha{" "}
+                <span aria-hidden="true" className="text-danger ml-0.5">
+                  *
+                </span>
               </label>
               <PasswordInput
                 id="password"
@@ -196,7 +203,8 @@ export default function ProfilePage() {
                   maxLength: { value: 72, message: "Máximo 72 caracteres" },
                   pattern: {
                     value: /^(?=.*\d).{8,}$/,
-                    message: "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+                    message:
+                      "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
                   },
                 })}
               />
@@ -211,7 +219,10 @@ export default function ProfilePage() {
 
             <div className="flex flex-col gap-1.5">
               <label htmlFor="confirmPassword" className="text-small font-medium text-foreground">
-                Confirmar senha <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+                Confirmar senha{" "}
+                <span aria-hidden="true" className="text-danger ml-0.5">
+                  *
+                </span>
               </label>
               <PasswordInput
                 id="confirmPassword"

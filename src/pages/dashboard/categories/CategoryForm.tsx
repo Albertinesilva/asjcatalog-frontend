@@ -64,7 +64,11 @@ export default function CategoryForm({ mode }: Props) {
           <Button type="submit" variant="primary" loading={isSubmitting}>
             {isSubmitting ? "Salvando..." : "Salvar"}
           </Button>
-          <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/categories")}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => navigate("/dashboard/categories")}
+          >
             Cancelar
           </Button>
         </div>

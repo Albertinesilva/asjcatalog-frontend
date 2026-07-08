@@ -6,13 +6,7 @@ import { cn } from "@/components/ui/cn";
  *
  * Compact status/label token. Consumes only semantic tokens.
  */
-export type BadgeVariant =
-  | "default"
-  | "primary"
-  | "success"
-  | "warning"
-  | "danger"
-  | "outline";
+export type BadgeVariant = "default" | "primary" | "success" | "warning" | "danger" | "outline";
 
 type Props = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;

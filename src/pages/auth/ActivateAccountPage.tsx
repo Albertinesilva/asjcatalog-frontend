@@ -141,7 +141,9 @@ export default function ActivateAccountPage() {
         {status === "already" && (
           <>
             <h2 className={authFormTitle}>Conta já ativada</h2>
-            <p className={hintCenter}>Sua conta já está ativa. Você pode realizar login normalmente.</p>
+            <p className={hintCenter}>
+              Sua conta já está ativa. Você pode realizar login normalmente.
+            </p>
             <Link to="/auth/login" className="w-full">
               <Button type="button" size="lg" fullWidth>
                 Ir para login

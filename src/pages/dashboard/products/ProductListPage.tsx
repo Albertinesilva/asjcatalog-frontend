@@ -57,7 +57,10 @@ export default function ProductListPage() {
 
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
-    categoryService.findAll().then(setCategories).catch(() => {});
+    categoryService
+      .findAll()
+      .then(setCategories)
+      .catch(() => {});
   }, []);
 
   const [pendingDelete, setPendingDelete] = useState<ProductResponse | null>(null);
@@ -82,9 +85,7 @@ export default function ProductListPage() {
 
   return (
     <div>
-      <TableToolbar
-        counter={pagination.totalElements}
-      >
+      <TableToolbar counter={pagination.totalElements}>
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
           <Link to="/dashboard/products/new" className={buttonClasses("primary", "md")}>
             Adicionar

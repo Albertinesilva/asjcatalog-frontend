@@ -21,7 +21,10 @@ export function getApiErrorMessage(err: unknown, fallback = "Erro inesperado."):
     if (status === 404) return "Recurso não encontrado.";
     if (status === 429) return "Muitas tentativas. Aguarde alguns instantes.";
 
-    const fieldMsg = data?.errors?.map((e) => e.message).filter(Boolean).join(" • ");
+    const fieldMsg = data?.errors
+      ?.map((e) => e.message)
+      .filter(Boolean)
+      .join(" • ");
     if (fieldMsg) return fieldMsg;
     if (data?.message) return data.message;
     if (data?.error) return data.error;

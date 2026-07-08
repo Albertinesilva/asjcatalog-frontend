@@ -24,7 +24,15 @@ export default function UserListPage() {
   const filters = useMemo<UserFilters>(() => ({ firstName: debounced }), [debounced]);
 
   const fetcher = useCallback(
-    ({ page, size, filters }: { page: number; size: number; filters: UserFilters }): Promise<Paginated<User>> =>
+    ({
+      page,
+      size,
+      filters,
+    }: {
+      page: number;
+      size: number;
+      filters: UserFilters;
+    }): Promise<Paginated<User>> =>
       userService.findAll({
         page,
         size,
@@ -60,9 +68,7 @@ export default function UserListPage() {
 
   return (
     <div>
-      <TableToolbar
-        counter={pagination.totalElements}
-      >
+      <TableToolbar counter={pagination.totalElements}>
         <Link to="/dashboard/users/new" className={buttonClasses("primary", "md")}>
           Adicionar
         </Link>

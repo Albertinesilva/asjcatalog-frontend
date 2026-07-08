@@ -43,7 +43,10 @@ export default function Pagination({ page, totalPages, onChange, ariaLabel = "Pa
         <li>
           <button
             type="button"
-            className={cn(dotBase, "bg-surface text-foreground-muted border border-border hover:bg-surface-hover")}
+            className={cn(
+              dotBase,
+              "bg-surface text-foreground-muted border border-border hover:bg-surface-hover",
+            )}
             onClick={() => onChange(page - 1)}
             aria-label="Página anterior"
             disabled={page === 0}
@@ -77,7 +80,10 @@ export default function Pagination({ page, totalPages, onChange, ariaLabel = "Pa
         <li>
           <button
             type="button"
-            className={cn(dotBase, "bg-surface text-foreground-muted border border-border hover:bg-surface-hover")}
+            className={cn(
+              dotBase,
+              "bg-surface text-foreground-muted border border-border hover:bg-surface-hover",
+            )}
             onClick={() => onChange(page + 1)}
             aria-label="Próxima página"
             disabled={page >= totalPages - 1}

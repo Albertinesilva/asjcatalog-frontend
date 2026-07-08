@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   const roleLabel = isAdmin ? "Administrador" : "Operador";
-  const greeting = user?.firstName ? `Olá, ${user.firstName}` : user?.email ?? "";
+  const greeting = user?.firstName ? `Olá, ${user.firstName}` : (user?.email ?? "");
 
   return (
     <nav

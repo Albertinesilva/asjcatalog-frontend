@@ -23,17 +23,7 @@ export const inputBaseClasses =
   "disabled:opacity-60 disabled:cursor-not-allowed read-only:bg-surface-hover";
 
 const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  {
-    label,
-    helperText,
-    error,
-    required,
-    wrapperClassName,
-    inputClassName,
-    className,
-    id,
-    ...rest
-  },
+  { label, helperText, error, required, wrapperClassName, inputClassName, className, id, ...rest },
   ref,
 ) {
   const autoId = useId();
@@ -47,7 +37,11 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
       {label && (
         <label htmlFor={inputId} className="text-small font-medium text-foreground">
           {label}
-          {required && <span aria-hidden="true" className="text-danger ml-0.5">*</span>}
+          {required && (
+            <span aria-hidden="true" className="text-danger ml-0.5">
+              *
+            </span>
+          )}
         </label>
       )}
       <input

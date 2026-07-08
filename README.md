@@ -49,17 +49,17 @@ marketplace ou e-commerce.
 
 ## Stack e dependências
 
-| Camada       | Tecnologia                                 |
-| ------------ | ------------------------------------------ |
-| Build        | Vite                                       |
-| UI           | React 19 + TypeScript 5                    |
-| Roteamento   | React Router v6                            |
-| Formulários  | React Hook Form                            |
-| HTTP         | Axios + query-string                       |
-| Estilo       | Bootstrap 5 + CSS Modules                  |
-| Auth         | JWT (Bearer) + `jwt-decode` + localStorage |
-| Alertas      | SweetAlert2 (via `utils/alerts.ts`)        |
-| Runtime      | Node.js ≥ 20.10.0                          |
+| Camada      | Tecnologia                                 |
+| ----------- | ------------------------------------------ |
+| Build       | Vite                                       |
+| UI          | React 19 + TypeScript 5                    |
+| Roteamento  | React Router v6                            |
+| Formulários | React Hook Form                            |
+| HTTP        | Axios + query-string                       |
+| Estilo      | Bootstrap 5 + CSS Modules                  |
+| Auth        | JWT (Bearer) + `jwt-decode` + localStorage |
+| Alertas     | SweetAlert2 (via `utils/alerts.ts`)        |
+| Runtime     | Node.js ≥ 20.10.0                          |
 
 ---
 
@@ -125,29 +125,29 @@ client-side. **Não use secrets reais** nessas variáveis.
 Todas as rotas são declaradas em `src/routes/AppRoutes.tsx`. Rotas
 principais:
 
-| Caminho                          | Página                                     |
-| -------------------------------- | ------------------------------------------ |
-| `/`                              | Home                                       |
-| `/catalog`                       | Catálogo público                           |
-| `/catalog/:productId`            | Detalhe do produto                         |
-| `/auth/login`                    | Entrar                                     |
-| `/auth/register`                 | Criar conta                                |
-| `/auth/recover`                  | Recuperar senha                            |
-| `/auth/reset-password?token=`    | Redefinir senha                            |
-| `/auth/activation-pending`       | Aguardando ativação                        |
-| `/activate-account?token=`       | Ativação de conta                          |
-| `/dashboard`                     | Dashboard (visão geral)                    |
-| `/dashboard/products`            | Lista de produtos                          |
-| `/dashboard/products/new`        | Novo produto                               |
-| `/dashboard/products/:id`        | Editar produto                             |
-| `/dashboard/categories`          | Lista de categorias                        |
-| `/dashboard/categories/new`      | Nova categoria                             |
-| `/dashboard/categories/:id`      | Editar categoria                           |
-| `/dashboard/users` (ADMIN)       | Lista de usuários                          |
-| `/dashboard/users/new` (ADMIN)   | Novo usuário                               |
-| `/dashboard/users/:id` (ADMIN)   | Detalhes do usuário                        |
-| `/dashboard/users/:id/edit`      | Editar usuário (ADMIN)                     |
-| `/account/profile`               | Meu Perfil                                 |
+| Caminho                        | Página                  |
+| ------------------------------ | ----------------------- |
+| `/`                            | Home                    |
+| `/catalog`                     | Catálogo público        |
+| `/catalog/:productId`          | Detalhe do produto      |
+| `/auth/login`                  | Entrar                  |
+| `/auth/register`               | Criar conta             |
+| `/auth/recover`                | Recuperar senha         |
+| `/auth/reset-password?token=`  | Redefinir senha         |
+| `/auth/activation-pending`     | Aguardando ativação     |
+| `/activate-account?token=`     | Ativação de conta       |
+| `/dashboard`                   | Dashboard (visão geral) |
+| `/dashboard/products`          | Lista de produtos       |
+| `/dashboard/products/new`      | Novo produto            |
+| `/dashboard/products/:id`      | Editar produto          |
+| `/dashboard/categories`        | Lista de categorias     |
+| `/dashboard/categories/new`    | Nova categoria          |
+| `/dashboard/categories/:id`    | Editar categoria        |
+| `/dashboard/users` (ADMIN)     | Lista de usuários       |
+| `/dashboard/users/new` (ADMIN) | Novo usuário            |
+| `/dashboard/users/:id` (ADMIN) | Detalhes do usuário     |
+| `/dashboard/users/:id/edit`    | Editar usuário (ADMIN)  |
+| `/account/profile`             | Meu Perfil              |
 
 Toda a árvore `/dashboard/*` e `/account/profile` é protegida por
 `<PrivateRoute />`. As rotas de usuários adicionam o gate `<AdminRoute />`.
@@ -188,17 +188,17 @@ username=...&password=...&grant_type=password
 
 Responsabilidades distribuídas:
 
-| Módulo                        | Responsabilidade                                                  |
-| ----------------------------- | ----------------------------------------------------------------- |
-| `utils/storage.ts`            | `get/save/removeAuthData` em `localStorage["authData"]`           |
-| `utils/permissions.ts`        | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator` |
-| `utils/alerts.ts`             | Wrapper SweetAlert2                                               |
-| `api/auth-api.ts`             | `requestToken()` → POST `/oauth2/token`                           |
-| `api/account-api.ts`          | `register / activate / resendActivation / recovery / reset`       |
-| `services/auth-service.ts`    | `login / logout / isAuthenticated / getCurrentUser`               |
-| `contexts/AuthContext.tsx`    | Estado global reativo (`auth-change` + `storage`)                 |
-| `hooks/useAuth.ts`            | Acesso ao contexto                                                |
-| `hooks/useRoles.ts`           | `isAdmin / isOperator / hasRole`                                  |
+| Módulo                     | Responsabilidade                                                  |
+| -------------------------- | ----------------------------------------------------------------- |
+| `utils/storage.ts`         | `get/save/removeAuthData` em `localStorage["authData"]`           |
+| `utils/permissions.ts`     | `decodeToken`, `isTokenValid`, `hasAnyRole`, `isAdmin/isOperator` |
+| `utils/alerts.ts`          | Wrapper SweetAlert2                                               |
+| `api/auth-api.ts`          | `requestToken()` → POST `/oauth2/token`                           |
+| `api/account-api.ts`       | `register / activate / resendActivation / recovery / reset`       |
+| `services/auth-service.ts` | `login / logout / isAuthenticated / getCurrentUser`               |
+| `contexts/AuthContext.tsx` | Estado global reativo (`auth-change` + `storage`)                 |
+| `hooks/useAuth.ts`         | Acesso ao contexto                                                |
+| `hooks/useRoles.ts`        | `isAdmin / isOperator / hasRole`                                  |
 
 O `AuthProvider` escuta `auth-change` e `storage` para reagir a
 login/logout — inclusive quando ocorrem em outra aba.
@@ -295,13 +295,13 @@ Isso evita problemas de **CORS** e **mixed-content** (HTTPS → HTTP).
 
 ## Scripts
 
-| Script            | O que faz                                    |
-| ----------------- | -------------------------------------------- |
-| `npm run dev`     | Sobe o Vite dev server                       |
-| `npm run build`   | Build de produção (SPA estático em `dist/`)  |
-| `npm run preview` | Serve o build localmente                     |
-| `npm run lint`    | Roda ESLint em todo o projeto                |
-| `npm run format`  | Aplica Prettier                              |
+| Script            | O que faz                                   |
+| ----------------- | ------------------------------------------- |
+| `npm run dev`     | Sobe o Vite dev server                      |
+| `npm run build`   | Build de produção (SPA estático em `dist/`) |
+| `npm run preview` | Serve o build localmente                    |
+| `npm run lint`    | Roda ESLint em todo o projeto               |
+| `npm run format`  | Aplica Prettier                             |
 
 ---
 

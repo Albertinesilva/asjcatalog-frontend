@@ -19,7 +19,9 @@ export default function NotFoundPage() {
         A página solicitada não existe ou foi movida no ASJ Catalog.
       </p>
       <Link to="/">
-        <Button variant="primary" size="lg">Voltar para o início</Button>
+        <Button variant="primary" size="lg">
+          Voltar para o início
+        </Button>
       </Link>
     </main>
   );

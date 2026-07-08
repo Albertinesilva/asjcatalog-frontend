@@ -14,7 +14,10 @@ function initials(first: string, last: string) {
 
 export default function UserTableRow({ user, onDelete }: Props) {
   return (
-    <Card padding="md" className="flex flex-col md:flex-row md:items-center md:justify-between gap-md transition-colors hover:border-primary/40">
+    <Card
+      padding="md"
+      className="flex flex-col md:flex-row md:items-center md:justify-between gap-md transition-colors hover:border-primary/40"
+    >
       <div className="flex items-center gap-md min-w-0">
         <span
           aria-hidden="true"

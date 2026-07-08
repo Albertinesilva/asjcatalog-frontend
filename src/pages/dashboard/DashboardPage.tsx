@@ -129,9 +129,7 @@ export default function DashboardPage() {
 
     const productsP = productService.findAll({ page: 0, size: 1 });
     const categoriesP = categoryService.findAll();
-    const usersP = isAdmin
-      ? userService.findAll({ page: 0, size: 1 })
-      : Promise.resolve(null);
+    const usersP = isAdmin ? userService.findAll({ page: 0, size: 1 }) : Promise.resolve(null);
 
     Promise.all([productsP, categoriesP, usersP])
       .then(([products, categories, users]) => {
@@ -161,17 +159,41 @@ export default function DashboardPage() {
   }, [isAdmin]);
 
   type Shortcut = { to: string; title: string; desc: string; icon: IconName; show?: boolean };
-  const shortcuts: Shortcut[] = ([
-    { to: "/dashboard/products/new", title: "Novo produto", desc: "Adicionar um novo produto ao catálogo.", icon: "plus" as IconName },
-    { to: "/dashboard/categories/new", title: "Nova categoria", desc: "Criar uma categoria para organizar o catálogo.", icon: "tag" as IconName },
-    { to: "/dashboard/users/new", title: "Novo usuário", desc: "Cadastrar um usuário com acesso à plataforma.", icon: "users" as IconName, show: isAdmin },
-    { to: "/catalog", title: "Ver catálogo público", desc: "Visualizar o catálogo como um visitante.", icon: "eye" as IconName },
-  ] as Shortcut[]).filter((i) => i.show !== false);
+  const shortcuts: Shortcut[] = (
+    [
+      {
+        to: "/dashboard/products/new",
+        title: "Novo produto",
+        desc: "Adicionar um novo produto ao catálogo.",
+        icon: "plus" as IconName,
+      },
+      {
+        to: "/dashboard/categories/new",
+        title: "Nova categoria",
+        desc: "Criar uma categoria para organizar o catálogo.",
+        icon: "tag" as IconName,
+      },
+      {
+        to: "/dashboard/users/new",
+        title: "Novo usuário",
+        desc: "Cadastrar um usuário com acesso à plataforma.",
+        icon: "users" as IconName,
+        show: isAdmin,
+      },
+      {
+        to: "/catalog",
+        title: "Ver catálogo público",
+        desc: "Visualizar o catálogo como um visitante.",
+        icon: "eye" as IconName,
+      },
+    ] as Shortcut[]
+  ).filter((i) => i.show !== false);
 
   return (
     <div className="flex flex-col gap-xl">
       <p className="text-body text-foreground-muted m-0">
-        Olá, <span className="font-heading font-semibold text-foreground">{greetingName}</span>. Bem-vindo(a) ao painel de gestão do ASJ Catalog.
+        Olá, <span className="font-heading font-semibold text-foreground">{greetingName}</span>.
+        Bem-vindo(a) ao painel de gestão do ASJ Catalog.
       </p>
 
       {state.error && (
@@ -185,10 +207,31 @@ export default function DashboardPage() {
           Visão geral
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
-          <MetricCard label="Produtos" value={state.products} hint="Total cadastrado no catálogo" loading={state.loading} to="/dashboard/products" icon="box" />
-          <MetricCard label="Categorias" value={state.categories} hint="Categorias disponíveis" loading={state.loading} to="/dashboard/categories" icon="tag" />
+          <MetricCard
+            label="Produtos"
+            value={state.products}
+            hint="Total cadastrado no catálogo"
+            loading={state.loading}
+            to="/dashboard/products"
+            icon="box"
+          />
+          <MetricCard
+            label="Categorias"
+            value={state.categories}
+            hint="Categorias disponíveis"
+            loading={state.loading}
+            to="/dashboard/categories"
+            icon="tag"
+          />
           {isAdmin && (
-            <MetricCard label="Usuários" value={state.users} hint="Contas administrativas ativas" loading={state.loading} to="/dashboard/users" icon="users" />
+            <MetricCard
+              label="Usuários"
+              value={state.users}
+              hint="Contas administrativas ativas"
+              loading={state.loading}
+              to="/dashboard/users"
+              icon="users"
+            />
           )}
         </div>
       </section>
@@ -228,8 +271,8 @@ export default function DashboardPage() {
             Acompanhamento em preparação
           </p>
           <p className="m-0 text-small text-foreground-muted">
-            Em breve esta área exibirá o histórico de alterações no catálogo, cadastros
-            recentes e notificações da plataforma.
+            Em breve esta área exibirá o histórico de alterações no catálogo, cadastros recentes e
+            notificações da plataforma.
           </p>
         </Card>
       </section>

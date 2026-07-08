@@ -7,7 +7,13 @@
  *   - avoid inline styles and hardcoded colors;
  *   - follow the official typography (Space Grotesk / DM Sans) and scales.
  */
-export { default as Button, buttonClasses, buttonBaseClasses, buttonVariantClasses, buttonSizeClasses } from "./Button";
+export {
+  default as Button,
+  buttonClasses,
+  buttonBaseClasses,
+  buttonVariantClasses,
+  buttonSizeClasses,
+} from "./Button";
 export type { ButtonVariant, ButtonSize } from "./Button";
 export { default as Input, inputBaseClasses } from "./Input";
 export { default as Card } from "./Card";

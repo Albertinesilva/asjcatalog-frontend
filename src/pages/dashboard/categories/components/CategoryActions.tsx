@@ -12,7 +12,10 @@ export default function CategoryActions({ category, onDelete }: Props) {
   return (
     <div className="flex flex-wrap gap-sm">
       <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
-        <Link to={`/dashboard/categories/${category.id}`} className={buttonClasses("secondary", "sm")}>
+        <Link
+          to={`/dashboard/categories/${category.id}`}
+          className={buttonClasses("secondary", "sm")}
+        >
           Editar
         </Link>
       </Authorization>

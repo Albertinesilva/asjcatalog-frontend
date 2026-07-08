@@ -1,4 +1,3 @@
-
 # Fase 4 — Planejamento Arquitetural do Módulo Produtos
 
 Migração do módulo `Produtos` para o padrão consolidado no módulo `Users` (Architecture Freeze v1). **Sem implementação nesta etapa.**
@@ -44,13 +43,13 @@ Nenhum wrapper local será criado.
 
 ## 3. Componentes específicos do módulo Produtos
 
-| Componente | Responsabilidade |
-|---|---|
-| `ProductTable` | Renderiza `<table>` responsiva; recebe `items`, `onEdit`, `onDelete`. Sem lógica de fetch. |
-| `ProductTableRow` | Apenas renderização de dados de uma linha (imagem, nome, categorias, preço, data). |
-| `ProductActions` | Botões Editar/Excluir da linha, com `<Authorization>` nos destrutivos. Isolado de `ProductTableRow`. |
-| `ProductCategoryBadge` | Badge de categoria (várias por produto) — apresentação pura. |
-| `ProductPrice` | Formatação monetária BRL centralizada. |
+| Componente             | Responsabilidade                                                                                     |
+| ---------------------- | ---------------------------------------------------------------------------------------------------- |
+| `ProductTable`         | Renderiza `<table>` responsiva; recebe `items`, `onEdit`, `onDelete`. Sem lógica de fetch.           |
+| `ProductTableRow`      | Apenas renderização de dados de uma linha (imagem, nome, categorias, preço, data).                   |
+| `ProductActions`       | Botões Editar/Excluir da linha, com `<Authorization>` nos destrutivos. Isolado de `ProductTableRow`. |
+| `ProductCategoryBadge` | Badge de categoria (várias por produto) — apresentação pura.                                         |
+| `ProductPrice`         | Formatação monetária BRL centralizada.                                                               |
 
 Justificativa: cada componente tem responsabilidade única, permitindo evolução independente e reuso interno em futura tela de detalhes admin.
 
@@ -90,12 +89,12 @@ Mudança em qualquer filtro → `usePagedQuery` reseta `page=0` automaticamente.
 
 ## 6. Estados de interface
 
-| Estado | Componente compartilhado |
-|---|---|
-| Carregando | `LoadingState` |
-| Erro de fetch | `ErrorState` (com `retry` → `refetch` de `usePagedQuery`) |
-| Lista vazia (com/sem filtro) | `EmptyState` |
-| Confirmação de exclusão | `ConfirmDialog` (`confirmingLabel="Excluindo..."`) |
+| Estado                       | Componente compartilhado                                  |
+| ---------------------------- | --------------------------------------------------------- |
+| Carregando                   | `LoadingState`                                            |
+| Erro de fetch                | `ErrorState` (com `retry` → `refetch` de `usePagedQuery`) |
+| Lista vazia (com/sem filtro) | `EmptyState`                                              |
+| Confirmação de exclusão      | `ConfirmDialog` (`confirmingLabel="Excluindo..."`)        |
 
 Toda mensagem via `getApiErrorMessage` de `@/utils/api-errors`.
 
@@ -105,12 +104,12 @@ Toda mensagem via `getApiErrorMessage` de `@/utils/api-errors`.
 
 Regras alinhadas ao backend Spring Boot:
 
-| Ação | Guard |
-|---|---|
+| Ação                         | Guard                                                     |
+| ---------------------------- | --------------------------------------------------------- |
 | Listar / visualizar produtos | Rota já protegida por `RoleRoute` (`OPERATOR` ou `ADMIN`) |
-| Botão "ADICIONAR" | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>` |
-| Botão "Editar" (linha) | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>` |
-| Botão "Excluir" (linha) | `<Authorization roles={["ROLE_ADMIN"]}>` |
+| Botão "ADICIONAR"            | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>`  |
+| Botão "Editar" (linha)       | `<Authorization roles={["ROLE_OPERATOR","ROLE_ADMIN"]}>`  |
+| Botão "Excluir" (linha)      | `<Authorization roles={["ROLE_ADMIN"]}>`                  |
 
 Compatível com o padrão adotado em `UserActions`.
 

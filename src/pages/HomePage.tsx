@@ -11,13 +11,11 @@ import homeImage from "@/assets/home-illustration.jpg";
 const features = [
   {
     title: "Catálogo centralizado",
-    description:
-      "Organize produtos, categorias e informações comerciais em um único lugar.",
+    description: "Organize produtos, categorias e informações comerciais em um único lugar.",
   },
   {
     title: "Administração simplificada",
-    description:
-      "Cadastre, edite e mantenha o catálogo com uma experiência clara e consistente.",
+    description: "Cadastre, edite e mantenha o catálogo com uma experiência clara e consistente.",
   },
   {
     title: "Controle de usuários",

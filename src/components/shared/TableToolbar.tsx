@@ -15,7 +15,13 @@ type Props = {
  *
  * Fase 10.2: migrado para Tailwind + Badge do Design System.
  */
-export default function TableToolbar({ title, subtitle, counter, children, className = "" }: Props) {
+export default function TableToolbar({
+  title,
+  subtitle,
+  counter,
+  children,
+  className = "",
+}: Props) {
   const hasCounter = typeof counter === "number";
   return (
     <div

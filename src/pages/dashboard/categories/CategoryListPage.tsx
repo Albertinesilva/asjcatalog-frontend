@@ -64,9 +64,7 @@ export default function CategoryListPage() {
 
   return (
     <div>
-      <TableToolbar
-        counter={filtered.length}
-      >
+      <TableToolbar counter={filtered.length}>
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
           <Link to="/dashboard/categories/new" className={buttonClasses("primary", "md")}>
             Adicionar

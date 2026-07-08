@@ -99,7 +99,12 @@ html,
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: "DM Sans", "Inter", system-ui, -apple-system, sans-serif;
+  font-family:
+    "DM Sans",
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 body {
@@ -145,10 +150,8 @@ a {
   border: 1px solid hsl(var(--border));
   border-radius: 0.75rem !important;
   padding: 1.5rem !important;
-  box-shadow:
-    0 24px 48px -12px rgb(15 23 42 / 0.18) !important;
+  box-shadow: 0 24px 48px -12px rgb(15 23 42 / 0.18) !important;
   font-family: "DM Sans", "Inter", system-ui, sans-serif !important;
-  animation: asj-swal-in 180ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .swal2-title {

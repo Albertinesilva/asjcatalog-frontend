@@ -118,7 +118,10 @@ export default function ProductForm({ mode }: Props) {
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="product-categories" className="text-small font-medium text-foreground">
-            Categorias <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+            Categorias{" "}
+            <span aria-hidden="true" className="text-danger ml-0.5">
+              *
+            </span>
           </label>
           <select
             id="product-categories"
@@ -145,7 +148,10 @@ export default function ProductForm({ mode }: Props) {
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="product-description" className="text-small font-medium text-foreground">
-            Descrição <span aria-hidden="true" className="text-danger ml-0.5">*</span>
+            Descrição{" "}
+            <span aria-hidden="true" className="text-danger ml-0.5">
+              *
+            </span>
           </label>
           <textarea
             id="product-description"

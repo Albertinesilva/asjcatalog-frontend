@@ -8,10 +8,16 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
 
   // Products
   if (pathname.startsWith("/dashboard/products/new")) {
-    return { title: "Novo produto", crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Novo" }] };
+    return {
+      title: "Novo produto",
+      crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Novo" }],
+    };
   }
   if (/^\/dashboard\/products\/\d+/.test(pathname)) {
-    return { title: "Editar produto", crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Editar" }] };
+    return {
+      title: "Editar produto",
+      crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Editar" }],
+    };
   }
   if (pathname.startsWith("/dashboard/products")) {
     return { title: "Produtos", crumbs: [base, { label: "Produtos" }] };
@@ -19,10 +25,16 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
 
   // Categories
   if (pathname.startsWith("/dashboard/categories/new")) {
-    return { title: "Nova categoria", crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Nova" }] };
+    return {
+      title: "Nova categoria",
+      crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Nova" }],
+    };
   }
   if (/^\/dashboard\/categories\/\d+/.test(pathname)) {
-    return { title: "Editar categoria", crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Editar" }] };
+    return {
+      title: "Editar categoria",
+      crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Editar" }],
+    };
   }
   if (pathname.startsWith("/dashboard/categories")) {
     return { title: "Categorias", crumbs: [base, { label: "Categorias" }] };
@@ -30,13 +42,22 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
 
   // Users
   if (pathname.startsWith("/dashboard/users/new")) {
-    return { title: "Novo usuário", crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Novo" }] };
+    return {
+      title: "Novo usuário",
+      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Novo" }],
+    };
   }
   if (/^\/dashboard\/users\/\d+\/edit/.test(pathname)) {
-    return { title: "Editar usuário", crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Editar" }] };
+    return {
+      title: "Editar usuário",
+      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Editar" }],
+    };
   }
   if (/^\/dashboard\/users\/\d+/.test(pathname)) {
-    return { title: "Detalhes do usuário", crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Detalhes" }] };
+    return {
+      title: "Detalhes do usuário",
+      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Detalhes" }],
+    };
   }
   if (pathname.startsWith("/dashboard/users")) {
     return { title: "Usuários", crumbs: [base, { label: "Usuários" }] };
@@ -76,7 +97,11 @@ export default function DashboardLayout() {
             >
               {crumbs.map((c, i) => (
                 <span key={`${c.label}-${i}`} className="inline-flex items-center gap-xs">
-                  {i > 0 && <span aria-hidden className="text-border">/</span>}
+                  {i > 0 && (
+                    <span aria-hidden className="text-border">
+                      /
+                    </span>
+                  )}
                   {c.to ? (
                     <Link
                       to={c.to}

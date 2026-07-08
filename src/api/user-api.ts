@@ -33,21 +33,19 @@ export const userApi = {
     } = {},
   ): Promise<SpringPage<User>> => {
     const merged = { page: 0, size: 20, sort: "firstName,asc", ...params };
-    return http
-      .get<SpringPage<User> | User[]>(ENDPOINTS.users, { params: merged })
-      .then((r) => {
-        const data = r.data;
-        if (Array.isArray(data)) {
-          return {
-            content: data,
-            totalElements: data.length,
-            totalPages: 1,
-            number: 0,
-            size: data.length,
-          } satisfies SpringPage<User>;
-        }
-        return data;
-      });
+    return http.get<SpringPage<User> | User[]>(ENDPOINTS.users, { params: merged }).then((r) => {
+      const data = r.data;
+      if (Array.isArray(data)) {
+        return {
+          content: data,
+          totalElements: data.length,
+          totalPages: 1,
+          number: 0,
+          size: data.length,
+        } satisfies SpringPage<User>;
+      }
+      return data;
+    });
   },
 
   activate: (id: number) =>
