@@ -1,4 +1,4 @@
-import Swal, { type SweetAlertResult } from "sweetalert2";
+import Swal, { type SweetAlertOptions, type SweetAlertResult } from "sweetalert2";
 
 /**
  * Wrapper centralizado de SweetAlert2.
@@ -11,9 +11,36 @@ const baseTheme = {
   cancelButtonColor: "#9E9E9E",
 };
 
+/**
+ * Executa Swal.fire garantindo que:
+ * - qualquer modal aberto anteriormente seja fechado antes;
+ * - a Promise só resolva depois que o `didClose` do SweetAlert2
+ *   for disparado (animação de saída concluída + DOM removido);
+ * - o `heightAuto` seja desabilitado, evitando scroll lock residual
+ *   no <body> após a navegação para outra rota.
+ */
+async function fire(options: SweetAlertOptions): Promise<SweetAlertResult> {
+  if (Swal.isVisible()) {
+    Swal.close();
+  }
+  return new Promise<SweetAlertResult>((resolve) => {
+    let result: SweetAlertResult | undefined;
+    Swal.fire({
+      heightAuto: false,
+      ...options,
+      didClose: () => {
+        options.didClose?.();
+        resolve(result ?? ({ isConfirmed: false, isDenied: false, isDismissed: true } as SweetAlertResult));
+      },
+    }).then((r) => {
+      result = r;
+    });
+  });
+}
+
 export const alerts = {
   success(title: string, text?: string): Promise<SweetAlertResult> {
-    return Swal.fire({
+    return fire({
       icon: "success",
       title,
       text,
@@ -23,7 +50,7 @@ export const alerts = {
   },
 
   error(title: string, text?: string): Promise<SweetAlertResult> {
-    return Swal.fire({
+    return fire({
       icon: "error",
       title,
       text,
@@ -33,7 +60,7 @@ export const alerts = {
   },
 
   warning(title: string, text?: string): Promise<SweetAlertResult> {
-    return Swal.fire({
+    return fire({
       icon: "warning",
       title,
       text,
@@ -43,7 +70,7 @@ export const alerts = {
   },
 
   info(title: string, text?: string): Promise<SweetAlertResult> {
-    return Swal.fire({
+    return fire({
       icon: "info",
       title,
       text,
@@ -58,7 +85,7 @@ export const alerts = {
     confirmText = "Confirmar",
     cancelText = "Cancelar",
   ): Promise<SweetAlertResult> {
-    return Swal.fire({
+    return fire({
       icon: "question",
       title,
       text,
@@ -70,9 +97,13 @@ export const alerts = {
   },
 
   loading(title = "Processando...", text?: string): void {
+    if (Swal.isVisible()) {
+      Swal.close();
+    }
     Swal.fire({
       title,
       text,
+      heightAuto: false,
       allowOutsideClick: false,
       allowEscapeKey: false,
       didOpen: () => Swal.showLoading(),
