@@ -5,6 +5,7 @@ import { PasswordInput } from "@/components";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail } from "@/utils/storage";
+import { RESEND_COOLDOWN_KEY, RESEND_COOLDOWN_MS } from "@/utils/constants";
 import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -36,7 +37,7 @@ export default function RegisterPage() {
         password: data.password,
       });
       savePendingEmail(data.email);
-      window.localStorage.setItem("activationResendAvailableAt", String(Date.now() + 60_000));
+      window.localStorage.setItem(RESEND_COOLDOWN_KEY, String(Date.now() + RESEND_COOLDOWN_MS));
       await alerts.success(
         "Cadastro realizado!",
         `Enviamos um e-mail de ativação para:\n${data.email}\n\nVerifique sua caixa de entrada para ativar sua conta.`,

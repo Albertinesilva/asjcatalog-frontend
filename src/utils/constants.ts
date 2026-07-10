@@ -23,3 +23,10 @@ export const ENDPOINTS = {
 } as const;
 
 export const PENDING_EMAIL_KEY = "pendingActivationEmail";
+
+/**
+ * Cooldown para reenvio do e-mail de ativação.
+ * Centralizado aqui para evitar strings duplicadas nas páginas.
+ */
+export const RESEND_COOLDOWN_KEY = "activationResendAvailableAt";
+export const RESEND_COOLDOWN_MS = 60_000;

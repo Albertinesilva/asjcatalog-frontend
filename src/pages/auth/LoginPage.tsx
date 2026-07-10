@@ -115,15 +115,25 @@ export default function LoginPage() {
 
         {errors.root && <p className={authFieldError}>{errors.root.message}</p>}
         {inactiveAccount && (
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            fullWidth
-            onClick={() => setShowActivationModal(true)}
-          >
-            Reenviar ativação
-          </Button>
+          <Card padding="md" bordered className="bg-surface-hover">
+            <div className="flex flex-col gap-sm">
+              <h3 className="font-heading text-title text-foreground m-0">
+                Sua conta ainda não foi ativada
+              </h3>
+              <p className="text-small text-foreground-muted m-0">
+                Confirme sua conta utilizando o link enviado por e-mail.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                fullWidth
+                onClick={() => setShowActivationModal(true)}
+              >
+                Reenviar ativação
+              </Button>
+            </div>
+          </Card>
         )}
 
         <Button type="submit" size="lg" fullWidth loading={isSubmitting}>
@@ -149,8 +159,12 @@ export default function LoginPage() {
             <p className="m-0 mb-sm">
               Você já realizou seu cadastro, mas ainda não conseguiu ativar sua conta?
             </p>
-            <p className="m-0">
+            <p className="m-0 mb-sm">
               Podemos reenviar um novo e-mail de ativação caso ainda não o tenha recebido.
+            </p>
+            <p className="m-0 text-small text-foreground-muted">
+              Nenhum e-mail será enviado imediatamente. A próxima tela controla automaticamente o
+              tempo de espera entre envios para evitar excesso de solicitações.
             </p>
           </>
         }
