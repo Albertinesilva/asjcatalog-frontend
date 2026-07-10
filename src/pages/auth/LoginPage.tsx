@@ -115,7 +115,7 @@ export default function LoginPage() {
 
         {errors.root && <p className={authFieldError}>{errors.root.message}</p>}
         {inactiveAccount && (
-          <Card padding="md" bordered className="bg-surface-muted">
+          <Card padding="md" bordered className="bg-surface-hover">
             <div className="flex flex-col gap-sm">
               <h3 className="font-heading text-title text-foreground m-0">
                 Sua conta ainda não foi ativada
