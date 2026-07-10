@@ -12,6 +12,7 @@ type Props = {
   confirmingLabel?: string;
   variant?: Variant;
   isConfirming?: boolean;
+  disableClose?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
@@ -41,20 +42,28 @@ export default function ConfirmDialog({
   confirmingLabel = "Processando...",
   variant = "danger",
   isConfirming = false,
+  disableClose = false,
   onConfirm,
   onCancel,
 }: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
   const titleId = useId();
   const descId = useId();
 
   useEffect(() => {
     if (!open) return;
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const onKey = (e: KeyboardEvent) => {
+      if (isConfirming || disableClose) return;
       if (e.key === "Escape") onCancel();
+      if (e.key === "Enter") {
+        e.preventDefault();
+        onConfirm();
+      }
     };
     document.addEventListener("keydown", onKey);
 
@@ -64,8 +73,9 @@ export default function ConfirmDialog({
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKey);
       clearTimeout(t);
+      previouslyFocused.current?.focus?.();
     };
-  }, [open, onCancel]);
+  }, [open, onCancel, onConfirm, isConfirming, disableClose]);
 
   if (!open) return null;
 
@@ -76,7 +86,10 @@ export default function ConfirmDialog({
       aria-labelledby={titleId}
       aria-describedby={description ? descId : undefined}
       className="fixed inset-0 z-modal flex items-center justify-center p-md bg-overlay/50"
-      onClick={onCancel}
+      onClick={() => {
+        if (isConfirming || disableClose) return;
+        onCancel();
+      }}
     >
       <Card
         padding="none"
