@@ -5,8 +5,12 @@ import { accountService } from "@/services/account-service";
 import { ConfirmDialog } from "@/components";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import { getPendingEmail, savePendingEmail } from "@/utils/storage";
-import { RESEND_COOLDOWN_KEY, RESEND_COOLDOWN_MS } from "@/utils/constants";
+import {
+  getPendingEmail,
+  getResendCooldownRemainingMs,
+  savePendingEmail,
+  startResendCooldown,
+} from "@/utils/storage";
 import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type EmailFormFields = { email: string };
@@ -63,32 +67,15 @@ export default function ActivationPendingPage() {
     defaultValues: { email: email ?? "" },
   });
 
-  const startCooldown = (ms: number = RESEND_COOLDOWN_MS) => {
-    const until = Date.now() + ms;
-    window.localStorage.setItem(RESEND_COOLDOWN_KEY, String(until));
-    setRemaining(Math.ceil(ms / 1000));
+  const startCooldown = () => {
+    startResendCooldown();
+    setRemaining(Math.ceil(getResendCooldownRemainingMs() / 1000));
   };
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(RESEND_COOLDOWN_KEY);
-    if (raw) {
-      const diff = Number(raw) - Date.now();
-      if (diff > 0) setRemaining(Math.ceil(diff / 1000));
-      else window.localStorage.removeItem(RESEND_COOLDOWN_KEY);
-    }
+    setRemaining(Math.ceil(getResendCooldownRemainingMs() / 1000));
     tickRef.current = window.setInterval(() => {
-      const r = window.localStorage.getItem(RESEND_COOLDOWN_KEY);
-      if (!r) {
-        setRemaining(0);
-        return;
-      }
-      const diff = Number(r) - Date.now();
-      if (diff <= 0) {
-        window.localStorage.removeItem(RESEND_COOLDOWN_KEY);
-        setRemaining(0);
-      } else {
-        setRemaining(Math.ceil(diff / 1000));
-      }
+      setRemaining(Math.ceil(getResendCooldownRemainingMs() / 1000));
     }, 1000);
     return () => {
       if (tickRef.current) window.clearInterval(tickRef.current);
