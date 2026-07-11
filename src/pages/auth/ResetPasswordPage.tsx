@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { accountApi } from "@/api/account-api";
+import { accountService } from "@/services/account-service";
 import { PasswordInput } from "@/components";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
       return;
     }
     try {
-      await accountApi.resetPassword(token, data.password);
+      await accountService.resetPassword(token, data.password);
       await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
       navigate("/auth/login");
     } catch (err) {
