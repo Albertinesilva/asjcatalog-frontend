@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { accountApi } from "@/api/account-api";
+import { accountService } from "@/services/account-service";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { authFieldError, authFormTitle } from "./_ui";
@@ -23,7 +23,7 @@ export default function RecoverPage() {
 
   const onSubmit = async (data: RecoverFormFields) => {
     try {
-      await accountApi.requestPasswordRecovery(data.email);
+      await accountService.requestPasswordRecovery(data.email);
       await alerts.success(
         "E-mail enviado",
         "Verifique sua caixa de entrada para redefinir sua senha.",
