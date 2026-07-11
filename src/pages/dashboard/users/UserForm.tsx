@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "@/services/user-service";
-import { PasswordInput } from "@/components";
+import { PasswordField, PasswordRequirements } from "@/components";
 import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
@@ -32,6 +32,7 @@ export default function UserForm({ mode }: Props) {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: {
@@ -42,6 +43,8 @@ export default function UserForm({ mode }: Props) {
       roleIds: [],
     },
   });
+
+  const passwordValue = watch("password") ?? "";
 
   useEffect(() => {
     if (mode !== "edit" || !id) return;
@@ -112,23 +115,19 @@ export default function UserForm({ mode }: Props) {
           {...register("email", { required: "Email é obrigatório" })}
         />
         {mode === "create" && (
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="user-password" className="text-small font-medium text-foreground">
-              Senha{" "}
-              <span aria-hidden="true" className="text-danger ml-0.5">
-                *
-              </span>
-            </label>
-            <PasswordInput
+          <div className="flex flex-col gap-sm">
+            <PasswordField
               id="user-password"
+              label="Senha"
+              required
               autoComplete="new-password"
-              className={inputBaseClasses}
+              error={errors.password?.message}
               {...register("password", {
                 required: "Senha é obrigatória",
                 minLength: { value: 8, message: "Mínimo 8 caracteres" },
               })}
             />
-            {errors.password && <p className="text-small text-danger">{errors.password.message}</p>}
+            <PasswordRequirements password={passwordValue} />
           </div>
         )}
         <div className="flex flex-col gap-1.5">

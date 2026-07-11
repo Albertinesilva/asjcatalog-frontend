@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
-import { PasswordInput, LoadingState, ErrorState } from "@/components";
+import {
+  LoadingState,
+  ErrorState,
+  PasswordField,
+  PasswordMatch,
+  PasswordRequirements,
+} from "@/components";
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
-import { inputBaseClasses } from "@/components/ui/Input";
 
 type ProfileFields = {
   firstName: string;
@@ -105,8 +110,12 @@ export default function ProfilePage() {
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmit,
+    watch: watchPassword,
     formState: { errors: passwordErrors, isSubmitting: savingPassword },
   } = passwordForm;
+
+  const passwordValue = watchPassword("password") ?? "";
+  const confirmPasswordValue = watchPassword("confirmPassword") ?? "";
 
   return (
     <div className="flex flex-col gap-lg">
@@ -186,54 +195,41 @@ export default function ProfilePage() {
             noValidate
             className="flex flex-col gap-md"
           >
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="password" className="text-small font-medium text-foreground">
-                Nova senha{" "}
-                <span aria-hidden="true" className="text-danger ml-0.5">
-                  *
-                </span>
-              </label>
-              <PasswordInput
-                id="password"
-                autoComplete="new-password"
-                className={inputBaseClasses}
-                {...registerPassword("password", {
-                  required: "Informe a nova senha",
-                  minLength: { value: 8, message: "Mínimo 8 caracteres" },
-                  maxLength: { value: 72, message: "Máximo 72 caracteres" },
-                  pattern: {
-                    value: /^(?=.*\d).{8,}$/,
-                    message:
-                      "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
-                  },
-                })}
-              />
-              {passwordErrors.password ? (
-                <p className="text-small text-danger">{passwordErrors.password.message}</p>
-              ) : (
-                <p className="text-small text-foreground-muted">
-                  A senha deve ter no mínimo 8 caracteres e conter pelo menos um número.
-                </p>
-              )}
-            </div>
+            <PasswordField
+              id="password"
+              label="Nova senha"
+              required
+              autoComplete="new-password"
+              error={passwordErrors.password?.message}
+              {...registerPassword("password", {
+                required: "Informe a nova senha",
+                minLength: { value: 8, message: "Mínimo 8 caracteres" },
+                maxLength: { value: 72, message: "Máximo 72 caracteres" },
+                pattern: {
+                  value: /^(?=.*\d).{8,}$/,
+                  message:
+                    "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+                },
+              })}
+            />
+            <PasswordRequirements password={passwordValue} />
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="confirmPassword" className="text-small font-medium text-foreground">
-                Confirmar senha{" "}
-                <span aria-hidden="true" className="text-danger ml-0.5">
-                  *
-                </span>
-              </label>
-              <PasswordInput
-                id="confirmPassword"
-                autoComplete="new-password"
-                className={inputBaseClasses}
-                {...registerPassword("confirmPassword", { required: "Confirme a nova senha" })}
-              />
-              {passwordErrors.confirmPassword && (
-                <p className="text-small text-danger">{passwordErrors.confirmPassword.message}</p>
-              )}
-            </div>
+            <PasswordField
+              id="confirmPassword"
+              label="Confirmar senha"
+              required
+              autoComplete="new-password"
+              error={
+                passwordErrors.confirmPassword && !confirmPasswordValue
+                  ? passwordErrors.confirmPassword.message
+                  : undefined
+              }
+              {...registerPassword("confirmPassword", {
+                required: "Confirme a nova senha",
+                validate: (v) => v === passwordValue || "As senhas não coincidem",
+              })}
+            />
+            <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
 
             {passwordFeedback && (
               <div

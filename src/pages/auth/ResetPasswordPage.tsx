@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
-import { PasswordInput } from "@/components";
-import { Button, Card, inputBaseClasses } from "@/components/ui";
+import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
+import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
+import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = {
   password: string;
@@ -23,7 +23,8 @@ export default function ResetPasswordPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
-  const passwordValue = watch("password");
+  const passwordValue = watch("password") ?? "";
+  const confirmValue = watch("confirmPassword") ?? "";
 
   const onSubmit = async (data: FormFields) => {
     if (!token) {
@@ -50,9 +51,8 @@ export default function ResetPasswordPage() {
 
         {!token && <p className={authFieldError}>Token de redefinição não informado na URL.</p>}
 
-        <div className="flex flex-col gap-1.5">
-          <PasswordInput
-            className={inputBaseClasses}
+        <div className="flex flex-col gap-sm">
+          <PasswordField
             placeholder="Nova senha"
             autoComplete="new-password"
             aria-label="Nova senha"
@@ -62,9 +62,6 @@ export default function ResetPasswordPage() {
               pattern: /^(?=.*\d).{8,}$/,
             })}
           />
-          <p className={authFieldHint}>
-            A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
-          </p>
           {errors.password?.type === "required" && (
             <p className={authFieldError}>A senha é obrigatória</p>
           )}
@@ -73,11 +70,11 @@ export default function ResetPasswordPage() {
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
+          <PasswordRequirements password={passwordValue} />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordInput
-            className={inputBaseClasses}
+          <PasswordField
             placeholder="Confirmar nova senha"
             autoComplete="new-password"
             aria-label="Confirmar nova senha"
@@ -86,10 +83,11 @@ export default function ResetPasswordPage() {
               validate: (v) => v === passwordValue || "As senhas não coincidem",
             })}
           />
+          <PasswordMatch password={passwordValue} confirm={confirmValue} />
           {errors.confirmPassword?.type === "required" && (
             <p className={authFieldError}>Confirme a senha</p>
           )}
-          {errors.confirmPassword?.type === "validate" && (
+          {errors.confirmPassword?.type === "validate" && !confirmValue && (
             <p className={authFieldError}>{errors.confirmPassword.message}</p>
           )}
         </div>
