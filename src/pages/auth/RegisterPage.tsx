@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
-import { PasswordInput } from "@/components";
+import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
@@ -25,7 +26,9 @@ export default function RegisterPage() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormFields>();
 
-  const passwordValue = watch("password");
+  const passwordValue = watch("password") ?? "";
+  const confirmValue = watch("passwordConfirm") ?? "";
+  const [requirementsOpen, setRequirementsOpen] = useState(false);
 
   const onSubmit = async (data: RegisterFormFields) => {
     try {
@@ -124,9 +127,8 @@ export default function RegisterPage() {
           )}
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <PasswordInput
-            className={inputBaseClasses}
+        <div className="flex flex-col gap-sm">
+          <PasswordField
             placeholder="Digite aqui a senha"
             autoComplete="new-password"
             aria-label="Senha"
@@ -134,11 +136,12 @@ export default function RegisterPage() {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
+              onBlur: () => {
+                if (passwordValue.length === 0) setRequirementsOpen(false);
+              },
             })}
+            onFocus={() => setRequirementsOpen(true)}
           />
-          <p className={authFieldHint}>
-            A sua senha deve ter pelo menos 8 caracteres e conter pelo menos um número
-          </p>
           {errors.password?.type === "required" && (
             <p className={authFieldError}>A senha é obrigatória</p>
           )}
@@ -147,11 +150,16 @@ export default function RegisterPage() {
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
+          <PasswordRequirements
+            password={passwordValue}
+            collapsible
+            open={requirementsOpen}
+            onOpenChange={setRequirementsOpen}
+          />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordInput
-            className={inputBaseClasses}
+          <PasswordField
             placeholder="Repita a senha"
             autoComplete="new-password"
             aria-label="Confirmar senha"
@@ -160,10 +168,11 @@ export default function RegisterPage() {
               validate: (value) => value === passwordValue || "As senhas não coincidem",
             })}
           />
+          <PasswordMatch password={passwordValue} confirm={confirmValue} />
           {errors.passwordConfirm?.type === "required" && (
             <p className={authFieldError}>Confirme a senha</p>
           )}
-          {errors.passwordConfirm?.type === "validate" && (
+          {errors.passwordConfirm?.type === "validate" && !confirmValue && (
             <p className={authFieldError}>{errors.passwordConfirm.message}</p>
           )}
         </div>
