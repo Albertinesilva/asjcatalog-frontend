@@ -6,7 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
-import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
+import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
   firstName: string;
