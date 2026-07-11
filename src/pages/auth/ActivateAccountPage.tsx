@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
 import { Button, Card } from "@/components/ui";
@@ -14,6 +14,7 @@ export default function ActivateAccountPage() {
   const token = params.get("token");
   const [status, setStatus] = useState<Status>("loading");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [resending, setResending] = useState(false);
   const ran = useRef(false);
 
   useEffect(() => {
@@ -50,19 +51,18 @@ export default function ActivateAccountPage() {
     if (!email) {
       await alerts.warning(
         "E-mail não encontrado",
-        "Faça o cadastro novamente para receber um novo link.",
+        "Não encontramos um cadastro pendente neste dispositivo. Informe seu e-mail para solicitar um novo link.",
       );
-      navigate("/auth/register");
+      navigate("/auth/activation-pending");
       return;
     }
+    if (resending) return;
     try {
-      alerts.loading("Reenviando...");
+      setResending(true);
       await accountService.resendActivation(email);
-      alerts.close();
       await alerts.success("Novo e-mail enviado!", `Verifique sua caixa de entrada (${email}).`);
-      navigate("/activation-pending");
+      navigate("/auth/activation-pending");
     } catch (err) {
-      alerts.close();
       const error = err as {
         response?: { status?: number; data?: { message?: string } };
       };
@@ -77,10 +77,32 @@ export default function ActivateAccountPage() {
           error.response?.data?.message ?? "Tente novamente em instantes.",
         );
       }
+    } finally {
+      setResending(false);
     }
   };
 
   const hintCenter = `${authFieldHint} text-center`;
+
+  const renderActions = (resendLabel: string): ReactNode => (
+    <div className="flex gap-sm mt-sm">
+      <Link to="/auth/login" className="flex-1">
+        <Button type="button" variant="outline" size="lg" fullWidth disabled={resending}>
+          Ir para login
+        </Button>
+      </Link>
+      <Button
+        type="button"
+        size="lg"
+        onClick={resend}
+        loading={resending}
+        disabled={resending}
+        className="flex-1"
+      >
+        {resendLabel}
+      </Button>
+    </div>
+  );
 
   return (
     <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
@@ -108,16 +130,7 @@ export default function ActivateAccountPage() {
           <>
             <h2 className={authFormTitle}>Link expirado</h2>
             <p className={hintCenter}>{errorMsg ?? "O link de ativação expirou."}</p>
-            <div className="flex gap-sm mt-sm">
-              <Link to="/auth/login" className="flex-1">
-                <Button type="button" variant="outline" size="lg" fullWidth>
-                  Ir para login
-                </Button>
-              </Link>
-              <Button type="button" size="lg" onClick={resend} className="flex-1">
-                Reenviar novo e-mail
-              </Button>
-            </div>
+            {renderActions("Reenviar e-mail")}
           </>
         )}
 
@@ -125,16 +138,7 @@ export default function ActivateAccountPage() {
           <>
             <h2 className={authFormTitle}>Link inválido</h2>
             <p className={hintCenter}>O link utilizado não é válido.</p>
-            <div className="flex gap-sm mt-sm">
-              <Link to="/auth/login" className="flex-1">
-                <Button type="button" variant="outline" size="lg" fullWidth>
-                  Ir para login
-                </Button>
-              </Link>
-              <Button type="button" size="lg" onClick={resend} className="flex-1">
-                Solicitar novo e-mail
-              </Button>
-            </div>
+            {renderActions("Solicitar novo e-mail")}
           </>
         )}
 
@@ -156,16 +160,7 @@ export default function ActivateAccountPage() {
           <>
             <h2 className={authFormTitle}>Link inválido</h2>
             <p className={authFieldError}>Link de ativação inválido: token não informado.</p>
-            <div className="flex gap-sm mt-sm">
-              <Link to="/auth/login" className="flex-1">
-                <Button type="button" variant="outline" size="lg" fullWidth>
-                  Ir para login
-                </Button>
-              </Link>
-              <Button type="button" size="lg" onClick={resend} className="flex-1">
-                Solicitar novo e-mail
-              </Button>
-            </div>
+            {renderActions("Solicitar novo e-mail")}
           </>
         )}
 
@@ -175,16 +170,7 @@ export default function ActivateAccountPage() {
             <p className={authFieldError}>
               {errorMsg ?? "Não foi possível ativar sua conta no momento."}
             </p>
-            <div className="flex gap-sm mt-sm">
-              <Link to="/auth/login" className="flex-1">
-                <Button type="button" variant="outline" size="lg" fullWidth>
-                  Ir para login
-                </Button>
-              </Link>
-              <Button type="button" size="lg" onClick={resend} className="flex-1">
-                Reenviar e-mail
-              </Button>
-            </div>
+            {renderActions("Reenviar e-mail")}
           </>
         )}
       </div>
