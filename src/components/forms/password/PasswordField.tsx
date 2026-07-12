@@ -108,7 +108,7 @@ const PasswordField = forwardRef<HTMLInputElement, Props>(function PasswordField
           className={cn(
             "absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center",
             "h-9 w-9 rounded-md bg-transparent border-0 text-foreground-muted cursor-pointer",
-            "transition-colors duration-DEFAULT ease-standard",
+            "transition-colors duration-slow ease-standard",
             "hover:text-accent hover:bg-accent/10",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           )}
