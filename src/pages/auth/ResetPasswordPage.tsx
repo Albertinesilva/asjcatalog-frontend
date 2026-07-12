@@ -1,9 +1,16 @@
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
+import {
+  COMMON_PASSWORD_ALERT_TEXT,
+  COMMON_PASSWORD_ALERT_TITLE,
+  COMMON_PASSWORD_INLINE_MESSAGE,
+  isCommonPasswordError,
+} from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = {
@@ -25,8 +32,11 @@ export default function ResetPasswordPage() {
 
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("confirmPassword") ?? "";
+  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: FormFields) => {
+    setPasswordIssue(null);
     if (!token) {
       await alerts.error("Token inválido", "O link de redefinição é inválido.");
       return;
@@ -36,6 +46,12 @@ export default function ResetPasswordPage() {
       await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
       navigate("/auth/login");
     } catch (err) {
+      if (isCommonPasswordError(err)) {
+        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
+        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
+        passwordRef.current?.focus();
+        return;
+      }
       const error = err as { response?: { data?: { message?: string } } };
       await alerts.error(
         "Falha ao redefinir",
@@ -52,16 +68,28 @@ export default function ResetPasswordPage() {
         {!token && <p className={authFieldError}>Token de redefinição não informado na URL.</p>}
 
         <div className="flex flex-col gap-sm">
-          <PasswordField
-            placeholder="Nova senha"
-            autoComplete="new-password"
-            aria-label="Nova senha"
-            {...register("password", {
+          {(() => {
+            const reg = register("password", {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
-            })}
-          />
+              onChange: () => {
+                if (passwordIssue) setPasswordIssue(null);
+              },
+            });
+            return (
+              <PasswordField
+                placeholder="Nova senha"
+                autoComplete="new-password"
+                aria-label="Nova senha"
+                {...reg}
+                ref={(el) => {
+                  passwordRef.current = el;
+                  reg.ref(el);
+                }}
+              />
+            );
+          })()}
           {errors.password?.type === "required" && (
             <p className={authFieldError}>A senha é obrigatória</p>
           )}
@@ -70,7 +98,7 @@ export default function ResetPasswordPage() {
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
-          <PasswordRequirements password={passwordValue} />
+          <PasswordRequirements password={passwordValue} issue={passwordIssue} />
         </div>
 
         <div className="flex flex-col gap-1.5">
