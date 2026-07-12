@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
@@ -6,6 +6,12 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
+import {
+  COMMON_PASSWORD_ALERT_TEXT,
+  COMMON_PASSWORD_ALERT_TITLE,
+  COMMON_PASSWORD_INLINE_MESSAGE,
+  isCommonPasswordError,
+} from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -29,8 +35,11 @@ export default function RegisterPage() {
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("passwordConfirm") ?? "";
   const [requirementsOpen, setRequirementsOpen] = useState(false);
+  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: RegisterFormFields) => {
+    setPasswordIssue(null);
     try {
       await accountService.register({
         firstName: data.firstName,
@@ -46,6 +55,13 @@ export default function RegisterPage() {
       );
       navigate("/auth/activation-pending");
     } catch (err) {
+      if (isCommonPasswordError(err)) {
+        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
+        setRequirementsOpen(true);
+        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
+        passwordRef.current?.focus();
+        return;
+      }
       const error = err as {
         response?: {
           status?: number;
@@ -128,20 +144,32 @@ export default function RegisterPage() {
         </div>
 
         <div className="flex flex-col gap-sm">
-          <PasswordField
-            placeholder="Digite aqui a senha"
-            autoComplete="new-password"
-            aria-label="Senha"
-            {...register("password", {
+          {(() => {
+            const reg = register("password", {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
               onBlur: () => {
                 if (passwordValue.length === 0) setRequirementsOpen(false);
               },
-            })}
-            onFocus={() => setRequirementsOpen(true)}
-          />
+              onChange: () => {
+                if (passwordIssue) setPasswordIssue(null);
+              },
+            });
+            return (
+              <PasswordField
+                placeholder="Digite aqui a senha"
+                autoComplete="new-password"
+                aria-label="Senha"
+                {...reg}
+                ref={(el) => {
+                  passwordRef.current = el;
+                  reg.ref(el);
+                }}
+                onFocus={() => setRequirementsOpen(true)}
+              />
+            );
+          })()}
           {errors.password?.type === "required" && (
             <p className={authFieldError}>A senha é obrigatória</p>
           )}
@@ -155,6 +183,7 @@ export default function RegisterPage() {
             collapsible
             open={requirementsOpen}
             onOpenChange={setRequirementsOpen}
+            issue={passwordIssue}
           />
         </div>
 

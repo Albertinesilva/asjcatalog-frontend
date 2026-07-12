@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
@@ -12,6 +12,12 @@ import {
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
+import {
+  COMMON_PASSWORD_ALERT_TEXT,
+  COMMON_PASSWORD_ALERT_TITLE,
+  COMMON_PASSWORD_INLINE_MESSAGE,
+  isCommonPasswordError,
+} from "@/utils/password";
 
 type ProfileFields = {
   firstName: string;
@@ -30,6 +36,8 @@ export default function ProfilePage() {
   const { user, loading, refreshUser } = useAuth();
   const [profileFeedback, setProfileFeedback] = useState<Feedback>(null);
   const [passwordFeedback, setPasswordFeedback] = useState<Feedback>(null);
+  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const profileForm = useForm<ProfileFields>({
     defaultValues: { firstName: "", lastName: "", email: "" },
@@ -81,6 +89,7 @@ export default function ProfilePage() {
 
   const onChangePassword = async (data: PasswordFields) => {
     setPasswordFeedback(null);
+    setPasswordIssue(null);
     if (data.password !== data.confirmPassword) {
       setPasswordFeedback({ kind: "error", message: "As senhas não coincidem." });
       return;
@@ -94,6 +103,12 @@ export default function ProfilePage() {
       setPasswordFeedback({ kind: "success", message: "Senha alterada com sucesso." });
       await alerts.success("Senha alterada", "Senha alterada com sucesso.");
     } catch (err) {
+      if (isCommonPasswordError(err)) {
+        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
+        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
+        passwordRef.current?.focus();
+        return;
+      }
       setPasswordFeedback({
         kind: "error",
         message: getApiErrorMessage(err, "Não foi possível alterar a senha."),
@@ -195,13 +210,8 @@ export default function ProfilePage() {
             noValidate
             className="flex flex-col gap-md"
           >
-            <PasswordField
-              id="password"
-              label="Nova senha"
-              required
-              autoComplete="new-password"
-              error={passwordErrors.password?.message}
-              {...registerPassword("password", {
+            {(() => {
+              const reg = registerPassword("password", {
                 required: "Informe a nova senha",
                 minLength: { value: 8, message: "Mínimo 8 caracteres" },
                 maxLength: { value: 72, message: "Máximo 72 caracteres" },
@@ -210,9 +220,26 @@ export default function ProfilePage() {
                   message:
                     "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
                 },
-              })}
-            />
-            <PasswordRequirements password={passwordValue} />
+                onChange: () => {
+                  if (passwordIssue) setPasswordIssue(null);
+                },
+              });
+              return (
+                <PasswordField
+                  id="password"
+                  label="Nova senha"
+                  required
+                  autoComplete="new-password"
+                  error={passwordErrors.password?.message}
+                  {...reg}
+                  ref={(el) => {
+                    passwordRef.current = el;
+                    reg.ref(el);
+                  }}
+                />
+              );
+            })()}
+            <PasswordRequirements password={passwordValue} issue={passwordIssue} />
 
             <PasswordField
               id="confirmPassword"

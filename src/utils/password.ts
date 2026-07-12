@@ -66,3 +66,50 @@ export const PASSWORD_CRITERIA: { key: PasswordCriterion; label: string }[] = [
   { key: "number", label: "Pelo menos um número" },
   { key: "special", label: "Pelo menos um símbolo especial" },
 ];
+
+/**
+ * Mensagem padrão exibida quando o backend rejeita a senha por conter
+ * um padrão muito comum / inseguro. Compartilhada entre o feedback
+ * inline (dentro do Card de requisitos) e o SweetAlert complementar.
+ */
+export const COMMON_PASSWORD_INLINE_MESSAGE =
+  "Esta senha contém um padrão muito comum. Escolha uma combinação mais exclusiva.";
+
+export const COMMON_PASSWORD_ALERT_TITLE = "Senha insegura";
+export const COMMON_PASSWORD_ALERT_TEXT =
+  "Sua senha atende aos requisitos mínimos, porém contém um padrão muito comum. Escolha uma senha mais exclusiva.";
+
+/**
+ * Heurística para reconhecer o erro "senha contém padrão comum/inseguro"
+ * retornado pelo backend em qualquer formato (message raiz ou lista de
+ * field errors). Mantém-se propositalmente frouxa para tolerar variações
+ * de texto sem depender de códigos de erro dedicados.
+ */
+const COMMON_PASSWORD_REGEX =
+  /(padr[aã]o.*(comum|insegur)|(comum|insegur).*padr[aã]o|senha.*(comum|insegur)|(comum|insegur).*senha|common.*password|weak.*password|password.*common|too.*common)/i;
+
+export function isCommonPasswordError(err: unknown): boolean {
+  const candidates: string[] = [];
+  const e = err as {
+    message?: string;
+    response?: {
+      data?: {
+        message?: string;
+        error?: string;
+        errors?: { fieldName?: string; message?: string }[];
+      };
+    };
+  };
+  if (typeof e?.message === "string") candidates.push(e.message);
+  const data = e?.response?.data;
+  if (data?.message) candidates.push(data.message);
+  if (data?.error) candidates.push(data.error);
+  if (Array.isArray(data?.errors)) {
+    for (const fe of data.errors) {
+      if (fe?.message && (!fe.fieldName || /password|senha/i.test(fe.fieldName))) {
+        candidates.push(fe.message);
+      }
+    }
+  }
+  return candidates.some((s) => COMMON_PASSWORD_REGEX.test(s));
+}

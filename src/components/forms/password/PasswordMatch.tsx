@@ -52,7 +52,7 @@ export default function PasswordMatch({ password, confirm, className }: Props) {
   return (
     <p
       className={cn(
-        "m-0 flex items-center gap-xs text-small",
+        "m-0 flex items-center gap-xs text-small animate-fade-in transition-colors duration-slow ease-standard",
         match ? "text-success" : "text-danger",
         className,
       )}
