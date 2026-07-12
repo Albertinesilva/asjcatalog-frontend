@@ -23,13 +23,24 @@ export default function PasswordStrength({ password, className }: Props) {
   const filled = password.length === 0 ? 0 : score;
   const total = 5;
   const palette = STRENGTH_COLORS[strength];
+  const percent = Math.round((filled / total) * 100);
 
   return (
     <div className={cn("flex flex-col gap-xs", className)} aria-live="polite">
       <div className="flex items-center justify-between gap-sm">
         <span className="text-small font-medium text-foreground">Força da senha</span>
-        <span className={cn("text-small font-semibold", filled === 0 ? "text-foreground-muted" : palette.text)}>
-          {filled === 0 ? "—" : strength}
+        <span className="flex items-center gap-sm">
+          <span className="text-caption font-medium tabular-nums text-foreground-muted">
+            {filled === 0 ? "0%" : `${percent}%`}
+          </span>
+          <span
+            className={cn(
+              "text-small font-semibold transition-colors duration-slow ease-standard",
+              filled === 0 ? "text-foreground-muted" : palette.text,
+            )}
+          >
+            {filled === 0 ? "—" : strength}
+          </span>
         </span>
       </div>
       <div
@@ -45,7 +56,7 @@ export default function PasswordStrength({ password, className }: Props) {
             key={i}
             aria-hidden="true"
             className={cn(
-              "h-1.5 flex-1 rounded-full transition-colors duration-DEFAULT ease-standard",
+              "h-1.5 flex-1 rounded-full transition-colors duration-slow ease-standard",
               i < filled ? palette.bar : "bg-border",
             )}
           />
