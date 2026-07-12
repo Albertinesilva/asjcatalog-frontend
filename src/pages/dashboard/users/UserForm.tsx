@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "@/services/user-service";
@@ -7,6 +7,12 @@ import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
+import {
+  COMMON_PASSWORD_ALERT_TEXT,
+  COMMON_PASSWORD_ALERT_TITLE,
+  COMMON_PASSWORD_INLINE_MESSAGE,
+  isCommonPasswordError,
+} from "@/utils/password";
 
 const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
   { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
@@ -27,6 +33,8 @@ export default function UserForm({ mode }: Props) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const {
     register,
@@ -64,6 +72,7 @@ export default function UserForm({ mode }: Props) {
 
   const onSubmit = async (data: FormFields) => {
     setSaveError(null);
+    setPasswordIssue(null);
     const roleIds = data.roleIds.map((rid) => Number(rid));
     try {
       if (mode === "create") {
@@ -86,6 +95,12 @@ export default function UserForm({ mode }: Props) {
       }
       navigate("/dashboard/users");
     } catch (err) {
+      if (mode === "create" && isCommonPasswordError(err)) {
+        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
+        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
+        passwordRef.current?.focus();
+        return;
+      }
       setSaveError((err as Error).message);
     }
   };
@@ -116,18 +131,30 @@ export default function UserForm({ mode }: Props) {
         />
         {mode === "create" && (
           <div className="flex flex-col gap-sm">
-            <PasswordField
-              id="user-password"
-              label="Senha"
-              required
-              autoComplete="new-password"
-              error={errors.password?.message}
-              {...register("password", {
+            {(() => {
+              const reg = register("password", {
                 required: "Senha é obrigatória",
                 minLength: { value: 8, message: "Mínimo 8 caracteres" },
-              })}
-            />
-            <PasswordRequirements password={passwordValue} />
+                onChange: () => {
+                  if (passwordIssue) setPasswordIssue(null);
+                },
+              });
+              return (
+                <PasswordField
+                  id="user-password"
+                  label="Senha"
+                  required
+                  autoComplete="new-password"
+                  error={errors.password?.message}
+                  {...reg}
+                  ref={(el) => {
+                    passwordRef.current = el;
+                    reg.ref(el);
+                  }}
+                />
+              );
+            })()}
+            <PasswordRequirements password={passwordValue} issue={passwordIssue} />
           </div>
         )}
         <div className="flex flex-col gap-1.5">
