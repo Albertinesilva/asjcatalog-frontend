@@ -144,11 +144,8 @@ export default function RegisterPage() {
         </div>
 
         <div className="flex flex-col gap-sm">
-          <PasswordField
-            placeholder="Digite aqui a senha"
-            autoComplete="new-password"
-            aria-label="Senha"
-            {...register("password", {
+          {(() => {
+            const reg = register("password", {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
@@ -158,13 +155,21 @@ export default function RegisterPage() {
               onChange: () => {
                 if (passwordIssue) setPasswordIssue(null);
               },
-            })}
-            onFocus={() => setRequirementsOpen(true)}
-            ref={(el) => {
-              passwordRef.current = el;
-              register("password").ref(el);
-            }}
-          />
+            });
+            return (
+              <PasswordField
+                placeholder="Digite aqui a senha"
+                autoComplete="new-password"
+                aria-label="Senha"
+                {...reg}
+                ref={(el) => {
+                  passwordRef.current = el;
+                  reg.ref(el);
+                }}
+                onFocus={() => setRequirementsOpen(true)}
+              />
+            );
+          })()}
           {errors.password?.type === "required" && (
             <p className={authFieldError}>A senha é obrigatória</p>
           )}
