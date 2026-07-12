@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { cn } from "@/components/ui";
 import {
   evaluatePassword,
@@ -24,6 +24,12 @@ type Props = {
   showStrength?: boolean;
   className?: string;
   id?: string;
+  /**
+   * Mensagem de validação adicional retornada pelo backend
+   * (ex.: "padrão muito comum"). Não substitui os requisitos —
+   * é anexada abaixo da lista, dentro do mesmo Card.
+   */
+  issue?: ReactNode;
 };
 
 const LockIcon = ({ open }: { open: boolean }) => (
@@ -71,16 +77,23 @@ function RequirementsList({
   evaluation,
   showStrength,
   descriptionId,
+  issue,
 }: {
   password: string;
   evaluation: ReturnType<typeof evaluatePassword>;
   showStrength: boolean;
   descriptionId?: string;
+  issue?: ReactNode;
 }) {
   return (
     <div id={descriptionId} className="flex flex-col gap-sm">
       {showStrength && <PasswordStrength password={password} />}
-      <p className="m-0 text-small font-medium text-foreground">Sua senha deve conter</p>
+      <div className="flex items-center justify-between gap-sm">
+        <p className="m-0 text-small font-medium text-foreground">Sua senha deve conter</p>
+        <span className="text-caption font-medium text-foreground-muted tabular-nums">
+          {evaluation.score}/{PASSWORD_CRITERIA.length}
+        </span>
+      </div>
       <ul className="m-0 p-0 list-none flex flex-col gap-xs" role="list">
         {PASSWORD_CRITERIA.map(({ key, label }) => {
           const ok = evaluation[key as PasswordCriterion];
@@ -88,11 +101,17 @@ function RequirementsList({
             <li
               key={key}
               className={cn(
-                "flex items-center gap-sm text-small transition-colors duration-DEFAULT ease-standard",
+                "flex items-center gap-sm text-small transition-colors duration-slow ease-standard",
                 ok ? "text-success" : "text-danger",
               )}
             >
-              <span aria-hidden="true" className="inline-flex">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "inline-flex transition-transform duration-slow ease-standard",
+                  ok && "scale-105",
+                )}
+              >
                 <LockIcon open={ok} />
               </span>
               <span className="text-foreground-muted-none text-foreground">
@@ -103,9 +122,43 @@ function RequirementsList({
           );
         })}
       </ul>
+      {issue && (
+        <div
+          role="status"
+          aria-live="polite"
+          className={cn(
+            "mt-xs flex items-start gap-sm rounded-md border border-warning/40 bg-warning/10",
+            "px-sm py-sm text-small text-foreground animate-fade-in",
+          )}
+        >
+          <span aria-hidden="true" className="mt-0.5 inline-flex text-warning">
+            <WarningIcon />
+          </span>
+          <span className="leading-snug">{issue}</span>
+        </div>
+      )}
     </div>
   );
 }
+
+const WarningIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
 
 export default function PasswordRequirements({
   password,
@@ -115,6 +168,7 @@ export default function PasswordRequirements({
   showStrength = true,
   className,
   id,
+  issue,
 }: Props) {
   const autoId = useId();
   const panelId = id ?? `${autoId}-panel`;
@@ -128,12 +182,21 @@ export default function PasswordRequirements({
 
   const evaluation = evaluatePassword(password);
 
+  // Quando o backend reporta um problema adicional, mantém o painel
+  // aberto para que a mensagem fique visível junto aos requisitos.
+  useEffect(() => {
+    if (issue && collapsible && !isControlled && !internalOpen) {
+      setInternalOpen(true);
+    }
+  }, [issue, collapsible, isControlled, internalOpen]);
+
   const body: ReactNode = (
     <RequirementsList
       password={password}
       evaluation={evaluation}
       showStrength={showStrength}
       descriptionId={panelId}
+      issue={issue}
     />
   );
 
@@ -141,7 +204,7 @@ export default function PasswordRequirements({
     return (
       <div
         className={cn(
-          "rounded-md border border-border bg-surface-hover p-md",
+          "rounded-md border border-border bg-surface-hover p-md transition-colors duration-slow ease-standard",
           className,
         )}
       >
@@ -153,7 +216,7 @@ export default function PasswordRequirements({
   return (
     <div
       className={cn(
-        "rounded-md border border-border bg-surface-hover overflow-hidden",
+        "rounded-md border border-border bg-surface-hover overflow-hidden transition-colors duration-slow ease-standard",
         className,
       )}
     >
@@ -177,13 +240,13 @@ export default function PasswordRequirements({
             <LockIcon open={evaluation.score === 5} />
           </span>
           {isOpen ? "Ocultar requisitos" : "Mostrar requisitos"}
-          <span className="text-foreground-muted font-normal">
+          <span className="text-foreground-muted font-normal tabular-nums">
             ({evaluation.score}/{PASSWORD_CRITERIA.length})
           </span>
         </span>
         <ChevronIcon open={isOpen} />
       </button>
-      {isOpen && <div className="px-md pb-md pt-0">{body}</div>}
+      {isOpen && <div className="px-md pb-md pt-0 animate-fade-in">{body}</div>}
     </div>
   );
 }
