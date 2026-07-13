@@ -12,7 +12,7 @@ import {
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
-import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
+import { handlePasswordApiError } from "@/utils/password";
 
 type ProfileFields = {
   firstName: string;
@@ -98,9 +98,7 @@ export default function ProfilePage() {
       setPasswordFeedback({ kind: "success", message: "Senha alterada com sucesso." });
       await alerts.success("Senha alterada", "Senha alterada com sucesso.");
     } catch (err) {
-      if (isCommonPasswordError(err)) {
-        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        passwordRef.current?.focus();
+      if (handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })) {
         return;
       }
       setPasswordFeedback({
