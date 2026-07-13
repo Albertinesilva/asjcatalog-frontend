@@ -7,12 +7,7 @@ import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
-import {
-  COMMON_PASSWORD_ALERT_TEXT,
-  COMMON_PASSWORD_ALERT_TITLE,
-  COMMON_PASSWORD_INLINE_MESSAGE,
-  isCommonPasswordError,
-} from "@/utils/password";
+import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
 
 const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
   { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
@@ -97,7 +92,6 @@ export default function UserForm({ mode }: Props) {
     } catch (err) {
       if (mode === "create" && isCommonPasswordError(err)) {
         setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
         passwordRef.current?.focus();
         return;
       }
