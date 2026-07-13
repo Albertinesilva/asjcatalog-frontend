@@ -5,12 +5,7 @@ import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import {
-  COMMON_PASSWORD_ALERT_TEXT,
-  COMMON_PASSWORD_ALERT_TITLE,
-  COMMON_PASSWORD_INLINE_MESSAGE,
-  isCommonPasswordError,
-} from "@/utils/password";
+import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = {
@@ -48,7 +43,6 @@ export default function ResetPasswordPage() {
     } catch (err) {
       if (isCommonPasswordError(err)) {
         setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
         passwordRef.current?.focus();
         return;
       }
