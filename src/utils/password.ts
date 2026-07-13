@@ -68,16 +68,15 @@ export const PASSWORD_CRITERIA: { key: PasswordCriterion; label: string }[] = [
 ];
 
 /**
- * Mensagem padrão exibida quando o backend rejeita a senha por conter
- * um padrão muito comum / inseguro. Compartilhada entre o feedback
- * inline (dentro do Card de requisitos) e o SweetAlert complementar.
+ * Mensagem inline exibida no PasswordRequirements quando o backend
+ * rejeita a senha por conter um padrão muito comum / inseguro.
+ *
+ * A partir da V2.5.1, este feedback é a ÚNICA fonte de informação
+ * para esse tipo de erro — não deve ser complementado por modais
+ * (SweetAlert) para não interromper o fluxo do usuário.
  */
 export const COMMON_PASSWORD_INLINE_MESSAGE =
-  "Esta senha contém um padrão muito comum. Escolha uma combinação mais exclusiva.";
-
-export const COMMON_PASSWORD_ALERT_TITLE = "Senha insegura";
-export const COMMON_PASSWORD_ALERT_TEXT =
-  "Sua senha atende aos requisitos mínimos, porém contém um padrão muito comum. Escolha uma senha mais exclusiva.";
+  "Sua senha atende aos requisitos mínimos, mas utiliza uma combinação muito conhecida. Escolha uma senha mais exclusiva para aumentar sua segurança.";
 
 /**
  * Heurística para reconhecer o erro "senha contém padrão comum/inseguro"
