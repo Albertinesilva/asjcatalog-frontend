@@ -12,12 +12,7 @@ import {
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
-import {
-  COMMON_PASSWORD_ALERT_TEXT,
-  COMMON_PASSWORD_ALERT_TITLE,
-  COMMON_PASSWORD_INLINE_MESSAGE,
-  isCommonPasswordError,
-} from "@/utils/password";
+import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
 
 type ProfileFields = {
   firstName: string;
@@ -105,7 +100,6 @@ export default function ProfilePage() {
     } catch (err) {
       if (isCommonPasswordError(err)) {
         setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        await alerts.warning(COMMON_PASSWORD_ALERT_TITLE, COMMON_PASSWORD_ALERT_TEXT);
         passwordRef.current?.focus();
         return;
       }
