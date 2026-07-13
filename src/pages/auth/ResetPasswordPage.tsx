@@ -5,7 +5,7 @@ import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
+import { handlePasswordApiError } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = {
@@ -41,9 +41,7 @@ export default function ResetPasswordPage() {
       await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
       navigate("/auth/login");
     } catch (err) {
-      if (isCommonPasswordError(err)) {
-        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        passwordRef.current?.focus();
+      if (handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })) {
         return;
       }
       const error = err as { response?: { data?: { message?: string } } };
