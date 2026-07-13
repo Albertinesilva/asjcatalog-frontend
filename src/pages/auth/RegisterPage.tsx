@@ -6,7 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
-import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
+import { handlePasswordApiError } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -50,10 +50,13 @@ export default function RegisterPage() {
       );
       navigate("/auth/activation-pending");
     } catch (err) {
-      if (isCommonPasswordError(err)) {
-        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        setRequirementsOpen(true);
-        passwordRef.current?.focus();
+      if (
+        handlePasswordApiError(err, {
+          setIssue: setPasswordIssue,
+          focusRef: passwordRef,
+          openRequirements: setRequirementsOpen,
+        })
+      ) {
         return;
       }
       const error = err as {
