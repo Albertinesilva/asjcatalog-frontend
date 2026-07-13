@@ -87,32 +87,54 @@ export const COMMON_PASSWORD_INLINE_MESSAGE =
 const COMMON_PASSWORD_REGEX =
   /(padr[aã]o.*(comum|insegur)|(comum|insegur).*padr[aã]o|senha.*(comum|insegur)|(comum|insegur).*senha|common.*password|weak.*password|password.*common|too.*common|strong ?password|strongpassword|common_password|insecure ?password)/i;
 
-export function isCommonPasswordError(err: unknown): boolean {
-  const candidates: string[] = [];
-  const e = err as {
-    message?: string;
-    response?: {
-      status?: number;
-      data?: {
-        message?: string;
-        error?: string;
-        code?: string;
-        errors?: { fieldName?: string; message?: string }[];
-      };
+type ApiErrorShape = {
+  message?: string;
+  response?: {
+    status?: number;
+    data?: {
+      message?: string;
+      detail?: string;
+      error?: string;
+      code?: string;
+      errors?: { fieldName?: string; message?: string; code?: string }[];
     };
   };
+};
+
+function collectErrorStrings(err: unknown): string[] {
+  const candidates: string[] = [];
+  const e = err as ApiErrorShape;
   if (typeof e?.message === "string") candidates.push(e.message);
   const data = e?.response?.data;
   if (data?.message) candidates.push(data.message);
+  if (data?.detail) candidates.push(data.detail);
   if (data?.error) candidates.push(data.error);
   if (data?.code) candidates.push(data.code);
   if (Array.isArray(data?.errors)) {
     for (const fe of data.errors) {
       if (fe?.message) candidates.push(fe.message);
+      if (fe?.code) candidates.push(fe.code);
       if (fe?.fieldName) candidates.push(fe.fieldName);
     }
   }
-  return candidates.some((s) => COMMON_PASSWORD_REGEX.test(s));
+  return candidates;
+}
+
+/**
+ * Retorna o field-error escopado ao campo `password`, se existir.
+ * Usado para consumir integralmente o erro no componente de senha,
+ * evitando que o fluxo genérico de `setError` + SweetAlert seja acionado.
+ */
+export function getPasswordFieldError(
+  err: unknown,
+): { fieldName?: string; message?: string; code?: string } | null {
+  const data = (err as ApiErrorShape)?.response?.data;
+  const list = Array.isArray(data?.errors) ? data!.errors! : [];
+  return list.find((fe) => fe?.fieldName === "password") ?? null;
+}
+
+export function isCommonPasswordError(err: unknown): boolean {
+  return collectErrorStrings(err).some((s) => COMMON_PASSWORD_REGEX.test(s));
 }
 
 /**
@@ -139,9 +161,15 @@ export function handlePasswordApiError(
     openRequirements?: (open: boolean) => void;
   },
 ): boolean {
-  if (!isCommonPasswordError(err)) return false;
+  const passwordFieldError = getPasswordFieldError(err);
+  const matched = passwordFieldError !== null || isCommonPasswordError(err);
+  if (!matched) return false;
   handlers.setIssue(COMMON_PASSWORD_INLINE_MESSAGE);
   handlers.openRequirements?.(true);
-  handlers.focusRef?.current?.focus();
+  // Restaura o foco no próximo tick para não conflitar com blur do submit.
+  const ref = handlers.focusRef;
+  if (ref) {
+    queueMicrotask(() => ref.current?.focus());
+  }
   return true;
 }

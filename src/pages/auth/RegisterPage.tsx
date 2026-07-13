@@ -6,7 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
-import { handlePasswordApiError } from "@/utils/password";
+import { getPasswordFieldError, handlePasswordApiError } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -50,15 +50,11 @@ export default function RegisterPage() {
       );
       navigate("/auth/activation-pending");
     } catch (err) {
-      if (
-        handlePasswordApiError(err, {
-          setIssue: setPasswordIssue,
-          focusRef: passwordRef,
-          openRequirements: setRequirementsOpen,
-        })
-      ) {
-        return;
-      }
+      const passwordConsumed = handlePasswordApiError(err, {
+        setIssue: setPasswordIssue,
+        focusRef: passwordRef,
+        openRequirements: setRequirementsOpen,
+      });
       const error = err as {
         response?: {
           status?: number;
@@ -69,16 +65,26 @@ export default function RegisterPage() {
         };
         message?: string;
       };
-      const fieldErrors = error.response?.data?.errors;
-      if (Array.isArray(fieldErrors) && fieldErrors.length > 0) {
-        fieldErrors.forEach((fe) => {
+      const allFieldErrors = error.response?.data?.errors ?? [];
+      // O erro do campo `password` já é consumido inline pelo
+      // PasswordRequirements — não deve reentrar via setError nem
+      // disparar o SweetAlert "Dados inválidos".
+      const remainingFieldErrors = allFieldErrors.filter((fe) => fe.fieldName !== "password");
+      if (remainingFieldErrors.length > 0) {
+        remainingFieldErrors.forEach((fe) => {
           setError(fe.fieldName as keyof RegisterFormFields, {
             type: "server",
             message: fe.message,
           });
         });
         await alerts.error("Dados inválidos", "Confira os campos destacados e tente novamente.");
-      } else {
+        return;
+      }
+      if (passwordConsumed || getPasswordFieldError(err)) {
+        // Feedback inline no componente de senha — não dispara modal.
+        return;
+      }
+      {
         await alerts.error(
           "Falha no cadastro",
           error.response?.data?.message ?? error.message ?? "Não foi possível concluir o cadastro.",
