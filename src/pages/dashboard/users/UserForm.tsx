@@ -7,7 +7,7 @@ import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
-import { COMMON_PASSWORD_INLINE_MESSAGE, isCommonPasswordError } from "@/utils/password";
+import { handlePasswordApiError } from "@/utils/password";
 
 const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
   { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
@@ -90,9 +90,10 @@ export default function UserForm({ mode }: Props) {
       }
       navigate("/dashboard/users");
     } catch (err) {
-      if (mode === "create" && isCommonPasswordError(err)) {
-        setPasswordIssue(COMMON_PASSWORD_INLINE_MESSAGE);
-        passwordRef.current?.focus();
+      if (
+        mode === "create" &&
+        handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })
+      ) {
         return;
       }
       setSaveError((err as Error).message);

@@ -85,16 +85,18 @@ export const COMMON_PASSWORD_INLINE_MESSAGE =
  * de texto sem depender de códigos de erro dedicados.
  */
 const COMMON_PASSWORD_REGEX =
-  /(padr[aã]o.*(comum|insegur)|(comum|insegur).*padr[aã]o|senha.*(comum|insegur)|(comum|insegur).*senha|common.*password|weak.*password|password.*common|too.*common)/i;
+  /(padr[aã]o.*(comum|insegur)|(comum|insegur).*padr[aã]o|senha.*(comum|insegur)|(comum|insegur).*senha|common.*password|weak.*password|password.*common|too.*common|strong ?password|strongpassword|common_password|insecure ?password)/i;
 
 export function isCommonPasswordError(err: unknown): boolean {
   const candidates: string[] = [];
   const e = err as {
     message?: string;
     response?: {
+      status?: number;
       data?: {
         message?: string;
         error?: string;
+        code?: string;
         errors?: { fieldName?: string; message?: string }[];
       };
     };
@@ -103,12 +105,43 @@ export function isCommonPasswordError(err: unknown): boolean {
   const data = e?.response?.data;
   if (data?.message) candidates.push(data.message);
   if (data?.error) candidates.push(data.error);
+  if (data?.code) candidates.push(data.code);
   if (Array.isArray(data?.errors)) {
     for (const fe of data.errors) {
-      if (fe?.message && (!fe.fieldName || /password|senha/i.test(fe.fieldName))) {
-        candidates.push(fe.message);
-      }
+      if (fe?.message) candidates.push(fe.message);
+      if (fe?.fieldName) candidates.push(fe.fieldName);
     }
   }
   return candidates.some((s) => COMMON_PASSWORD_REGEX.test(s));
+}
+
+/**
+ * Centraliza o tratamento de erros de senha vindos do backend.
+ *
+ * Quando o backend rejeita a senha por ser um padrão comum/inseguro
+ * (HTTP 422 com mensagens do tipo "senha contém padrões muito comuns"),
+ * este helper:
+ *   1. exibe a mensagem inline dentro do PasswordRequirements;
+ *   2. reabre o painel colapsável (se aplicável);
+ *   3. devolve o foco ao campo de senha;
+ *   4. NÃO dispara SweetAlert — a validação continua sendo parte
+ *      natural do fluxo de senha.
+ *
+ * Retorna `true` quando o erro foi tratado como validação de senha, e
+ * `false` quando o chamador deve seguir com o tratamento padrão
+ * (SweetAlert / mensagens genéricas).
+ */
+export function handlePasswordApiError(
+  err: unknown,
+  handlers: {
+    setIssue: (message: string | null) => void;
+    focusRef?: { current: HTMLInputElement | null };
+    openRequirements?: (open: boolean) => void;
+  },
+): boolean {
+  if (!isCommonPasswordError(err)) return false;
+  handlers.setIssue(COMMON_PASSWORD_INLINE_MESSAGE);
+  handlers.openRequirements?.(true);
+  handlers.focusRef?.current?.focus();
+  return true;
 }
