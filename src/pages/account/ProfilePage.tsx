@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
@@ -12,7 +12,7 @@ import {
 import { getApiErrorMessage } from "@/utils/api-errors";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
-import { handlePasswordApiError } from "@/utils/password";
+import { handleApiError } from "@/utils/api-error-handler";
 
 type ProfileFields = {
   firstName: string;
@@ -31,8 +31,6 @@ export default function ProfilePage() {
   const { user, loading, refreshUser } = useAuth();
   const [profileFeedback, setProfileFeedback] = useState<Feedback>(null);
   const [passwordFeedback, setPasswordFeedback] = useState<Feedback>(null);
-  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const profileForm = useForm<ProfileFields>({
     defaultValues: { firstName: "", lastName: "", email: "" },
@@ -84,7 +82,6 @@ export default function ProfilePage() {
 
   const onChangePassword = async (data: PasswordFields) => {
     setPasswordFeedback(null);
-    setPasswordIssue(null);
     if (data.password !== data.confirmPassword) {
       setPasswordFeedback({ kind: "error", message: "As senhas não coincidem." });
       return;
@@ -98,13 +95,18 @@ export default function ProfilePage() {
       setPasswordFeedback({ kind: "success", message: "Senha alterada com sucesso." });
       await alerts.success("Senha alterada", "Senha alterada com sucesso.");
     } catch (err) {
-      if (handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })) {
-        return;
-      }
-      setPasswordFeedback({
-        kind: "error",
-        message: getApiErrorMessage(err, "Não foi possível alterar a senha."),
+      const handled = await handleApiError(err, {
+        setError: (name, error) =>
+          passwordForm.setError(name as keyof PasswordFields, error),
+        fallbackTitle: "Falha ao alterar senha",
+        fallbackMessage: "Não foi possível alterar a senha.",
       });
+      if (!handled) {
+        setPasswordFeedback({
+          kind: "error",
+          message: getApiErrorMessage(err, "Não foi possível alterar a senha."),
+        });
+      }
     }
   };
 
@@ -212,9 +214,6 @@ export default function ProfilePage() {
                   message:
                     "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
                 },
-                onChange: () => {
-                  if (passwordIssue) setPasswordIssue(null);
-                },
               });
               return (
                 <PasswordField
@@ -224,14 +223,10 @@ export default function ProfilePage() {
                   autoComplete="new-password"
                   error={passwordErrors.password?.message}
                   {...reg}
-                  ref={(el) => {
-                    passwordRef.current = el;
-                    reg.ref(el);
-                  }}
                 />
               );
             })()}
-            <PasswordRequirements password={passwordValue} issue={passwordIssue} />
+            <PasswordRequirements password={passwordValue} />
 
             <PasswordField
               id="confirmPassword"
