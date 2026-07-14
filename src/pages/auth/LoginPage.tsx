@@ -5,6 +5,7 @@ import { ConfirmDialog, PasswordInput } from "@/components";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
+import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type AuthFormFields = {
@@ -37,22 +38,25 @@ export default function LoginPage() {
       await login(data);
       navigate(redirectTo, { replace: true });
     } catch (err) {
-      const error = err as {
-        response?: { status?: number; data?: { message?: string; code?: string } };
-      };
-      const status = error.response?.status;
-      const code = error.response?.data?.code;
-      // Estrutura preparada: caso o backend passe a sinalizar conta inativa
-      // (ex.: HTTP 403 ou code "ACCOUNT_NOT_ACTIVATED"), exibimos uma mensagem
-      // específica com CTA de reenvio de ativação. Enquanto isso não existir,
-      // o fluxo cai no ramo genérico atual.
-      if (status === 403 || code === "ACCOUNT_NOT_ACTIVATED") {
+      const code = getApiErrorCode(err);
+      // Regra de negócio preservada: conta desativada é sinalizada pelo
+      // backend via ApiErrorCode.ACCESS_DISABLED — mantém o CTA de reenvio.
+      if (code === "ACCESS_DISABLED") {
         setInactiveAccount(true);
         setError("root", {
           message:
             "Sua conta ainda não foi ativada. Verifique seu e-mail ou solicite um novo envio.",
         });
-      } else {
+        return;
+      }
+      // VALIDATION_ERROR e demais códigos: tratados centralmente por
+      // ApiErrorCode. Feedback fica inline (fieldErrors) ou em SweetAlert.
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof AuthFormFields, error),
+        fallbackTitle: "Falha no login",
+        fallbackMessage: "Verifique seu e-mail e senha e tente novamente.",
+      });
+      if (!handled) {
         setError("root", { message: "Usuário ou senha inválidos" });
         await alerts.error("Falha no login", "Verifique seu e-mail e senha e tente novamente.");
       }
