@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
@@ -6,7 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
-import { getPasswordFieldError, handlePasswordApiError } from "@/utils/password";
+import { handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -30,11 +30,8 @@ export default function RegisterPage() {
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("passwordConfirm") ?? "";
   const [requirementsOpen, setRequirementsOpen] = useState(false);
-  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: RegisterFormFields) => {
-    setPasswordIssue(null);
     try {
       await accountService.register({
         firstName: data.firstName,
@@ -50,45 +47,13 @@ export default function RegisterPage() {
       );
       navigate("/auth/activation-pending");
     } catch (err) {
-      const passwordConsumed = handlePasswordApiError(err, {
-        setIssue: setPasswordIssue,
-        focusRef: passwordRef,
-        openRequirements: setRequirementsOpen,
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof RegisterFormFields, error),
+        fallbackTitle: "Falha no cadastro",
+        fallbackMessage: "Não foi possível concluir o cadastro.",
       });
-      const error = err as {
-        response?: {
-          status?: number;
-          data?: {
-            message?: string;
-            errors?: { fieldName: string; message: string }[];
-          };
-        };
-        message?: string;
-      };
-      const allFieldErrors = error.response?.data?.errors ?? [];
-      // O erro do campo `password` já é consumido inline pelo
-      // PasswordRequirements — não deve reentrar via setError nem
-      // disparar o SweetAlert "Dados inválidos".
-      const remainingFieldErrors = allFieldErrors.filter((fe) => fe.fieldName !== "password");
-      if (remainingFieldErrors.length > 0) {
-        remainingFieldErrors.forEach((fe) => {
-          setError(fe.fieldName as keyof RegisterFormFields, {
-            type: "server",
-            message: fe.message,
-          });
-        });
-        await alerts.error("Dados inválidos", "Confira os campos destacados e tente novamente.");
-        return;
-      }
-      if (passwordConsumed || getPasswordFieldError(err)) {
-        // Feedback inline no componente de senha — não dispara modal.
-        return;
-      }
-      {
-        await alerts.error(
-          "Falha no cadastro",
-          error.response?.data?.message ?? error.message ?? "Não foi possível concluir o cadastro.",
-        );
+      if (!handled) {
+        await alerts.error("Falha no cadastro", "Não foi possível concluir o cadastro.");
       }
     }
   };
@@ -155,9 +120,6 @@ export default function RegisterPage() {
               onBlur: () => {
                 if (passwordValue.length === 0) setRequirementsOpen(false);
               },
-              onChange: () => {
-                if (passwordIssue) setPasswordIssue(null);
-              },
             });
             return (
               <PasswordField
@@ -165,10 +127,6 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 aria-label="Senha"
                 {...reg}
-                ref={(el) => {
-                  passwordRef.current = el;
-                  reg.ref(el);
-                }}
                 onFocus={() => setRequirementsOpen(true)}
               />
             );
@@ -181,12 +139,14 @@ export default function RegisterPage() {
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
+          {errors.password?.type === "server" && (
+            <p className={authFieldError}>{errors.password.message}</p>
+          )}
           <PasswordRequirements
             password={passwordValue}
             collapsible
             open={requirementsOpen}
             onOpenChange={setRequirementsOpen}
-            issue={passwordIssue}
           />
         </div>
 
