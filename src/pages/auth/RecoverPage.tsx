@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
+import { handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RecoverFormFields = {
@@ -16,6 +17,7 @@ export default function RecoverPage() {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RecoverFormFields>();
 
@@ -30,11 +32,17 @@ export default function RecoverPage() {
       );
       navigate("/auth/login");
     } catch (err) {
-      const error = err as { response?: { data?: { message?: string } } };
-      await alerts.error(
-        "Falha ao enviar",
-        error.response?.data?.message ?? "Não foi possível enviar o e-mail de recuperação.",
-      );
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof RecoverFormFields, error),
+        fallbackTitle: "Falha ao enviar",
+        fallbackMessage: "Não foi possível enviar o e-mail de recuperação.",
+      });
+      if (!handled) {
+        await alerts.error(
+          "Falha ao enviar",
+          "Não foi possível enviar o e-mail de recuperação.",
+        );
+      }
     }
   };
 
