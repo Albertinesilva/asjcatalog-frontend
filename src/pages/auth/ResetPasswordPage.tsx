@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
-import { handlePasswordApiError } from "@/utils/password";
+import { handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = {
@@ -22,16 +21,14 @@ export default function ResetPasswordPage() {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("confirmPassword") ?? "";
-  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const onSubmit = async (data: FormFields) => {
-    setPasswordIssue(null);
     if (!token) {
       await alerts.error("Token inválido", "O link de redefinição é inválido.");
       return;
@@ -41,14 +38,14 @@ export default function ResetPasswordPage() {
       await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
       navigate("/auth/login");
     } catch (err) {
-      if (handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })) {
-        return;
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof FormFields, error),
+        fallbackTitle: "Falha ao redefinir",
+        fallbackMessage: "Token inválido ou expirado.",
+      });
+      if (!handled) {
+        await alerts.error("Falha ao redefinir", "Token inválido ou expirado.");
       }
-      const error = err as { response?: { data?: { message?: string } } };
-      await alerts.error(
-        "Falha ao redefinir",
-        error.response?.data?.message ?? "Token inválido ou expirado.",
-      );
     }
   };
 
@@ -65,9 +62,6 @@ export default function ResetPasswordPage() {
               required: true,
               minLength: 8,
               pattern: /^(?=.*\d).{8,}$/,
-              onChange: () => {
-                if (passwordIssue) setPasswordIssue(null);
-              },
             });
             return (
               <PasswordField
@@ -75,10 +69,6 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 aria-label="Nova senha"
                 {...reg}
-                ref={(el) => {
-                  passwordRef.current = el;
-                  reg.ref(el);
-                }}
               />
             );
           })()}
@@ -90,7 +80,10 @@ export default function ResetPasswordPage() {
               A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
             </p>
           )}
-          <PasswordRequirements password={passwordValue} issue={passwordIssue} />
+          {errors.password?.type === "server" && (
+            <p className={authFieldError}>{errors.password.message}</p>
+          )}
+          <PasswordRequirements password={passwordValue} />
         </div>
 
         <div className="flex flex-col gap-1.5">
