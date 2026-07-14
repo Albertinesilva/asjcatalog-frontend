@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "@/services/user-service";
@@ -7,7 +7,7 @@ import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
-import { handlePasswordApiError } from "@/utils/password";
+import { handleApiError } from "@/utils/api-error-handler";
 
 const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
   { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
@@ -28,14 +28,13 @@ export default function UserForm({ mode }: Props) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [passwordIssue, setPasswordIssue] = useState<string | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
     watch,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: {
@@ -67,7 +66,6 @@ export default function UserForm({ mode }: Props) {
 
   const onSubmit = async (data: FormFields) => {
     setSaveError(null);
-    setPasswordIssue(null);
     const roleIds = data.roleIds.map((rid) => Number(rid));
     try {
       if (mode === "create") {
@@ -90,13 +88,14 @@ export default function UserForm({ mode }: Props) {
       }
       navigate("/dashboard/users");
     } catch (err) {
-      if (
-        mode === "create" &&
-        handlePasswordApiError(err, { setIssue: setPasswordIssue, focusRef: passwordRef })
-      ) {
-        return;
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof FormFields, error),
+        fallbackTitle: "Falha ao salvar",
+        fallbackMessage: "Não foi possível salvar o usuário.",
+      });
+      if (!handled) {
+        setSaveError((err as Error).message);
       }
-      setSaveError((err as Error).message);
     }
   };
 
@@ -130,9 +129,6 @@ export default function UserForm({ mode }: Props) {
               const reg = register("password", {
                 required: "Senha é obrigatória",
                 minLength: { value: 8, message: "Mínimo 8 caracteres" },
-                onChange: () => {
-                  if (passwordIssue) setPasswordIssue(null);
-                },
               });
               return (
                 <PasswordField
@@ -142,14 +138,10 @@ export default function UserForm({ mode }: Props) {
                   autoComplete="new-password"
                   error={errors.password?.message}
                   {...reg}
-                  ref={(el) => {
-                    passwordRef.current = el;
-                    reg.ref(el);
-                  }}
                 />
               );
             })()}
-            <PasswordRequirements password={passwordValue} issue={passwordIssue} />
+            <PasswordRequirements password={passwordValue} />
           </div>
         )}
         <div className="flex flex-col gap-1.5">
