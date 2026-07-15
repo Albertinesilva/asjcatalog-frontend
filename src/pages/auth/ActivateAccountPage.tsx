@@ -5,6 +5,7 @@ import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { getPendingEmail, removePendingEmail } from "@/utils/storage";
 import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
+import { parseApiError } from "@/utils/api-error";
 
 type Status = "loading" | "success" | "expired" | "invalid" | "already" | "missing" | "error";
 
@@ -32,16 +33,22 @@ export default function ActivateAccountPage() {
         removePendingEmail();
         setStatus("success");
       } catch (err) {
-        const error = err as {
-          response?: { status?: number; data?: { message?: string } };
-        };
-        const s = error.response?.status;
-        const msg = error.response?.data?.message ?? null;
-        setErrorMsg(msg);
-        if (s === 410 || s === 400) setStatus("expired");
-        else if (s === 409) setStatus("already");
-        else if (s === 404 || s === 422) setStatus("invalid");
-        else setStatus("error");
+        const parsed = parseApiError(err);
+        setErrorMsg(parsed.message || null);
+        switch (parsed.code) {
+          case "INVALID_TOKEN":
+            setStatus("expired");
+            break;
+          case "CONFLICT":
+            setStatus("already");
+            break;
+          case "RESOURCE_NOT_FOUND":
+          case "VALIDATION_ERROR":
+            setStatus("invalid");
+            break;
+          default:
+            setStatus("error");
+        }
       }
     })();
   }, [token]);
@@ -63,18 +70,16 @@ export default function ActivateAccountPage() {
       await alerts.success("Novo e-mail enviado!", `Verifique sua caixa de entrada (${email}).`);
       navigate("/auth/activation-pending");
     } catch (err) {
-      const error = err as {
-        response?: { status?: number; data?: { message?: string } };
-      };
-      if (error.response?.status === 429) {
+      const parsed = parseApiError(err);
+      if (parsed.status === 429) {
         await alerts.warning(
           "Aguarde alguns instantes",
-          error.response?.data?.message ?? "Você solicitou um novo e-mail recentemente.",
+          parsed.message || "Você solicitou um novo e-mail recentemente.",
         );
       } else {
         await alerts.error(
           "Falha ao reenviar",
-          error.response?.data?.message ?? "Tente novamente em instantes.",
+          parsed.message || "Tente novamente em instantes.",
         );
       }
     } finally {

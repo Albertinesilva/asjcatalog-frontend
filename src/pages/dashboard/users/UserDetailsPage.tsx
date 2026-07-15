@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { userService } from "@/services/user-service";
 import { LoadingState, ErrorState } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import type { UserDetails } from "@/types";
 import { Card, buttonClasses } from "@/components/ui";
 import UserRoleBadge from "./components/UserRoleBadge";

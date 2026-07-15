@@ -10,7 +10,7 @@ import {
   TableToolbar,
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import type { Category } from "@/types";
 import { buttonClasses } from "@/components/ui";

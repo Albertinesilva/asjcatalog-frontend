@@ -9,7 +9,7 @@ import {
   PasswordMatch,
   PasswordRequirements,
 } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -73,10 +73,17 @@ export default function ProfilePage() {
       setProfileFeedback({ kind: "success", message: "Perfil atualizado com sucesso." });
       await alerts.success("Perfil atualizado", "Perfil atualizado com sucesso.");
     } catch (err) {
-      setProfileFeedback({
-        kind: "error",
-        message: getApiErrorMessage(err, "Não foi possível atualizar o perfil."),
+      const handled = await handleApiError(err, {
+        setError: (name, error) => profileForm.setError(name as keyof ProfileFields, error),
+        fallbackTitle: "Falha ao atualizar perfil",
+        fallbackMessage: "Não foi possível atualizar o perfil.",
       });
+      if (!handled) {
+        setProfileFeedback({
+          kind: "error",
+          message: getApiErrorMessage(err, "Não foi possível atualizar o perfil."),
+        });
+      }
     }
   };
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePagination } from "./usePagination";
 import type { SpringPage } from "@/types";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 
 type Fetcher<T, F> = (args: { page: number; size: number; filters: F }) => Promise<SpringPage<T>>;
 

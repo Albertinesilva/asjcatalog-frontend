@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
+import { handleApiError } from "@/utils/api-error-handler";
+import { getApiErrorMessage } from "@/utils/api-error";
 
 type FormFields = { name: string };
 type Props = { mode: "create" | "edit" };
@@ -16,6 +18,7 @@ export default function CategoryForm({ mode }: Props) {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ defaultValues: { name: "" } });
 
@@ -24,7 +27,7 @@ export default function CategoryForm({ mode }: Props) {
     categoryService
       .findById(Number(id))
       .then((c) => reset({ name: c.name }))
-      .catch((err: Error) => setSaveError(err.message));
+      .catch((err) => setSaveError(getApiErrorMessage(err)));
   }, [mode, id, reset]);
 
   const onSubmit = async (data: FormFields) => {
@@ -42,7 +45,11 @@ export default function CategoryForm({ mode }: Props) {
       }
       navigate("/dashboard/categories");
     } catch (err) {
-      setSaveError((err as Error).message);
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof FormFields, error),
+        fallbackTitle: "Falha ao salvar categoria",
+      });
+      if (!handled) setSaveError(getApiErrorMessage(err));
     }
   };
 
