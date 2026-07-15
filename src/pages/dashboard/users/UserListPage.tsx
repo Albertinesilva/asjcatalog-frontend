@@ -11,7 +11,7 @@ import {
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import type { Paginated, User } from "@/types";
 import { buttonClasses } from "@/components/ui";

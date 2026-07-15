@@ -5,7 +5,7 @@ import { useRoles } from "@/hooks/useRoles";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { userService } from "@/services/user-service";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import { Badge, Card } from "@/components/ui";
 
 type MetricState = {

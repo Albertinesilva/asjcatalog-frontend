@@ -9,7 +9,7 @@ import {
   PasswordMatch,
   PasswordRequirements,
 } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-errors";
+import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
