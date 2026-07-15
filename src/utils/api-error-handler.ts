@@ -1,52 +1,17 @@
 import { alerts } from "@/utils/alerts";
+import { parseApiError, type ApiError, type ApiErrorCode } from "@/utils/api-error";
 
 /**
- * Contrato oficial de erros da API (backend V2.5.2+).
+ * Camada de apresentação para erros da API.
  *
- * Toda decisão de tratamento deve ser tomada exclusivamente através
- * do campo `code` (enum `ApiErrorCode`). Nunca inferir tipo de erro
- * a partir de `status`, `message`, `error` ou de heurísticas de texto.
+ * Consome exclusivamente `parseApiError` (única fonte de interpretação
+ * do contrato oficial). Este módulo é responsável apenas por:
+ *   - aplicar `setError` do react-hook-form em VALIDATION_ERROR;
+ *   - exibir SweetAlert para demais códigos;
+ *   - retornar boolean informando se o erro foi tratado.
  *
- * Mensagens (`message` / `fieldErrors[].message`) já são
- * internacionalizadas pelo backend via `Accept-Language` — o frontend
- * apenas as exibe verbatim.
+ * Nenhuma leitura direta de `response.data.*` deve ocorrer aqui.
  */
-
-export type ApiErrorCode =
-  | "VALIDATION_ERROR"
-  | "RESOURCE_NOT_FOUND"
-  | "DATABASE_ERROR"
-  | "CONFLICT"
-  | "INVALID_TOKEN"
-  | "ACCESS_DISABLED"
-  | "ACCESS_DENIED"
-  | "AUTHENTICATION_REQUIRED"
-  | "INTERNAL_SERVER_ERROR";
-
-export type ApiFieldError = {
-  fieldName: string;
-  message: string;
-};
-
-export type ApiErrorBody = {
-  timestamp?: string;
-  status?: number;
-  code?: ApiErrorCode | string;
-  error?: string;
-  message?: string;
-  path?: string;
-  fieldErrors?: ApiFieldError[];
-};
-
-export function getApiErrorBody(err: unknown): ApiErrorBody | null {
-  const e = err as { response?: { data?: ApiErrorBody } } | undefined;
-  return e?.response?.data ?? null;
-}
-
-export function getApiErrorCode(err: unknown): ApiErrorCode | null {
-  const body = getApiErrorBody(err);
-  return (body?.code as ApiErrorCode | undefined) ?? null;
-}
 
 type SetFormError = (
   fieldName: string,
@@ -55,54 +20,63 @@ type SetFormError = (
 ) => void;
 
 export type HandleApiErrorOptions = {
-  /** setError do react-hook-form; obrigatório para VALIDATION_ERROR. */
+  /** setError do react-hook-form; consumido em VALIDATION_ERROR. */
   setError?: SetFormError;
   /** Título do SweetAlert quando um alerta modal é exibido. */
   fallbackTitle?: string;
   /** Mensagem exibida quando o backend não retornou `message`. */
   fallbackMessage?: string;
+  /** Título usado especificamente para VALIDATION_ERROR sem `setError`. */
+  validationTitle?: string;
 };
+
+/** Re-exports para consumidores legados. */
+export { parseApiError };
+export type { ApiError, ApiErrorCode };
+
+/** Atalho: retorna somente o `code` normalizado. */
+export function getApiErrorCode(err: unknown): ApiErrorCode | null {
+  return parseApiError(err).code;
+}
 
 /**
  * Tratamento centralizado de erros da API baseado em `ApiErrorCode`.
  *
  * - VALIDATION_ERROR: percorre `fieldErrors`, aplica `setError` em cada
- *   campo. Nenhum SweetAlert é exibido. Feedback ocorre inline nos
- *   inputs via mecanismo padrão do react-hook-form.
+ *   campo. Nenhum SweetAlert é exibido. Feedback ocorre inline via RHF.
  * - Demais códigos: exibe SweetAlert de erro com a `message` retornada
- *   pelo backend (já internacionalizada).
+ *   pelo backend (já internacionalizada via `Accept-Language`).
  *
  * Retorna `true` quando o erro foi reconhecido/tratado. Retorna `false`
- * quando não foi possível identificar o payload (ex.: erro de rede),
- * permitindo que o chamador aplique um fallback adicional se desejar.
+ * apenas para erros de rede (sem resposta HTTP), permitindo fallback
+ * customizado pelo chamador.
  */
 export async function handleApiError(
   err: unknown,
   options: HandleApiErrorOptions = {},
 ): Promise<boolean> {
-  const body = getApiErrorBody(err);
-  const code = (body?.code ?? null) as ApiErrorCode | null;
-  const message =
-    body?.message ?? options.fallbackMessage ?? "Ocorreu um erro inesperado. Tente novamente.";
+  const parsed = parseApiError(err);
   const title = options.fallbackTitle ?? "Erro";
+  const message = parsed.message || options.fallbackMessage || "";
 
-  switch (code) {
+  if (parsed.isNetworkError) return false;
+
+  switch (parsed.code) {
     case "VALIDATION_ERROR": {
-      const fieldErrors = body?.fieldErrors ?? [];
-      if (options.setError && fieldErrors.length > 0) {
+      if (options.setError && parsed.fieldErrors.length > 0) {
         let focused = false;
-        for (const fe of fieldErrors) {
-          if (!fe?.fieldName) continue;
+        for (const fe of parsed.fieldErrors) {
+          if (!fe.fieldName) continue;
           options.setError(
             fe.fieldName,
-            { type: "server", message: fe.message ?? "" },
+            { type: "server", message: fe.message },
             focused ? undefined : { shouldFocus: true },
           );
           focused = true;
         }
         return true;
       }
-      await alerts.error("Dados inválidos", message);
+      await alerts.error(options.validationTitle ?? title, message);
       return true;
     }
     case "CONFLICT":
@@ -115,10 +89,8 @@ export async function handleApiError(
     case "INTERNAL_SERVER_ERROR":
       await alerts.error(title, message);
       return true;
-    default: {
-      if (!body) return false;
+    default:
       await alerts.error(title, message);
       return true;
-    }
   }
 }
