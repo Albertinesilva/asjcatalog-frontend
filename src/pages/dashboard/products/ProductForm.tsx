@@ -7,6 +7,8 @@ import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
+import { handleApiError } from "@/utils/api-error-handler";
+import { getApiErrorMessage } from "@/utils/api-error";
 
 type FormFields = {
   name: string;
@@ -31,6 +33,7 @@ export default function ProductForm({ mode }: Props) {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     defaultValues: {
@@ -79,7 +82,11 @@ export default function ProductForm({ mode }: Props) {
       }
       navigate("/dashboard/products");
     } catch (err) {
-      setSaveError((err as Error).message);
+      const handled = await handleApiError(err, {
+        setError: (name, error) => setError(name as keyof FormFields, error),
+        fallbackTitle: "Falha ao salvar produto",
+      });
+      if (!handled) setSaveError(getApiErrorMessage(err));
     } finally {
       setLoading(false);
     }
