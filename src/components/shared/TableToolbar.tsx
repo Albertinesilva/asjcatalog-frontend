@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge, cn } from "@/components/ui";
 
 type Props = {
@@ -22,6 +23,7 @@ export default function TableToolbar({
   children,
   className = "",
 }: Props) {
+  const { t } = useTranslation();
   const hasCounter = typeof counter === "number";
   return (
     <div
@@ -38,9 +40,7 @@ export default function TableToolbar({
           </h4>
         ) : (
           hasCounter && (
-            <Badge variant="default">
-              {counter} {counter === 1 ? "item" : "itens"}
-            </Badge>
+            <Badge variant="default">{t("common:table.records", { count: counter })}</Badge>
           )
         )}
         {subtitle && <small className="text-small text-foreground-muted">{subtitle}</small>}
