@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/components/ui";
 
 type Props = {
@@ -12,11 +13,13 @@ type Props = {
  * Estado vazio. Fase 10.2: migrado para Tailwind + tokens.
  */
 export default function EmptyState({
-  title = "Nenhum resultado encontrado",
+  title,
   description,
   action,
   className = "",
 }: Props) {
+  const { t } = useTranslation();
+  const resolvedTitle = title ?? t("common:states.empty");
   return (
     <div
       className={cn(
@@ -39,7 +42,7 @@ export default function EmptyState({
         <circle cx="11" cy="11" r="7" />
         <path d="m20 20-3.5-3.5" />
       </svg>
-      <h5 className="font-heading text-title text-foreground m-0">{title}</h5>
+      <h5 className="font-heading text-title text-foreground m-0">{resolvedTitle}</h5>
       {description && <p className="text-body text-foreground-muted m-0">{description}</p>}
       {action && <div className="mt-sm">{action}</div>}
     </div>
