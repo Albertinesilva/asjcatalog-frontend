@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui";
 import illustration from "@/assets/notfound-illustration.jpg";
 
 export default function NotFoundPage() {
+  const { t } = useTranslation();
   return (
     <main className="mx-auto max-w-[720px] py-3xl px-md text-center flex flex-col items-center gap-md animate-fade-in">
       <img
@@ -16,11 +18,11 @@ export default function NotFoundPage() {
       />
       <h1 className="font-heading text-display text-primary m-0">404</h1>
       <p className="text-body text-foreground-muted m-0">
-        A página solicitada não existe ou foi movida no ASJ Catalog.
+        {t("home:notFound.description")}
       </p>
       <Link to="/">
         <Button variant="primary" size="lg">
-          Voltar para o início
+          {t("common:actions.backHome")}
         </Button>
       </Link>
     </main>
