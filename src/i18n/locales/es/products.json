@@ -1,0 +1,18 @@
+{
+  "title": "Productos", "add": "Agregar", "search": "Buscar producto",
+  "columns": { "id": "ID", "image": "Imagen", "name": "Nombre", "price": "Precio", "categories": "Categorías", "actions": "Acciones" },
+  "empty": "No hay productos registrados.",
+  "delete": {
+    "title": "Eliminar producto",
+    "confirmPrefix": "¿Está seguro que desea eliminar", "confirmSuffix": "? Esta acción no se puede deshacer.",
+    "successTitle": "Producto eliminado", "successMessage": "Producto eliminado exitosamente."
+  },
+  "form": {
+    "titleNew": "Nuevo producto", "titleEdit": "Editar producto",
+    "name": "Nombre", "price": "Precio", "imageUrl": "URL de la imagen", "description": "Descripción", "categories": "Categorías",
+    "submit": "Guardar", "submitting": "Guardando...", "cancel": "Cancelar",
+    "successNewTitle": "Producto creado", "successNewMessage": "Producto creado exitosamente.",
+    "successEditTitle": "Producto actualizado", "successEditMessage": "Producto actualizado exitosamente.",
+    "failTitle": "No se pudo guardar", "failMessage": "Verifique los datos e intente de nuevo."
+  }
+}
