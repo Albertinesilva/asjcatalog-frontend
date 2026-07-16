@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 
 type Props = {
@@ -20,11 +21,15 @@ export default function SearchInput({
   value,
   onChange,
   onClear,
-  placeholder = "Pesquisar",
-  ariaLabel = "Pesquisar",
-  clearLabel = "Limpar filtro",
+  placeholder,
+  ariaLabel,
+  clearLabel,
   className = "",
 }: Props) {
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t("common:actions.search");
+  const resolvedAria = ariaLabel ?? t("common:actions.search");
+  const resolvedClear = clearLabel ?? t("common:actions.clear");
   const handleClear = () => {
     if (onClear) onClear();
     else onChange("");
@@ -40,10 +45,10 @@ export default function SearchInput({
       <input
         type="search"
         className={cn(inputBaseClasses, "flex-grow border-transparent bg-transparent shadow-none")}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        aria-label={ariaLabel}
+        aria-label={resolvedAria}
       />
       <Button
         type="button"
@@ -52,7 +57,7 @@ export default function SearchInput({
         onClick={handleClear}
         className="md:min-w-[150px]"
       >
-        {clearLabel}
+        {resolvedClear}
       </Button>
     </Card>
   );
