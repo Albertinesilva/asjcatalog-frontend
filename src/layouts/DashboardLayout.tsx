@@ -1,74 +1,121 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Navbar, Sidebar } from "@/components";
 
 type Crumb = { label: string; to?: string };
 
-function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] } {
-  const base: Crumb = { label: "Dashboard", to: "/dashboard" };
+function resolveBreadcrumb(
+  pathname: string,
+  t: (k: string) => string,
+): { title: string; crumbs: Crumb[] } {
+  const base: Crumb = { label: t("navigation:breadcrumbs.root"), to: "/dashboard" };
 
   // Products
   if (pathname.startsWith("/dashboard/products/new")) {
     return {
-      title: "Novo produto",
-      crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Novo" }],
+      title: t("navigation:breadcrumbs.titles.productNew"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.products"), to: "/dashboard/products" },
+        { label: t("navigation:breadcrumbs.new") },
+      ],
     };
   }
   if (/^\/dashboard\/products\/\d+/.test(pathname)) {
     return {
-      title: "Editar produto",
-      crumbs: [base, { label: "Produtos", to: "/dashboard/products" }, { label: "Editar" }],
+      title: t("navigation:breadcrumbs.titles.productEdit"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.products"), to: "/dashboard/products" },
+        { label: t("navigation:breadcrumbs.edit") },
+      ],
     };
   }
   if (pathname.startsWith("/dashboard/products")) {
-    return { title: "Produtos", crumbs: [base, { label: "Produtos" }] };
+    return {
+      title: t("navigation:breadcrumbs.titles.products"),
+      crumbs: [base, { label: t("navigation:breadcrumbs.products") }],
+    };
   }
 
   // Categories
   if (pathname.startsWith("/dashboard/categories/new")) {
     return {
-      title: "Nova categoria",
-      crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Nova" }],
+      title: t("navigation:breadcrumbs.titles.categoryNew"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.categories"), to: "/dashboard/categories" },
+        { label: t("navigation:breadcrumbs.newFem") },
+      ],
     };
   }
   if (/^\/dashboard\/categories\/\d+/.test(pathname)) {
     return {
-      title: "Editar categoria",
-      crumbs: [base, { label: "Categorias", to: "/dashboard/categories" }, { label: "Editar" }],
+      title: t("navigation:breadcrumbs.titles.categoryEdit"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.categories"), to: "/dashboard/categories" },
+        { label: t("navigation:breadcrumbs.edit") },
+      ],
     };
   }
   if (pathname.startsWith("/dashboard/categories")) {
-    return { title: "Categorias", crumbs: [base, { label: "Categorias" }] };
+    return {
+      title: t("navigation:breadcrumbs.titles.categories"),
+      crumbs: [base, { label: t("navigation:breadcrumbs.categories") }],
+    };
   }
 
   // Users
   if (pathname.startsWith("/dashboard/users/new")) {
     return {
-      title: "Novo usuário",
-      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Novo" }],
+      title: t("navigation:breadcrumbs.titles.userNew"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.users"), to: "/dashboard/users" },
+        { label: t("navigation:breadcrumbs.new") },
+      ],
     };
   }
   if (/^\/dashboard\/users\/\d+\/edit/.test(pathname)) {
     return {
-      title: "Editar usuário",
-      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Editar" }],
+      title: t("navigation:breadcrumbs.titles.userEdit"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.users"), to: "/dashboard/users" },
+        { label: t("navigation:breadcrumbs.edit") },
+      ],
     };
   }
   if (/^\/dashboard\/users\/\d+/.test(pathname)) {
     return {
-      title: "Detalhes do usuário",
-      crumbs: [base, { label: "Usuários", to: "/dashboard/users" }, { label: "Detalhes" }],
+      title: t("navigation:breadcrumbs.titles.userDetails"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.users"), to: "/dashboard/users" },
+        { label: t("navigation:breadcrumbs.details") },
+      ],
     };
   }
   if (pathname.startsWith("/dashboard/users")) {
-    return { title: "Usuários", crumbs: [base, { label: "Usuários" }] };
+    return {
+      title: t("navigation:breadcrumbs.titles.users"),
+      crumbs: [base, { label: t("navigation:breadcrumbs.users") }],
+    };
   }
 
   // Profile
   if (pathname.startsWith("/account/profile")) {
-    return { title: "Meu Perfil", crumbs: [base, { label: "Meu Perfil" }] };
+    return {
+      title: t("navigation:breadcrumbs.titles.profile"),
+      crumbs: [base, { label: t("navigation:breadcrumbs.profile") }],
+    };
   }
 
-  return { title: "Dashboard", crumbs: [{ label: "Dashboard" }] };
+  return {
+    title: t("navigation:breadcrumbs.titles.dashboard"),
+    crumbs: [{ label: t("navigation:breadcrumbs.root") }],
+  };
 }
 
 /**
@@ -80,8 +127,9 @@ function resolveBreadcrumb(pathname: string): { title: string; crumbs: Crumb[] }
  * O contrato (Navbar + Sidebar + Outlet + breadcrumb) foi preservado.
  */
 export default function DashboardLayout() {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
-  const { title, crumbs } = resolveBreadcrumb(pathname);
+  const { title, crumbs } = resolveBreadcrumb(pathname, t);
   const year = new Date().getFullYear();
 
   return (
@@ -127,7 +175,7 @@ export default function DashboardLayout() {
           </section>
 
           <footer className="bg-surface border-t border-border px-md py-md lg:px-xl text-center text-caption text-foreground-muted">
-            ASJ Catalog · © {year}
+            {t("navigation:footer", { year })}
           </footer>
         </main>
       </div>
