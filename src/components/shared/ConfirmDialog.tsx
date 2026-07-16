@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Card, type ButtonVariant } from "@/components/ui";
 
 type Variant = "danger" | "primary" | "warning";
@@ -37,15 +38,19 @@ export default function ConfirmDialog({
   open,
   title,
   description,
-  confirmLabel = "Confirmar",
-  cancelLabel = "Cancelar",
-  confirmingLabel = "Processando...",
+  confirmLabel,
+  cancelLabel,
+  confirmingLabel,
   variant = "danger",
   isConfirming = false,
   disableClose = false,
   onConfirm,
   onCancel,
 }: Props) {
+  const { t } = useTranslation();
+  const resolvedConfirmLabel = confirmLabel ?? t("common:actions.confirm");
+  const resolvedCancelLabel = cancelLabel ?? t("common:actions.cancel");
+  const resolvedConfirmingLabel = confirmingLabel ?? t("common:confirm.confirming");
   const cancelRef = useRef<HTMLButtonElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
   const titleId = useId();
@@ -115,7 +120,7 @@ export default function ConfirmDialog({
             onClick={onCancel}
             disabled={isConfirming}
           >
-            {cancelLabel}
+            {resolvedCancelLabel}
           </Button>
           <Button
             type="button"
@@ -124,7 +129,7 @@ export default function ConfirmDialog({
             loading={isConfirming}
             disabled={isConfirming}
           >
-            {isConfirming ? confirmingLabel : confirmLabel}
+            {isConfirming ? resolvedConfirmingLabel : resolvedConfirmLabel}
           </Button>
         </div>
       </Card>

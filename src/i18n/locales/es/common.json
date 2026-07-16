@@ -1,0 +1,16 @@
+{
+  "brand": { "name": "ASJ Catalog" },
+  "actions": {
+    "save": "Guardar", "saving": "Guardando...", "cancel": "Cancelar", "confirm": "Confirmar",
+    "continue": "Continuar", "back": "Volver", "close": "Cerrar", "edit": "Editar",
+    "delete": "Eliminar", "deleting": "Eliminando...", "view": "Ver", "add": "Agregar",
+    "create": "Crear", "search": "Buscar", "clear": "Limpiar",
+    "retry": "Intentar de nuevo", "backHome": "Volver al inicio", "loading": "Cargando..."
+  },
+  "states": { "loading": "Cargando...", "empty": "No se encontraron resultados", "error": "Ocurrió un error inesperado" },
+  "table": { "records_one": "{{count}} registro", "records_other": "{{count}} registros", "actions": "Acciones" },
+  "pagination": { "previous": "Anterior", "next": "Siguiente", "page": "Página {{page}} de {{total}}" },
+  "confirm": { "confirming": "Confirmando..." },
+  "errors": { "generic": "Ocurrió un error inesperado.", "validation": "Datos inválidos" },
+  "language": { "label": "Idioma", "select": "Seleccionar idioma" }
+}

@@ -1,0 +1,12 @@
+{
+  "required": "Required field",
+  "emailInvalid": "Enter a valid email!",
+  "email": { "required": "Email is required", "requiredShort": "Email is required" },
+  "password": {
+    "required": "Password is required", "requiredShort": "Password is required",
+    "rule": "Password must be at least 8 characters and contain at least one number",
+    "confirm": "Confirm the password", "mismatch": "Passwords do not match"
+  },
+  "firstNameRequired": "First name is required",
+  "lastNameRequired": "Last name is required"
+}

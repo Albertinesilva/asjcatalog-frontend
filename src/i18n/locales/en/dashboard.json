@@ -1,0 +1,7 @@
+{
+  "title": "Dashboard", "welcome": "Welcome to ASJ Catalog",
+  "summary": "A quick overview of your catalog.",
+  "cards": { "products": "Products", "categories": "Categories", "users": "Users" },
+  "cta": { "manageProducts": "Manage products", "manageCategories": "Manage categories", "manageUsers": "Manage users" },
+  "recent": "Recent entries"
+}

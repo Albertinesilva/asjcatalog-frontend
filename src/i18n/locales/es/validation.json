@@ -1,0 +1,11 @@
+{
+  "required": "Campo obligatorio", "emailInvalid": "¡Ingrese un email válido!",
+  "email": { "required": "El email es obligatorio", "requiredShort": "El email es obligatorio" },
+  "password": {
+    "required": "La contraseña es obligatoria", "requiredShort": "La contraseña es obligatoria",
+    "rule": "La contraseña debe tener al menos 8 caracteres y contener al menos un número",
+    "confirm": "Confirme la contraseña", "mismatch": "Las contraseñas no coinciden"
+  },
+  "firstNameRequired": "El nombre es obligatorio",
+  "lastNameRequired": "El apellido es obligatorio"
+}

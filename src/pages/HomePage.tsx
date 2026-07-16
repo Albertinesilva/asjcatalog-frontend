@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Badge, Button, Card } from "@/components/ui";
 import homeImage from "@/assets/home-illustration.jpg";
 
@@ -8,46 +9,36 @@ import homeImage from "@/assets/home-illustration.jpg";
  * Landing modernizada em Tailwind + Design System. Conteúdo institucional
  * (Fase 9) e navegação preservados. Sem Bootstrap, sem CSS Module.
  */
-const features = [
-  {
-    title: "Catálogo centralizado",
-    description: "Organize produtos, categorias e informações comerciais em um único lugar.",
-  },
-  {
-    title: "Administração simplificada",
-    description: "Cadastre, edite e mantenha o catálogo com uma experiência clara e consistente.",
-  },
-  {
-    title: "Controle de usuários",
-    description: "Defina permissões e gerencie o acesso da sua equipe com segurança.",
-  },
-];
-
 export default function HomePage() {
+  const { t } = useTranslation();
+  const features = [
+    { title: t("home:features.centralized.title"), description: t("home:features.centralized.description") },
+    { title: t("home:features.admin.title"), description: t("home:features.admin.description") },
+    { title: t("home:features.users.title"), description: t("home:features.users.description") },
+  ];
   return (
     <div className="w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
       <Card padding="none" elevated bordered className="overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-xl px-md py-xl lg:px-2xl lg:py-2xl">
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-md">
             <Badge variant="outline" className="uppercase tracking-wider">
-              ASJ Catalog · Plataforma
+              {t("home:badge")}
             </Badge>
             <h1 className="font-heading text-h1 lg:text-display text-foreground m-0">
-              Gestão profissional de catálogos
+              {t("home:title")}
             </h1>
             <p className="text-body-lg text-foreground-muted m-0 max-w-[46ch]">
-              Plataforma profissional para gestão e organização de catálogos de produtos, com
-              controle centralizado e administração simplificada.
+              {t("home:description")}
             </p>
             <div className="flex flex-wrap gap-sm mt-sm">
               <Link to="/catalog">
                 <Button size="lg" variant="primary">
-                  Acessar catálogo
+                  {t("home:cta.catalog")}
                 </Button>
               </Link>
               <Link to="/auth/login">
                 <Button size="lg" variant="outline">
-                  Entrar
+                  {t("home:cta.login")}
                 </Button>
               </Link>
             </div>
@@ -55,7 +46,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center lg:justify-end">
             <img
               src={homeImage}
-              alt="Interface do catálogo digital ASJ Catalog com produtos e métricas"
+              alt={t("home:title")}
               width={1200}
               height={1024}
               fetchPriority="high"
@@ -66,7 +57,7 @@ export default function HomePage() {
       </Card>
 
       <section
-        aria-label="Recursos da plataforma"
+        aria-label={t("home:features.sectionLabel")}
         className="mt-xl grid grid-cols-1 md:grid-cols-3 gap-md"
       >
         {features.map((f) => (

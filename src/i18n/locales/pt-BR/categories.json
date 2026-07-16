@@ -1,0 +1,28 @@
+{
+  "title": "Categorias",
+  "add": "Adicionar",
+  "search": "Pesquisar Categoria",
+  "columns": { "id": "ID", "name": "Nome", "actions": "Ações" },
+  "empty": "Nenhuma categoria cadastrada.",
+  "delete": {
+    "title": "Excluir categoria",
+    "confirmPrefix": "Tem certeza que deseja excluir",
+    "confirmSuffix": "? Esta ação não pode ser desfeita.",
+    "successTitle": "Categoria removida",
+    "successMessage": "Categoria removida com sucesso."
+  },
+  "form": {
+    "titleNew": "Nova categoria",
+    "titleEdit": "Editar categoria",
+    "name": "Nome",
+    "submit": "Salvar",
+    "submitting": "Salvando...",
+    "cancel": "Cancelar",
+    "successNewTitle": "Categoria criada",
+    "successNewMessage": "Categoria criada com sucesso.",
+    "successEditTitle": "Categoria atualizada",
+    "successEditMessage": "Categoria atualizada com sucesso.",
+    "failTitle": "Não foi possível salvar",
+    "failMessage": "Verifique os dados e tente novamente."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Mi Perfil",
+  "sections": { "personal": "Datos personales", "password": "Cambiar contraseña" },
+  "fields": {
+    "firstName": "Nombre", "lastName": "Apellido", "email": "Email",
+    "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirme la nueva contraseña"
+  },
+  "actions": {
+    "saveProfile": "Guardar cambios", "savingProfile": "Guardando...",
+    "changePassword": "Actualizar contraseña", "changingPassword": "Actualizando..."
+  },
+  "successProfileTitle": "Perfil actualizado", "successProfileMessage": "Sus datos fueron actualizados exitosamente.",
+  "successPasswordTitle": "Contraseña actualizada", "successPasswordMessage": "Su contraseña fue actualizada exitosamente.",
+  "failProfileTitle": "No se pudo actualizar", "failProfileMessage": "Verifique los datos e intente de nuevo.",
+  "failPasswordTitle": "No se pudo actualizar la contraseña", "failPasswordMessage": "Verifique su contraseña actual e intente de nuevo."
+}

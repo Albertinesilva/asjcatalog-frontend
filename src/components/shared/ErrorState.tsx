@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button, cn } from "@/components/ui";
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
  * sem alert Bootstrap.
  */
 export default function ErrorState({ message, onRetry, className = "" }: Props) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn(
@@ -22,7 +24,7 @@ export default function ErrorState({ message, onRetry, className = "" }: Props) 
       <p className="text-body font-semibold text-danger m-0">{message}</p>
       {onRetry && (
         <Button type="button" variant="outline" onClick={onRetry}>
-          Tentar novamente
+          {t("common:actions.retry")}
         </Button>
       )}
     </div>

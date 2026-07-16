@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "@/hooks/useAuth";
 import { useRoles } from "@/hooks/useRoles";
 import { Button, cn } from "@/components/ui";
+import LanguageSelector from "../LanguageSelector";
 import logo from "@/assets/asj-logo.png";
 
 /**
@@ -22,6 +24,7 @@ function getInitials(user: { firstName?: string; email?: string } | null | undef
 }
 
 export default function Navbar() {
+  const { t } = useTranslation();
   const { authenticated, user, logout } = useAuth();
   const { isAdmin } = useRoles();
   const navigate = useNavigate();
@@ -46,12 +49,14 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const roleLabel = isAdmin ? "Administrador" : "Operador";
-  const greeting = user?.firstName ? `Olá, ${user.firstName}` : (user?.email ?? "");
+  const roleLabel = isAdmin ? t("navigation:roles.admin") : t("navigation:roles.operator");
+  const greeting = user?.firstName
+    ? t("navigation:greeting", { name: user.firstName })
+    : (user?.email ?? "");
 
   return (
     <nav
-      aria-label="Navegação principal"
+      aria-label={t("navigation:mainNav")}
       className="sticky top-0 z-sticky bg-primary text-primary-foreground border-b border-primary-hover/40 backdrop-blur"
     >
       <div className="h-16 lg:h-[70px] px-md lg:px-xl flex items-center justify-between gap-md">
@@ -76,22 +81,23 @@ export default function Navbar() {
         {/* Desktop menu */}
         <ul className="hidden lg:flex items-center gap-xl m-0 p-0 list-none">
           <li>
-            <NavbarLink label="Início" target="/" />
+            <NavbarLink label={t("navigation:home")} target="/" />
           </li>
           <li>
-            <NavbarLink label="Catálogo" target="/catalog" />
+            <NavbarLink label={t("navigation:catalog")} target="/catalog" />
           </li>
           <li>
             {authenticated ? (
-              <NavbarLink label="Dashboard" target="/dashboard" />
+              <NavbarLink label={t("navigation:dashboard")} target="/dashboard" />
             ) : (
-              <NavbarLink label="Entrar" target="/auth/login" />
+              <NavbarLink label={t("navigation:login")} target="/auth/login" />
             )}
           </li>
         </ul>
 
         {/* Desktop user block */}
-        <div className="hidden lg:flex items-center gap-md min-w-[180px] justify-end">
+        <div className="hidden lg:flex items-center gap-md justify-end">
+          <LanguageSelector variant="onPrimary" />
           {authenticated ? (
             <>
               <Link
@@ -120,7 +126,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className="text-primary-foreground hover:bg-primary-foreground/10"
               >
-                Sair
+                {t("navigation:logout")}
               </Button>
             </>
           ) : (
@@ -129,12 +135,14 @@ export default function Navbar() {
         </div>
 
         {/* Mobile toggle */}
-        <button
+        <div className="lg:hidden flex items-center gap-xs">
+          <LanguageSelector variant="onPrimary" />
+          <button
           type="button"
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="lg:hidden inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+          className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
         >
           <span
             className={cn(
@@ -154,14 +162,15 @@ export default function Navbar() {
               open && "-translate-y-[7px] -rotate-45",
             )}
           />
-        </button>
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {open && (
         <button
           type="button"
-          aria-label="Fechar menu"
+          aria-label={t("navigation:closeMenu")}
           onClick={() => setOpen(false)}
           className="lg:hidden fixed inset-0 z-overlay bg-overlay/40 border-0 p-0 cursor-default"
         />
@@ -175,16 +184,16 @@ export default function Navbar() {
       >
         <ul className="flex flex-col m-0 p-0 list-none divide-y divide-primary-foreground/10">
           <li>
-            <NavbarLink label="Início" target="/" />
+            <NavbarLink label={t("navigation:home")} target="/" />
           </li>
           <li className="pt-sm mt-sm">
-            <NavbarLink label="Catálogo" target="/catalog" />
+            <NavbarLink label={t("navigation:catalog")} target="/catalog" />
           </li>
           <li className="pt-sm mt-sm">
             {authenticated ? (
-              <NavbarLink label="Dashboard" target="/dashboard" />
+              <NavbarLink label={t("navigation:dashboard")} target="/dashboard" />
             ) : (
-              <NavbarLink label="Entrar" target="/auth/login" />
+              <NavbarLink label={t("navigation:login")} target="/auth/login" />
             )}
           </li>
         </ul>
@@ -215,7 +224,7 @@ export default function Navbar() {
               onClick={handleLogout}
               className="text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30"
             >
-              Sair
+                {t("navigation:logout")}
             </Button>
           </div>
         )}

@@ -1,0 +1,17 @@
+{
+  "badge": "ASJ Catalog · Plataforma",
+  "title": "Gestión profesional de catálogos",
+  "description": "Plataforma profesional para gestionar y organizar catálogos de productos, con control centralizado y administración simplificada.",
+  "cta": { "catalog": "Acceder al catálogo", "login": "Entrar" },
+  "features": {
+    "sectionLabel": "Recursos de la plataforma",
+    "centralized": { "title": "Catálogo centralizado", "description": "Organice productos, categorías e información comercial en un solo lugar." },
+    "admin": { "title": "Administración simplificada", "description": "Registre, edite y mantenga el catálogo con una experiencia clara y consistente." },
+    "users": { "title": "Control de usuarios", "description": "Defina permisos y gestione el acceso de su equipo con seguridad." }
+  },
+  "authHero": {
+    "title": "Gestione su catálogo con ASJ Catalog",
+    "description": "Acceda a su cuenta para administrar productos, categorías y usuarios en un entorno centralizado y profesional."
+  },
+  "notFound": { "description": "La página solicitada no existe o fue movida en ASJ Catalog." }
+}

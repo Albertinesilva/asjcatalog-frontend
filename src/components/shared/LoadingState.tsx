@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { cn } from "@/components/ui";
 
 type Props = { message?: string; className?: string };
@@ -6,7 +7,9 @@ type Props = { message?: string; className?: string };
  * Estado de carregamento. Fase 10.2: spinner próprio em Tailwind,
  * sem dependência do `spinner-border` do Bootstrap.
  */
-export default function LoadingState({ message = "Carregando...", className = "" }: Props) {
+export default function LoadingState({ message, className = "" }: Props) {
+  const { t } = useTranslation();
+  const text = message ?? t("common:states.loading");
   return (
     <div
       className={cn(
@@ -33,7 +36,7 @@ export default function LoadingState({ message = "Carregando...", className = ""
           fill="none"
         />
       </svg>
-      <span className="text-body">{message}</span>
+      <span className="text-body">{text}</span>
     </div>
   );
 }

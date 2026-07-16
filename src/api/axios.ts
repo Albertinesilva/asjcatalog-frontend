@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "@/utils/constants";
 import { getAuthData, removeAuthData } from "@/utils/storage";
+import { getAcceptLanguageHeader } from "@/i18n/http";
 
 function isLovablePreview(): boolean {
   if (typeof window === "undefined") return false;
@@ -17,6 +18,8 @@ http.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     (config.headers as Record<string, string>).Authorization = `Bearer ${session.access_token}`;
   }
+  config.headers = config.headers ?? {};
+  (config.headers as Record<string, string>)["Accept-Language"] = getAcceptLanguageHeader();
   return config;
 });
 

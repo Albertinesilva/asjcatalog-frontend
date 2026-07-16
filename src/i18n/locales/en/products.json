@@ -1,0 +1,18 @@
+{
+  "title": "Products", "add": "Add", "search": "Search product",
+  "columns": { "id": "ID", "image": "Image", "name": "Name", "price": "Price", "categories": "Categories", "actions": "Actions" },
+  "empty": "No products registered.",
+  "delete": {
+    "title": "Delete product",
+    "confirmPrefix": "Are you sure you want to delete", "confirmSuffix": "? This action cannot be undone.",
+    "successTitle": "Product removed", "successMessage": "Product removed successfully."
+  },
+  "form": {
+    "titleNew": "New product", "titleEdit": "Edit product",
+    "name": "Name", "price": "Price", "imageUrl": "Image URL", "description": "Description", "categories": "Categories",
+    "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
+    "successNewTitle": "Product created", "successNewMessage": "Product created successfully.",
+    "successEditTitle": "Product updated", "successEditMessage": "Product updated successfully.",
+    "failTitle": "Could not save", "failMessage": "Check the data and try again."
+  }
+}

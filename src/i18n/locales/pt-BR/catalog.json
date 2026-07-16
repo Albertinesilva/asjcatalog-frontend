@@ -1,0 +1,14 @@
+{
+  "title": "Catálogo",
+  "search": "Pesquisar produtos",
+  "filterCategory": "Filtrar por categoria",
+  "allCategories": "Todas as categorias",
+  "empty": "Nenhum produto encontrado.",
+  "details": {
+    "back": "Voltar",
+    "backCatalog": "Voltar ao catálogo",
+    "category": "Categoria",
+    "description": "Descrição",
+    "notFound": "Produto não encontrado."
+  }
+}
