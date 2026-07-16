@@ -19,3 +19,4 @@ export { default as Pagination } from "./shared/Pagination";
 export { default as ConfirmDialog } from "./shared/ConfirmDialog";
 export { default as TableToolbar } from "./shared/TableToolbar";
 export { default as SearchInput } from "./shared/SearchInput";
+export { default as LanguageSelector } from "./LanguageSelector";
