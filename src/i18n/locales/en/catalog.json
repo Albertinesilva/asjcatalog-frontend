@@ -1,0 +1,6 @@
+{
+  "title": "Catalog", "search": "Search products",
+  "filterCategory": "Filter by category", "allCategories": "All categories",
+  "empty": "No products found.",
+  "details": { "back": "Back", "backCatalog": "Back to catalog", "category": "Category", "description": "Description", "notFound": "Product not found." }
+}

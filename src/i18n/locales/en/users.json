@@ -1,0 +1,22 @@
+{
+  "title": "Users", "add": "Add", "search": "Search user",
+  "columns": { "id": "ID", "name": "Name", "email": "Email", "roles": "Roles", "actions": "Actions" },
+  "empty": "No users registered.",
+  "roles": { "admin": "Administrator", "operator": "Operator" },
+  "actions": { "view": "View", "edit": "Edit", "delete": "Delete" },
+  "delete": {
+    "title": "Delete user",
+    "confirmPrefix": "Are you sure you want to delete", "confirmSuffix": "? This action cannot be undone.",
+    "successTitle": "User removed", "successMessage": "User removed successfully."
+  },
+  "details": { "title": "User details", "back": "Back", "notFound": "User not found." },
+  "form": {
+    "titleNew": "New user", "titleEdit": "Edit user",
+    "firstName": "First name", "lastName": "Last name", "email": "Email",
+    "password": "Password", "roles": "Roles",
+    "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
+    "successNewTitle": "User created", "successNewMessage": "User created successfully.",
+    "successEditTitle": "User updated", "successEditMessage": "User updated successfully.",
+    "failTitle": "Could not save", "failMessage": "Check the data and try again."
+  }
+}

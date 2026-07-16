@@ -1,0 +1,17 @@
+{
+  "title": "Categories", "add": "Add", "search": "Search category",
+  "columns": { "id": "ID", "name": "Name", "actions": "Actions" },
+  "empty": "No categories registered.",
+  "delete": {
+    "title": "Delete category",
+    "confirmPrefix": "Are you sure you want to delete", "confirmSuffix": "? This action cannot be undone.",
+    "successTitle": "Category removed", "successMessage": "Category removed successfully."
+  },
+  "form": {
+    "titleNew": "New category", "titleEdit": "Edit category", "name": "Name",
+    "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
+    "successNewTitle": "Category created", "successNewMessage": "Category created successfully.",
+    "successEditTitle": "Category updated", "successEditMessage": "Category updated successfully.",
+    "failTitle": "Could not save", "failMessage": "Check the data and try again."
+  }
+}
