@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useRoles } from "@/hooks/useRoles";
 import { cn } from "@/components/ui";
 
@@ -130,20 +131,23 @@ function itemClassName({ isActive }: { isActive: boolean }) {
 }
 
 export default function Sidebar() {
+  const { t } = useTranslation();
   const { isAdmin } = useRoles();
 
   const items: Item[] = [
-    { to: "/dashboard", label: "Dashboard", icon: DashboardIcon, end: true },
-    { to: "/dashboard/products", label: "Produtos", icon: BoxIcon },
-    { to: "/dashboard/categories", label: "Categorias", icon: TagIcon },
-    ...(isAdmin ? [{ to: "/dashboard/users", label: "Usuários", icon: UsersIcon }] : []),
-    { to: "/account/profile", label: "Meu Perfil", icon: UserIcon },
-    { to: "/catalog", label: "Catálogo Público", icon: StoreIcon },
+    { to: "/dashboard", label: t("navigation:sidebar.dashboard"), icon: DashboardIcon, end: true },
+    { to: "/dashboard/products", label: t("navigation:sidebar.products"), icon: BoxIcon },
+    { to: "/dashboard/categories", label: t("navigation:sidebar.categories"), icon: TagIcon },
+    ...(isAdmin
+      ? [{ to: "/dashboard/users", label: t("navigation:sidebar.users"), icon: UsersIcon }]
+      : []),
+    { to: "/account/profile", label: t("navigation:sidebar.profile"), icon: UserIcon },
+    { to: "/catalog", label: t("navigation:sidebar.publicCatalog"), icon: StoreIcon },
   ];
 
   return (
     <aside
-      aria-label="Navegação do dashboard"
+      aria-label={t("navigation:sidebar.label")}
       className={cn(
         "w-full bg-surface border-b border-border",
         "lg:w-[260px] lg:shrink-0 lg:border-b-0 lg:border-r lg:border-border",
