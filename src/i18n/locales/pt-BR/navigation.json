@@ -1,0 +1,47 @@
+{
+  "home": "Início",
+  "catalog": "Catálogo",
+  "dashboard": "Dashboard",
+  "login": "Entrar",
+  "logout": "Sair",
+  "openMenu": "Abrir menu",
+  "closeMenu": "Fechar menu",
+  "mainNav": "Navegação principal",
+  "greeting": "Olá, {{name}}",
+  "roles": { "admin": "Administrador", "operator": "Operador" },
+  "sidebar": {
+    "label": "Navegação do dashboard",
+    "dashboard": "Dashboard",
+    "products": "Produtos",
+    "categories": "Categorias",
+    "users": "Usuários",
+    "profile": "Meu Perfil",
+    "publicCatalog": "Catálogo Público"
+  },
+  "breadcrumbs": {
+    "root": "Dashboard",
+    "products": "Produtos",
+    "categories": "Categorias",
+    "users": "Usuários",
+    "profile": "Meu Perfil",
+    "new": "Novo",
+    "newFem": "Nova",
+    "edit": "Editar",
+    "details": "Detalhes",
+    "titles": {
+      "dashboard": "Dashboard",
+      "products": "Produtos",
+      "productNew": "Novo produto",
+      "productEdit": "Editar produto",
+      "categories": "Categorias",
+      "categoryNew": "Nova categoria",
+      "categoryEdit": "Editar categoria",
+      "users": "Usuários",
+      "userNew": "Novo usuário",
+      "userEdit": "Editar usuário",
+      "userDetails": "Detalhes do usuário",
+      "profile": "Meu Perfil"
+    }
+  },
+  "footer": "ASJ Catalog · © {{year}}"
+}

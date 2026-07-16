@@ -1,0 +1,17 @@
+{
+  "required": "Campo obrigatório",
+  "emailInvalid": "Insira um email válido!",
+  "email": {
+    "required": "O preenchimento do email é obrigatório",
+    "requiredShort": "O email é obrigatório"
+  },
+  "password": {
+    "required": "O preenchimento da senha é obrigatório",
+    "requiredShort": "A senha é obrigatória",
+    "rule": "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+    "confirm": "Confirme a senha",
+    "mismatch": "As senhas não coincidem"
+  },
+  "firstNameRequired": "O nome é obrigatório",
+  "lastNameRequired": "O sobrenome é obrigatório"
+}

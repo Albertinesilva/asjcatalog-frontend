@@ -1,0 +1,45 @@
+{
+  "title": "Usuários",
+  "add": "Adicionar",
+  "search": "Pesquisar Usuário",
+  "columns": {
+    "id": "ID",
+    "name": "Nome",
+    "email": "Email",
+    "roles": "Papéis",
+    "actions": "Ações"
+  },
+  "empty": "Nenhum usuário cadastrado.",
+  "roles": { "admin": "Administrador", "operator": "Operador" },
+  "actions": { "view": "Ver", "edit": "Editar", "delete": "Excluir" },
+  "delete": {
+    "title": "Excluir usuário",
+    "confirmPrefix": "Tem certeza que deseja excluir",
+    "confirmSuffix": "? Esta ação não pode ser desfeita.",
+    "successTitle": "Usuário removido",
+    "successMessage": "Usuário removido com sucesso."
+  },
+  "details": {
+    "title": "Detalhes do usuário",
+    "back": "Voltar",
+    "notFound": "Usuário não encontrado."
+  },
+  "form": {
+    "titleNew": "Novo usuário",
+    "titleEdit": "Editar usuário",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "password": "Senha",
+    "roles": "Papéis",
+    "submit": "Salvar",
+    "submitting": "Salvando...",
+    "cancel": "Cancelar",
+    "successNewTitle": "Usuário criado",
+    "successNewMessage": "Usuário criado com sucesso.",
+    "successEditTitle": "Usuário atualizado",
+    "successEditMessage": "Usuário atualizado com sucesso.",
+    "failTitle": "Não foi possível salvar",
+    "failMessage": "Verifique os dados e tente novamente."
+  }
+}

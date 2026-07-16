@@ -1,0 +1,29 @@
+{
+  "title": "Meu Perfil",
+  "sections": {
+    "personal": "Dados pessoais",
+    "password": "Alterar senha"
+  },
+  "fields": {
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmPassword": "Confirme a nova senha"
+  },
+  "actions": {
+    "saveProfile": "Salvar alterações",
+    "savingProfile": "Salvando...",
+    "changePassword": "Atualizar senha",
+    "changingPassword": "Atualizando..."
+  },
+  "successProfileTitle": "Perfil atualizado",
+  "successProfileMessage": "Seus dados foram atualizados com sucesso.",
+  "successPasswordTitle": "Senha atualizada",
+  "successPasswordMessage": "Sua senha foi atualizada com sucesso.",
+  "failProfileTitle": "Não foi possível atualizar",
+  "failProfileMessage": "Verifique os dados e tente novamente.",
+  "failPasswordTitle": "Não foi possível atualizar a senha",
+  "failPasswordMessage": "Verifique sua senha atual e tente novamente."
+}
