@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { cn } from "@/components/ui";
 
 type Props = {
@@ -33,12 +34,14 @@ const dotBase =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
 
-export default function Pagination({ page, totalPages, onChange, ariaLabel = "Paginação" }: Props) {
+export default function Pagination({ page, totalPages, onChange, ariaLabel }: Props) {
+  const { t } = useTranslation();
+  const label = ariaLabel ?? t("common:pagination.page", { page: page + 1, total: totalPages });
   if (totalPages <= 1) return null;
   const pages = buildPages(page, totalPages);
 
   return (
-    <nav aria-label={ariaLabel} className="flex justify-center mt-lg">
+    <nav aria-label={label} className="flex justify-center mt-lg">
       <ul className="flex items-center gap-xs list-none m-0 p-0">
         <li>
           <button
@@ -48,7 +51,7 @@ export default function Pagination({ page, totalPages, onChange, ariaLabel = "Pa
               "bg-surface text-foreground-muted border border-border hover:bg-surface-hover",
             )}
             onClick={() => onChange(page - 1)}
-            aria-label="Página anterior"
+            aria-label={t("common:pagination.previous")}
             disabled={page === 0}
           >
             ‹
@@ -85,7 +88,7 @@ export default function Pagination({ page, totalPages, onChange, ariaLabel = "Pa
               "bg-surface text-foreground-muted border border-border hover:bg-surface-hover",
             )}
             onClick={() => onChange(page + 1)}
-            aria-label="Próxima página"
+            aria-label={t("common:pagination.next")}
             disabled={page >= totalPages - 1}
           >
             ›
