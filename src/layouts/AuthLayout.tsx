@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components";
 import imageBackground from "@/assets/auth-illustration.jpg";
 
@@ -10,6 +11,7 @@ import imageBackground from "@/assets/auth-illustration.jpg";
  * — apenas o container foi migrado para Tailwind + tokens.
  */
 export default function AuthLayout() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
@@ -17,11 +19,10 @@ export default function AuthLayout() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl lg:gap-2xl items-center">
           <section className="flex flex-col gap-md max-w-[520px] mx-auto lg:mx-0">
             <h1 className="font-heading text-h1 lg:text-display text-foreground m-0">
-              Gerencie seu catálogo com o ASJ Catalog
+              {t("home:authHero.title")}
             </h1>
             <p className="text-body-lg text-foreground-muted m-0">
-              Acesse sua conta para administrar produtos, categorias e usuários em um ambiente
-              centralizado e profissional.
+              {t("home:authHero.description")}
             </p>
             <img
               src={imageBackground}
