@@ -1,17 +1,37 @@
 {
-  "title": "Categories", "add": "Add", "search": "Search category",
+  "title": "Categories",
+  "add": "Add",
+  "search": "Search category",
+  "searchAria": "Search category",
   "columns": { "id": "ID", "name": "Name", "actions": "Actions" },
   "empty": "No categories registered.",
+  "emptyFiltered": {
+    "title": "No categories found",
+    "description": "Try adjusting the filter or adding a new category."
+  },
+  "actions": { "edit": "Edit", "delete": "Delete" },
   "delete": {
     "title": "Delete category",
-    "confirmPrefix": "Are you sure you want to delete", "confirmSuffix": "? This action cannot be undone.",
-    "successTitle": "Category removed", "successMessage": "Category removed successfully."
+    "confirmBefore": "Are you sure you want to delete",
+    "confirmAfter": "? This action cannot be undone.",
+    "confirm": "Delete",
+    "confirming": "Deleting...",
+    "cancel": "Cancel",
+    "successTitle": "Category removed",
+    "successMessage": "Category removed successfully."
   },
   "form": {
-    "titleNew": "New category", "titleEdit": "Edit category", "name": "Name",
-    "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
-    "successNewTitle": "Category created", "successNewMessage": "Category created successfully.",
-    "successEditTitle": "Category updated", "successEditMessage": "Category updated successfully.",
-    "failTitle": "Could not save", "failMessage": "Check the data and try again."
+    "titleNew": "New category",
+    "titleEdit": "Edit category",
+    "name": "Name",
+    "submit": "Save",
+    "submitting": "Saving...",
+    "cancel": "Cancel",
+    "successNewTitle": "Category created",
+    "successNewMessage": "Category created successfully.",
+    "successEditTitle": "Category updated",
+    "successEditMessage": "Category updated successfully.",
+    "failTitle": "Failed to save category",
+    "failMessage": "Check the data and try again."
   }
 }

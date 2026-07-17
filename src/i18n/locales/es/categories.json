@@ -1,17 +1,37 @@
 {
-  "title": "Categorías", "add": "Agregar", "search": "Buscar categoría",
+  "title": "Categorías",
+  "add": "Agregar",
+  "search": "Buscar categoría",
+  "searchAria": "Buscar categoría",
   "columns": { "id": "ID", "name": "Nombre", "actions": "Acciones" },
-  "empty": "No hay categorías registradas.",
+  "empty": "Ninguna categoría registrada.",
+  "emptyFiltered": {
+    "title": "No se encontraron categorías",
+    "description": "Intente ajustar el filtro o agregar una nueva categoría."
+  },
+  "actions": { "edit": "Editar", "delete": "Eliminar" },
   "delete": {
     "title": "Eliminar categoría",
-    "confirmPrefix": "¿Está seguro que desea eliminar", "confirmSuffix": "? Esta acción no se puede deshacer.",
-    "successTitle": "Categoría eliminada", "successMessage": "Categoría eliminada exitosamente."
+    "confirmBefore": "¿Está seguro de que desea eliminar",
+    "confirmAfter": "? Esta acción no se puede deshacer.",
+    "confirm": "Eliminar",
+    "confirming": "Eliminando...",
+    "cancel": "Cancelar",
+    "successTitle": "Categoría eliminada",
+    "successMessage": "Categoría eliminada correctamente."
   },
   "form": {
-    "titleNew": "Nueva categoría", "titleEdit": "Editar categoría", "name": "Nombre",
-    "submit": "Guardar", "submitting": "Guardando...", "cancel": "Cancelar",
-    "successNewTitle": "Categoría creada", "successNewMessage": "Categoría creada exitosamente.",
-    "successEditTitle": "Categoría actualizada", "successEditMessage": "Categoría actualizada exitosamente.",
-    "failTitle": "No se pudo guardar", "failMessage": "Verifique los datos e intente de nuevo."
+    "titleNew": "Nueva categoría",
+    "titleEdit": "Editar categoría",
+    "name": "Nombre",
+    "submit": "Guardar",
+    "submitting": "Guardando...",
+    "cancel": "Cancelar",
+    "successNewTitle": "Categoría creada",
+    "successNewMessage": "Categoría creada correctamente.",
+    "successEditTitle": "Categoría actualizada",
+    "successEditMessage": "Categoría actualizada correctamente.",
+    "failTitle": "Error al guardar categoría",
+    "failMessage": "Revise los datos e intente de nuevo."
   }
 }
