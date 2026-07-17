@@ -1,14 +1,26 @@
 {
-  "title": "Catálogo",
-  "search": "Pesquisar produtos",
+  "title": "Catálogo de produtos",
+  "search": "Pesquisar produto",
+  "searchAria": "Pesquisar produto",
   "filterCategory": "Filtrar por categoria",
+  "filterCategoryAria": "Filtrar por categoria",
   "allCategories": "Todas as categorias",
-  "empty": "Nenhum produto encontrado.",
+  "clearFilters": "Limpar filtros",
+  "loading": "Carregando produtos...",
+  "empty": "Nenhum produto encontrado",
+  "emptyHint": "Tente ajustar os filtros de busca.",
+  "loadErrorTitle": "Erro ao carregar produto",
+  "loadErrorMessage": "Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.",
+  "paginationAria": "Paginação",
+  "previousPageAria": "Página anterior",
+  "nextPageAria": "Próxima página",
   "details": {
     "back": "Voltar",
     "backCatalog": "Voltar ao catálogo",
     "category": "Categoria",
-    "description": "Descrição",
-    "notFound": "Produto não encontrado."
+    "description": "Descrição do produto",
+    "notFoundTitle": "Produto não encontrado",
+    "notFoundDescription": "O produto solicitado não existe ou não está mais disponível.",
+    "loading": "Carregando produto..."
   }
 }
