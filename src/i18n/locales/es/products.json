@@ -1,18 +1,35 @@
 {
-  "title": "Productos", "add": "Agregar", "search": "Buscar producto",
+  "title": "Productos",
+  "add": "Agregar",
+  "search": "Buscar producto",
+  "searchAria": "Buscar producto",
+  "filterCategory": "Filtrar por categoría",
+  "filterCategoryAria": "Filtrar por categoría",
   "columns": { "id": "ID", "image": "Imagen", "name": "Nombre", "price": "Precio", "categories": "Categorías", "actions": "Acciones" },
-  "empty": "No hay productos registrados.",
+  "empty": "Ningún producto registrado.",
+  "emptyFiltered": {
+    "title": "No se encontraron productos",
+    "description": "Intente ajustar los filtros o agregar un nuevo producto."
+  },
+  "actions": { "view": "Ver", "edit": "Editar", "delete": "Eliminar" },
   "delete": {
     "title": "Eliminar producto",
-    "confirmPrefix": "¿Está seguro que desea eliminar", "confirmSuffix": "? Esta acción no se puede deshacer.",
-    "successTitle": "Producto eliminado", "successMessage": "Producto eliminado exitosamente."
+    "confirmBefore": "¿Está seguro de que desea eliminar",
+    "confirmAfter": "? Esta acción no se puede deshacer.",
+    "confirm": "Eliminar",
+    "confirming": "Eliminando...",
+    "cancel": "Cancelar",
+    "successTitle": "Producto eliminado",
+    "successMessage": "Producto eliminado correctamente."
   },
   "form": {
     "titleNew": "Nuevo producto", "titleEdit": "Editar producto",
-    "name": "Nombre", "price": "Precio", "imageUrl": "URL de la imagen", "description": "Descripción", "categories": "Categorías",
+    "name": "Nombre", "price": "Precio", "imageUrl": "URL de la imagen",
+    "description": "Descripción", "categories": "Categorías",
+    "categoriesHint": "Use Ctrl/Cmd para seleccionar varias.",
     "submit": "Guardar", "submitting": "Guardando...", "cancel": "Cancelar",
-    "successNewTitle": "Producto creado", "successNewMessage": "Producto creado exitosamente.",
-    "successEditTitle": "Producto actualizado", "successEditMessage": "Producto actualizado exitosamente.",
-    "failTitle": "No se pudo guardar", "failMessage": "Verifique los datos e intente de nuevo."
+    "successNewTitle": "Producto creado", "successNewMessage": "Producto creado correctamente.",
+    "successEditTitle": "Producto actualizado", "successEditMessage": "Producto actualizado correctamente.",
+    "failTitle": "Error al guardar producto", "failMessage": "Revise los datos e intente de nuevo."
   }
 }

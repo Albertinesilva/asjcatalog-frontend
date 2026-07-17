@@ -18,12 +18,16 @@
     "clear": "Limpar",
     "retry": "Tentar novamente",
     "backHome": "Voltar para o início",
-    "loading": "Carregando..."
+    "loading": "Carregando...",
+    "ok": "OK",
+    "send": "Enviar",
+    "sending": "Enviando..."
   },
   "states": {
     "loading": "Carregando...",
     "empty": "Nenhum resultado encontrado",
-    "error": "Ocorreu um erro inesperado"
+    "error": "Ocorreu um erro inesperado",
+    "processing": "Processando..."
   },
   "table": {
     "records_one": "{{count}} registro",
@@ -35,15 +39,12 @@
     "next": "Próximo",
     "page": "Página {{page}} de {{total}}"
   },
-  "confirm": {
-    "confirming": "Confirmando..."
-  },
+  "confirm": { "confirming": "Confirmando..." },
   "errors": {
     "generic": "Ocorreu um erro inesperado.",
-    "validation": "Dados inválidos"
+    "validation": "Dados inválidos",
+    "title": "Erro",
+    "prefix": "Erro"
   },
-  "language": {
-    "label": "Idioma",
-    "select": "Selecionar idioma"
-  }
+  "language": { "label": "Idioma", "select": "Selecionar idioma" }
 }

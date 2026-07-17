@@ -3,15 +3,57 @@
   "emailInvalid": "Insira um email válido!",
   "email": {
     "required": "O preenchimento do email é obrigatório",
-    "requiredShort": "O email é obrigatório"
+    "requiredShort": "O email é obrigatório",
+    "confirm": "Confirme o email",
+    "mismatch": "Os emails não coincidem"
   },
   "password": {
     "required": "O preenchimento da senha é obrigatório",
     "requiredShort": "A senha é obrigatória",
     "rule": "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
     "confirm": "Confirme a senha",
-    "mismatch": "As senhas não coincidem"
+    "confirmNew": "Confirme a nova senha",
+    "mismatch": "As senhas não coincidem",
+    "minLength": "Mínimo 8 caracteres",
+    "maxLength": "Máximo 72 caracteres",
+    "show": "Mostrar senha",
+    "hide": "Ocultar senha",
+    "strengthLabel": "Força da senha",
+    "strengthAria": "Força da senha: {{state}}",
+    "empty": "vazia",
+    "strength": {
+      "veryWeak": "Muito fraca",
+      "weak": "Fraca",
+      "regular": "Regular",
+      "good": "Boa",
+      "strong": "Forte"
+    },
+    "criteria": {
+      "title": "Sua senha deve conter",
+      "length": "Pelo menos 8 caracteres",
+      "uppercase": "Pelo menos uma letra maiúscula",
+      "lowercase": "Pelo menos uma letra minúscula",
+      "number": "Pelo menos um número",
+      "special": "Pelo menos um símbolo especial",
+      "met": "requisito atendido",
+      "pending": "requisito pendente",
+      "show": "Mostrar requisitos",
+      "hide": "Ocultar requisitos"
+    },
+    "match": {
+      "ok": "As senhas coincidem",
+      "no": "As senhas não coincidem"
+    }
   },
   "firstNameRequired": "O nome é obrigatório",
-  "lastNameRequired": "O sobrenome é obrigatório"
+  "lastNameRequired": "O sobrenome é obrigatório",
+  "nameRequired": "Nome é obrigatório",
+  "priceRequired": "Preço é obrigatório",
+  "priceMin": "Deve ser positivo",
+  "imgUrlRequired": "URL é obrigatória",
+  "descriptionRequired": "Descrição é obrigatória",
+  "categoriesRequired": "Selecione pelo menos uma categoria",
+  "rolesRequired": "Selecione pelo menos uma permissão",
+  "emailRequired": "Email é obrigatório",
+  "maxChars": "Máximo {{count}} caracteres"
 }

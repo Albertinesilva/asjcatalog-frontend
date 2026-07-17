@@ -1,7 +1,32 @@
 {
-  "title": "Dashboard", "welcome": "Welcome to ASJ Catalog",
-  "summary": "A quick overview of your catalog.",
+  "title": "Dashboard",
+  "welcome": "Welcome to ASJ Catalog",
+  "summary": "Quick overview of your catalog.",
+  "greetingFallback": "user",
+  "greeting": "Hi, {{name}}. Welcome to the ASJ Catalog management panel.",
+  "metricsTitle": "Overview",
+  "shortcutsTitle": "Shortcuts",
+  "activityTitle": "Recent activity",
+  "activitySoon": "Coming soon",
+  "activityPreparing": "Tracking in preparation",
+  "activityDescription": "Soon this area will show the catalog change history, recent registrations and platform notifications.",
+  "metricsError": "Could not load metrics.",
   "cards": { "products": "Products", "categories": "Categories", "users": "Users" },
-  "cta": { "manageProducts": "Manage products", "manageCategories": "Manage categories", "manageUsers": "Manage users" },
-  "recent": "Recent entries"
+  "hints": {
+    "products": "Total registered in the catalog",
+    "categories": "Available categories",
+    "users": "Active administrative accounts"
+  },
+  "shortcuts": {
+    "newProduct": { "title": "New product", "desc": "Add a new product to the catalog." },
+    "newCategory": { "title": "New category", "desc": "Create a category to organize the catalog." },
+    "newUser": { "title": "New user", "desc": "Register a user with platform access." },
+    "viewCatalog": { "title": "View public catalog", "desc": "View the catalog as a visitor." }
+  },
+  "cta": {
+    "manageProducts": "Manage products",
+    "manageCategories": "Manage categories",
+    "manageUsers": "Manage users"
+  },
+  "recent": "Recent activity"
 }

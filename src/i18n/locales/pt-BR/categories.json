@@ -2,12 +2,21 @@
   "title": "Categorias",
   "add": "Adicionar",
   "search": "Pesquisar Categoria",
+  "searchAria": "Pesquisar categoria",
   "columns": { "id": "ID", "name": "Nome", "actions": "Ações" },
   "empty": "Nenhuma categoria cadastrada.",
+  "emptyFiltered": {
+    "title": "Nenhuma categoria encontrada",
+    "description": "Tente ajustar o filtro ou adicionar uma nova categoria."
+  },
+  "actions": { "edit": "Editar", "delete": "Excluir" },
   "delete": {
     "title": "Excluir categoria",
-    "confirmPrefix": "Tem certeza que deseja excluir",
-    "confirmSuffix": "? Esta ação não pode ser desfeita.",
+    "confirmBefore": "Tem certeza que deseja excluir",
+    "confirmAfter": "? Esta ação não pode ser desfeita.",
+    "confirm": "Excluir",
+    "confirming": "Excluindo...",
+    "cancel": "Cancelar",
     "successTitle": "Categoria removida",
     "successMessage": "Categoria removida com sucesso."
   },
@@ -22,7 +31,7 @@
     "successNewMessage": "Categoria criada com sucesso.",
     "successEditTitle": "Categoria atualizada",
     "successEditMessage": "Categoria atualizada com sucesso.",
-    "failTitle": "Não foi possível salvar",
+    "failTitle": "Falha ao salvar categoria",
     "failMessage": "Verifique os dados e tente novamente."
   }
 }

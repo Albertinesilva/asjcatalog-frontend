@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
 import { Button, Card } from "@/components/ui";
@@ -7,99 +8,68 @@ import { alerts } from "@/utils/alerts";
 import { handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
-type FormFields = {
-  password: string;
-  confirmPassword: string;
-};
+type FormFields = { password: string; confirmPassword: string };
 
 export default function ResetPasswordPage() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const token = params.get("token");
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<FormFields>();
-
+  const { register, handleSubmit, watch, setError, formState: { errors, isSubmitting } } =
+    useForm<FormFields>();
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("confirmPassword") ?? "";
 
   const onSubmit = async (data: FormFields) => {
     if (!token) {
-      await alerts.error("Token inválido", "O link de redefinição é inválido.");
+      await alerts.error(t("auth:reset.invalidTokenTitle"), t("auth:reset.invalidTokenMessage"));
       return;
     }
     try {
       await accountService.resetPassword(token, data.password);
-      await alerts.success("Senha redefinida", "Faça login com sua nova senha.");
+      await alerts.success(t("auth:reset.successTitle"), t("auth:reset.successMessage"));
       navigate("/auth/login");
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => setError(name as keyof FormFields, error),
-        fallbackTitle: "Falha ao redefinir",
-        fallbackMessage: "Token inválido ou expirado.",
+        fallbackTitle: t("auth:reset.failTitle"),
+        fallbackMessage: t("auth:reset.failMessage"),
       });
-      if (!handled) {
-        await alerts.error("Falha ao redefinir", "Token inválido ou expirado.");
-      }
+      if (!handled) await alerts.error(t("auth:reset.failTitle"), t("auth:reset.failMessage"));
     }
   };
 
   return (
     <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <h2 className={authFormTitle}>Redefinir senha</h2>
-
-        {!token && <p className={authFieldError}>Token de redefinição não informado na URL.</p>}
+        <h2 className={authFormTitle}>{t("auth:reset.title")}</h2>
+        {!token && <p className={authFieldError}>{t("auth:reset.tokenMissing")}</p>}
 
         <div className="flex flex-col gap-sm">
           {(() => {
-            const reg = register("password", {
-              required: true,
-              minLength: 8,
-              pattern: /^(?=.*\d).{8,}$/,
-            });
+            const reg = register("password", { required: true, minLength: 8, pattern: /^(?=.*\d).{8,}$/ });
             return (
-              <PasswordField
-                placeholder="Nova senha"
-                autoComplete="new-password"
-                aria-label="Nova senha"
-                {...reg}
-              />
+              <PasswordField placeholder={t("auth:reset.newPasswordPlaceholder")}
+                autoComplete="new-password" aria-label={t("auth:reset.newPasswordAria")} {...reg} />
             );
           })()}
-          {errors.password?.type === "required" && (
-            <p className={authFieldError}>A senha é obrigatória</p>
-          )}
+          {errors.password?.type === "required" && (<p className={authFieldError}>{t("validation:password.requiredShort")}</p>)}
           {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
-            <p className={authFieldError}>
-              A senha deve ter no mínimo 8 caracteres e conter pelo menos um número
-            </p>
+            <p className={authFieldError}>{t("validation:password.rule")}</p>
           )}
-          {errors.password?.type === "server" && (
-            <p className={authFieldError}>{errors.password.message}</p>
-          )}
+          {errors.password?.type === "server" && (<p className={authFieldError}>{errors.password.message}</p>)}
           <PasswordRequirements password={passwordValue} />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordField
-            placeholder="Confirmar nova senha"
-            autoComplete="new-password"
-            aria-label="Confirmar nova senha"
+          <PasswordField placeholder={t("auth:reset.confirmPasswordPlaceholder")}
+            autoComplete="new-password" aria-label={t("auth:reset.confirmPasswordAria")}
             {...register("confirmPassword", {
               required: true,
-              validate: (v) => v === passwordValue || "As senhas não coincidem",
-            })}
-          />
+              validate: (v) => v === passwordValue || t("validation:password.mismatch"),
+            })} />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
-          {errors.confirmPassword?.type === "required" && (
-            <p className={authFieldError}>Confirme a senha</p>
-          )}
+          {errors.confirmPassword?.type === "required" && (<p className={authFieldError}>{t("validation:password.confirm")}</p>)}
           {errors.confirmPassword?.type === "validate" && !confirmValue && (
             <p className={authFieldError}>{errors.confirmPassword.message}</p>
           )}
@@ -107,18 +77,10 @@ export default function ResetPasswordPage() {
 
         <div className="flex gap-sm mt-sm">
           <Link to="/auth/login" className="flex-1">
-            <Button type="button" variant="outline" size="lg" fullWidth>
-              Cancelar
-            </Button>
+            <Button type="button" variant="outline" size="lg" fullWidth>{t("auth:reset.cancel")}</Button>
           </Link>
-          <Button
-            type="submit"
-            size="lg"
-            loading={isSubmitting}
-            disabled={isSubmitting || !token}
-            className="flex-1"
-          >
-            {isSubmitting ? "Enviando..." : "Redefinir"}
+          <Button type="submit" size="lg" loading={isSubmitting} disabled={isSubmitting || !token} className="flex-1">
+            {isSubmitting ? t("auth:reset.submitting") : t("auth:reset.submit")}
           </Button>
         </div>
       </form>

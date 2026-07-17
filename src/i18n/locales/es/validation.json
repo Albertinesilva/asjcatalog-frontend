@@ -1,11 +1,52 @@
 {
-  "required": "Campo obligatorio", "emailInvalid": "¡Ingrese un email válido!",
-  "email": { "required": "El email es obligatorio", "requiredShort": "El email es obligatorio" },
+  "required": "Campo obligatorio",
+  "emailInvalid": "¡Ingrese un email válido!",
+  "email": {
+    "required": "El email es obligatorio",
+    "requiredShort": "El email es obligatorio",
+    "confirm": "Confirme el email",
+    "mismatch": "Los emails no coinciden"
+  },
   "password": {
-    "required": "La contraseña es obligatoria", "requiredShort": "La contraseña es obligatoria",
-    "rule": "La contraseña debe tener al menos 8 caracteres y contener al menos un número",
-    "confirm": "Confirme la contraseña", "mismatch": "Las contraseñas no coinciden"
+    "required": "La contraseña es obligatoria",
+    "requiredShort": "La contraseña es obligatoria",
+    "rule": "La contraseña debe tener al menos 8 caracteres e incluir al menos un número",
+    "confirm": "Confirme la contraseña",
+    "confirmNew": "Confirme la nueva contraseña",
+    "mismatch": "Las contraseñas no coinciden",
+    "minLength": "Mínimo 8 caracteres",
+    "maxLength": "Máximo 72 caracteres",
+    "show": "Mostrar contraseña",
+    "hide": "Ocultar contraseña",
+    "strengthLabel": "Fortaleza de la contraseña",
+    "strengthAria": "Fortaleza de la contraseña: {{state}}",
+    "empty": "vacía",
+    "strength": {
+      "veryWeak": "Muy débil", "weak": "Débil", "regular": "Regular", "good": "Buena", "strong": "Fuerte"
+    },
+    "criteria": {
+      "title": "Su contraseña debe contener",
+      "length": "Al menos 8 caracteres",
+      "uppercase": "Al menos una letra mayúscula",
+      "lowercase": "Al menos una letra minúscula",
+      "number": "Al menos un número",
+      "special": "Al menos un símbolo especial",
+      "met": "requisito cumplido",
+      "pending": "requisito pendiente",
+      "show": "Mostrar requisitos",
+      "hide": "Ocultar requisitos"
+    },
+    "match": { "ok": "Las contraseñas coinciden", "no": "Las contraseñas no coinciden" }
   },
   "firstNameRequired": "El nombre es obligatorio",
-  "lastNameRequired": "El apellido es obligatorio"
+  "lastNameRequired": "El apellido es obligatorio",
+  "nameRequired": "El nombre es obligatorio",
+  "priceRequired": "El precio es obligatorio",
+  "priceMin": "Debe ser positivo",
+  "imgUrlRequired": "La URL es obligatoria",
+  "descriptionRequired": "La descripción es obligatoria",
+  "categoriesRequired": "Seleccione al menos una categoría",
+  "rolesRequired": "Seleccione al menos un permiso",
+  "emailRequired": "El email es obligatorio",
+  "maxChars": "Máximo {{count}} caracteres"
 }

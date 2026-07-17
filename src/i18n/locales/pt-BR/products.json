@@ -2,19 +2,26 @@
   "title": "Produtos",
   "add": "Adicionar",
   "search": "Pesquisar Produto",
+  "searchAria": "Pesquisar produto",
+  "filterCategory": "Filtrar por Categoria",
+  "filterCategoryAria": "Filtrar por categoria",
   "columns": {
-    "id": "ID",
-    "image": "Imagem",
-    "name": "Nome",
-    "price": "Preço",
-    "categories": "Categorias",
-    "actions": "Ações"
+    "id": "ID", "image": "Imagem", "name": "Nome",
+    "price": "Preço", "categories": "Categorias", "actions": "Ações"
   },
   "empty": "Nenhum produto cadastrado.",
+  "emptyFiltered": {
+    "title": "Nenhum produto encontrado",
+    "description": "Tente ajustar os filtros ou adicionar um novo produto."
+  },
+  "actions": { "view": "Ver", "edit": "Editar", "delete": "Excluir" },
   "delete": {
     "title": "Excluir produto",
-    "confirmPrefix": "Tem certeza que deseja excluir",
-    "confirmSuffix": "? Esta ação não pode ser desfeita.",
+    "confirmBefore": "Tem certeza que deseja excluir",
+    "confirmAfter": "? Esta ação não pode ser desfeita.",
+    "confirm": "Excluir",
+    "confirming": "Excluindo...",
+    "cancel": "Cancelar",
     "successTitle": "Produto removido",
     "successMessage": "Produto removido com sucesso."
   },
@@ -23,9 +30,10 @@
     "titleEdit": "Editar produto",
     "name": "Nome",
     "price": "Preço",
-    "imageUrl": "URL da imagem",
+    "imageUrl": "URL da Imagem",
     "description": "Descrição",
     "categories": "Categorias",
+    "categoriesHint": "Use Ctrl/Cmd para selecionar várias.",
     "submit": "Salvar",
     "submitting": "Salvando...",
     "cancel": "Cancelar",
@@ -33,7 +41,7 @@
     "successNewMessage": "Produto criado com sucesso.",
     "successEditTitle": "Produto atualizado",
     "successEditMessage": "Produto atualizado com sucesso.",
-    "failTitle": "Não foi possível salvar",
+    "failTitle": "Falha ao salvar produto",
     "failMessage": "Verifique os dados e tente novamente."
   }
 }

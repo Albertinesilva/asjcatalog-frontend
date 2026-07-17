@@ -1,6 +1,26 @@
 {
-  "title": "Catalog", "search": "Search products",
-  "filterCategory": "Filter by category", "allCategories": "All categories",
-  "empty": "No products found.",
-  "details": { "back": "Back", "backCatalog": "Back to catalog", "category": "Category", "description": "Description", "notFound": "Product not found." }
+  "title": "Product catalog",
+  "search": "Search product",
+  "searchAria": "Search product",
+  "filterCategory": "Filter by category",
+  "filterCategoryAria": "Filter by category",
+  "allCategories": "All categories",
+  "clearFilters": "Clear filters",
+  "loading": "Loading products...",
+  "empty": "No products found",
+  "emptyHint": "Try adjusting the search filters.",
+  "loadErrorTitle": "Failed to load product",
+  "loadErrorMessage": "Could not load the product details. Try again later.",
+  "paginationAria": "Pagination",
+  "previousPageAria": "Previous page",
+  "nextPageAria": "Next page",
+  "details": {
+    "back": "Back",
+    "backCatalog": "Back to catalog",
+    "category": "Category",
+    "description": "Product description",
+    "notFoundTitle": "Product not found",
+    "notFoundDescription": "The requested product does not exist or is no longer available.",
+    "loading": "Loading product..."
+  }
 }

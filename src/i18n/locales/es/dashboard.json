@@ -1,7 +1,32 @@
 {
-  "title": "Panel", "welcome": "Bienvenido/a a ASJ Catalog",
-  "summary": "Vista rápida de su catálogo.",
+  "title": "Dashboard",
+  "welcome": "Bienvenido(a) a ASJ Catalog",
+  "summary": "Vista general rápida de su catálogo.",
+  "greetingFallback": "usuario(a)",
+  "greeting": "Hola, {{name}}. Bienvenido(a) al panel de gestión de ASJ Catalog.",
+  "metricsTitle": "Vista general",
+  "shortcutsTitle": "Accesos rápidos",
+  "activityTitle": "Actividad reciente",
+  "activitySoon": "Próximamente",
+  "activityPreparing": "Seguimiento en preparación",
+  "activityDescription": "Pronto esta área mostrará el historial de cambios del catálogo, registros recientes y notificaciones de la plataforma.",
+  "metricsError": "No fue posible cargar las métricas.",
   "cards": { "products": "Productos", "categories": "Categorías", "users": "Usuarios" },
-  "cta": { "manageProducts": "Gestionar productos", "manageCategories": "Gestionar categorías", "manageUsers": "Gestionar usuarios" },
+  "hints": {
+    "products": "Total registrado en el catálogo",
+    "categories": "Categorías disponibles",
+    "users": "Cuentas administrativas activas"
+  },
+  "shortcuts": {
+    "newProduct": { "title": "Nuevo producto", "desc": "Agregar un nuevo producto al catálogo." },
+    "newCategory": { "title": "Nueva categoría", "desc": "Crear una categoría para organizar el catálogo." },
+    "newUser": { "title": "Nuevo usuario", "desc": "Registrar un usuario con acceso a la plataforma." },
+    "viewCatalog": { "title": "Ver catálogo público", "desc": "Ver el catálogo como visitante." }
+  },
+  "cta": {
+    "manageProducts": "Gestionar productos",
+    "manageCategories": "Gestionar categorías",
+    "manageUsers": "Gestionar usuarios"
+  },
   "recent": "Registros recientes"
 }

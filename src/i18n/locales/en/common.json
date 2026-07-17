@@ -5,12 +5,13 @@
     "continue": "Continue", "back": "Back", "close": "Close", "edit": "Edit",
     "delete": "Delete", "deleting": "Deleting...", "view": "View", "add": "Add",
     "create": "Create", "search": "Search", "clear": "Clear",
-    "retry": "Try again", "backHome": "Back to home", "loading": "Loading..."
+    "retry": "Try again", "backHome": "Back to home", "loading": "Loading...",
+    "ok": "OK", "send": "Send", "sending": "Sending..."
   },
-  "states": { "loading": "Loading...", "empty": "No results found", "error": "An unexpected error occurred" },
+  "states": { "loading": "Loading...", "empty": "No results found", "error": "An unexpected error occurred", "processing": "Processing..." },
   "table": { "records_one": "{{count}} record", "records_other": "{{count}} records", "actions": "Actions" },
   "pagination": { "previous": "Previous", "next": "Next", "page": "Page {{page}} of {{total}}" },
   "confirm": { "confirming": "Confirming..." },
-  "errors": { "generic": "An unexpected error occurred.", "validation": "Invalid data" },
+  "errors": { "generic": "An unexpected error occurred.", "validation": "Invalid data", "title": "Error", "prefix": "Error" },
   "language": { "label": "Language", "select": "Select language" }
 }
