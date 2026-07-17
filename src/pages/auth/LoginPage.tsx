@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ConfirmDialog, PasswordInput } from "@/components";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
@@ -8,23 +9,16 @@ import { alerts } from "@/utils/alerts";
 import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
-type AuthFormFields = {
-  username: string;
-  password: string;
-};
+type AuthFormFields = { username: string; password: string };
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { authenticated, login } = useAuth();
   const [showActivationModal, setShowActivationModal] = useState(false);
   const [inactiveAccount, setInactiveAccount] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<AuthFormFields>();
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<AuthFormFields>();
 
   const redirectTo = (location.state as { from?: string } | null)?.from ?? "/dashboard";
 
@@ -39,26 +33,19 @@ export default function LoginPage() {
       navigate(redirectTo, { replace: true });
     } catch (err) {
       const code = getApiErrorCode(err);
-      // Regra de negócio preservada: conta desativada é sinalizada pelo
-      // backend via ApiErrorCode.ACCESS_DISABLED — mantém o CTA de reenvio.
       if (code === "ACCESS_DISABLED") {
         setInactiveAccount(true);
-        setError("root", {
-          message:
-            "Sua conta ainda não foi ativada. Verifique seu e-mail ou solicite um novo envio.",
-        });
+        setError("root", { message: t("auth:login.inactive.error") });
         return;
       }
-      // VALIDATION_ERROR e demais códigos: tratados centralmente por
-      // ApiErrorCode. Feedback fica inline (fieldErrors) ou em SweetAlert.
       const handled = await handleApiError(err, {
         setError: (name, error) => setError(name as keyof AuthFormFields, error),
-        fallbackTitle: "Falha no login",
-        fallbackMessage: "Verifique seu e-mail e senha e tente novamente.",
+        fallbackTitle: t("auth:login.failTitle"),
+        fallbackMessage: t("auth:login.failMessage"),
       });
       if (!handled) {
-        setError("root", { message: "Usuário ou senha inválidos" });
-        await alerts.error("Falha no login", "Verifique seu e-mail e senha e tente novamente.");
+        setError("root", { message: t("auth:login.invalid") });
+        await alerts.error(t("auth:login.failTitle"), t("auth:login.failMessage"));
       }
     }
   };
@@ -66,54 +53,30 @@ export default function LoginPage() {
   return (
     <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <h2 className={authFormTitle}>Entrar</h2>
+        <h2 className={authFormTitle}>{t("auth:login.title")}</h2>
 
         <div className="flex flex-col gap-1.5">
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputBaseClasses}
-            placeholder="Email"
-            aria-label="Email"
-            {...register("username", {
-              required: true,
-              pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-            })}
-          />
-          {errors.username?.type === "required" && (
-            <p className={authFieldError}>O preenchimento do email é obrigatório</p>
-          )}
-          {errors.username?.type === "pattern" && (
-            <p className={authFieldError}>Insira um email válido!</p>
-          )}
+          <input type="email" autoComplete="email" className={inputBaseClasses}
+            placeholder={t("auth:login.emailPlaceholder")} aria-label={t("auth:login.emailPlaceholder")}
+            {...register("username", { required: true, pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g })} />
+          {errors.username?.type === "required" && (<p className={authFieldError}>{t("validation:email.required")}</p>)}
+          {errors.username?.type === "pattern" && (<p className={authFieldError}>{t("validation:emailInvalid")}</p>)}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordInput
-            className={cn(inputBaseClasses)}
-            placeholder="Senha"
-            autoComplete="current-password"
-            aria-label="Senha"
-            {...register("password", { required: true })}
-          />
-          {errors.password?.type === "required" && (
-            <p className={authFieldError}>O preenchimento da senha é obrigatório</p>
-          )}
+          <PasswordInput className={cn(inputBaseClasses)}
+            placeholder={t("auth:login.passwordPlaceholder")} autoComplete="current-password"
+            aria-label={t("auth:login.passwordPlaceholder")} {...register("password", { required: true })} />
+          {errors.password?.type === "required" && (<p className={authFieldError}>{t("validation:password.required")}</p>)}
         </div>
 
         <div className="flex flex-col gap-xs items-start">
-          <Link
-            to="/auth/recover"
-            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-          >
-            Esqueci a senha?
+          <Link to="/auth/recover" className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">
+            {t("auth:login.forgot")}
           </Link>
-          <button
-            type="button"
-            onClick={() => setShowActivationModal(true)}
-            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0"
-          >
-            Não recebeu o e-mail de ativação?
+          <button type="button" onClick={() => setShowActivationModal(true)}
+            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0">
+            {t("auth:login.resend")}
           </button>
         </div>
 
@@ -121,65 +84,40 @@ export default function LoginPage() {
         {inactiveAccount && (
           <Card padding="md" bordered className="bg-surface-hover">
             <div className="flex flex-col gap-sm">
-              <h3 className="font-heading text-title text-foreground m-0">
-                Sua conta ainda não foi ativada
-              </h3>
-              <p className="text-small text-foreground-muted m-0">
-                Confirme sua conta utilizando o link enviado por e-mail.
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                size="lg"
-                fullWidth
-                onClick={() => setShowActivationModal(true)}
-              >
-                Reenviar ativação
+              <h3 className="font-heading text-title text-foreground m-0">{t("auth:login.inactive.title")}</h3>
+              <p className="text-small text-foreground-muted m-0">{t("auth:login.inactive.description")}</p>
+              <Button type="button" variant="outline" size="lg" fullWidth onClick={() => setShowActivationModal(true)}>
+                {t("auth:login.inactive.resend")}
               </Button>
             </div>
           </Card>
         )}
 
         <Button type="submit" size="lg" fullWidth loading={isSubmitting}>
-          {isSubmitting ? "Entrando..." : "Entrar"}
+          {isSubmitting ? t("auth:login.submitting") : t("auth:login.submit")}
         </Button>
 
         <p className="text-center text-small text-foreground-muted m-0">
-          Ainda não tem conta?{" "}
-          <Link
-            to="/auth/register"
-            className="font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-          >
-            Cadastrar
+          {t("auth:login.noAccount")}{" "}
+          <Link to="/auth/register" className="font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">
+            {t("auth:login.register")}
           </Link>
         </p>
       </form>
 
       <ConfirmDialog
         open={showActivationModal}
-        title="Ativar conta"
-        description={
-          <>
-            <p className="m-0 mb-sm">
-              Você já realizou seu cadastro, mas ainda não conseguiu ativar sua conta?
-            </p>
-            <p className="m-0 mb-sm">
-              Podemos reenviar um novo e-mail de ativação caso ainda não o tenha recebido.
-            </p>
-            <p className="m-0 text-small text-foreground-muted">
-              Nenhum e-mail será enviado imediatamente. A próxima tela controla automaticamente o
-              tempo de espera entre envios para evitar excesso de solicitações.
-            </p>
-          </>
-        }
-        cancelLabel="Cancelar"
-        confirmLabel="Continuar"
+        title={t("auth:login.activateModal.title")}
+        description={<>
+          <p className="m-0 mb-sm">{t("auth:login.activateModal.line1")}</p>
+          <p className="m-0 mb-sm">{t("auth:login.activateModal.line2")}</p>
+          <p className="m-0 text-small text-foreground-muted">{t("auth:login.activateModal.line3")}</p>
+        </>}
+        cancelLabel={t("common:actions.cancel")}
+        confirmLabel={t("common:actions.continue")}
         variant="primary"
         onCancel={() => setShowActivationModal(false)}
-        onConfirm={() => {
-          setShowActivationModal(false);
-          navigate("/auth/activation-pending");
-        }}
+        onConfirm={() => { setShowActivationModal(false); navigate("/auth/activation-pending"); }}
       />
     </Card>
   );
