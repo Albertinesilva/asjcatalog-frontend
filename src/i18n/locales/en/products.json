@@ -1,18 +1,35 @@
 {
-  "title": "Products", "add": "Add", "search": "Search product",
+  "title": "Products",
+  "add": "Add",
+  "search": "Search product",
+  "searchAria": "Search product",
+  "filterCategory": "Filter by category",
+  "filterCategoryAria": "Filter by category",
   "columns": { "id": "ID", "image": "Image", "name": "Name", "price": "Price", "categories": "Categories", "actions": "Actions" },
   "empty": "No products registered.",
+  "emptyFiltered": {
+    "title": "No products found",
+    "description": "Try adjusting the filters or adding a new product."
+  },
+  "actions": { "view": "View", "edit": "Edit", "delete": "Delete" },
   "delete": {
     "title": "Delete product",
-    "confirmPrefix": "Are you sure you want to delete", "confirmSuffix": "? This action cannot be undone.",
-    "successTitle": "Product removed", "successMessage": "Product removed successfully."
+    "confirmBefore": "Are you sure you want to delete",
+    "confirmAfter": "? This action cannot be undone.",
+    "confirm": "Delete",
+    "confirming": "Deleting...",
+    "cancel": "Cancel",
+    "successTitle": "Product removed",
+    "successMessage": "Product removed successfully."
   },
   "form": {
     "titleNew": "New product", "titleEdit": "Edit product",
-    "name": "Name", "price": "Price", "imageUrl": "Image URL", "description": "Description", "categories": "Categories",
+    "name": "Name", "price": "Price", "imageUrl": "Image URL",
+    "description": "Description", "categories": "Categories",
+    "categoriesHint": "Use Ctrl/Cmd to select multiple.",
     "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
     "successNewTitle": "Product created", "successNewMessage": "Product created successfully.",
     "successEditTitle": "Product updated", "successEditMessage": "Product updated successfully.",
-    "failTitle": "Could not save", "failMessage": "Check the data and try again."
+    "failTitle": "Failed to save product", "failMessage": "Check the data and try again."
   }
 }

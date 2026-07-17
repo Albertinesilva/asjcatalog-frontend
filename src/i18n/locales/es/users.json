@@ -1,22 +1,40 @@
 {
-  "title": "Usuarios", "add": "Agregar", "search": "Buscar usuario",
+  "title": "Usuarios",
+  "add": "Agregar",
+  "search": "Buscar por nombre",
+  "searchAria": "Buscar por nombre",
   "columns": { "id": "ID", "name": "Nombre", "email": "Email", "roles": "Roles", "actions": "Acciones" },
-  "empty": "No hay usuarios registrados.",
+  "empty": "Ningún usuario registrado.",
+  "emptyFiltered": {
+    "title": "No se encontraron usuarios",
+    "description": "Intente ajustar los filtros o agregar un nuevo usuario."
+  },
   "roles": { "admin": "Administrador", "operator": "Operador" },
   "actions": { "view": "Ver", "edit": "Editar", "delete": "Eliminar" },
   "delete": {
     "title": "Eliminar usuario",
-    "confirmPrefix": "¿Está seguro que desea eliminar", "confirmSuffix": "? Esta acción no se puede deshacer.",
-    "successTitle": "Usuario eliminado", "successMessage": "Usuario eliminado exitosamente."
+    "confirmBefore": "¿Está seguro de que desea eliminar",
+    "confirmAfter": "? Esta acción no se puede deshacer.",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar",
+    "successTitle": "Usuario eliminado",
+    "successMessage": "Usuario eliminado correctamente."
   },
-  "details": { "title": "Detalles del usuario", "back": "Volver", "notFound": "Usuario no encontrado." },
+  "details": {
+    "title": "Detalles del usuario",
+    "back": "Volver",
+    "edit": "Editar",
+    "notFound": "Usuario no encontrado.",
+    "permissions": "Permisos"
+  },
   "form": {
     "titleNew": "Nuevo usuario", "titleEdit": "Editar usuario",
-    "firstName": "Nombre", "lastName": "Apellido", "email": "Email",
-    "password": "Contraseña", "roles": "Roles",
+    "firstName": "Nombre", "lastName": "Apellido",
+    "email": "Email", "password": "Contraseña",
+    "roles": "Permisos",
     "submit": "Guardar", "submitting": "Guardando...", "cancel": "Cancelar",
-    "successNewTitle": "Usuario creado", "successNewMessage": "Usuario creado exitosamente.",
-    "successEditTitle": "Usuario actualizado", "successEditMessage": "Usuario actualizado exitosamente.",
-    "failTitle": "No se pudo guardar", "failMessage": "Verifique los datos e intente de nuevo."
+    "successNewTitle": "Usuario creado", "successNewMessage": "Usuario creado correctamente.",
+    "successEditTitle": "Usuario actualizado", "successEditMessage": "Usuario actualizado correctamente.",
+    "failTitle": "Error al guardar", "failMessage": "No fue posible guardar el usuario."
   }
 }
