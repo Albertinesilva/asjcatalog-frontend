@@ -1,12 +1,7 @@
 /**
- * Password evaluation utility — shared source of truth for the
- * interactive password experience.
- *
- * Presentation components (strength meter, requirements checklist,
- * match indicator) all read from this helper so the rules stay in a
- * single place. Form-level validation (react-hook-form registers) is
- * still owned by each form and is deliberately NOT coupled to this
- * utility — it only powers the real-time UX feedback.
+ * Password evaluation utility — single source of truth for the
+ * interactive password experience. Presentation components read from
+ * this helper and translate labels via the `validation` namespace.
  */
 
 export type PasswordCriterion =
@@ -16,12 +11,12 @@ export type PasswordCriterion =
   | "number"
   | "special";
 
-export type PasswordStrength =
-  | "Muito fraca"
-  | "Fraca"
-  | "Regular"
-  | "Boa"
-  | "Forte";
+export type PasswordStrengthKey =
+  | "veryWeak"
+  | "weak"
+  | "regular"
+  | "good"
+  | "strong";
 
 export type PasswordEvaluation = {
   length: boolean;
@@ -30,14 +25,13 @@ export type PasswordEvaluation = {
   number: boolean;
   special: boolean;
   score: number;
-  strength: PasswordStrength;
+  strength: PasswordStrengthKey;
 };
 
 const SPECIAL_CHAR_REGEX = /[^A-Za-z0-9]/;
 
 export function evaluatePassword(password: string | null | undefined): PasswordEvaluation {
   const value = password ?? "";
-
   const checks = {
     length: value.length >= 8,
     uppercase: /[A-Z]/.test(value),
@@ -45,24 +39,22 @@ export function evaluatePassword(password: string | null | undefined): PasswordE
     number: /\d/.test(value),
     special: SPECIAL_CHAR_REGEX.test(value),
   };
-
   const score = (Object.values(checks) as boolean[]).filter(Boolean).length;
-
-  let strength: PasswordStrength = "Muito fraca";
-  if (value.length === 0) strength = "Muito fraca";
-  else if (score <= 1) strength = "Muito fraca";
-  else if (score === 2) strength = "Fraca";
-  else if (score === 3) strength = "Regular";
-  else if (score === 4) strength = "Boa";
-  else strength = "Forte";
-
+  let strength: PasswordStrengthKey = "veryWeak";
+  if (value.length === 0) strength = "veryWeak";
+  else if (score <= 1) strength = "veryWeak";
+  else if (score === 2) strength = "weak";
+  else if (score === 3) strength = "regular";
+  else if (score === 4) strength = "good";
+  else strength = "strong";
   return { ...checks, score, strength };
 }
 
-export const PASSWORD_CRITERIA: { key: PasswordCriterion; label: string }[] = [
-  { key: "length", label: "Pelo menos 8 caracteres" },
-  { key: "uppercase", label: "Pelo menos uma letra maiúscula" },
-  { key: "lowercase", label: "Pelo menos uma letra minúscula" },
-  { key: "number", label: "Pelo menos um número" },
-  { key: "special", label: "Pelo menos um símbolo especial" },
+/** i18n keys for each criterion (namespace: validation). */
+export const PASSWORD_CRITERIA: { key: PasswordCriterion; labelKey: string }[] = [
+  { key: "length", labelKey: "validation:password.criteria.length" },
+  { key: "uppercase", labelKey: "validation:password.criteria.uppercase" },
+  { key: "lowercase", labelKey: "validation:password.criteria.lowercase" },
+  { key: "number", labelKey: "validation:password.criteria.number" },
+  { key: "special", labelKey: "validation:password.criteria.special" },
 ];
