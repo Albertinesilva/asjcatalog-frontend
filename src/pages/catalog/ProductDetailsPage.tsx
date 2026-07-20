@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import type { AxiosError } from "axios";
 
@@ -10,6 +11,7 @@ import { productService } from "@/services/product-service";
 import type { ProductResponse } from "@/types";
 
 export default function ProductDetailsPage() {
+  const { t } = useTranslation(["catalog"]);
   const { productId } = useParams<{ productId: string }>();
 
   const [data, setData] = useState<ProductResponse | null>(null);
@@ -44,8 +46,8 @@ export default function ProductDetailsPage() {
 
         await Swal.fire({
           icon: "error",
-          title: "Erro ao carregar produto",
-          text: "Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.",
+          title: t("catalog:loadErrorTitle"),
+          text: t("catalog:loadErrorMessage"),
           confirmButtonText: "OK",
         });
       } finally {
@@ -54,20 +56,20 @@ export default function ProductDetailsPage() {
     };
 
     void loadProduct();
-  }, [productId]);
+  }, [productId, t]);
 
   if (loading) {
-    return <LoadingState message="Carregando produto..." />;
+    return <LoadingState message={t("catalog:details.loading")} />;
   }
 
   if (notFound || !data) {
     return (
       <EmptyState
-        title="Produto não encontrado"
-        description="O produto solicitado não existe ou não está mais disponível."
+        title={t("catalog:details.notFoundTitle")}
+        description={t("catalog:details.notFoundDescription")}
         action={
           <Link to="/catalog">
-            <Button variant="primary">Voltar ao catálogo</Button>
+            <Button variant="primary">{t("catalog:details.backCatalog")}</Button>
           </Link>
         }
       />
@@ -97,7 +99,7 @@ export default function ProductDetailsPage() {
             <path d="M19 12H5" />
             <path d="m12 19-7-7 7-7" />
           </svg>
-          Voltar
+          {t("catalog:details.back")}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-lg items-start">
@@ -115,7 +117,7 @@ export default function ProductDetailsPage() {
 
           <div className="rounded-lg border border-border p-md lg:p-lg min-h-[220px]">
             <h2 className="font-heading text-title text-foreground-muted m-0">
-              Descrição do produto
+              {t("catalog:details.description")}
             </h2>
             <p className="mt-md text-body text-foreground m-0 leading-relaxed">{description}</p>
           </div>
