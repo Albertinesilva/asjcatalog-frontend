@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
 import {
@@ -28,6 +29,7 @@ type PasswordFields = {
 type Feedback = { kind: "success" | "error"; message: string } | null;
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const { user, loading, refreshUser } = useAuth();
   const [profileFeedback, setProfileFeedback] = useState<Feedback>(null);
   const [passwordFeedback, setPasswordFeedback] = useState<Feedback>(null);
@@ -51,11 +53,11 @@ export default function ProfilePage() {
   }, [user, profileForm]);
 
   if (loading && !user) {
-    return <LoadingState message="Carregando perfil..." />;
+    return <LoadingState message={t("profile:loading")} />;
   }
 
   if (!user) {
-    return <ErrorState message="Não foi possível carregar seu perfil." />;
+    return <ErrorState message={t("profile:loadError")} />;
   }
 
   const currentRoleIds = (user.roles ?? []).map((r) => r.id);
@@ -70,18 +72,18 @@ export default function ProfilePage() {
         roleIds: currentRoleIds,
       });
       await refreshUser();
-      setProfileFeedback({ kind: "success", message: "Perfil atualizado com sucesso." });
-      await alerts.success("Perfil atualizado", "Perfil atualizado com sucesso.");
+      setProfileFeedback({ kind: "success", message: t("profile:successProfileMessage") });
+      await alerts.success(t("profile:successProfileTitle"), t("profile:successProfileMessage"));
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => profileForm.setError(name as keyof ProfileFields, error),
-        fallbackTitle: "Falha ao atualizar perfil",
-        fallbackMessage: "Não foi possível atualizar o perfil.",
+        fallbackTitle: t("profile:failProfileTitle"),
+        fallbackMessage: t("profile:failProfileMessage"),
       });
       if (!handled) {
         setProfileFeedback({
           kind: "error",
-          message: getApiErrorMessage(err, "Não foi possível atualizar o perfil."),
+          message: getApiErrorMessage(err, t("profile:failProfileMessage")),
         });
       }
     }
@@ -90,7 +92,7 @@ export default function ProfilePage() {
   const onChangePassword = async (data: PasswordFields) => {
     setPasswordFeedback(null);
     if (data.password !== data.confirmPassword) {
-      setPasswordFeedback({ kind: "error", message: "As senhas não coincidem." });
+      setPasswordFeedback({ kind: "error", message: t("validation:password.mismatch") });
       return;
     }
     try {
@@ -99,19 +101,19 @@ export default function ProfilePage() {
         roleIds: currentRoleIds,
       });
       passwordForm.reset({ password: "", confirmPassword: "" });
-      setPasswordFeedback({ kind: "success", message: "Senha alterada com sucesso." });
-      await alerts.success("Senha alterada", "Senha alterada com sucesso.");
+      setPasswordFeedback({ kind: "success", message: t("profile:successPasswordMessage") });
+      await alerts.success(t("profile:successPasswordTitle"), t("profile:successPasswordMessage"));
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) =>
           passwordForm.setError(name as keyof PasswordFields, error),
-        fallbackTitle: "Falha ao alterar senha",
-        fallbackMessage: "Não foi possível alterar a senha.",
+        fallbackTitle: t("profile:failPasswordTitle"),
+        fallbackMessage: t("profile:failPasswordMessage"),
       });
       if (!handled) {
         setPasswordFeedback({
           kind: "error",
-          message: getApiErrorMessage(err, "Não foi possível alterar a senha."),
+          message: getApiErrorMessage(err, t("profile:failPasswordMessage")),
         });
       }
     }
@@ -136,12 +138,14 @@ export default function ProfilePage() {
   return (
     <div className="flex flex-col gap-lg">
       <p className="text-body text-foreground-muted m-0">
-        Gerencie seus dados pessoais e credenciais de acesso.
+        {t("profile:intro")}
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
         <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Dados pessoais</h2>
+          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
+            {t("profile:sections.personal")}
+          </h2>
           <form
             onSubmit={handleProfileSubmit(onSaveProfile)}
             noValidate
@@ -149,36 +153,36 @@ export default function ProfilePage() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
               <Input
-                label="Nome"
+                label={t("profile:fields.firstName")}
                 id="firstName"
                 required
                 error={profileErrors.firstName?.message}
                 {...registerProfile("firstName", {
-                  required: "Nome é obrigatório",
-                  maxLength: { value: 100, message: "Máximo 100 caracteres" },
+                  required: t("validation:firstNameRequired"),
+                  maxLength: { value: 100, message: t("validation:maxChars", { count: 100 }) },
                 })}
               />
               <Input
-                label="Sobrenome"
+                label={t("profile:fields.lastName")}
                 id="lastName"
                 required
                 error={profileErrors.lastName?.message}
                 {...registerProfile("lastName", {
-                  required: "Sobrenome é obrigatório",
-                  maxLength: { value: 100, message: "Máximo 100 caracteres" },
+                  required: t("validation:lastNameRequired"),
+                  maxLength: { value: 100, message: t("validation:maxChars", { count: 100 }) },
                 })}
               />
             </div>
             <Input
-              label="Email"
+              label={t("profile:fields.email")}
               id="email"
               type="email"
               required
               error={profileErrors.email?.message}
               {...registerProfile("email", {
-                required: "Email é obrigatório",
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Email inválido" },
-                maxLength: { value: 255, message: "Máximo 255 caracteres" },
+                required: t("validation:emailRequired"),
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t("validation:emailInvalid") },
+                maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
               })}
             />
 
@@ -198,14 +202,16 @@ export default function ProfilePage() {
 
             <div className="pt-sm">
               <Button type="submit" variant="primary" loading={savingProfile}>
-                {savingProfile ? "Salvando..." : "Salvar alterações"}
+                {savingProfile ? t("profile:actions.savingProfile") : t("profile:actions.saveProfile")}
               </Button>
             </div>
           </form>
         </Card>
 
         <Card padding="lg" className="lg:col-span-5 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">Alterar senha</h2>
+          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
+            {t("profile:sections.password")}
+          </h2>
           <form
             onSubmit={handlePasswordSubmit(onChangePassword)}
             noValidate
@@ -213,19 +219,18 @@ export default function ProfilePage() {
           >
             {(() => {
               const reg = registerPassword("password", {
-                required: "Informe a nova senha",
-                minLength: { value: 8, message: "Mínimo 8 caracteres" },
-                maxLength: { value: 72, message: "Máximo 72 caracteres" },
+                required: t("validation:password.required"),
+                minLength: { value: 8, message: t("validation:password.minLength") },
+                maxLength: { value: 72, message: t("validation:password.maxLength") },
                 pattern: {
                   value: /^(?=.*\d).{8,}$/,
-                  message:
-                    "A senha deve ter no mínimo 8 caracteres e conter pelo menos um número",
+                  message: t("validation:password.rule"),
                 },
               });
               return (
                 <PasswordField
                   id="password"
-                  label="Nova senha"
+                  label={t("profile:fields.newPassword")}
                   required
                   autoComplete="new-password"
                   error={passwordErrors.password?.message}
@@ -237,7 +242,7 @@ export default function ProfilePage() {
 
             <PasswordField
               id="confirmPassword"
-              label="Confirmar senha"
+              label={t("profile:fields.confirmPassword")}
               required
               autoComplete="new-password"
               error={
@@ -246,8 +251,8 @@ export default function ProfilePage() {
                   : undefined
               }
               {...registerPassword("confirmPassword", {
-                required: "Confirme a nova senha",
-                validate: (v) => v === passwordValue || "As senhas não coincidem",
+                required: t("validation:password.confirmNew"),
+                validate: (v) => v === passwordValue || t("validation:password.mismatch"),
               })}
             />
             <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
@@ -268,7 +273,7 @@ export default function ProfilePage() {
 
             <div className="pt-sm">
               <Button type="submit" variant="primary" loading={savingPassword}>
-                {savingPassword ? "Alterando..." : "Alterar senha"}
+                {savingPassword ? t("profile:actions.changingPassword") : t("profile:actions.changePassword")}
               </Button>
             </div>
           </form>
