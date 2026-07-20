@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ProductItem, LoadingState, ErrorState, EmptyState } from "@/components";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { productService } from "@/services/product-service";
@@ -6,6 +7,7 @@ import { categoryService } from "@/services/category-service";
 import type { Category, ProductResponse, SpringPage } from "@/types";
 
 export default function CatalogPage() {
+  const { t } = useTranslation(["catalog"]);
   const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +83,7 @@ export default function CatalogPage() {
   return (
     <div className="w-full mx-auto max-w-[1400px] px-md py-lg lg:px-xl lg:py-xl">
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-lg">
-        <h1 className="font-heading text-h2 text-foreground m-0">Catálogo de produtos</h1>
+        <h1 className="font-heading text-h2 text-foreground m-0">{t("catalog:title")}</h1>
         <Card
           padding="none"
           elevated={false}
@@ -94,8 +96,8 @@ export default function CatalogPage() {
               inputBaseClasses,
               "flex-1 border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none",
             )}
-            placeholder="Pesquisar produto"
-            aria-label="Pesquisar produto"
+            placeholder={t("catalog:search")}
+            aria-label={t("catalog:searchAria")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -106,9 +108,9 @@ export default function CatalogPage() {
             )}
             value={categoryIds}
             onChange={(e) => setCategoryIds(e.target.value)}
-            aria-label="Filtrar por categoria"
+            aria-label={t("catalog:filterCategoryAria")}
           >
-            <option value="">Filtrar por categoria</option>
+            <option value="">{t("catalog:filterCategory")}</option>
             {categories.map((c) => (
               <option key={c.id} value={String(c.id)}>
                 {c.name}
@@ -122,19 +124,19 @@ export default function CatalogPage() {
             onClick={clearFilters}
             className="rounded-none md:min-w-[160px] text-foreground-muted hover:text-accent"
           >
-            Limpar filtros
+            {t("catalog:clearFilters")}
           </Button>
         </Card>
       </header>
 
       {loading ? (
-        <LoadingState message="Carregando produtos..." />
+        <LoadingState message={t("catalog:loading")} />
       ) : error ? (
         <ErrorState message={error} />
       ) : products.length === 0 ? (
         <EmptyState
-          title="Nenhum produto encontrado"
-          description="Tente ajustar os filtros de busca."
+          title={t("catalog:empty")}
+          description={t("catalog:emptyHint")}
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-md">
@@ -146,7 +148,7 @@ export default function CatalogPage() {
 
       {totalPages > 1 && (
         <nav
-          aria-label="Paginação"
+          aria-label={t("catalog:paginationAria")}
           className="mt-xl mb-xl flex items-center justify-center flex-wrap gap-xs"
         >
           <button
@@ -157,7 +159,7 @@ export default function CatalogPage() {
             )}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
-            aria-label="Página anterior"
+            aria-label={t("catalog:previousPageAria")}
           >
             ‹
           </button>
@@ -195,7 +197,7 @@ export default function CatalogPage() {
             )}
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage >= totalPages}
-            aria-label="Próxima página"
+            aria-label={t("catalog:nextPageAria")}
           >
             ›
           </button>
