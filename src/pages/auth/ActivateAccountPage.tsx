@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { accountService } from "@/services/account-service";
 import { Button, Card } from "@/components/ui";
@@ -10,6 +11,7 @@ import { parseApiError } from "@/utils/api-error";
 type Status = "loading" | "success" | "expired" | "invalid" | "already" | "missing" | "error";
 
 export default function ActivateAccountPage() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const token = params.get("token");
@@ -57,8 +59,8 @@ export default function ActivateAccountPage() {
     const email = getPendingEmail();
     if (!email) {
       await alerts.warning(
-        "E-mail não encontrado",
-        "Não encontramos um cadastro pendente neste dispositivo. Informe seu e-mail para solicitar um novo link.",
+        t("auth:activate.noPendingTitle"),
+        t("auth:activate.noPendingMessage"),
       );
       navigate("/auth/activation-pending");
       return;
@@ -67,19 +69,22 @@ export default function ActivateAccountPage() {
     try {
       setResending(true);
       await accountService.resendActivation(email);
-      await alerts.success("Novo e-mail enviado!", `Verifique sua caixa de entrada (${email}).`);
+      await alerts.success(
+        t("auth:activate.resendEmailSentTitle"),
+        t("auth:activate.resendEmailSentMessage", { email }),
+      );
       navigate("/auth/activation-pending");
     } catch (err) {
       const parsed = parseApiError(err);
       if (parsed.status === 429) {
         await alerts.warning(
-          "Aguarde alguns instantes",
-          parsed.message || "Você solicitou um novo e-mail recentemente.",
+          t("auth:activate.resendCooldownTitle"),
+          parsed.message || t("auth:activate.resendCooldownDefault"),
         );
       } else {
         await alerts.error(
-          "Falha ao reenviar",
-          parsed.message || "Tente novamente em instantes.",
+          t("auth:activate.resendFailTitle"),
+          parsed.message || t("auth:activate.resendFailDefault"),
         );
       }
     } finally {
@@ -93,7 +98,7 @@ export default function ActivateAccountPage() {
     <div className="flex gap-sm mt-sm">
       <Link to="/auth/login" className="flex-1">
         <Button type="button" variant="outline" size="lg" fullWidth disabled={resending}>
-          Ir para login
+          {t("auth:activate.goToLogin")}
         </Button>
       </Link>
       <Button
@@ -114,18 +119,18 @@ export default function ActivateAccountPage() {
       <div className="flex flex-col gap-md">
         {status === "loading" && (
           <>
-            <h2 className={authFormTitle}>Ativando sua conta</h2>
-            <p className={hintCenter}>Validando seu token, aguarde...</p>
+            <h2 className={authFormTitle}>{t("auth:activate.loadingTitle")}</h2>
+            <p className={hintCenter}>{t("auth:activate.loadingHint")}</p>
           </>
         )}
 
         {status === "success" && (
           <>
-            <h2 className={authFormTitle}>Conta ativada com sucesso</h2>
-            <p className={hintCenter}>Sua conta foi ativada. Agora você pode realizar login.</p>
+            <h2 className={authFormTitle}>{t("auth:activate.successTitle")}</h2>
+            <p className={hintCenter}>{t("auth:activate.successHint")}</p>
             <Link to="/auth/login" className="w-full">
               <Button type="button" size="lg" fullWidth>
-                Ir para login
+                {t("auth:activate.goToLogin")}
               </Button>
             </Link>
           </>
@@ -133,29 +138,27 @@ export default function ActivateAccountPage() {
 
         {status === "expired" && (
           <>
-            <h2 className={authFormTitle}>Link expirado</h2>
-            <p className={hintCenter}>{errorMsg ?? "O link de ativação expirou."}</p>
-            {renderActions("Reenviar e-mail")}
+            <h2 className={authFormTitle}>{t("auth:activate.expiredTitle")}</h2>
+            <p className={hintCenter}>{errorMsg ?? t("auth:activate.expiredDefault")}</p>
+            {renderActions(t("auth:activate.resendEmail"))}
           </>
         )}
 
         {status === "invalid" && (
           <>
-            <h2 className={authFormTitle}>Link inválido</h2>
-            <p className={hintCenter}>O link utilizado não é válido.</p>
-            {renderActions("Solicitar novo e-mail")}
+            <h2 className={authFormTitle}>{t("auth:activate.invalidTitle")}</h2>
+            <p className={hintCenter}>{t("auth:activate.invalidHint")}</p>
+            {renderActions(t("auth:activate.requestNewEmail"))}
           </>
         )}
 
         {status === "already" && (
           <>
-            <h2 className={authFormTitle}>Conta já ativada</h2>
-            <p className={hintCenter}>
-              Sua conta já está ativa. Você pode realizar login normalmente.
-            </p>
+            <h2 className={authFormTitle}>{t("auth:activate.alreadyTitle")}</h2>
+            <p className={hintCenter}>{t("auth:activate.alreadyHint")}</p>
             <Link to="/auth/login" className="w-full">
               <Button type="button" size="lg" fullWidth>
-                Ir para login
+                {t("auth:activate.goToLogin")}
               </Button>
             </Link>
           </>
@@ -163,19 +166,19 @@ export default function ActivateAccountPage() {
 
         {status === "missing" && (
           <>
-            <h2 className={authFormTitle}>Link inválido</h2>
-            <p className={authFieldError}>Link de ativação inválido: token não informado.</p>
-            {renderActions("Solicitar novo e-mail")}
+            <h2 className={authFormTitle}>{t("auth:activate.missingTitle")}</h2>
+            <p className={authFieldError}>{t("auth:activate.missingHint")}</p>
+            {renderActions(t("auth:activate.requestNewEmail"))}
           </>
         )}
 
         {status === "error" && (
           <>
-            <h2 className={authFormTitle}>Falha na ativação</h2>
+            <h2 className={authFormTitle}>{t("auth:activate.errorTitle")}</h2>
             <p className={authFieldError}>
-              {errorMsg ?? "Não foi possível ativar sua conta no momento."}
+              {errorMsg ?? t("auth:activate.errorDefault")}
             </p>
-            {renderActions("Reenviar e-mail")}
+            {renderActions(t("auth:activate.resendEmail"))}
           </>
         )}
       </div>

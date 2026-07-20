@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
 import { ConfirmDialog } from "@/components";
 import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
+import { parseApiError } from "@/utils/api-error";
 import {
   getPendingEmail,
   getResendCooldownRemainingMs,
@@ -15,42 +17,8 @@ import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 
 type EmailFormFields = { email: string };
 
-function mapResendError(err: unknown): { title: string; text: string; status?: number } {
-  const error = err as {
-    response?: { status?: number; data?: { message?: string } };
-    message?: string;
-  };
-  const status = error.response?.status;
-  const backendMsg = error.response?.data?.message;
-  if (status === 429) {
-    return {
-      status,
-      title: "Muitas solicitações",
-      text: backendMsg ?? "Aguarde alguns instantes antes de tentar novamente.",
-    };
-  }
-  if (status && status >= 500) {
-    return {
-      status,
-      title: "Serviço indisponível",
-      text: "Não foi possível enviar o e-mail agora. Tente novamente em alguns minutos.",
-    };
-  }
-  if (!error.response) {
-    return {
-      title: "Falha de conexão",
-      text: "Verifique sua internet e tente novamente.",
-    };
-  }
-  return {
-    status,
-    title: "Erro ao reenviar",
-    text:
-      backendMsg ?? "Não foi possível reenviar o e-mail de ativação. Tente novamente mais tarde.",
-  };
-}
-
 export default function ActivationPendingPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(() => getPendingEmail());
   const [sending, setSending] = useState(false);
@@ -82,6 +50,32 @@ export default function ActivationPendingPage() {
     };
   }, []);
 
+  const mapResendError = (err: unknown) => {
+    const parsed = parseApiError(err);
+    if (parsed.status === 429) {
+      return {
+        title: t("auth:activationPending.rateLimitTitle"),
+        text: parsed.message || t("auth:activationPending.rateLimitDefault"),
+      };
+    }
+    if (parsed.status && parsed.status >= 500) {
+      return {
+        title: t("auth:activationPending.unavailableTitle"),
+        text: t("auth:activationPending.unavailableMessage"),
+      };
+    }
+    if (!parsed.status) {
+      return {
+        title: t("auth:activationPending.networkTitle"),
+        text: t("auth:activationPending.networkMessage"),
+      };
+    }
+    return {
+      title: t("auth:activationPending.errorTitle"),
+      text: parsed.message || t("auth:activationPending.errorMessage"),
+    };
+  };
+
   const doResend = async (targetEmail: string, isNewEmail = false) => {
     if (sending || remaining > 0) return;
     try {
@@ -94,12 +88,12 @@ export default function ActivationPendingPage() {
       }
       startCooldown();
       await alerts.success(
-        "E-mail reenviado",
-        "Enviamos um novo link de ativação. Verifique sua caixa de entrada e também a pasta de spam.",
+        t("auth:activationPending.successTitle"),
+        t("auth:activationPending.successMessage"),
       );
     } catch (err) {
       const info = mapResendError(err);
-      if (info.status === 429) {
+      if (parseApiError(err).status === 429) {
         startCooldown();
         await alerts.warning(info.title, info.text);
       } else {
@@ -116,17 +110,18 @@ export default function ActivationPendingPage() {
   });
 
   const cooldownUrgent = remaining > 0 && remaining <= 10;
+
   const submitLabel = email
     ? sending
-      ? "Reenviando..."
+      ? t("auth:activationPending.resending")
       : remaining > 0
-        ? `Reenviar em ${remaining}s`
-        : "Reenviar e-mail"
+        ? t("auth:activationPending.resendIn", { seconds: remaining })
+        : t("auth:activationPending.resendEmail")
     : sending
-      ? "Enviando..."
+      ? t("auth:activationPending.sending")
       : remaining > 0
-        ? `Aguarde ${remaining}s`
-        : "Enviar novo e-mail de ativação";
+        ? t("auth:activationPending.waitSeconds", { seconds: remaining })
+        : t("auth:activationPending.sendNew");
 
   return (
     <>
@@ -153,34 +148,31 @@ export default function ActivationPendingPage() {
 
           {email ? (
             <>
-              <h2 className={authFormTitle}>Ative sua conta</h2>
+              <h2 className={authFormTitle}>{t("auth:activationPending.titleWithEmail")}</h2>
               <p className={`${authFieldHint} text-center`}>
-                Enviamos um e-mail de ativação. Acesse sua caixa de entrada e clique no link
-                enviado. Se não encontrar, verifique também a pasta de spam.
+                {t("auth:activationPending.hintWithEmail")}
               </p>
             </>
           ) : (
             <>
-              <h2 className={authFormTitle}>Não encontramos um cadastro pendente</h2>
+              <h2 className={authFormTitle}>{t("auth:activationPending.titleNoEmail")}</h2>
               <p className={`${authFieldHint} text-center`}>
-                Isto pode acontecer caso você tenha limpado os dados do navegador ou esteja
-                utilizando outro dispositivo. Informe seu e-mail para solicitar um novo link de
-                ativação.
+                {t("auth:activationPending.hintNoEmail")}
               </p>
             </>
           )}
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="activation-email" className="sr-only">
-              E-mail
+              {t("auth:activationPending.emailLabel")}
             </label>
             <input
               id="activation-email"
               type="email"
               autoComplete="email"
               className={inputBaseClasses}
-              placeholder="Email"
-              aria-label="E-mail"
+              placeholder={t("auth:activationPending.emailPlaceholder")}
+              aria-label={t("auth:activationPending.emailAria")}
               aria-describedby="resend-cooldown-hint"
               disabled={sending}
               {...register("email", {
@@ -189,10 +181,10 @@ export default function ActivationPendingPage() {
               })}
             />
             {errors.email?.type === "required" && (
-              <p className={authFieldError}>Informe seu e-mail</p>
+              <p className={authFieldError}>{t("auth:activationPending.emailRequired")}</p>
             )}
             {errors.email?.type === "pattern" && (
-              <p className={authFieldError}>Insira um e-mail válido</p>
+              <p className={authFieldError}>{t("auth:activationPending.emailInvalid")}</p>
             )}
           </div>
 
@@ -205,7 +197,7 @@ export default function ActivationPendingPage() {
               disabled={sending}
               className="flex-1"
             >
-              Ir para login
+              {t("auth:activationPending.goToLogin")}
             </Button>
             <Button
               type="submit"
@@ -226,9 +218,7 @@ export default function ActivationPendingPage() {
             }`}
           >
             {remaining > 0
-              ? `Você poderá solicitar um novo e-mail em ${remaining} segundo${
-                  remaining === 1 ? "" : "s"
-                }.`
+              ? t("auth:activationPending.cooldownHint", { count: remaining })
               : "\u00A0"}
           </p>
         </form>
@@ -236,15 +226,14 @@ export default function ActivationPendingPage() {
 
       <ConfirmDialog
         open={showLeaveModal}
-        title="Você já clicou no link enviado para seu e-mail?"
+        title={t("auth:activationPending.leaveTitle")}
         description={
           <p className="m-0">
-            Após confirmar sua conta pelo e-mail recebido, você poderá entrar normalmente no
-            sistema.
+            {t("auth:activationPending.leaveDescription")}
           </p>
         }
-        cancelLabel="Ainda não"
-        confirmLabel="Já confirmei minha conta"
+        cancelLabel={t("auth:activationPending.leaveCancel")}
+        confirmLabel={t("auth:activationPending.leaveConfirm")}
         variant="primary"
         onCancel={() => setShowLeaveModal(false)}
         onConfirm={() => {
