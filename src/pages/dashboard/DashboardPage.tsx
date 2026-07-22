@@ -118,11 +118,12 @@ function MetricCard({
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation(["dashboard", "common"]);
   const { user } = useAuth();
   const { isAdmin } = useRoles();
   const [state, setState] = useState<MetricState>(INITIAL);
 
-  const greetingName = user?.firstName ?? user?.email ?? "usuário(a)";
+  const greetingName = user?.firstName ?? user?.email ?? t("dashboard:greetingFallback");
 
   useEffect(() => {
     let cancelled = false;
@@ -150,41 +151,41 @@ export default function DashboardPage() {
           categories: null,
           users: null,
           loading: false,
-          error: getApiErrorMessage(err, "Não foi possível carregar as métricas."),
+          error: getApiErrorMessage(err, t("dashboard:metricsError")),
         });
       });
 
     return () => {
       cancelled = true;
     };
-  }, [isAdmin]);
+  }, [isAdmin, t]);
 
-  type Shortcut = { to: string; title: string; desc: string; icon: IconName; show?: boolean };
+  type Shortcut = { to: string; titleKey: string; descKey: string; icon: IconName; show?: boolean };
   const shortcuts: Shortcut[] = (
     [
       {
         to: "/dashboard/products/new",
-        title: "Novo produto",
-        desc: "Adicionar um novo produto ao catálogo.",
+        titleKey: "dashboard:shortcuts.newProduct.title",
+        descKey: "dashboard:shortcuts.newProduct.desc",
         icon: "plus" as IconName,
       },
       {
         to: "/dashboard/categories/new",
-        title: "Nova categoria",
-        desc: "Criar uma categoria para organizar o catálogo.",
+        titleKey: "dashboard:shortcuts.newCategory.title",
+        descKey: "dashboard:shortcuts.newCategory.desc",
         icon: "tag" as IconName,
       },
       {
         to: "/dashboard/users/new",
-        title: "Novo usuário",
-        desc: "Cadastrar um usuário com acesso à plataforma.",
+        titleKey: "dashboard:shortcuts.newUser.title",
+        descKey: "dashboard:shortcuts.newUser.desc",
         icon: "users" as IconName,
         show: isAdmin,
       },
       {
         to: "/catalog",
-        title: "Ver catálogo público",
-        desc: "Visualizar o catálogo como um visitante.",
+        titleKey: "dashboard:shortcuts.viewCatalog.title",
+        descKey: "dashboard:shortcuts.viewCatalog.desc",
         icon: "eye" as IconName,
       },
     ] as Shortcut[]
@@ -193,8 +194,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-xl">
       <p className="text-body text-foreground-muted m-0">
-        Olá, <span className="font-heading font-semibold text-foreground">{greetingName}</span>.
-        Bem-vindo(a) ao painel de gestão do ASJ Catalog.
+        {t("dashboard:greeting", { name: greetingName })}
       </p>
 
       {state.error && (
@@ -205,30 +205,30 @@ export default function DashboardPage() {
 
       <section aria-labelledby="metrics-title" className="flex flex-col gap-md">
         <h2 id="metrics-title" className="font-heading font-bold text-h3 text-foreground m-0">
-          Visão geral
+          {t("dashboard:metricsTitle")}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
           <MetricCard
-            label="Produtos"
+            label={t("dashboard:cards.products")}
             value={state.products}
-            hint="Total cadastrado no catálogo"
+            hint={t("dashboard:hints.products")}
             loading={state.loading}
             to="/dashboard/products"
             icon="box"
           />
           <MetricCard
-            label="Categorias"
+            label={t("dashboard:cards.categories")}
             value={state.categories}
-            hint="Categorias disponíveis"
+            hint={t("dashboard:hints.categories")}
             loading={state.loading}
             to="/dashboard/categories"
             icon="tag"
           />
           {isAdmin && (
             <MetricCard
-              label="Usuários"
+              label={t("dashboard:cards.users")}
               value={state.users}
-              hint="Contas administrativas ativas"
+              hint={t("dashboard:hints.users")}
               loading={state.loading}
               to="/dashboard/users"
               icon="users"
@@ -239,7 +239,7 @@ export default function DashboardPage() {
 
       <section aria-labelledby="shortcuts-title" className="flex flex-col gap-md">
         <h2 id="shortcuts-title" className="font-heading font-bold text-h3 text-foreground m-0">
-          Atalhos
+          {t("dashboard:shortcutsTitle")}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
           {shortcuts.map((i) => (
@@ -252,9 +252,9 @@ export default function DashboardPage() {
                 <Icon name={i.icon} className="h-5 w-5" />
               </span>
               <h3 className="font-heading font-semibold text-subtitle text-foreground m-0 mb-xs">
-                {i.title}
+                {t(i.titleKey)}
               </h3>
-              <p className="text-small text-foreground-muted m-0">{i.desc}</p>
+              <p className="text-small text-foreground-muted m-0">{t(i.descKey)}</p>
             </Link>
           ))}
         </div>
@@ -263,17 +263,16 @@ export default function DashboardPage() {
       <section aria-labelledby="activity-title" className="flex flex-col gap-md">
         <div className="flex items-center gap-sm">
           <h2 id="activity-title" className="font-heading font-bold text-h3 text-foreground m-0">
-            Atividade recente
+            {t("dashboard:activityTitle")}
           </h2>
-          <Badge variant="outline">Em breve</Badge>
+          <Badge variant="outline">{t("dashboard:activitySoon")}</Badge>
         </div>
         <Card padding="lg">
           <p className="mb-xs font-heading font-semibold text-subtitle text-foreground">
-            Acompanhamento em preparação
+            {t("dashboard:activityPreparing")}
           </p>
           <p className="m-0 text-small text-foreground-muted">
-            Em breve esta área exibirá o histórico de alterações no catálogo, cadastros recentes e
-            notificações da plataforma.
+            {t("dashboard:activityDescription")}
           </p>
         </Card>
       </section>
