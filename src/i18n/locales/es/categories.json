@@ -14,6 +14,7 @@
     "title": "Eliminar categoría",
     "confirmBefore": "¿Está seguro de que desea eliminar",
     "confirmAfter": "? Esta acción no se puede deshacer.",
+    "confirmMessage": "¿Está seguro de que desea eliminar <strong>{{name}}</strong>? Esta acción no se puede deshacer.",
     "confirm": "Eliminar",
     "confirming": "Eliminando...",
     "cancel": "Cancelar",
