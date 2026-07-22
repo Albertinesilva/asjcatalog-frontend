@@ -118,7 +118,7 @@ function MetricCard({
 }
 
 export default function DashboardPage() {
-  const { t } = useTranslation(["dashboard", "common"]);
+  const { t } = useTranslation("dashboard");
   const { user } = useAuth();
   const { isAdmin } = useRoles();
   const [state, setState] = useState<MetricState>(INITIAL);
