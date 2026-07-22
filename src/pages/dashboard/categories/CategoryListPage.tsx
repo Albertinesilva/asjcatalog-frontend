@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import { categoryService } from "@/services/category-service";
 import {
   Authorization,
@@ -17,6 +18,7 @@ import { buttonClasses } from "@/components/ui";
 import { CategoryTable } from "./components";
 
 export default function CategoryListPage() {
+  const { t } = useTranslation(["categories", "common"]);
   const [data, setData] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +56,10 @@ export default function CategoryListPage() {
       await categoryService.delete(pendingDelete.id);
       setPendingDelete(null);
       load();
-      await alerts.success("Categoria removida", "Categoria removida com sucesso.");
+      await alerts.success(
+        t("categories:delete.successTitle"),
+        t("categories:delete.successMessage"),
+      );
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
@@ -67,7 +72,7 @@ export default function CategoryListPage() {
       <TableToolbar counter={filtered.length}>
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
           <Link to="/dashboard/categories/new" className={buttonClasses("primary", "md")}>
-            Adicionar
+            {t("categories:add")}
           </Link>
         </Authorization>
       </TableToolbar>
@@ -77,8 +82,8 @@ export default function CategoryListPage() {
           value={search}
           onChange={setSearch}
           onClear={() => setSearch("")}
-          placeholder="Pesquisar Categoria"
-          ariaLabel="Pesquisar categoria"
+          placeholder={t("categories:search")}
+          ariaLabel={t("categories:searchAria")}
         />
       </div>
 
@@ -94,18 +99,21 @@ export default function CategoryListPage() {
 
       <ConfirmDialog
         open={!!pendingDelete}
-        title="Excluir categoria"
+        title={t("categories:delete.title")}
         description={
           pendingDelete ? (
             <p className="mb-0">
-              Tem certeza que deseja excluir <strong>{pendingDelete.name}</strong>? Esta ação não
-              pode ser desfeita.
+              <Trans
+                i18nKey="categories:delete.confirmMessage"
+                values={{ name: pendingDelete.name }}
+                components={{ strong: <strong /> }}
+              />
             </p>
           ) : undefined
         }
-        confirmLabel="Excluir"
-        cancelLabel="Cancelar"
-        confirmingLabel="Excluindo..."
+        confirmLabel={t("categories:delete.confirm")}
+        cancelLabel={t("categories:delete.cancel")}
+        confirmingLabel={t("categories:delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
         onCancel={() => setPendingDelete(null)}
