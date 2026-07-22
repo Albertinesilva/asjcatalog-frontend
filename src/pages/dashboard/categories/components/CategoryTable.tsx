@@ -1,5 +1,6 @@
 import type { Category } from "@/types";
 import { EmptyState } from "@/components";
+import { useTranslation } from "react-i18next";
 import CategoryTableRow from "./CategoryTableRow";
 
 type Props = {
@@ -8,11 +9,12 @@ type Props = {
 };
 
 export default function CategoryTable({ categories, onDelete }: Props) {
+  const { t } = useTranslation("categories");
   if (categories.length === 0) {
     return (
       <EmptyState
-        title="Nenhuma categoria encontrada"
-        description="Tente ajustar o filtro ou adicionar uma nova categoria."
+        title={t("emptyFiltered.title")}
+        description={t("emptyFiltered.description")}
       />
     );
   }

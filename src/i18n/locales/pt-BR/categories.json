@@ -14,6 +14,7 @@
     "title": "Excluir categoria",
     "confirmBefore": "Tem certeza que deseja excluir",
     "confirmAfter": "? Esta ação não pode ser desfeita.",
+    "confirmMessage": "Tem certeza que deseja excluir <strong>{{name}}</strong>? Esta ação não pode ser desfeita.",
     "confirm": "Excluir",
     "confirming": "Excluindo...",
     "cancel": "Cancelar",
