@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
@@ -11,6 +12,7 @@ type FormFields = { name: string };
 type Props = { mode: "create" | "edit" };
 
 export default function CategoryForm({ mode }: Props) {
+  const { t } = useTranslation(["categories", "validation"]);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -35,19 +37,25 @@ export default function CategoryForm({ mode }: Props) {
     try {
       if (mode === "create") {
         await categoryService.create({ name: data.name });
-        await alerts.success("Categoria criada", "Categoria criada com sucesso.");
+        await alerts.success(
+          t("categories:form.successNewTitle"),
+          t("categories:form.successNewMessage"),
+        );
       } else if (id) {
         await categoryService.update(Number(id), {
           id: Number(id),
           name: data.name,
         });
-        await alerts.success("Categoria atualizada", "Categoria atualizada com sucesso.");
+        await alerts.success(
+          t("categories:form.successEditTitle"),
+          t("categories:form.successEditMessage"),
+        );
       }
       navigate("/dashboard/categories");
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => setError(name as keyof FormFields, error),
-        fallbackTitle: "Falha ao salvar categoria",
+        fallbackTitle: t("categories:form.failTitle"),
       });
       if (!handled) setSaveError(getApiErrorMessage(err));
     }
@@ -57,26 +65,26 @@ export default function CategoryForm({ mode }: Props) {
     <Card padding="lg" className="max-w-2xl">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
         <Input
-          label="Nome"
+          label={t("categories:form.name")}
           required
           error={errors.name?.message}
-          {...register("name", { required: "Nome é obrigatório" })}
+          {...register("name", { required: t("validation:nameRequired") })}
         />
         {saveError && (
           <p className="text-small text-danger m-0" role="alert">
-            Erro: {saveError}
+            {t("common:error", { defaultValue: "Erro" })}: {saveError}
           </p>
         )}
         <div className="flex flex-wrap gap-sm pt-sm">
           <Button type="submit" variant="primary" loading={isSubmitting}>
-            {isSubmitting ? "Salvando..." : "Salvar"}
+            {isSubmitting ? t("categories:form.submitting") : t("categories:form.submit")}
           </Button>
           <Button
             type="button"
             variant="secondary"
             onClick={() => navigate("/dashboard/categories")}
           >
-            Cancelar
+            {t("categories:form.cancel")}
           </Button>
         </div>
       </form>
