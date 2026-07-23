@@ -1,10 +1,6 @@
 import type { Role } from "@/types";
+import { useTranslation } from "react-i18next";
 import { Badge, type BadgeVariant } from "@/components/ui";
-
-const LABELS: Record<Role, string> = {
-  ROLE_ADMIN: "Administrador",
-  ROLE_OPERATOR: "Operador",
-};
 
 const VARIANTS: Record<Role, BadgeVariant> = {
   ROLE_ADMIN: "primary",
@@ -14,5 +10,10 @@ const VARIANTS: Record<Role, BadgeVariant> = {
 type Props = { role: Role };
 
 export default function UserRoleBadge({ role }: Props) {
-  return <Badge variant={VARIANTS[role] ?? "default"}>{LABELS[role] ?? role}</Badge>;
+  const { t } = useTranslation(["users"]);
+  return (
+    <Badge variant={VARIANTS[role] ?? "default"}>
+      {t(`users:roles.${role}`, { defaultValue: role })}
+    </Badge>
+  );
 }
