@@ -1,40 +1,66 @@
 {
   "title": "Usuarios",
-  "add": "Agregar",
-  "search": "Buscar por nombre",
-  "searchAria": "Buscar por nombre",
-  "columns": { "id": "ID", "name": "Nombre", "email": "Email", "roles": "Roles", "actions": "Acciones" },
-  "empty": "Ningún usuario registrado.",
-  "emptyFiltered": {
-    "title": "No se encontraron usuarios",
-    "description": "Intente ajustar los filtros o agregar un nuevo usuario."
-  },
-  "roles": { "admin": "Administrador", "operator": "Operador" },
-  "actions": { "view": "Ver", "edit": "Editar", "delete": "Eliminar" },
-  "delete": {
-    "title": "Eliminar usuario",
-    "confirmBefore": "¿Está seguro de que desea eliminar",
-    "confirmAfter": "? Esta acción no se puede deshacer.",
-    "confirm": "Eliminar",
-    "cancel": "Cancelar",
-    "successTitle": "Usuario eliminado",
-    "successMessage": "Usuario eliminado correctamente."
+  "form": {
+    "titleNew": "Nuevo usuario",
+    "titleEdit": "Editar usuario"
   },
   "details": {
     "title": "Detalles del usuario",
-    "back": "Volver",
-    "edit": "Editar",
-    "notFound": "Usuario no encontrado.",
-    "permissions": "Permisos"
+    "notFound": "Usuario no encontrado."
   },
-  "form": {
-    "titleNew": "Nuevo usuario", "titleEdit": "Editar usuario",
-    "firstName": "Nombre", "lastName": "Apellido",
-    "email": "Email", "password": "Contraseña",
-    "roles": "Permisos",
-    "submit": "Guardar", "submitting": "Guardando...", "cancel": "Cancelar",
-    "successNewTitle": "Usuario creado", "successNewMessage": "Usuario creado correctamente.",
-    "successEditTitle": "Usuario actualizado", "successEditMessage": "Usuario actualizado correctamente.",
-    "failTitle": "Error al guardar", "failMessage": "No fue posible guardar el usuario."
+  "actions": {
+    "create": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Ver",
+    "back": "Volver",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar"
+  },
+  "fields": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "password": "Contraseña",
+    "roles": "Permisos"
+  },
+  "placeholders": {
+    "search": "Buscar por nombre"
+  },
+  "filters": {
+    "searchAria": "Buscar por nombre"
+  },
+  "table": {
+    "empty": {
+      "title": "No se encontraron usuarios",
+      "description": "Intente ajustar los filtros o agregar un nuevo usuario."
+    }
+  },
+  "roles": {
+    "ROLE_ADMIN": "Administrador",
+    "ROLE_OPERATOR": "Operador"
+  },
+  "dialogs": {
+    "delete": {
+      "title": "Eliminar usuario",
+      "message": "¿Está seguro de que desea eliminar <strong>{{name}}</strong>? Esta acción no se puede deshacer.",
+      "confirm": "Eliminar",
+      "confirming": "Eliminando...",
+      "cancel": "Cancelar"
+    }
+  },
+  "success": {
+    "createdTitle": "Usuario creado",
+    "createdMessage": "Usuario creado correctamente.",
+    "updatedTitle": "Usuario actualizado",
+    "updatedMessage": "Usuario actualizado correctamente.",
+    "deletedTitle": "Usuario eliminado",
+    "deletedMessage": "Usuario eliminado correctamente."
+  },
+  "errors": {
+    "saveTitle": "Error al guardar",
+    "saveMessage": "No se pudo guardar el usuario.",
+    "savePrefix": "Error"
   }
 }
