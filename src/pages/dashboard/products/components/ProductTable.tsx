@@ -1,4 +1,5 @@
 import type { ProductResponse } from "@/types";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components";
 import ProductTableRow from "./ProductTableRow";
 
@@ -8,11 +9,12 @@ type Props = {
 };
 
 export default function ProductTable({ products, onDelete }: Props) {
+  const { t } = useTranslation(["products"]);
   if (products.length === 0) {
     return (
       <EmptyState
-        title="Nenhum produto encontrado"
-        description="Tente ajustar os filtros ou adicionar um novo produto."
+        title={t("products:table.empty.title")}
+        description={t("products:table.empty.description")}
       />
     );
   }

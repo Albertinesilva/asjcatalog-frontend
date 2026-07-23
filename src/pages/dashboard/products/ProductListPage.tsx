@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import {
@@ -22,6 +23,7 @@ import { ProductTable } from "./components";
 import type { ProductFilters } from "./types";
 
 export default function ProductListPage() {
+  const { t } = useTranslation(["products"]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const debouncedName = useDebouncedValue(search.trim(), 400);
@@ -75,7 +77,10 @@ export default function ProductListPage() {
       await productService.delete(pendingDelete.id);
       setPendingDelete(null);
       refetch();
-      await alerts.success("Produto removido", "Produto removido com sucesso.");
+      await alerts.success(
+        t("products:success.deletedTitle"),
+        t("products:success.deletedMessage"),
+      );
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
@@ -88,7 +93,7 @@ export default function ProductListPage() {
       <TableToolbar counter={pagination.totalElements}>
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
           <Link to="/dashboard/products/new" className={buttonClasses("primary", "md")}>
-            Adicionar
+            {t("products:actions.create")}
           </Link>
         </Authorization>
       </TableToolbar>
@@ -99,17 +104,17 @@ export default function ProductListPage() {
             value={search}
             onChange={setSearch}
             onClear={() => setSearch("")}
-            placeholder="Pesquisar Produto"
-            ariaLabel="Pesquisar produto"
+            placeholder={t("products:placeholders.search")}
+            ariaLabel={t("products:filters.searchAria")}
           />
         </div>
         <select
           className={`${inputBaseClasses} md:max-w-[260px]`}
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          aria-label="Filtrar por categoria"
+          aria-label={t("products:filters.categoryAria")}
         >
-          <option value="">Filtrar por Categoria</option>
+          <option value="">{t("products:placeholders.category")}</option>
           {categories.map((c) => (
             <option key={c.id} value={String(c.id)}>
               {c.name}
@@ -137,18 +142,21 @@ export default function ProductListPage() {
 
       <ConfirmDialog
         open={!!pendingDelete}
-        title="Excluir produto"
+        title={t("products:dialogs.delete.title")}
         description={
           pendingDelete ? (
             <p className="mb-0">
-              Tem certeza que deseja excluir <strong>{pendingDelete.name}</strong>? Esta ação não
-              pode ser desfeita.
+              <Trans
+                i18nKey="products:dialogs.delete.message"
+                values={{ name: pendingDelete.name }}
+                components={{ strong: <strong /> }}
+              />
             </p>
           ) : undefined
         }
-        confirmLabel="Excluir"
-        cancelLabel="Cancelar"
-        confirmingLabel="Excluindo..."
+        confirmLabel={t("products:dialogs.delete.confirm")}
+        cancelLabel={t("products:dialogs.delete.cancel")}
+        confirmingLabel={t("products:dialogs.delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
         onCancel={() => setPendingDelete(null)}
