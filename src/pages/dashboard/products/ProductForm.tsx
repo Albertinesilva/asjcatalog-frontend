@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function ProductForm({ mode }: Props) {
+  const { t } = useTranslation(["products", "validation"]);
   const navigate = useNavigate();
   const { id: productId } = useParams<{ id: string }>();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -75,16 +77,22 @@ export default function ProductForm({ mode }: Props) {
     try {
       if (mode === "create") {
         await productService.create(payload);
-        await alerts.success("Produto criado", "Produto criado com sucesso.");
+        await alerts.success(
+          t("products:success.createdTitle"),
+          t("products:success.createdMessage"),
+        );
       } else if (productId) {
         await productService.update(Number(productId), payload);
-        await alerts.success("Produto atualizado", "Produto atualizado com sucesso.");
+        await alerts.success(
+          t("products:success.updatedTitle"),
+          t("products:success.updatedMessage"),
+        );
       }
       navigate("/dashboard/products");
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => setError(name as keyof FormFields, error),
-        fallbackTitle: "Falha ao salvar produto",
+        fallbackTitle: t("products:errors.saveTitle"),
       });
       if (!handled) setSaveError(getApiErrorMessage(err));
     } finally {
@@ -97,35 +105,35 @@ export default function ProductForm({ mode }: Props) {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
           <Input
-            label="Nome"
+            label={t("products:fields.name")}
             required
             error={errors.name?.message}
-            {...register("name", { required: "Nome é obrigatório" })}
+            {...register("name", { required: t("validation:nameRequired") })}
           />
           <Input
-            label="Preço"
+            label={t("products:fields.price")}
             type="number"
             step="0.01"
             required
             error={errors.price?.message}
             {...register("price", {
-              required: "Preço é obrigatório",
+              required: t("validation:priceRequired"),
               valueAsNumber: true,
-              min: { value: 0, message: "Deve ser positivo" },
+              min: { value: 0, message: t("validation:priceMin") },
             })}
           />
         </div>
 
         <Input
-          label="URL da Imagem"
+          label={t("products:fields.imageUrl")}
           required
           error={errors.imgUrl?.message}
-          {...register("imgUrl", { required: "URL é obrigatória" })}
+          {...register("imgUrl", { required: t("validation:imgUrlRequired") })}
         />
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="product-categories" className="text-small font-medium text-foreground">
-            Categorias{" "}
+            {t("products:fields.categories")}{" "}
             <span aria-hidden="true" className="text-danger ml-0.5">
               *
             </span>
@@ -137,7 +145,7 @@ export default function ProductForm({ mode }: Props) {
             size={Math.min(6, categories.length + 1)}
             aria-invalid={errors.categoryIds ? true : undefined}
             {...register("categoryIds", {
-              validate: (v) => v.length > 0 || "Selecione pelo menos uma categoria",
+              validate: (v) => v.length > 0 || t("validation:categoriesRequired"),
             })}
           >
             {categories.map((c) => (
@@ -149,13 +157,13 @@ export default function ProductForm({ mode }: Props) {
           {errors.categoryIds ? (
             <p className="text-small text-danger">{errors.categoryIds.message as string}</p>
           ) : (
-            <p className="text-small text-foreground-muted">Use Ctrl/Cmd para selecionar várias.</p>
+            <p className="text-small text-foreground-muted">{t("products:hints.categoriesMulti")}</p>
           )}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="product-description" className="text-small font-medium text-foreground">
-            Descrição{" "}
+            {t("products:fields.description")}{" "}
             <span aria-hidden="true" className="text-danger ml-0.5">
               *
             </span>
@@ -165,7 +173,7 @@ export default function ProductForm({ mode }: Props) {
             rows={4}
             className={`${inputBaseClasses} h-auto py-2 resize-y`}
             aria-invalid={errors.description ? true : undefined}
-            {...register("description", { required: "Descrição é obrigatória" })}
+            {...register("description", { required: t("validation:descriptionRequired") })}
           />
           {errors.description && (
             <p className="text-small text-danger">{errors.description.message}</p>
@@ -174,16 +182,16 @@ export default function ProductForm({ mode }: Props) {
 
         {saveError && (
           <p className="text-small text-danger m-0" role="alert">
-            Erro ao salvar: {saveError}
+            {t("products:errors.savePrefix")}: {saveError}
           </p>
         )}
 
         <div className="flex flex-wrap gap-sm pt-sm">
           <Button type="submit" variant="primary" loading={isSubmitting || loading}>
-            {loading ? "Salvando..." : "Salvar"}
+            {loading ? t("products:actions.saving") : t("products:actions.save")}
           </Button>
           <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/products")}>
-            Cancelar
+            {t("products:actions.cancel")}
           </Button>
         </div>
       </form>
