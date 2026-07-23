@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
 import { PasswordField, PasswordRequirements } from "@/components";
 import { alerts } from "@/utils/alerts";
@@ -9,9 +10,9 @@ import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
 import { handleApiError } from "@/utils/api-error-handler";
 
-const AVAILABLE_ROLES: { id: number; authority: Role; label: string }[] = [
-  { id: 1, authority: "ROLE_OPERATOR", label: "Operador" },
-  { id: 2, authority: "ROLE_ADMIN", label: "Administrador" },
+const AVAILABLE_ROLES: { id: number; authority: Role }[] = [
+  { id: 1, authority: "ROLE_OPERATOR" },
+  { id: 2, authority: "ROLE_ADMIN" },
 ];
 
 type FormFields = {
@@ -25,6 +26,7 @@ type FormFields = {
 type Props = { mode: "create" | "edit" };
 
 export default function UserForm({ mode }: Props) {
+  const { t } = useTranslation(["users", "validation"]);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -76,7 +78,10 @@ export default function UserForm({ mode }: Props) {
           password: data.password,
           roleIds,
         });
-        await alerts.success("Usuário criado", "Usuário criado com sucesso.");
+        await alerts.success(
+          t("users:success.createdTitle"),
+          t("users:success.createdMessage"),
+        );
       } else if (id) {
         await userService.update(Number(id), {
           firstName: data.firstName,
@@ -84,14 +89,17 @@ export default function UserForm({ mode }: Props) {
           email: data.email,
           roleIds,
         });
-        await alerts.success("Usuário atualizado", "Usuário atualizado com sucesso.");
+        await alerts.success(
+          t("users:success.updatedTitle"),
+          t("users:success.updatedMessage"),
+        );
       }
       navigate("/dashboard/users");
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => setError(name as keyof FormFields, error),
-        fallbackTitle: "Falha ao salvar",
-        fallbackMessage: "Não foi possível salvar o usuário.",
+        fallbackTitle: t("users:errors.saveTitle"),
+        fallbackMessage: t("users:errors.saveMessage"),
       });
       if (!handled) {
         setSaveError((err as Error).message);
@@ -104,36 +112,36 @@ export default function UserForm({ mode }: Props) {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-md" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
           <Input
-            label="Nome"
+            label={t("users:fields.firstName")}
             required
             error={errors.firstName?.message}
-            {...register("firstName", { required: "Nome é obrigatório" })}
+            {...register("firstName", { required: t("validation:firstNameRequired") })}
           />
           <Input
-            label="Sobrenome"
+            label={t("users:fields.lastName")}
             required
             error={errors.lastName?.message}
-            {...register("lastName", { required: "Sobrenome é obrigatório" })}
+            {...register("lastName", { required: t("validation:lastNameRequired") })}
           />
         </div>
         <Input
-          label="Email"
+          label={t("users:fields.email")}
           type="email"
           required
           error={errors.email?.message}
-          {...register("email", { required: "Email é obrigatório" })}
+          {...register("email", { required: t("validation:emailRequired") })}
         />
         {mode === "create" && (
           <div className="flex flex-col gap-sm">
             {(() => {
               const reg = register("password", {
-                required: "Senha é obrigatória",
-                minLength: { value: 8, message: "Mínimo 8 caracteres" },
+                required: t("validation:password.requiredShort"),
+                minLength: { value: 8, message: t("validation:password.minLength") },
               });
               return (
                 <PasswordField
                   id="user-password"
-                  label="Senha"
+                  label={t("users:fields.password")}
                   required
                   autoComplete="new-password"
                   error={errors.password?.message}
@@ -146,7 +154,7 @@ export default function UserForm({ mode }: Props) {
         )}
         <div className="flex flex-col gap-1.5">
           <label htmlFor="user-roles" className="text-small font-medium text-foreground">
-            Permissões{" "}
+            {t("users:fields.roles")}{" "}
             <span aria-hidden="true" className="text-danger ml-0.5">
               *
             </span>
@@ -158,12 +166,12 @@ export default function UserForm({ mode }: Props) {
             size={AVAILABLE_ROLES.length}
             aria-invalid={errors.roleIds ? true : undefined}
             {...register("roleIds", {
-              validate: (v) => v.length > 0 || "Selecione pelo menos uma permissão",
+              validate: (v) => v.length > 0 || t("validation:rolesRequired"),
             })}
           >
             {AVAILABLE_ROLES.map((r) => (
               <option key={r.id} value={String(r.id)}>
-                {r.label}
+                {t(`users:roles.${r.authority}`)}
               </option>
             ))}
           </select>
@@ -173,15 +181,15 @@ export default function UserForm({ mode }: Props) {
         </div>
         {saveError && (
           <p className="text-small text-danger m-0" role="alert">
-            Erro: {saveError}
+            {t("users:errors.savePrefix")}: {saveError}
           </p>
         )}
         <div className="flex flex-wrap gap-sm pt-sm">
           <Button type="submit" variant="primary" loading={isSubmitting}>
-            {isSubmitting ? "Salvando..." : "Salvar"}
+            {isSubmitting ? t("users:actions.saving") : t("users:actions.save")}
           </Button>
           <Button type="button" variant="secondary" onClick={() => navigate("/dashboard/users")}>
-            Cancelar
+            {t("users:actions.cancel")}
           </Button>
         </div>
       </form>

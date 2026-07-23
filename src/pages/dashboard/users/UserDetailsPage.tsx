@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
 import { LoadingState, ErrorState } from "@/components";
 import { getApiErrorMessage } from "@/utils/api-error";
@@ -8,6 +9,7 @@ import { Card, buttonClasses } from "@/components/ui";
 import UserRoleBadge from "./components/UserRoleBadge";
 
 export default function UserDetailsPage() {
+  const { t } = useTranslation(["users"]);
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<UserDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +43,7 @@ export default function UserDetailsPage() {
 
       <div className="flex flex-col gap-xs">
         <span className="text-caption uppercase tracking-wider text-foreground-muted font-heading font-semibold">
-          Permissões
+          {t("users:fields.roles")}
         </span>
         {user.roles?.length ? (
           <div className="flex flex-wrap gap-xs">
@@ -56,10 +58,10 @@ export default function UserDetailsPage() {
 
       <div className="flex flex-wrap gap-sm pt-sm">
         <Link to={`/dashboard/users/${user.id}/edit`} className={buttonClasses("primary", "md")}>
-          Editar
+          {t("users:actions.edit")}
         </Link>
         <Link to="/dashboard/users" className={buttonClasses("secondary", "md")}>
-          Voltar
+          {t("users:actions.back")}
         </Link>
       </div>
     </Card>

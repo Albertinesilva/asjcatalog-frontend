@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
 import {
   LoadingState,
@@ -19,6 +20,7 @@ import { UserTable } from "./components";
 import type { UserFilters } from "./types";
 
 export default function UserListPage() {
+  const { t } = useTranslation(["users"]);
   const [search, setSearch] = useState("");
   const debounced = useDebouncedValue(search.trim(), 400);
   const filters = useMemo<UserFilters>(() => ({ firstName: debounced }), [debounced]);
@@ -58,7 +60,10 @@ export default function UserListPage() {
       await userService.delete(pendingDelete.id);
       setPendingDelete(null);
       refetch();
-      await alerts.success("Usuário removido", "Usuário removido com sucesso.");
+      await alerts.success(
+        t("users:success.deletedTitle"),
+        t("users:success.deletedMessage"),
+      );
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {
@@ -70,7 +75,7 @@ export default function UserListPage() {
     <div>
       <TableToolbar counter={pagination.totalElements}>
         <Link to="/dashboard/users/new" className={buttonClasses("primary", "md")}>
-          Adicionar
+          {t("users:actions.create")}
         </Link>
       </TableToolbar>
 
@@ -79,8 +84,8 @@ export default function UserListPage() {
           value={search}
           onChange={setSearch}
           onClear={() => setSearch("")}
-          placeholder="Pesquisar por nome"
-          ariaLabel="Pesquisar por nome"
+          placeholder={t("users:placeholders.search")}
+          ariaLabel={t("users:filters.searchAria")}
         />
       </div>
 
@@ -103,20 +108,21 @@ export default function UserListPage() {
 
       <ConfirmDialog
         open={!!pendingDelete}
-        title="Excluir usuário"
+        title={t("users:dialogs.delete.title")}
         description={
           pendingDelete ? (
             <p className="mb-0">
-              Tem certeza que deseja excluir{" "}
-              <strong>
-                {pendingDelete.firstName} {pendingDelete.lastName}
-              </strong>
-              ? Esta ação não pode ser desfeita.
+              <Trans
+                i18nKey="users:dialogs.delete.message"
+                values={{ name: `${pendingDelete.firstName} ${pendingDelete.lastName}` }}
+                components={{ strong: <strong /> }}
+              />
             </p>
           ) : undefined
         }
-        confirmLabel="Excluir"
-        cancelLabel="Cancelar"
+        confirmLabel={t("users:dialogs.delete.confirm")}
+        cancelLabel={t("users:dialogs.delete.cancel")}
+        confirmingLabel={t("users:dialogs.delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
         onCancel={() => setPendingDelete(null)}

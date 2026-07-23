@@ -1,4 +1,5 @@
 import type { User } from "@/types";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components";
 import UserTableRow from "./UserTableRow";
 
@@ -8,11 +9,12 @@ type Props = {
 };
 
 export default function UserTable({ users, onDelete }: Props) {
+  const { t } = useTranslation(["users"]);
   if (users.length === 0) {
     return (
       <EmptyState
-        title="Nenhum usuário encontrado"
-        description="Tente ajustar os filtros ou adicionar um novo usuário."
+        title={t("users:table.empty.title")}
+        description={t("users:table.empty.description")}
       />
     );
   }
