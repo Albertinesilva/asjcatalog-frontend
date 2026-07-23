@@ -1,47 +1,61 @@
 {
   "title": "Produtos",
-  "add": "Adicionar",
-  "search": "Pesquisar Produto",
-  "searchAria": "Pesquisar produto",
-  "filterCategory": "Filtrar por Categoria",
-  "filterCategoryAria": "Filtrar por categoria",
-  "columns": {
-    "id": "ID", "image": "Imagem", "name": "Nome",
-    "price": "Preço", "categories": "Categorias", "actions": "Ações"
-  },
-  "empty": "Nenhum produto cadastrado.",
-  "emptyFiltered": {
-    "title": "Nenhum produto encontrado",
-    "description": "Tente ajustar os filtros ou adicionar um novo produto."
-  },
-  "actions": { "view": "Ver", "edit": "Editar", "delete": "Excluir" },
-  "delete": {
-    "title": "Excluir produto",
-    "confirmBefore": "Tem certeza que deseja excluir",
-    "confirmAfter": "? Esta ação não pode ser desfeita.",
-    "confirm": "Excluir",
-    "confirming": "Excluindo...",
-    "cancel": "Cancelar",
-    "successTitle": "Produto removido",
-    "successMessage": "Produto removido com sucesso."
-  },
   "form": {
     "titleNew": "Novo produto",
-    "titleEdit": "Editar produto",
+    "titleEdit": "Editar produto"
+  },
+  "actions": {
+    "create": "Adicionar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "view": "Ver",
+    "save": "Salvar",
+    "saving": "Salvando...",
+    "cancel": "Cancelar"
+  },
+  "fields": {
     "name": "Nome",
     "price": "Preço",
     "imageUrl": "URL da Imagem",
     "description": "Descrição",
-    "categories": "Categorias",
-    "categoriesHint": "Use Ctrl/Cmd para selecionar várias.",
-    "submit": "Salvar",
-    "submitting": "Salvando...",
-    "cancel": "Cancelar",
-    "successNewTitle": "Produto criado",
-    "successNewMessage": "Produto criado com sucesso.",
-    "successEditTitle": "Produto atualizado",
-    "successEditMessage": "Produto atualizado com sucesso.",
-    "failTitle": "Falha ao salvar produto",
-    "failMessage": "Verifique os dados e tente novamente."
+    "categories": "Categorias"
+  },
+  "placeholders": {
+    "search": "Pesquisar Produto",
+    "category": "Filtrar por Categoria"
+  },
+  "hints": {
+    "categoriesMulti": "Use Ctrl/Cmd para selecionar várias."
+  },
+  "filters": {
+    "searchAria": "Pesquisar produto",
+    "categoryAria": "Filtrar por categoria"
+  },
+  "table": {
+    "empty": {
+      "title": "Nenhum produto encontrado",
+      "description": "Tente ajustar os filtros ou adicionar um novo produto."
+    }
+  },
+  "dialogs": {
+    "delete": {
+      "title": "Excluir produto",
+      "message": "Tem certeza que deseja excluir <strong>{{name}}</strong>? Esta ação não pode ser desfeita.",
+      "confirm": "Excluir",
+      "confirming": "Excluindo...",
+      "cancel": "Cancelar"
+    }
+  },
+  "success": {
+    "createdTitle": "Produto criado",
+    "createdMessage": "Produto criado com sucesso.",
+    "updatedTitle": "Produto atualizado",
+    "updatedMessage": "Produto atualizado com sucesso.",
+    "deletedTitle": "Produto removido",
+    "deletedMessage": "Produto removido com sucesso."
+  },
+  "errors": {
+    "saveTitle": "Falha ao salvar produto",
+    "savePrefix": "Erro ao salvar"
   }
 }

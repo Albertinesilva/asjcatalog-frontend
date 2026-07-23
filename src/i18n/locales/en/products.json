@@ -1,35 +1,61 @@
 {
   "title": "Products",
-  "add": "Add",
-  "search": "Search product",
-  "searchAria": "Search product",
-  "filterCategory": "Filter by category",
-  "filterCategoryAria": "Filter by category",
-  "columns": { "id": "ID", "image": "Image", "name": "Name", "price": "Price", "categories": "Categories", "actions": "Actions" },
-  "empty": "No products registered.",
-  "emptyFiltered": {
-    "title": "No products found",
-    "description": "Try adjusting the filters or adding a new product."
-  },
-  "actions": { "view": "View", "edit": "Edit", "delete": "Delete" },
-  "delete": {
-    "title": "Delete product",
-    "confirmBefore": "Are you sure you want to delete",
-    "confirmAfter": "? This action cannot be undone.",
-    "confirm": "Delete",
-    "confirming": "Deleting...",
-    "cancel": "Cancel",
-    "successTitle": "Product removed",
-    "successMessage": "Product removed successfully."
-  },
   "form": {
-    "titleNew": "New product", "titleEdit": "Edit product",
-    "name": "Name", "price": "Price", "imageUrl": "Image URL",
-    "description": "Description", "categories": "Categories",
-    "categoriesHint": "Use Ctrl/Cmd to select multiple.",
-    "submit": "Save", "submitting": "Saving...", "cancel": "Cancel",
-    "successNewTitle": "Product created", "successNewMessage": "Product created successfully.",
-    "successEditTitle": "Product updated", "successEditMessage": "Product updated successfully.",
-    "failTitle": "Failed to save product", "failMessage": "Check the data and try again."
+    "titleNew": "New product",
+    "titleEdit": "Edit product"
+  },
+  "actions": {
+    "create": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
+  },
+  "fields": {
+    "name": "Name",
+    "price": "Price",
+    "imageUrl": "Image URL",
+    "description": "Description",
+    "categories": "Categories"
+  },
+  "placeholders": {
+    "search": "Search product",
+    "category": "Filter by category"
+  },
+  "hints": {
+    "categoriesMulti": "Use Ctrl/Cmd to select multiple."
+  },
+  "filters": {
+    "searchAria": "Search product",
+    "categoryAria": "Filter by category"
+  },
+  "table": {
+    "empty": {
+      "title": "No products found",
+      "description": "Try adjusting the filters or adding a new product."
+    }
+  },
+  "dialogs": {
+    "delete": {
+      "title": "Delete product",
+      "message": "Are you sure you want to delete <strong>{{name}}</strong>? This action cannot be undone.",
+      "confirm": "Delete",
+      "confirming": "Deleting...",
+      "cancel": "Cancel"
+    }
+  },
+  "success": {
+    "createdTitle": "Product created",
+    "createdMessage": "Product created successfully.",
+    "updatedTitle": "Product updated",
+    "updatedMessage": "Product updated successfully.",
+    "deletedTitle": "Product removed",
+    "deletedMessage": "Product removed successfully."
+  },
+  "errors": {
+    "saveTitle": "Failed to save product",
+    "savePrefix": "Error while saving"
   }
 }
