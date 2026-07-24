@@ -140,7 +140,7 @@ export default function DashboardLayout() {
         <main className="flex flex-col flex-1 min-w-0">
           <header className="bg-surface border-b border-border px-md py-md lg:px-xl lg:py-lg">
             <nav
-              aria-label="Breadcrumb"
+              aria-label={t("navigation:breadcrumbs.label", { defaultValue: "Breadcrumb" })}
               className="flex flex-wrap items-center gap-xs text-caption uppercase tracking-wider text-foreground-muted"
             >
               {crumbs.map((c, i) => (

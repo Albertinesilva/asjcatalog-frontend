@@ -8,7 +8,10 @@
   "closeMenu": "Fechar menu",
   "mainNav": "Navegação principal",
   "greeting": "Olá, {{name}}",
-  "roles": { "admin": "Administrador", "operator": "Operador" },
+  "roles": {
+    "admin": "Administrador",
+    "operator": "Operador"
+  },
   "sidebar": {
     "label": "Navegação do dashboard",
     "dashboard": "Dashboard",
@@ -41,7 +44,8 @@
       "userEdit": "Editar usuário",
       "userDetails": "Detalhes do usuário",
       "profile": "Meu Perfil"
-    }
+    },
+    "label": "Breadcrumb"
   },
   "footer": "ASJ Catalog · © {{year}}"
 }

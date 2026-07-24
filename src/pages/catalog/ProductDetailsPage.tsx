@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
 import type { AxiosError } from "axios";
 
 import { ProductPrice, LoadingState, EmptyState } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { productService } from "@/services/product-service";
+import { alerts } from "@/utils/alerts";
 
 import type { ProductResponse } from "@/types";
 
@@ -44,12 +44,7 @@ export default function ProductDetailsPage() {
           return;
         }
 
-        await Swal.fire({
-          icon: "error",
-          title: t("catalog:loadErrorTitle"),
-          text: t("catalog:loadErrorMessage"),
-          confirmButtonText: "OK",
-        });
+        await alerts.error(t("catalog:loadErrorTitle"), t("catalog:loadErrorMessage"));
       } finally {
         setLoading(false);
       }
