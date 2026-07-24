@@ -1,4 +1,5 @@
 import Swal, { type SweetAlertOptions, type SweetAlertResult } from "sweetalert2";
+import i18n from "@/i18n/config";
 
 /**
  * Wrapper centralizado de SweetAlert2.
@@ -20,6 +21,10 @@ const baseTheme = {
   cancelButtonColor: "#9E9E9E",
 };
 
+/** Traduz sempre no idioma ativo (fora do ciclo React). */
+const tr = (key: string, fallback: string): string =>
+  (i18n.t(key, { defaultValue: fallback }) as string) ?? fallback;
+
 function fire(options: SweetAlertOptions): Promise<SweetAlertResult> {
   return Swal.fire({
     heightAuto: false,
@@ -34,7 +39,7 @@ export const alerts = {
       title,
       text,
       ...baseTheme,
-      confirmButtonText: "OK",
+      confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
 
@@ -44,7 +49,7 @@ export const alerts = {
       title,
       text,
       ...baseTheme,
-      confirmButtonText: "OK",
+      confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
 
@@ -54,7 +59,7 @@ export const alerts = {
       title,
       text,
       ...baseTheme,
-      confirmButtonText: "OK",
+      confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
 
@@ -64,15 +69,15 @@ export const alerts = {
       title,
       text,
       ...baseTheme,
-      confirmButtonText: "OK",
+      confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
 
   confirm(
     title: string,
     text?: string,
-    confirmText = "Confirmar",
-    cancelText = "Cancelar",
+    confirmText?: string,
+    cancelText?: string,
   ): Promise<SweetAlertResult> {
     return fire({
       icon: "question",
@@ -80,17 +85,17 @@ export const alerts = {
       text,
       showCancelButton: true,
       ...baseTheme,
-      confirmButtonText: confirmText,
-      cancelButtonText: cancelText,
+      confirmButtonText: confirmText ?? tr("common:actions.confirm", "Confirmar"),
+      cancelButtonText: cancelText ?? tr("common:actions.cancel", "Cancelar"),
     });
   },
 
-  loading(title = "Processando...", text?: string): void {
+  loading(title?: string, text?: string): void {
     if (Swal.isVisible()) {
       Swal.close();
     }
     Swal.fire({
-      title,
+      title: title ?? tr("common:states.processing", "Processando..."),
       text,
       heightAuto: false,
       allowOutsideClick: false,
