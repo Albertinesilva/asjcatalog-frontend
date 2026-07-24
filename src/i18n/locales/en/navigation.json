@@ -1,25 +1,51 @@
 {
-  "home": "Home", "catalog": "Catalog", "dashboard": "Dashboard",
-  "login": "Sign in", "logout": "Sign out",
-  "openMenu": "Open menu", "closeMenu": "Close menu", "mainNav": "Main navigation",
+  "home": "Home",
+  "catalog": "Catalog",
+  "dashboard": "Dashboard",
+  "login": "Sign in",
+  "logout": "Sign out",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "mainNav": "Main navigation",
   "greeting": "Hi, {{name}}",
-  "roles": { "admin": "Administrator", "operator": "Operator" },
+  "roles": {
+    "admin": "Administrator",
+    "operator": "Operator"
+  },
   "sidebar": {
     "label": "Dashboard navigation",
-    "dashboard": "Dashboard", "products": "Products", "categories": "Categories",
-    "users": "Users", "profile": "My Profile", "publicCatalog": "Public Catalog"
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "categories": "Categories",
+    "users": "Users",
+    "profile": "My Profile",
+    "publicCatalog": "Public Catalog"
   },
   "breadcrumbs": {
-    "root": "Dashboard", "products": "Products", "categories": "Categories",
-    "users": "Users", "profile": "My Profile",
-    "new": "New", "newFem": "New", "edit": "Edit", "details": "Details",
+    "root": "Dashboard",
+    "products": "Products",
+    "categories": "Categories",
+    "users": "Users",
+    "profile": "My Profile",
+    "new": "New",
+    "newFem": "New",
+    "edit": "Edit",
+    "details": "Details",
     "titles": {
-      "dashboard": "Dashboard", "products": "Products",
-      "productNew": "New product", "productEdit": "Edit product",
-      "categories": "Categories", "categoryNew": "New category", "categoryEdit": "Edit category",
-      "users": "Users", "userNew": "New user", "userEdit": "Edit user", "userDetails": "User details",
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "productNew": "New product",
+      "productEdit": "Edit product",
+      "categories": "Categories",
+      "categoryNew": "New category",
+      "categoryEdit": "Edit category",
+      "users": "Users",
+      "userNew": "New user",
+      "userEdit": "Edit user",
+      "userDetails": "User details",
       "profile": "My Profile"
-    }
+    },
+    "label": "Breadcrumb"
   },
   "footer": "ASJ Catalog · © {{year}}"
 }

@@ -1,25 +1,51 @@
 {
-  "home": "Inicio", "catalog": "Catálogo", "dashboard": "Panel",
-  "login": "Entrar", "logout": "Salir",
-  "openMenu": "Abrir menú", "closeMenu": "Cerrar menú", "mainNav": "Navegación principal",
+  "home": "Inicio",
+  "catalog": "Catálogo",
+  "dashboard": "Panel",
+  "login": "Entrar",
+  "logout": "Salir",
+  "openMenu": "Abrir menú",
+  "closeMenu": "Cerrar menú",
+  "mainNav": "Navegación principal",
   "greeting": "Hola, {{name}}",
-  "roles": { "admin": "Administrador", "operator": "Operador" },
+  "roles": {
+    "admin": "Administrador",
+    "operator": "Operador"
+  },
   "sidebar": {
     "label": "Navegación del panel",
-    "dashboard": "Panel", "products": "Productos", "categories": "Categorías",
-    "users": "Usuarios", "profile": "Mi Perfil", "publicCatalog": "Catálogo Público"
+    "dashboard": "Panel",
+    "products": "Productos",
+    "categories": "Categorías",
+    "users": "Usuarios",
+    "profile": "Mi Perfil",
+    "publicCatalog": "Catálogo Público"
   },
   "breadcrumbs": {
-    "root": "Panel", "products": "Productos", "categories": "Categorías",
-    "users": "Usuarios", "profile": "Mi Perfil",
-    "new": "Nuevo", "newFem": "Nueva", "edit": "Editar", "details": "Detalles",
+    "root": "Panel",
+    "products": "Productos",
+    "categories": "Categorías",
+    "users": "Usuarios",
+    "profile": "Mi Perfil",
+    "new": "Nuevo",
+    "newFem": "Nueva",
+    "edit": "Editar",
+    "details": "Detalles",
     "titles": {
-      "dashboard": "Panel", "products": "Productos",
-      "productNew": "Nuevo producto", "productEdit": "Editar producto",
-      "categories": "Categorías", "categoryNew": "Nueva categoría", "categoryEdit": "Editar categoría",
-      "users": "Usuarios", "userNew": "Nuevo usuario", "userEdit": "Editar usuario", "userDetails": "Detalles del usuario",
+      "dashboard": "Panel",
+      "products": "Productos",
+      "productNew": "Nuevo producto",
+      "productEdit": "Editar producto",
+      "categories": "Categorías",
+      "categoryNew": "Nueva categoría",
+      "categoryEdit": "Editar categoría",
+      "users": "Usuarios",
+      "userNew": "Nuevo usuario",
+      "userEdit": "Editar usuario",
+      "userDetails": "Detalles del usuario",
       "profile": "Mi Perfil"
-    }
+    },
+    "label": "Ruta de navegación"
   },
   "footer": "ASJ Catalog · © {{year}}"
 }
