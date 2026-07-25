@@ -9,6 +9,7 @@ import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { inputBaseClasses } from "@/components/ui/Input";
 import { handleApiError } from "@/utils/api-error-handler";
+import { buildPasswordValidation } from "@/utils/password";
 
 const AVAILABLE_ROLES: { id: number; authority: Role }[] = [
   { id: 1, authority: "ROLE_OPERATOR" },
@@ -134,10 +135,7 @@ export default function UserForm({ mode }: Props) {
         {mode === "create" && (
           <div className="flex flex-col gap-sm">
             {(() => {
-              const reg = register("password", {
-                required: t("validation:password.requiredShort"),
-                minLength: { value: 8, message: t("validation:password.minLength") },
-              });
+              const reg = register("password", buildPasswordValidation(t));
               return (
                 <PasswordField
                   id="user-password"

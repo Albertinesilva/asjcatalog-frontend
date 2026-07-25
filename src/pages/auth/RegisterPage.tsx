@@ -8,6 +8,7 @@ import { Button, Card, inputBaseClasses } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
 import { handleApiError } from "@/utils/api-error-handler";
+import { buildPasswordValidation } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
@@ -54,29 +55,37 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-1.5">
           <input type="text" autoComplete="given-name" className={inputBaseClasses}
             placeholder={t("auth:register.firstName")} aria-label={t("auth:register.firstName")}
-            {...register("firstName", { required: true, maxLength: 80 })} />
-          {errors.firstName?.type === "required" && (<p className={authFieldError}>{t("validation:firstNameRequired")}</p>)}
+            {...register("firstName", {
+              required: t("validation:firstNameRequired"),
+              maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
+            })} />
+          {errors.firstName?.message && (<p className={authFieldError}>{errors.firstName.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <input type="text" autoComplete="family-name" className={inputBaseClasses}
             placeholder={t("auth:register.lastName")} aria-label={t("auth:register.lastName")}
-            {...register("lastName", { required: true, maxLength: 80 })} />
-          {errors.lastName?.type === "required" && (<p className={authFieldError}>{t("validation:lastNameRequired")}</p>)}
+            {...register("lastName", {
+              required: t("validation:lastNameRequired"),
+              maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
+            })} />
+          {errors.lastName?.message && (<p className={authFieldError}>{errors.lastName.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <input type="email" autoComplete="email" className={inputBaseClasses}
             placeholder={t("auth:register.email")} aria-label={t("auth:register.email")}
-            {...register("email", { required: true, pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g })} />
-          {errors.email?.type === "required" && (<p className={authFieldError}>{t("validation:email.requiredShort")}</p>)}
-          {errors.email?.type === "pattern" && (<p className={authFieldError}>{t("validation:emailInvalid")}</p>)}
+            {...register("email", {
+              required: t("validation:email.requiredShort"),
+              pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, message: t("validation:emailInvalid") },
+            })} />
+          {errors.email?.message && (<p className={authFieldError}>{errors.email.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-sm">
           {(() => {
             const reg = register("password", {
-              required: true, minLength: 8, pattern: /^(?=.*\d).{8,}$/,
+              ...buildPasswordValidation(t),
               onBlur: () => { if (passwordValue.length === 0) setRequirementsOpen(false); },
             });
             return (
@@ -85,11 +94,7 @@ export default function RegisterPage() {
                 {...reg} onFocus={() => setRequirementsOpen(true)} />
             );
           })()}
-          {errors.password?.type === "required" && (<p className={authFieldError}>{t("validation:password.requiredShort")}</p>)}
-          {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
-            <p className={authFieldError}>{t("validation:password.rule")}</p>
-          )}
-          {errors.password?.type === "server" && (<p className={authFieldError}>{errors.password.message}</p>)}
+          {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
           <PasswordRequirements password={passwordValue} collapsible
             open={requirementsOpen} onOpenChange={setRequirementsOpen} />
         </div>
@@ -98,12 +103,14 @@ export default function RegisterPage() {
           <PasswordField placeholder={t("auth:register.confirm")}
             autoComplete="new-password" aria-label={t("auth:register.confirmAria")}
             {...register("passwordConfirm", {
-              required: true,
+              required: t("validation:password.confirm"),
               validate: (value) => value === passwordValue || t("validation:password.mismatch"),
             })} />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
-          {errors.passwordConfirm?.type === "required" && (<p className={authFieldError}>{t("validation:password.confirm")}</p>)}
-          {errors.passwordConfirm?.type === "validate" && !confirmValue && (
+          {errors.passwordConfirm?.message && !confirmValue && (
+            <p className={authFieldError}>{errors.passwordConfirm.message}</p>
+          )}
+          {errors.passwordConfirm?.type === "server" && confirmValue && (
             <p className={authFieldError}>{errors.passwordConfirm.message}</p>
           )}
         </div>

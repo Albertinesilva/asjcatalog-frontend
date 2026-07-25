@@ -6,6 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { handleApiError } from "@/utils/api-error-handler";
+import { buildPasswordValidation } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type FormFields = { password: string; confirmPassword: string };
@@ -47,17 +48,13 @@ export default function ResetPasswordPage() {
 
         <div className="flex flex-col gap-sm">
           {(() => {
-            const reg = register("password", { required: true, minLength: 8, pattern: /^(?=.*\d).{8,}$/ });
+            const reg = register("password", buildPasswordValidation(t));
             return (
               <PasswordField placeholder={t("auth:reset.newPasswordPlaceholder")}
                 autoComplete="new-password" aria-label={t("auth:reset.newPasswordAria")} {...reg} />
             );
           })()}
-          {errors.password?.type === "required" && (<p className={authFieldError}>{t("validation:password.requiredShort")}</p>)}
-          {(errors.password?.type === "minLength" || errors.password?.type === "pattern") && (
-            <p className={authFieldError}>{t("validation:password.rule")}</p>
-          )}
-          {errors.password?.type === "server" && (<p className={authFieldError}>{errors.password.message}</p>)}
+          {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
           <PasswordRequirements password={passwordValue} />
         </div>
 
@@ -65,12 +62,11 @@ export default function ResetPasswordPage() {
           <PasswordField placeholder={t("auth:reset.confirmPasswordPlaceholder")}
             autoComplete="new-password" aria-label={t("auth:reset.confirmPasswordAria")}
             {...register("confirmPassword", {
-              required: true,
+              required: t("validation:password.confirm"),
               validate: (v) => v === passwordValue || t("validation:password.mismatch"),
             })} />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
-          {errors.confirmPassword?.type === "required" && (<p className={authFieldError}>{t("validation:password.confirm")}</p>)}
-          {errors.confirmPassword?.type === "validate" && !confirmValue && (
+          {errors.confirmPassword?.message && !confirmValue && (
             <p className={authFieldError}>{errors.confirmPassword.message}</p>
           )}
         </div>

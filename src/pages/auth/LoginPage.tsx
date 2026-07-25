@@ -58,16 +58,19 @@ export default function LoginPage() {
         <div className="flex flex-col gap-1.5">
           <input type="email" autoComplete="email" className={inputBaseClasses}
             placeholder={t("auth:login.emailPlaceholder")} aria-label={t("auth:login.emailPlaceholder")}
-            {...register("username", { required: true, pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g })} />
-          {errors.username?.type === "required" && (<p className={authFieldError}>{t("validation:email.required")}</p>)}
-          {errors.username?.type === "pattern" && (<p className={authFieldError}>{t("validation:emailInvalid")}</p>)}
+            {...register("username", {
+              required: t("validation:email.required"),
+              pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, message: t("validation:emailInvalid") },
+            })} />
+          {errors.username?.message && (<p className={authFieldError}>{errors.username.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <PasswordInput className={cn(inputBaseClasses)}
             placeholder={t("auth:login.passwordPlaceholder")} autoComplete="current-password"
-            aria-label={t("auth:login.passwordPlaceholder")} {...register("password", { required: true })} />
-          {errors.password?.type === "required" && (<p className={authFieldError}>{t("validation:password.required")}</p>)}
+            aria-label={t("auth:login.passwordPlaceholder")}
+            {...register("password", { required: t("validation:password.required") })} />
+          {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-xs items-start">
