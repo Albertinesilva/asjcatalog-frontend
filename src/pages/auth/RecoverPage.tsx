@@ -39,20 +39,21 @@ export default function RecoverPage() {
         <div className="flex flex-col gap-1.5">
           <input type="email" autoComplete="email" className={inputBaseClasses}
             placeholder={t("auth:recover.emailPlaceholder")} aria-label={t("auth:recover.emailPlaceholder")}
-            {...register("email", { required: true, pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g })} />
-          {errors.email?.type === "required" && (<p className={authFieldError}>{t("validation:email.requiredShort")}</p>)}
-          {errors.email?.type === "pattern" && (<p className={authFieldError}>{t("validation:emailInvalid")}</p>)}
+            {...register("email", {
+              required: t("validation:email.requiredShort"),
+              pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, message: t("validation:emailInvalid") },
+            })} />
+          {errors.email?.message && (<p className={authFieldError}>{errors.email.message}</p>)}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <input type="email" autoComplete="email" className={inputBaseClasses}
             placeholder={t("auth:recover.confirmEmailPlaceholder")} aria-label={t("auth:recover.confirmEmailAria")}
             {...register("emailConfirm", {
-              required: true,
+              required: t("validation:email.confirm"),
               validate: (v) => v === emailValue || t("validation:email.mismatch"),
             })} />
-          {errors.emailConfirm?.type === "required" && (<p className={authFieldError}>{t("validation:email.confirm")}</p>)}
-          {errors.emailConfirm?.type === "validate" && (<p className={authFieldError}>{errors.emailConfirm.message}</p>)}
+          {errors.emailConfirm?.message && (<p className={authFieldError}>{errors.emailConfirm.message}</p>)}
         </div>
 
         <div className="flex gap-sm mt-sm">

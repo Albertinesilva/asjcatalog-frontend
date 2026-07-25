@@ -14,6 +14,7 @@ import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
+import { buildPasswordValidation } from "@/utils/password";
 
 type ProfileFields = {
   firstName: string;
@@ -218,15 +219,7 @@ export default function ProfilePage() {
             className="flex flex-col gap-md"
           >
             {(() => {
-              const reg = registerPassword("password", {
-                required: t("validation:password.required"),
-                minLength: { value: 8, message: t("validation:password.minLength") },
-                maxLength: { value: 72, message: t("validation:password.maxLength") },
-                pattern: {
-                  value: /^(?=.*\d).{8,}$/,
-                  message: t("validation:password.rule"),
-                },
-              });
+              const reg = registerPassword("password", buildPasswordValidation(t));
               return (
                 <PasswordField
                   id="password"
