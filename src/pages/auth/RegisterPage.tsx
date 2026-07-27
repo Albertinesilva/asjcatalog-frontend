@@ -22,6 +22,14 @@ export default function RegisterPage() {
     useForm<RegisterFormFields>();
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("passwordConfirm") ?? "";
+  const firstNameValue = watch("firstName") ?? "";
+  const lastNameValue = watch("lastName") ?? "";
+  const emailValue = watch("email") ?? "";
+  const passwordContext = {
+    firstName: firstNameValue,
+    lastName: lastNameValue,
+    email: emailValue,
+  };
   const [requirementsOpen, setRequirementsOpen] = useState(false);
 
   const onSubmit = async (data: RegisterFormFields) => {
@@ -85,7 +93,7 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-sm">
           {(() => {
             const reg = register("password", {
-              ...buildPasswordValidation(t),
+              ...buildPasswordValidation(t, () => passwordContext),
               onBlur: () => { if (passwordValue.length === 0) setRequirementsOpen(false); },
             });
             return (
@@ -96,7 +104,8 @@ export default function RegisterPage() {
           })()}
           {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
           <PasswordRequirements password={passwordValue} collapsible
-            open={requirementsOpen} onOpenChange={setRequirementsOpen} />
+            open={requirementsOpen} onOpenChange={setRequirementsOpen}
+            context={passwordContext} />
         </div>
 
         <div className="flex flex-col gap-1.5">
