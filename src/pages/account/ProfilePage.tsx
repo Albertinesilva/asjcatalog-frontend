@@ -135,6 +135,11 @@ export default function ProfilePage() {
 
   const passwordValue = watchPassword("password") ?? "";
   const confirmPasswordValue = watchPassword("confirmPassword") ?? "";
+  const passwordContext = {
+    firstName: user.firstName ?? "",
+    lastName: user.lastName ?? "",
+    email: user.email ?? "",
+  };
 
   return (
     <div className="flex flex-col gap-lg">
@@ -219,7 +224,7 @@ export default function ProfilePage() {
             className="flex flex-col gap-md"
           >
             {(() => {
-              const reg = registerPassword("password", buildPasswordValidation(t));
+              const reg = registerPassword("password", buildPasswordValidation(t, () => passwordContext));
               return (
                 <PasswordField
                   id="password"
@@ -231,7 +236,7 @@ export default function ProfilePage() {
                 />
               );
             })()}
-            <PasswordRequirements password={passwordValue} />
+            <PasswordRequirements password={passwordValue} context={passwordContext} />
 
             <PasswordField
               id="confirmPassword"

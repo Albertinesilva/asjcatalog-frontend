@@ -50,6 +50,14 @@ export default function UserForm({ mode }: Props) {
   });
 
   const passwordValue = watch("password") ?? "";
+  const firstNameValue = watch("firstName") ?? "";
+  const lastNameValue = watch("lastName") ?? "";
+  const emailValue = watch("email") ?? "";
+  const passwordContext = {
+    firstName: firstNameValue,
+    lastName: lastNameValue,
+    email: emailValue,
+  };
 
   useEffect(() => {
     if (mode !== "edit" || !id) return;
@@ -135,7 +143,7 @@ export default function UserForm({ mode }: Props) {
         {mode === "create" && (
           <div className="flex flex-col gap-sm">
             {(() => {
-              const reg = register("password", buildPasswordValidation(t));
+              const reg = register("password", buildPasswordValidation(t, () => passwordContext));
               return (
                 <PasswordField
                   id="user-password"
@@ -147,7 +155,7 @@ export default function UserForm({ mode }: Props) {
                 />
               );
             })()}
-            <PasswordRequirements password={passwordValue} />
+            <PasswordRequirements password={passwordValue} context={passwordContext} />
           </div>
         )}
         <div className="flex flex-col gap-1.5">

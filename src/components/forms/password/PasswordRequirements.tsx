@@ -5,6 +5,7 @@ import {
   evaluatePassword,
   PASSWORD_CRITERIA,
   type PasswordCriterion,
+  type PersonalDataContext,
 } from "@/utils/password";
 import PasswordStrength from "./PasswordStrength";
 
@@ -16,6 +17,7 @@ type Props = {
   showStrength?: boolean;
   className?: string;
   id?: string;
+  context?: PersonalDataContext;
 };
 
 const LockIcon = ({ open }: { open: boolean }) => (
@@ -35,12 +37,13 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
 );
 
 function RequirementsList({
-  password, evaluation, showStrength, descriptionId,
+  password, evaluation, showStrength, descriptionId, criteria,
 }: {
   password: string;
   evaluation: ReturnType<typeof evaluatePassword>;
   showStrength: boolean;
   descriptionId?: string;
+  criteria: typeof PASSWORD_CRITERIA;
 }) {
   const { t } = useTranslation();
   return (
@@ -51,11 +54,11 @@ function RequirementsList({
           {t("validation:password.criteria.title")}
         </p>
         <span className="text-caption font-medium text-foreground-muted tabular-nums">
-          {evaluation.score}/{PASSWORD_CRITERIA.length}
+          {criteria.filter((c) => evaluation[c.key as PasswordCriterion]).length}/{criteria.length}
         </span>
       </div>
       <ul className="m-0 p-0 list-none flex flex-col gap-xs" role="list">
-        {PASSWORD_CRITERIA.map(({ key, labelKey }) => {
+        {criteria.map(({ key, labelKey }) => {
           const ok = evaluation[key as PasswordCriterion];
           return (
             <li key={key}
@@ -83,7 +86,7 @@ function RequirementsList({
 }
 
 export default function PasswordRequirements({
-  password, collapsible = false, open, onOpenChange, showStrength = true, className, id,
+  password, collapsible = false, open, onOpenChange, showStrength = true, className, id, context,
 }: Props) {
   const { t } = useTranslation();
   const autoId = useId();
@@ -96,10 +99,15 @@ export default function PasswordRequirements({
     onOpenChange?.(v);
   };
 
-  const evaluation = evaluatePassword(password);
+  const evaluation = evaluatePassword(password, context);
+  const criteria = context
+    ? PASSWORD_CRITERIA
+    : PASSWORD_CRITERIA.filter((c) => c.key !== "noPersonalData");
+  const total = criteria.length;
+  const metCount = criteria.filter((c) => evaluation[c.key as PasswordCriterion]).length;
   const body: ReactNode = (
     <RequirementsList password={password} evaluation={evaluation}
-      showStrength={showStrength} descriptionId={panelId} />
+      showStrength={showStrength} descriptionId={panelId} criteria={criteria} />
   );
 
   if (!collapsible) {
@@ -126,12 +134,12 @@ export default function PasswordRequirements({
         )}>
         <span className="flex items-center gap-sm">
           <span aria-hidden="true"
-            className={cn(evaluation.score === 5 ? "text-success" : "text-foreground-muted")}>
-            <LockIcon open={evaluation.score === 5} />
+            className={cn(metCount === total ? "text-success" : "text-foreground-muted")}>
+            <LockIcon open={metCount === total} />
           </span>
           {isOpen ? t("validation:password.criteria.hide") : t("validation:password.criteria.show")}
           <span className="text-foreground-muted font-normal tabular-nums">
-            ({evaluation.score}/{PASSWORD_CRITERIA.length})
+            ({metCount}/{total})
           </span>
         </span>
         <ChevronIcon open={isOpen} />
