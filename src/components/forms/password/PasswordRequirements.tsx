@@ -63,15 +63,15 @@ function RequirementsList({
           return (
             <li key={key}
               className={cn(
-                "flex items-center gap-sm text-small transition-colors duration-slow ease-standard",
+                "flex items-center gap-xs text-small leading-tight transition-colors duration-slow ease-standard",
                 ok ? "text-success" : "text-danger",
               )}>
               <span aria-hidden="true"
-                className={cn("inline-flex transition-transform duration-slow ease-standard",
+                className={cn("inline-flex shrink-0 transition-transform duration-slow ease-standard",
                   ok && "scale-105")}>
                 <LockIcon open={ok} />
               </span>
-              <span className="text-foreground-muted-none text-foreground">
+              <span className="flex-1 min-w-0">
                 <span className={cn(ok ? "text-success" : "text-foreground-muted")}>{t(labelKey)}</span>
               </span>
               <span className="sr-only">
