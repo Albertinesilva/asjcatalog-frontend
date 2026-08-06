@@ -61,16 +61,13 @@ export default function ProfilePage() {
     return <ErrorState message={t("profile:loadError")} />;
   }
 
-  const currentRoleIds = (user.roles ?? []).map((r) => r.id);
-
   const onSaveProfile = async (data: ProfileFields) => {
     setProfileFeedback(null);
     try {
-      await userService.update(user.id, {
+      await userService.updateAuthenticatedUser({
         firstName: data.firstName.trim(),
         lastName: data.lastName.trim(),
         email: data.email.trim(),
-        roleIds: currentRoleIds,
       });
       await refreshUser();
       setProfileFeedback({ kind: "success", message: t("profile:successProfileMessage") });
@@ -99,7 +96,7 @@ export default function ProfilePage() {
     try {
       await userService.update(user.id, {
         password: data.password,
-        roleIds: currentRoleIds,
+        roleIds: (user.roles ?? []).map((r) => r.id),
       });
       passwordForm.reset({ password: "", confirmPassword: "" });
       setPasswordFeedback({ kind: "success", message: t("profile:successPasswordMessage") });

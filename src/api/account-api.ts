@@ -1,9 +1,12 @@
 import { http } from "./axios";
 import { ENDPOINTS } from "@/utils/constants";
-import type { User, UserRegisterRequest } from "@/types";
+import type { AuthenticatedUserUpdateRequest, User, UserRegisterRequest } from "@/types";
 
 export const accountApi = {
   me: () => http.get<User>(ENDPOINTS.accountsMe).then((r) => r.data),
+
+  updateMe: (data: AuthenticatedUserUpdateRequest) =>
+    http.put<User>(ENDPOINTS.accountsMe, data).then((r) => r.data),
 
   register: (data: UserRegisterRequest) =>
     http.post<User>(ENDPOINTS.accountsRegister, data).then((r) => r.data),
