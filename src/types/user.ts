@@ -41,3 +41,9 @@ export type UserUpdateRequest = {
   password?: string;
   roleIds?: number[];
 };
+
+export type AuthenticatedUserUpdateRequest = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
