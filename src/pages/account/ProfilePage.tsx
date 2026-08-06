@@ -96,7 +96,7 @@ export default function ProfilePage() {
     try {
       await userService.update(user.id, {
         password: data.password,
-        roleIds: currentRoleIds,
+        roleIds: (user.roles ?? []).map((r) => r.id),
       });
       passwordForm.reset({ password: "", confirmPassword: "" });
       setPasswordFeedback({ kind: "success", message: t("profile:successPasswordMessage") });
