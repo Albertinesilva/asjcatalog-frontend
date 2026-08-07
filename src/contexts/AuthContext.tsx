@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: state.user,
       userId: state.token?.userId ?? null,
       username: state.token?.username ?? null,
-      roles: (state.token?.authorities ?? []) as Role[],
+      roles: state.token?.authorities ?? [],
       login,
       logout,
       isAuthenticated: () => state.authenticated,
