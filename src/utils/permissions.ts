@@ -1,12 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 import { getAuthData } from "./storage";
-import type { AccessToken, Role } from "@/types";
+import type { JwtPayload, Role } from "@/types";
 
-export function decodeToken(): AccessToken | null {
+export function decodeToken(): JwtPayload | null {
   const data = getAuthData();
   if (!data?.access_token) return null;
   try {
-    return jwtDecode<AccessToken>(data.access_token);
+    return jwtDecode<JwtPayload>(data.access_token);
   } catch {
     return null;
   }
@@ -16,6 +16,16 @@ export function isTokenValid(): boolean {
   const decoded = decodeToken();
   if (!decoded?.exp) return false;
   return Date.now() < decoded.exp * 1000;
+}
+
+/** Identificador do usuário autenticado (claim `userId`). */
+export function getUserId(): number | null {
+  return decodeToken()?.userId ?? null;
+}
+
+/** Login do usuário autenticado (claim `username`, nunca `sub`). */
+export function getUsername(): string | null {
+  return decodeToken()?.username ?? null;
 }
 
 export function hasAnyRole(roles: Role[] = []): boolean {
