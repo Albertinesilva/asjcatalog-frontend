@@ -1,12 +1,21 @@
 import { http } from "./axios";
 import { ENDPOINTS } from "@/utils/constants";
-import type { AuthenticatedUserUpdateRequest, User, UserRegisterRequest } from "@/types";
+import type {
+  AuthenticatedPasswordUpdateRequest,
+  AuthenticatedUserUpdateRequest,
+  User,
+  UserRegisterRequest,
+} from "@/types";
 
 export const accountApi = {
   me: () => http.get<User>(ENDPOINTS.accountsMe).then((r) => r.data),
 
   updateMe: (data: AuthenticatedUserUpdateRequest) =>
     http.put<User>(ENDPOINTS.accountsMe, data).then((r) => r.data),
+
+  /** PATCH /api/v1/accounts/me/password — nunca envia id, roles ou email. */
+  updatePassword: (data: AuthenticatedPasswordUpdateRequest) =>
+    http.patch<void>(ENDPOINTS.accountsMePassword, data).then((r) => r.data),
 
   register: (data: UserRegisterRequest) =>
     http.post<User>(ENDPOINTS.accountsRegister, data).then((r) => r.data),
