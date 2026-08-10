@@ -227,9 +227,6 @@ export default function ProfilePage() {
             noValidate
             className="flex flex-col gap-md"
           >
-            {(() => {
-              return null;
-            })()}
             <PasswordField
               id="currentPassword"
               label={t("profile:fields.currentPassword")}
