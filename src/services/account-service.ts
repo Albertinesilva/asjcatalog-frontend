@@ -1,4 +1,5 @@
 import { accountApi } from "@/api/account-api";
+import type { AuthenticatedPasswordUpdateRequest } from "@/types";
 export const accountService = accountApi;
 
 /**
@@ -19,4 +20,9 @@ export async function requestPasswordRecovery(email: string) {
 
 export async function resetPassword(token: string, password: string) {
   return accountApi.resetPassword(token, password);
+}
+
+/** Alteração da própria senha: PATCH /api/v1/accounts/me/password */
+export async function updateOwnPassword(data: AuthenticatedPasswordUpdateRequest) {
+  return accountApi.updatePassword(data);
 }
