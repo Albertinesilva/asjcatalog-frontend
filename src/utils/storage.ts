@@ -15,12 +15,15 @@ export function getAuthData(): LoginResponse | null {
 export function saveAuthData(data: LoginResponse): void {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(TOKEN_KEY, JSON.stringify(data));
+  // Uma nova sessão invalida qualquer e-mail pendente de ativação.
+  window.localStorage.removeItem(PENDING_EMAIL_KEY);
   window.dispatchEvent(new Event("auth-change"));
 }
 
 export function removeAuthData(): void {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(TOKEN_KEY);
+  window.localStorage.removeItem(PENDING_EMAIL_KEY);
   window.dispatchEvent(new Event("auth-change"));
 }
 

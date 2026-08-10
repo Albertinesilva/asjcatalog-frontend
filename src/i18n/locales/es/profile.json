@@ -1,19 +1,33 @@
 {
   "title": "Mi Perfil",
   "intro": "Administre sus datos personales y credenciales de acceso.",
-  "sections": { "personal": "Datos personales", "password": "Cambiar contraseña" },
+  "sections": {
+    "personal": "Datos personales",
+    "password": "Cambiar contraseña"
+  },
   "fields": {
-    "firstName": "Nombre", "lastName": "Apellido", "email": "Email",
-    "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirmPassword": "Confirmar contraseña"
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña"
   },
   "loading": "Cargando perfil...",
   "loadError": "No fue posible cargar su perfil.",
   "actions": {
-    "saveProfile": "Guardar cambios", "savingProfile": "Guardando...",
-    "changePassword": "Cambiar contraseña", "changingPassword": "Cambiando..."
+    "saveProfile": "Guardar cambios",
+    "savingProfile": "Guardando...",
+    "changePassword": "Cambiar contraseña",
+    "changingPassword": "Cambiando..."
   },
-  "successProfileTitle": "Perfil actualizado", "successProfileMessage": "Perfil actualizado correctamente.",
-  "successPasswordTitle": "Contraseña cambiada", "successPasswordMessage": "Contraseña cambiada correctamente.",
-  "failProfileTitle": "Error al actualizar perfil", "failProfileMessage": "No fue posible actualizar el perfil.",
-  "failPasswordTitle": "Error al cambiar contraseña", "failPasswordMessage": "No fue posible cambiar la contraseña."
+  "successProfileTitle": "Perfil actualizado",
+  "successProfileMessage": "Perfil actualizado correctamente.",
+  "successPasswordTitle": "Contraseña cambiada",
+  "successPasswordMessage": "Contraseña cambiada correctamente.",
+  "failProfileTitle": "Error al actualizar perfil",
+  "failProfileMessage": "No fue posible actualizar el perfil.",
+  "failPasswordTitle": "Error al cambiar contraseña",
+  "failPasswordMessage": "No fue posible cambiar la contraseña.",
+  "emailChangeNotice": "El próximo inicio de sesión deberá usar el nuevo email."
 }

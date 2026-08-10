@@ -14,14 +14,8 @@ export type User = {
   roles?: UserRole[];
 };
 
-export type UserDetails = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  active: boolean;
-  roles: UserRole[];
-};
+/** Mesma entidade de `User`, com `roles` garantido (respostas detalhadas do admin). */
+export type UserDetails = User & { roles: UserRole[] };
 
 export type UserRegisterRequest = {
   firstName: string;
@@ -46,4 +40,11 @@ export type AuthenticatedUserUpdateRequest = {
   firstName: string;
   lastName: string;
   email: string;
+};
+
+/** PATCH /api/v1/accounts/me/password — identidade vem do JWT. */
+export type AuthenticatedPasswordUpdateRequest = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 };

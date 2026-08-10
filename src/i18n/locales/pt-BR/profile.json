@@ -1,19 +1,33 @@
 {
   "title": "Meu Perfil",
   "intro": "Gerencie seus dados pessoais e credenciais de acesso.",
-  "sections": { "personal": "Dados pessoais", "password": "Alterar senha" },
+  "sections": {
+    "personal": "Dados pessoais",
+    "password": "Alterar senha"
+  },
   "fields": {
-    "firstName": "Nome", "lastName": "Sobrenome", "email": "Email",
-    "currentPassword": "Senha atual", "newPassword": "Nova senha", "confirmPassword": "Confirmar senha"
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmPassword": "Confirmar senha"
   },
   "loading": "Carregando perfil...",
   "loadError": "Não foi possível carregar seu perfil.",
   "actions": {
-    "saveProfile": "Salvar alterações", "savingProfile": "Salvando...",
-    "changePassword": "Alterar senha", "changingPassword": "Alterando..."
+    "saveProfile": "Salvar alterações",
+    "savingProfile": "Salvando...",
+    "changePassword": "Alterar senha",
+    "changingPassword": "Alterando..."
   },
-  "successProfileTitle": "Perfil atualizado", "successProfileMessage": "Perfil atualizado com sucesso.",
-  "successPasswordTitle": "Senha alterada", "successPasswordMessage": "Senha alterada com sucesso.",
-  "failProfileTitle": "Falha ao atualizar perfil", "failProfileMessage": "Não foi possível atualizar o perfil.",
-  "failPasswordTitle": "Falha ao alterar senha", "failPasswordMessage": "Não foi possível alterar a senha."
+  "successProfileTitle": "Perfil atualizado",
+  "successProfileMessage": "Perfil atualizado com sucesso.",
+  "successPasswordTitle": "Senha alterada",
+  "successPasswordMessage": "Senha alterada com sucesso.",
+  "failProfileTitle": "Falha ao atualizar perfil",
+  "failProfileMessage": "Não foi possível atualizar o perfil.",
+  "failPasswordTitle": "Falha ao alterar senha",
+  "failPasswordMessage": "Não foi possível alterar a senha.",
+  "emailChangeNotice": "O próximo login deverá usar o novo email."
 }
