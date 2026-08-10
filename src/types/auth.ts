@@ -39,7 +39,6 @@ export type AuthContextData = {
   authenticated: boolean;
   loading: boolean;
   user: User | null;
-  token: AccessToken | null;
   /** Identificador do usuário autenticado, vindo do claim `userId` do JWT. */
   userId: number | null;
   /** Login (e-mail) do usuário autenticado, vindo do claim `username`. */
