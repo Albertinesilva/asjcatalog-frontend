@@ -1,19 +1,33 @@
 {
   "title": "My Profile",
   "intro": "Manage your personal data and access credentials.",
-  "sections": { "personal": "Personal data", "password": "Change password" },
+  "sections": {
+    "personal": "Personal data",
+    "password": "Change password"
+  },
   "fields": {
-    "firstName": "First name", "lastName": "Last name", "email": "Email",
-    "currentPassword": "Current password", "newPassword": "New password", "confirmPassword": "Confirm password"
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password"
   },
   "loading": "Loading profile...",
   "loadError": "Could not load your profile.",
   "actions": {
-    "saveProfile": "Save changes", "savingProfile": "Saving...",
-    "changePassword": "Change password", "changingPassword": "Changing..."
+    "saveProfile": "Save changes",
+    "savingProfile": "Saving...",
+    "changePassword": "Change password",
+    "changingPassword": "Changing..."
   },
-  "successProfileTitle": "Profile updated", "successProfileMessage": "Profile updated successfully.",
-  "successPasswordTitle": "Password changed", "successPasswordMessage": "Password changed successfully.",
-  "failProfileTitle": "Failed to update profile", "failProfileMessage": "Could not update the profile.",
-  "failPasswordTitle": "Failed to change password", "failPasswordMessage": "Could not change the password."
+  "successProfileTitle": "Profile updated",
+  "successProfileMessage": "Profile updated successfully.",
+  "successPasswordTitle": "Password changed",
+  "successPasswordMessage": "Password changed successfully.",
+  "failProfileTitle": "Failed to update profile",
+  "failProfileMessage": "Could not update the profile.",
+  "failPasswordTitle": "Failed to change password",
+  "failPasswordMessage": "Could not change the password.",
+  "emailChangeNotice": "Your next sign-in must use the new email."
 }
