@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
+import { updateOwnPassword } from "@/services/account-service";
 import {
   LoadingState,
   ErrorState,
@@ -23,6 +24,7 @@ type ProfileFields = {
 };
 
 type PasswordFields = {
+  currentPassword: string;
   password: string;
   confirmPassword: string;
 };
@@ -40,7 +42,7 @@ export default function ProfilePage() {
   });
 
   const passwordForm = useForm<PasswordFields>({
-    defaultValues: { password: "", confirmPassword: "" },
+    defaultValues: { currentPassword: "", password: "", confirmPassword: "" },
   });
 
   useEffect(() => {
@@ -63,6 +65,7 @@ export default function ProfilePage() {
 
   const onSaveProfile = async (data: ProfileFields) => {
     setProfileFeedback(null);
+    const emailChanged = data.email.trim() !== (user.email ?? "");
     try {
       await userService.updateAuthenticatedUser({
         firstName: data.firstName.trim(),
@@ -70,8 +73,11 @@ export default function ProfilePage() {
         email: data.email.trim(),
       });
       await refreshUser();
-      setProfileFeedback({ kind: "success", message: t("profile:successProfileMessage") });
-      await alerts.success(t("profile:successProfileTitle"), t("profile:successProfileMessage"));
+      const message = emailChanged
+        ? `${t("profile:successProfileMessage")} ${t("profile:emailChangeNotice")}`
+        : t("profile:successProfileMessage");
+      setProfileFeedback({ kind: "success", message });
+      await alerts.success(t("profile:successProfileTitle"), message);
     } catch (err) {
       const handled = await handleApiError(err, {
         setError: (name, error) => profileForm.setError(name as keyof ProfileFields, error),
@@ -94,11 +100,12 @@ export default function ProfilePage() {
       return;
     }
     try {
-      await userService.update(user.id, {
-        password: data.password,
-        roleIds: (user.roles ?? []).map((r) => r.id),
+      await updateOwnPassword({
+        currentPassword: data.currentPassword,
+        newPassword: data.password,
+        confirmPassword: data.confirmPassword,
       });
-      passwordForm.reset({ password: "", confirmPassword: "" });
+      passwordForm.reset({ currentPassword: "", password: "", confirmPassword: "" });
       setPasswordFeedback({ kind: "success", message: t("profile:successPasswordMessage") });
       await alerts.success(t("profile:successPasswordTitle"), t("profile:successPasswordMessage"));
     } catch (err) {
@@ -220,6 +227,19 @@ export default function ProfilePage() {
             noValidate
             className="flex flex-col gap-md"
           >
+            {(() => {
+              return null;
+            })()}
+            <PasswordField
+              id="currentPassword"
+              label={t("profile:fields.currentPassword")}
+              required
+              autoComplete="current-password"
+              error={passwordErrors.currentPassword?.message}
+              {...registerPassword("currentPassword", {
+                required: t("validation:password.requiredShort"),
+              })}
+            />
             {(() => {
               const reg = registerPassword("password", buildPasswordValidation(t, () => passwordContext));
               return (
