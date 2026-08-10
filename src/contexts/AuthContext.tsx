@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     // setTimeout satura acima de ~24.8 dias; o clamp mantém o agendamento seguro.
-    const timer = window.setTimeout(expireNow, Math.min(msLeft, 2_147_483_००0 as number));
+    const timer = window.setTimeout(expireNow, Math.min(msLeft, 2_147_483_000));
 
     const onVisibility = () => {
       if (document.visibilityState === "visible" && Date.now() >= exp * 1000) {
