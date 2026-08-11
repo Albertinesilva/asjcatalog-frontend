@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Badge, Button, Card } from "@/components/ui";
-import homeImage from "@/assets/home-illustration.jpg";
+import homeImage from "@/assets/illustrations/catalog/home-catalog-variety.png";
 
 /**
  * HomePage — Fase 10.4.
@@ -47,8 +47,8 @@ export default function HomePage() {
             <img
               src={homeImage}
               alt={t("home:title")}
-              width={1200}
-              height={1024}
+              width={1600}
+              height={1200}
               fetchPriority="high"
               className="w-full max-w-[520px] h-auto rounded-lg"
             />
