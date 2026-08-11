@@ -1,7 +1,24 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components";
-import imageBackground from "@/assets/auth-illustration.jpg";
+import authLoginImage from "@/assets/auth/auth-login-products.jpg";
+import authRegisterImage from "@/assets/auth/auth-register-products.jpg";
+import authRecoverImage from "@/assets/auth/auth-recover-products.jpg";
+import authActivateImage from "@/assets/auth/auth-activate-products.jpg";
+
+/** Mapeamento puramente visual: rota do fluxo de auth -> imagem hero. */
+const AUTH_HERO_BY_PATH: Record<string, string> = {
+  "/auth/login": authLoginImage,
+  "/login": authLoginImage,
+  "/auth/register": authRegisterImage,
+  "/auth/recover": authRecoverImage,
+  "/forgot-password": authRecoverImage,
+  "/auth/reset-password": authRecoverImage,
+  "/reset-password": authRecoverImage,
+  "/auth/activation-pending": authActivateImage,
+  "/activation-pending": authActivateImage,
+  "/activate-account": authActivateImage,
+};
 
 /**
  * AuthLayout — Fase 10.3.
@@ -12,6 +29,8 @@ import imageBackground from "@/assets/auth-illustration.jpg";
  */
 export default function AuthLayout() {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const heroImage = AUTH_HERO_BY_PATH[pathname] ?? authLoginImage;
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
@@ -25,11 +44,11 @@ export default function AuthLayout() {
               {t("home:authHero.description")}
             </p>
             <img
-              src={imageBackground}
+              src={heroImage}
               alt=""
               aria-hidden="true"
-              width={1024}
-              height={1024}
+              width={1200}
+              height={1200}
               className="w-full max-w-[460px] h-auto mt-md rounded-lg"
               loading="lazy"
             />
