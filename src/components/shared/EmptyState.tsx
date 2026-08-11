@@ -6,6 +6,8 @@ type Props = {
   title?: string;
   description?: string;
   action?: ReactNode;
+  /** Optional decorative illustration rendered above the title. */
+  illustration?: ReactNode;
   className?: string;
 };
 
@@ -16,6 +18,7 @@ export default function EmptyState({
   title,
   description,
   action,
+  illustration,
   className = "",
 }: Props) {
   const { t } = useTranslation();
@@ -27,7 +30,8 @@ export default function EmptyState({
         className,
       )}
     >
-      <svg
+      {illustration ?? (
+        <svg
         width="36"
         height="36"
         viewBox="0 0 24 24"
@@ -38,10 +42,11 @@ export default function EmptyState({
         strokeLinejoin="round"
         className="text-foreground-muted mb-xs"
         aria-hidden="true"
-      >
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-      </svg>
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      )}
       <h5 className="font-heading text-title text-foreground m-0">{resolvedTitle}</h5>
       {description && <p className="text-body text-foreground-muted m-0">{description}</p>}
       {action && <div className="mt-sm">{action}</div>}

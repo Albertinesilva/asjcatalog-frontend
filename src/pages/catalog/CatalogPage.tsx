@@ -5,6 +5,7 @@ import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import type { Category, ProductResponse, SpringPage } from "@/types";
+import catalogProducts from "@/assets/catalog/catalog-products.jpg";
 
 export default function CatalogPage() {
   const { t } = useTranslation(["catalog"]);
@@ -129,6 +130,18 @@ export default function CatalogPage() {
         </Card>
       </header>
 
+      <div className="mb-lg overflow-hidden rounded-lg border border-border bg-surface">
+        <img
+          src={catalogProducts}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={640}
+          loading="lazy"
+          className="w-full h-20 sm:h-24 lg:h-28 object-cover object-center"
+        />
+      </div>
+
       {loading ? (
         <LoadingState message={t("catalog:loading")} />
       ) : error ? (
@@ -137,6 +150,17 @@ export default function CatalogPage() {
         <EmptyState
           title={t("catalog:empty")}
           description={t("catalog:emptyHint")}
+          illustration={
+            <img
+              src={catalogProducts}
+              alt=""
+              aria-hidden="true"
+              width={1920}
+              height={640}
+              loading="lazy"
+              className="w-full max-w-[520px] h-32 sm:h-40 object-cover object-center rounded-lg border border-border mb-sm"
+            />
+          }
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-md">
