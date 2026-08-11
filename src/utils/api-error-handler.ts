@@ -15,7 +15,6 @@ export type HandleApiErrorOptions = {
   validationTitle?: string;
 };
 
-export { parseApiError };
 export type { ApiError, ApiErrorCode };
 
 export function getApiErrorCode(err: unknown): ApiErrorCode | null {

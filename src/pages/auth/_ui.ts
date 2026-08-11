@@ -10,6 +10,3 @@ export const authFormTitle = "font-heading text-h3 text-foreground text-center m
 export const authFieldError = "text-small text-danger m-0";
 
 export const authFieldHint = "text-small text-accent m-0";
-
-export const authLink =
-  "font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";

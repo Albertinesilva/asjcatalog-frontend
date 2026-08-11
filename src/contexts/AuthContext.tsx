@@ -86,7 +86,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!state.authenticated) {
       userRef.current = null;
-      if (state.loading) setState((s) => ({ ...s, loading: false }));
+      // Atualização funcional: evita ler `state.loading` do closure sem
+      // alterar o comportamento (só encerra o loading quando ativo).
+      setState((s) => (s.loading ? { ...s, loading: false } : s));
       return;
     }
     let cancelled = false;
