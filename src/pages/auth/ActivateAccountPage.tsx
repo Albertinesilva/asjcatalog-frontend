@@ -95,8 +95,8 @@ export default function ActivateAccountPage() {
   const hintCenter = `${authFieldHint} text-center`;
 
   const renderActions = (resendLabel: string): ReactNode => (
-    <div className="flex gap-sm mt-sm">
-      <Link to="/auth/login" className="flex-1">
+    <div className="flex flex-col sm:flex-row gap-sm mt-sm">
+      <Link to="/auth/login" className="flex-1 min-w-0">
         <Button type="button" variant="outline" size="lg" fullWidth disabled={resending}>
           {t("auth:activate.goToLogin")}
         </Button>
@@ -107,7 +107,7 @@ export default function ActivateAccountPage() {
         onClick={resend}
         loading={resending}
         disabled={resending}
-        className="flex-1"
+        className="flex-1 min-w-0 px-4"
       >
         {resendLabel}
       </Button>
