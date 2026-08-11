@@ -227,11 +227,7 @@ export default function ActivationPendingPage() {
       <ConfirmDialog
         open={showLeaveModal}
         title={t("auth:activationPending.leaveTitle")}
-        description={
-          <p className="m-0">
-            {t("auth:activationPending.leaveDescription")}
-          </p>
-        }
+        description={<p className="m-0">{t("auth:activationPending.leaveDescription")}</p>}
         cancelLabel={t("auth:activationPending.leaveCancel")}
         confirmLabel={t("auth:activationPending.leaveConfirm")}
         variant="primary"
