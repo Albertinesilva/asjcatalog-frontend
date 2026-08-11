@@ -188,14 +188,14 @@ export default function ActivationPendingPage() {
             )}
           </div>
 
-          <div className="flex gap-sm">
+          <div className="flex flex-col sm:flex-row gap-sm">
             <Button
               type="button"
               variant="outline"
               size="lg"
               onClick={() => setShowLeaveModal(true)}
               disabled={sending}
-              className="flex-1"
+              className="flex-1 min-w-0 px-4"
             >
               {t("auth:activationPending.goToLogin")}
             </Button>
@@ -204,7 +204,7 @@ export default function ActivationPendingPage() {
               size="lg"
               disabled={sending || remaining > 0}
               loading={sending}
-              className="flex-1"
+              className="flex-1 min-w-0 px-4"
             >
               {submitLabel}
             </Button>

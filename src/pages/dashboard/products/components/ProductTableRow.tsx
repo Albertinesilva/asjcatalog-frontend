@@ -1,5 +1,6 @@
 import type { ProductResponse } from "@/types";
 import { Card } from "@/components/ui";
+import { ProductImage } from "@/components";
 import ProductCategoryBadge from "./ProductCategoryBadge";
 import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
@@ -19,10 +20,11 @@ export default function ProductTableRow({ product, onDelete }: Props) {
       className="flex flex-col md:flex-row md:items-center gap-md transition-colors hover:border-primary/40"
     >
       <div className="flex items-center justify-center h-24 w-24 shrink-0 rounded-md bg-surface-hover overflow-hidden">
-        <img
+        <ProductImage
           src={product.imgUrl}
           alt={product.name}
           className="h-full w-full object-contain"
+          fallbackClassName="h-full w-full rounded-none"
           loading="lazy"
         />
       </div>
