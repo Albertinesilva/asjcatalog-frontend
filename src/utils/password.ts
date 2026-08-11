@@ -15,12 +15,7 @@ export type PasswordCriterion =
   | "noCommon"
   | "noPersonalData";
 
-export type PasswordStrengthKey =
-  | "veryWeak"
-  | "weak"
-  | "regular"
-  | "good"
-  | "strong";
+export type PasswordStrengthKey = "veryWeak" | "weak" | "regular" | "good" | "strong";
 
 export type PasswordEvaluation = {
   length: boolean;
@@ -45,12 +40,37 @@ export const PASSWORD_MAX_LENGTH = 72;
 /** Lista mínima de senhas notoriamente fracas usada como pré-validação
  *  no cliente. O backend continua sendo a autoridade final. */
 const COMMON_PASSWORDS: ReadonlySet<string> = new Set([
-  "password", "password1", "passw0rd", "senha", "senha123",
-  "admin", "admin123", "root", "toor", "user", "login", "welcome",
-  "qwerty", "qwerty123", "asdfgh", "zxcvbn",
-  "abc123", "123abc", "111111", "000000", "123123", "654321",
-  "iloveyou", "letmein", "monkey", "dragon", "master", "sunshine",
-  "princess", "football", "baseball",
+  "password",
+  "password1",
+  "passw0rd",
+  "senha",
+  "senha123",
+  "admin",
+  "admin123",
+  "root",
+  "toor",
+  "user",
+  "login",
+  "welcome",
+  "qwerty",
+  "qwerty123",
+  "asdfgh",
+  "zxcvbn",
+  "abc123",
+  "123abc",
+  "111111",
+  "000000",
+  "123123",
+  "654321",
+  "iloveyou",
+  "letmein",
+  "monkey",
+  "dragon",
+  "master",
+  "sunshine",
+  "princess",
+  "football",
+  "baseball",
 ]);
 
 /** Detecta sequências numéricas ascendentes ou descendentes com
@@ -68,7 +88,10 @@ export function hasNumericSequence(value: string): boolean {
     if (isDigitA && isDigitB && (step === 1 || step === -1)) {
       const nd = step === 1 ? 1 : -1;
       if (nd === dir) run += 1;
-      else { dir = nd; run = 2; }
+      else {
+        dir = nd;
+        run = 2;
+      }
       if (run >= 6) return true;
     } else {
       run = 1;
@@ -119,7 +142,11 @@ export function evaluatePassword(
     noPersonalData: value.length > 0 && !containsPersonalData(value, context),
   };
   const coreChecks = [
-    checks.length, checks.uppercase, checks.lowercase, checks.number, checks.special,
+    checks.length,
+    checks.uppercase,
+    checks.lowercase,
+    checks.number,
+    checks.special,
   ];
   const coreScore = coreChecks.filter(Boolean).length;
   const score = (Object.values(checks) as boolean[]).filter(Boolean).length;

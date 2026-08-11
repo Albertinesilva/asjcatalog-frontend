@@ -21,23 +21,47 @@ type Props = {
 };
 
 const LockIcon = ({ open }: { open: boolean }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-    {open ? (<path d="M7 11V7a5 5 0 0 1 9.9-1" />) : (<path d="M7 11V7a5 5 0 0 1 10 0v4" />)}
+    {open ? <path d="M7 11V7a5 5 0 0 1 9.9-1" /> : <path d="M7 11V7a5 5 0 0 1 10 0v4" />}
   </svg>
 );
 
 const ChevronIcon = ({ open }: { open: boolean }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-    className={cn("transition-transform duration-DEFAULT ease-standard", open && "rotate-180")}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className={cn("transition-transform duration-DEFAULT ease-standard", open && "rotate-180")}
+  >
     <polyline points="6 9 12 15 18 9" />
   </svg>
 );
 
 function RequirementsList({
-  password, evaluation, showStrength, descriptionId, criteria,
+  password,
+  evaluation,
+  showStrength,
+  descriptionId,
+  criteria,
 }: {
   password: string;
   evaluation: ReturnType<typeof evaluatePassword>;
@@ -61,21 +85,31 @@ function RequirementsList({
         {criteria.map(({ key, labelKey }) => {
           const ok = evaluation[key as PasswordCriterion];
           return (
-            <li key={key}
+            <li
+              key={key}
               className={cn(
                 "flex items-center gap-xs text-small leading-tight transition-colors duration-slow ease-standard",
                 ok ? "text-success" : "text-danger",
-              )}>
-              <span aria-hidden="true"
-                className={cn("inline-flex shrink-0 transition-transform duration-slow ease-standard",
-                  ok && "scale-105")}>
+              )}
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "inline-flex shrink-0 transition-transform duration-slow ease-standard",
+                  ok && "scale-105",
+                )}
+              >
                 <LockIcon open={ok} />
               </span>
               <span className="flex-1 min-w-0">
-                <span className={cn(ok ? "text-success" : "text-foreground-muted")}>{t(labelKey)}</span>
+                <span className={cn(ok ? "text-success" : "text-foreground-muted")}>
+                  {t(labelKey)}
+                </span>
               </span>
               <span className="sr-only">
-                {ok ? t("validation:password.criteria.met") : t("validation:password.criteria.pending")}
+                {ok
+                  ? t("validation:password.criteria.met")
+                  : t("validation:password.criteria.pending")}
               </span>
             </li>
           );
@@ -86,7 +120,14 @@ function RequirementsList({
 }
 
 export default function PasswordRequirements({
-  password, collapsible = false, open, onOpenChange, showStrength = true, className, id, context,
+  password,
+  collapsible = false,
+  open,
+  onOpenChange,
+  showStrength = true,
+  className,
+  id,
+  context,
 }: Props) {
   const { t } = useTranslation();
   const autoId = useId();
@@ -106,35 +147,52 @@ export default function PasswordRequirements({
   const total = criteria.length;
   const metCount = criteria.filter((c) => evaluation[c.key as PasswordCriterion]).length;
   const body: ReactNode = (
-    <RequirementsList password={password} evaluation={evaluation}
-      showStrength={showStrength} descriptionId={panelId} criteria={criteria} />
+    <RequirementsList
+      password={password}
+      evaluation={evaluation}
+      showStrength={showStrength}
+      descriptionId={panelId}
+      criteria={criteria}
+    />
   );
 
   if (!collapsible) {
     return (
-      <div className={cn(
-        "rounded-md border border-border bg-surface-hover p-md transition-colors duration-slow ease-standard",
-        className,
-      )}>{body}</div>
+      <div
+        className={cn(
+          "rounded-md border border-border bg-surface-hover p-md transition-colors duration-slow ease-standard",
+          className,
+        )}
+      >
+        {body}
+      </div>
     );
   }
 
   return (
-    <div className={cn(
-      "rounded-md border border-border bg-surface-hover overflow-hidden transition-colors duration-slow ease-standard",
-      className,
-    )}>
-      <button type="button" onClick={() => setOpen(!isOpen)}
-        aria-expanded={isOpen} aria-controls={panelId}
+    <div
+      className={cn(
+        "rounded-md border border-border bg-surface-hover overflow-hidden transition-colors duration-slow ease-standard",
+        className,
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
         className={cn(
           "w-full flex items-center justify-between gap-sm px-md py-sm",
           "text-small font-medium text-foreground bg-transparent border-0 cursor-pointer",
           "transition-colors duration-DEFAULT ease-standard hover:bg-surface-hover",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        )}>
+        )}
+      >
         <span className="flex items-center gap-sm">
-          <span aria-hidden="true"
-            className={cn(metCount === total ? "text-success" : "text-foreground-muted")}>
+          <span
+            aria-hidden="true"
+            className={cn(metCount === total ? "text-success" : "text-foreground-muted")}
+          >
             <LockIcon open={metCount === total} />
           </span>
           {isOpen ? t("validation:password.criteria.hide") : t("validation:password.criteria.show")}

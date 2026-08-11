@@ -58,10 +58,7 @@ export default function ActivateAccountPage() {
   const resend = async () => {
     const email = getPendingEmail();
     if (!email) {
-      await alerts.warning(
-        t("auth:activate.noPendingTitle"),
-        t("auth:activate.noPendingMessage"),
-      );
+      await alerts.warning(t("auth:activate.noPendingTitle"), t("auth:activate.noPendingMessage"));
       navigate("/auth/activation-pending");
       return;
     }
@@ -175,9 +172,7 @@ export default function ActivateAccountPage() {
         {status === "error" && (
           <>
             <h2 className={authFormTitle}>{t("auth:activate.errorTitle")}</h2>
-            <p className={authFieldError}>
-              {errorMsg ?? t("auth:activate.errorDefault")}
-            </p>
+            <p className={authFieldError}>{errorMsg ?? t("auth:activate.errorDefault")}</p>
             {renderActions(t("auth:activate.resendEmail"))}
           </>
         )}

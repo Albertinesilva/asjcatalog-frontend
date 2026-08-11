@@ -32,23 +32,35 @@ export default function PasswordStrength({ password, className }: Props) {
           <span className="text-caption font-medium tabular-nums text-foreground-muted">
             {filled === 0 ? "0%" : `${percent}%`}
           </span>
-          <span className={cn(
-            "text-small font-semibold transition-colors duration-slow ease-standard",
-            filled === 0 ? "text-foreground-muted" : palette.text,
-          )}>
+          <span
+            className={cn(
+              "text-small font-semibold transition-colors duration-slow ease-standard",
+              filled === 0 ? "text-foreground-muted" : palette.text,
+            )}
+          >
             {filled === 0 ? "—" : strengthLabel}
           </span>
         </span>
       </div>
-      <div className="flex items-center gap-1.5" role="progressbar"
-        aria-valuemin={0} aria-valuemax={total} aria-valuenow={filled}
+      <div
+        className="flex items-center gap-1.5"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={filled}
         aria-label={t("validation:password.strengthAria", {
           state: filled === 0 ? emptyLabel : strengthLabel,
-        })}>
+        })}
+      >
         {Array.from({ length: total }).map((_, i) => (
-          <span key={i} aria-hidden="true"
-            className={cn("h-1.5 flex-1 rounded-full transition-colors duration-slow ease-standard",
-              i < filled ? palette.bar : "bg-border")} />
+          <span
+            key={i}
+            aria-hidden="true"
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors duration-slow ease-standard",
+              i < filled ? palette.bar : "bg-border",
+            )}
+          />
         ))}
       </div>
     </div>

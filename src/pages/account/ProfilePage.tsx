@@ -84,7 +84,11 @@ export default function ProfilePage() {
         // 422 de negócio: mantém sessão, mantém campos e permite nova tentativa.
         const message = parsed.message || t("profile:passwordUpdateError");
         setPasswordFeedback({ kind: "error", message });
-        passwordForm.setError("currentPassword", { type: "server", message }, { shouldFocus: true });
+        passwordForm.setError(
+          "currentPassword",
+          { type: "server", message },
+          { shouldFocus: true },
+        );
         return;
       }
       const handled = await handleApiError(err, {
@@ -118,8 +122,7 @@ export default function ProfilePage() {
       await alerts.success(t("profile:successPasswordTitle"), t("profile:successPasswordMessage"));
     } catch (err) {
       const handled = await handleApiError(err, {
-        setError: (name, error) =>
-          passwordForm.setError(name as keyof PasswordFields, error),
+        setError: (name, error) => passwordForm.setError(name as keyof PasswordFields, error),
         fallbackTitle: t("profile:failPasswordTitle"),
         fallbackMessage: t("profile:failPasswordMessage"),
       });
@@ -155,9 +158,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col gap-lg">
-      <p className="text-body text-foreground-muted m-0">
-        {t("profile:intro")}
-      </p>
+      <p className="text-body text-foreground-muted m-0">{t("profile:intro")}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
         <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
@@ -199,7 +200,10 @@ export default function ProfilePage() {
               error={profileErrors.email?.message}
               {...registerProfile("email", {
                 required: t("validation:emailRequired"),
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t("validation:emailInvalid") },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: t("validation:emailInvalid"),
+                },
                 maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
               })}
             />
@@ -220,7 +224,9 @@ export default function ProfilePage() {
 
             <div className="pt-sm">
               <Button type="submit" variant="primary" loading={savingProfile}>
-                {savingProfile ? t("profile:actions.savingProfile") : t("profile:actions.saveProfile")}
+                {savingProfile
+                  ? t("profile:actions.savingProfile")
+                  : t("profile:actions.saveProfile")}
               </Button>
             </div>
           </form>
@@ -246,7 +252,10 @@ export default function ProfilePage() {
               })}
             />
             {(() => {
-              const reg = registerPassword("password", buildPasswordValidation(t, () => passwordContext));
+              const reg = registerPassword(
+                "password",
+                buildPasswordValidation(t, () => passwordContext),
+              );
               return (
                 <PasswordField
                   id="password"
@@ -293,7 +302,9 @@ export default function ProfilePage() {
 
             <div className="pt-sm">
               <Button type="submit" variant="primary" loading={savingPassword}>
-                {savingPassword ? t("profile:actions.changingPassword") : t("profile:actions.changePassword")}
+                {savingPassword
+                  ? t("profile:actions.changingPassword")
+                  : t("profile:actions.changePassword")}
               </Button>
             </div>
           </form>

@@ -12,10 +12,7 @@ export default function CategoryTable({ categories, onDelete }: Props) {
   const { t } = useTranslation("categories");
   if (categories.length === 0) {
     return (
-      <EmptyState
-        title={t("emptyFiltered.title")}
-        description={t("emptyFiltered.description")}
-      />
+      <EmptyState title={t("emptyFiltered.title")} description={t("emptyFiltered.description")} />
     );
   }
 
