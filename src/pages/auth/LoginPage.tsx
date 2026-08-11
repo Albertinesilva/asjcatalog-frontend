@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ConfirmDialog, PasswordInput } from "@/components";
+import { ConfirmDialog, PasswordField } from "@/components";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
@@ -66,7 +66,7 @@ export default function LoginPage() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordInput className={cn(inputBaseClasses)}
+          <PasswordField className={cn(inputBaseClasses)}
             placeholder={t("auth:login.passwordPlaceholder")} autoComplete="current-password"
             aria-label={t("auth:login.passwordPlaceholder")}
             {...register("password", { required: t("validation:password.required") })} />

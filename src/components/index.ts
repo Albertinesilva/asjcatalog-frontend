@@ -11,8 +11,6 @@ export {
   PasswordStrength,
   PasswordMatch,
 } from "./forms/password";
-// Backwards-compat alias — legacy `PasswordInput` import path.
-export { PasswordField as PasswordInput } from "./forms/password";
 export { default as Authorization } from "./Authorization";
 export { default as LoadingState } from "./shared/LoadingState";
 export { default as ErrorState } from "./shared/ErrorState";
