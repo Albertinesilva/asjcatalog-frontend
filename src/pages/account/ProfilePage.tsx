@@ -157,20 +157,23 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex flex-col gap-lg">
-      <p className="text-body text-foreground-muted m-0">{t("profile:intro")}</p>
+    <div className="flex w-full max-w-3xl flex-col gap-md">
+      <p className="text-small text-foreground-muted m-0">{t("profile:intro")}</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-        <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
-            {t("profile:sections.personal")}
-          </h2>
+      <div className="flex flex-col gap-md">
+        <Card padding="md" className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-0.5">
+            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+              {t("profile:sections.personal")}
+            </h2>
+            <p className="m-0 text-small text-foreground-muted">{t("profile:sections.personalHint")}</p>
+          </div>
           <form
             onSubmit={handleProfileSubmit(onSaveProfile)}
             noValidate
-            className="flex flex-col gap-md"
+            className="flex flex-col gap-sm"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
               <Input
                 label={t("profile:fields.firstName")}
                 id="firstName"
