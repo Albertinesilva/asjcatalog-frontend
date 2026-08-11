@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { authService } from "@/services/auth-service";
 import { decodeToken } from "@/utils/permissions";
-import type { AccessToken, LoginRequest, Role, User } from "@/types";
+import type { AccessToken, AuthContextData, LoginRequest, Role, User } from "@/types";
 import { AuthContext } from "./auth-context";
 
 export { AuthContext };
