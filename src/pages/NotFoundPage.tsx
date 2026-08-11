@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui";
-import illustration from "@/assets/notfound-illustration.jpg";
+import illustration from "@/assets/system/not-found-products.jpg";
 
 export default function NotFoundPage() {
   const { t } = useTranslation();
@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         width={1024}
         height={768}
         loading="lazy"
-        className="w-full max-w-[420px] h-auto rounded-lg"
+        className="w-full max-w-[420px] h-auto object-contain rounded-lg"
       />
       <h1 className="font-heading text-display text-primary m-0">404</h1>
       <p className="text-body text-foreground-muted m-0">
