@@ -8,12 +8,7 @@
  *   - follow the official typography (Space Grotesk / DM Sans) and scales.
  */
 export { default as Button } from "./Button";
-export {
-  buttonClasses,
-  buttonBaseClasses,
-  buttonVariantClasses,
-  buttonSizeClasses,
-} from "./Button/styles";
+export { buttonClasses } from "./Button/styles";
 export type { ButtonVariant, ButtonSize } from "./Button/styles";
 export { default as Input, inputBaseClasses } from "./Input";
 export { default as Card } from "./Card";
