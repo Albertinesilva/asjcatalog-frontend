@@ -11,7 +11,7 @@ import {
   PasswordMatch,
   PasswordRequirements,
 } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getApiErrorMessage, parseApiError } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -79,6 +79,14 @@ export default function ProfilePage() {
       setProfileFeedback({ kind: "success", message });
       await alerts.success(t("profile:successProfileTitle"), message);
     } catch (err) {
+      const parsed = parseApiError(err);
+      if (parsed.code === "PASSWORD_UPDATE_ERROR") {
+        // 422 de negócio: mantém sessão, mantém campos e permite nova tentativa.
+        const message = parsed.message || t("profile:passwordUpdateError");
+        setPasswordFeedback({ kind: "error", message });
+        passwordForm.setError("currentPassword", { type: "server", message }, { shouldFocus: true });
+        return;
+      }
       const handled = await handleApiError(err, {
         setError: (name, error) => profileForm.setError(name as keyof ProfileFields, error),
         fallbackTitle: t("profile:failProfileTitle"),

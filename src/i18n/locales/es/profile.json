@@ -29,5 +29,6 @@
   "failProfileMessage": "No fue posible actualizar el perfil.",
   "failPasswordTitle": "Error al cambiar contraseña",
   "failPasswordMessage": "No fue posible cambiar la contraseña.",
-  "emailChangeNotice": "El próximo inicio de sesión deberá usar el nuevo email."
+  "emailChangeNotice": "El próximo inicio de sesión deberá usar el nuevo email.",
+  "passwordUpdateError": "No fue posible actualizar la contraseña. Verifique la contraseña actual y las reglas de la nueva contraseña."
 }
