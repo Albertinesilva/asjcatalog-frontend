@@ -166,7 +166,9 @@ export default function ProfilePage() {
             <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
               {t("profile:sections.personal")}
             </h2>
-            <p className="m-0 text-small text-foreground-muted">{t("profile:sections.personalHint")}</p>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("profile:sections.personalHint")}
+            </p>
           </div>
           <form
             onSubmit={handleProfileSubmit(onSaveProfile)}
@@ -228,7 +230,12 @@ export default function ProfilePage() {
             )}
 
             <div className="flex justify-end pt-1">
-              <Button type="submit" variant="primary" loading={savingProfile} className="w-full sm:w-auto">
+              <Button
+                type="submit"
+                variant="primary"
+                loading={savingProfile}
+                className="w-full sm:w-auto"
+              >
                 {savingProfile
                   ? t("profile:actions.savingProfile")
                   : t("profile:actions.saveProfile")}
@@ -242,7 +249,9 @@ export default function ProfilePage() {
             <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
               {t("profile:sections.security")}
             </h2>
-            <p className="m-0 text-small text-foreground-muted">{t("profile:sections.securityHint")}</p>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("profile:sections.securityHint")}
+            </p>
           </div>
           <form
             onSubmit={handlePasswordSubmit(onChangePassword)}
@@ -310,7 +319,12 @@ export default function ProfilePage() {
             )}
 
             <div className="flex justify-end pt-1">
-              <Button type="submit" variant="primary" loading={savingPassword} className="w-full sm:w-auto">
+              <Button
+                type="submit"
+                variant="primary"
+                loading={savingPassword}
+                className="w-full sm:w-auto"
+              >
                 {savingPassword
                   ? t("profile:actions.changingPassword")
                   : t("profile:actions.changePassword")}
