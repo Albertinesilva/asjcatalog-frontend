@@ -18,6 +18,7 @@ import axios, { type AxiosError } from "axios";
 
 export type ApiErrorCode =
   | "VALIDATION_ERROR"
+  | "PASSWORD_UPDATE_ERROR"
   | "RESOURCE_NOT_FOUND"
   | "DATABASE_ERROR"
   | "CONFLICT"
@@ -70,6 +71,7 @@ const NETWORK_MESSAGE = "Falha de conexão. Verifique sua internet e tente novam
 
 const KNOWN_CODES: ReadonlySet<ApiErrorCode> = new Set<ApiErrorCode>([
   "VALIDATION_ERROR",
+  "PASSWORD_UPDATE_ERROR",
   "RESOURCE_NOT_FOUND",
   "DATABASE_ERROR",
   "CONFLICT",

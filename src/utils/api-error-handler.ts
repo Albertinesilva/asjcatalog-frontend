@@ -32,6 +32,12 @@ export async function handleApiError(
   if (parsed.isNetworkError) return false;
 
   switch (parsed.code) {
+    case "PASSWORD_UPDATE_ERROR": {
+      // Erro de negócio da atualização de senha (HTTP 422).
+      // Nunca é erro de sessão: a página trata inline, sem SweetAlert
+      // e sem qualquer efeito sobre a autenticação.
+      return false;
+    }
     case "VALIDATION_ERROR": {
       if (options.setError && parsed.fieldErrors.length > 0) {
         let focused = false;
