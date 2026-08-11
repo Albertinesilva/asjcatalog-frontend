@@ -157,20 +157,25 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex flex-col gap-lg">
-      <p className="text-body text-foreground-muted m-0">{t("profile:intro")}</p>
+    <div className="flex w-full max-w-3xl flex-col gap-md">
+      <p className="text-small text-foreground-muted m-0">{t("profile:intro")}</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-        <Card padding="lg" className="lg:col-span-7 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
-            {t("profile:sections.personal")}
-          </h2>
+      <div className="flex flex-col gap-md">
+        <Card padding="md" className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-0.5">
+            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+              {t("profile:sections.personal")}
+            </h2>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("profile:sections.personalHint")}
+            </p>
+          </div>
           <form
             onSubmit={handleProfileSubmit(onSaveProfile)}
             noValidate
-            className="flex flex-col gap-md"
+            className="flex flex-col gap-sm"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
               <Input
                 label={t("profile:fields.firstName")}
                 id="firstName"
@@ -191,22 +196,24 @@ export default function ProfilePage() {
                   maxLength: { value: 100, message: t("validation:maxChars", { count: 100 }) },
                 })}
               />
+              <div className="sm:col-span-2">
+                <Input
+                  label={t("profile:fields.email")}
+                  id="email"
+                  type="email"
+                  required
+                  error={profileErrors.email?.message}
+                  {...registerProfile("email", {
+                    required: t("validation:emailRequired"),
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: t("validation:emailInvalid"),
+                    },
+                    maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
+                  })}
+                />
+              </div>
             </div>
-            <Input
-              label={t("profile:fields.email")}
-              id="email"
-              type="email"
-              required
-              error={profileErrors.email?.message}
-              {...registerProfile("email", {
-                required: t("validation:emailRequired"),
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: t("validation:emailInvalid"),
-                },
-                maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
-              })}
-            />
 
             {profileFeedback && (
               <div
@@ -222,8 +229,13 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div className="pt-sm">
-              <Button type="submit" variant="primary" loading={savingProfile}>
+            <div className="flex justify-end pt-1">
+              <Button
+                type="submit"
+                variant="primary"
+                loading={savingProfile}
+                className="w-full sm:w-auto"
+              >
                 {savingProfile
                   ? t("profile:actions.savingProfile")
                   : t("profile:actions.saveProfile")}
@@ -232,14 +244,19 @@ export default function ProfilePage() {
           </form>
         </Card>
 
-        <Card padding="lg" className="lg:col-span-5 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
-            {t("profile:sections.password")}
-          </h2>
+        <Card padding="md" className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-0.5">
+            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+              {t("profile:sections.security")}
+            </h2>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("profile:sections.securityHint")}
+            </p>
+          </div>
           <form
             onSubmit={handlePasswordSubmit(onChangePassword)}
             noValidate
-            className="flex flex-col gap-md"
+            className="flex flex-col gap-sm"
           >
             <PasswordField
               id="currentPassword"
@@ -251,40 +268,41 @@ export default function ProfilePage() {
                 required: t("validation:password.requiredShort"),
               })}
             />
-            {(() => {
-              const reg = registerPassword(
-                "password",
-                buildPasswordValidation(t, () => passwordContext),
-              );
-              return (
-                <PasswordField
-                  id="password"
-                  label={t("profile:fields.newPassword")}
-                  required
-                  autoComplete="new-password"
-                  error={passwordErrors.password?.message}
-                  {...reg}
-                />
-              );
-            })()}
-            <PasswordRequirements password={passwordValue} context={passwordContext} />
-
-            <PasswordField
-              id="confirmPassword"
-              label={t("profile:fields.confirmPassword")}
-              required
-              autoComplete="new-password"
-              error={
-                passwordErrors.confirmPassword && !confirmPasswordValue
-                  ? passwordErrors.confirmPassword.message
-                  : undefined
-              }
-              {...registerPassword("confirmPassword", {
-                required: t("validation:password.confirmNew"),
-                validate: (v) => v === passwordValue || t("validation:password.mismatch"),
-              })}
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+              {(() => {
+                const reg = registerPassword(
+                  "password",
+                  buildPasswordValidation(t, () => passwordContext),
+                );
+                return (
+                  <PasswordField
+                    id="password"
+                    label={t("profile:fields.newPassword")}
+                    required
+                    autoComplete="new-password"
+                    error={passwordErrors.password?.message}
+                    {...reg}
+                  />
+                );
+              })()}
+              <PasswordField
+                id="confirmPassword"
+                label={t("profile:fields.confirmPassword")}
+                required
+                autoComplete="new-password"
+                error={
+                  passwordErrors.confirmPassword && !confirmPasswordValue
+                    ? passwordErrors.confirmPassword.message
+                    : undefined
+                }
+                {...registerPassword("confirmPassword", {
+                  required: t("validation:password.confirmNew"),
+                  validate: (v) => v === passwordValue || t("validation:password.mismatch"),
+                })}
+              />
+            </div>
             <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
+            <PasswordRequirements password={passwordValue} context={passwordContext} />
 
             {passwordFeedback && (
               <div
@@ -300,8 +318,13 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div className="pt-sm">
-              <Button type="submit" variant="primary" loading={savingPassword}>
+            <div className="flex justify-end pt-1">
+              <Button
+                type="submit"
+                variant="primary"
+                loading={savingPassword}
+                className="w-full sm:w-auto"
+              >
                 {savingPassword
                   ? t("profile:actions.changingPassword")
                   : t("profile:actions.changePassword")}
