@@ -2,6 +2,7 @@ export { default as Navbar } from "./Navbar";
 export { default as NavbarLink } from "./NavbarLink";
 export { default as Sidebar } from "./Sidebar";
 export { default as ProductItem } from "./ProductItem";
+export { default as ProductShowcase } from "./ProductShowcase";
 export { default as ProductPrice } from "./ProductPrice";
 export {
   PasswordField,
