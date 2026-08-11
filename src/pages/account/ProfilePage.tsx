@@ -194,22 +194,24 @@ export default function ProfilePage() {
                   maxLength: { value: 100, message: t("validation:maxChars", { count: 100 }) },
                 })}
               />
+              <div className="sm:col-span-2">
+                <Input
+                  label={t("profile:fields.email")}
+                  id="email"
+                  type="email"
+                  required
+                  error={profileErrors.email?.message}
+                  {...registerProfile("email", {
+                    required: t("validation:emailRequired"),
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: t("validation:emailInvalid"),
+                    },
+                    maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
+                  })}
+                />
+              </div>
             </div>
-            <Input
-              label={t("profile:fields.email")}
-              id="email"
-              type="email"
-              required
-              error={profileErrors.email?.message}
-              {...registerProfile("email", {
-                required: t("validation:emailRequired"),
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: t("validation:emailInvalid"),
-                },
-                maxLength: { value: 255, message: t("validation:maxChars", { count: 255 }) },
-              })}
-            />
 
             {profileFeedback && (
               <div
@@ -225,8 +227,8 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div className="pt-sm">
-              <Button type="submit" variant="primary" loading={savingProfile}>
+            <div className="flex justify-end pt-1">
+              <Button type="submit" variant="primary" loading={savingProfile} className="w-full sm:w-auto">
                 {savingProfile
                   ? t("profile:actions.savingProfile")
                   : t("profile:actions.saveProfile")}
@@ -235,14 +237,17 @@ export default function ProfilePage() {
           </form>
         </Card>
 
-        <Card padding="lg" className="lg:col-span-5 flex flex-col gap-md">
-          <h2 className="m-0 font-heading font-bold text-h3 text-foreground">
-            {t("profile:sections.password")}
-          </h2>
+        <Card padding="md" className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-0.5">
+            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+              {t("profile:sections.security")}
+            </h2>
+            <p className="m-0 text-small text-foreground-muted">{t("profile:sections.securityHint")}</p>
+          </div>
           <form
             onSubmit={handlePasswordSubmit(onChangePassword)}
             noValidate
-            className="flex flex-col gap-md"
+            className="flex flex-col gap-sm"
           >
             <PasswordField
               id="currentPassword"
