@@ -157,10 +157,10 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-md">
+    <div className="flex w-full max-w-4xl flex-col gap-md">
       <p className="text-small text-foreground-muted m-0">{t("profile:intro")}</p>
 
-      <div className="flex flex-col gap-md">
+      <div className="grid grid-cols-1 gap-md lg:grid-cols-2">
         <Card padding="md" className="flex flex-col gap-sm">
           <div className="flex flex-col gap-0.5">
             <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
