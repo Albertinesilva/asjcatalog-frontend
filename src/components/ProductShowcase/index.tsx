@@ -46,10 +46,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
   const total = showcaseSlides.length;
   const interacted = useRef(false);
 
-  const go = useCallback(
-    (next: number) => setIndex(((next % total) + total) % total),
-    [total],
-  );
+  const go = useCallback((next: number) => setIndex(((next % total) + total) % total), [total]);
 
   const onUserNav = useCallback(
     (next: number) => {
@@ -109,7 +106,9 @@ export default function ProductShowcase({ className }: { className?: string }) {
                 aria-hidden={!active}
                 className={cn(
                   "absolute inset-0 transition-opacity ease-standard motion-reduce:transition-none",
-                  active ? "opacity-100 duration-slow" : "opacity-0 duration-slow pointer-events-none",
+                  active
+                    ? "opacity-100 duration-slow"
+                    : "opacity-0 duration-slow pointer-events-none",
                 )}
               >
                 <div className="absolute inset-0 rounded-xl overflow-hidden border border-border bg-surface shadow-lg">

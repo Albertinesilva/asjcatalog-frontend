@@ -12,7 +12,10 @@ import ProductShowcase from "@/components/ProductShowcase";
 export default function HomePage() {
   const { t } = useTranslation();
   const features = [
-    { title: t("home:features.centralized.title"), description: t("home:features.centralized.description") },
+    {
+      title: t("home:features.centralized.title"),
+      description: t("home:features.centralized.description"),
+    },
     { title: t("home:features.admin.title"), description: t("home:features.admin.description") },
     { title: t("home:features.users.title"), description: t("home:features.users.description") },
   ];
