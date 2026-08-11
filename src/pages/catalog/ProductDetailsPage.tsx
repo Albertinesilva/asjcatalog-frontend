@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AxiosError } from "axios";
 
-import { ProductPrice, LoadingState, EmptyState } from "@/components";
+import { ProductPrice, LoadingState, EmptyState, ProductImage } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { productService } from "@/services/product-service";
 import { alerts } from "@/utils/alerts";
