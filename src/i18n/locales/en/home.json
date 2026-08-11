@@ -3,6 +3,23 @@
   "title": "Professional catalog management",
   "description": "Professional platform to manage and organize product catalogs, with centralized control and streamlined administration.",
   "cta": { "catalog": "Open catalog", "login": "Sign in" },
+  "showcase": {
+    "label": "Catalog product showcase",
+    "slidesRegion": "Showcase slides. Use the left and right arrow keys to navigate.",
+    "previous": "Previous category",
+    "next": "Next category",
+    "mainAlt": "Product photography from the {{category}} category",
+    "detailAlt": "Product detail from the {{category}} category",
+    "status": "Slide {{current}} of {{total}}: {{category}}",
+    "categories": {
+      "technology": "Technology",
+      "books": "Books",
+      "automotive": "Automotive",
+      "home": "Home",
+      "fashion": "Fashion",
+      "sports": "Sports"
+    }
+  },
   "features": {
     "sectionLabel": "Platform features",
     "centralized": { "title": "Centralized catalog", "description": "Organize products, categories and commercial information in one place." },

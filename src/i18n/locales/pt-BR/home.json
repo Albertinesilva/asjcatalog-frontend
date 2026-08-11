@@ -3,6 +3,23 @@
   "title": "Gestão profissional de catálogos",
   "description": "Plataforma profissional para gestão e organização de catálogos de produtos, com controle centralizado e administração simplificada.",
   "cta": { "catalog": "Acessar catálogo", "login": "Entrar" },
+  "showcase": {
+    "label": "Vitrine de produtos do catálogo",
+    "slidesRegion": "Slides do showcase. Use as setas esquerda e direita para navegar.",
+    "previous": "Categoria anterior",
+    "next": "Próxima categoria",
+    "mainAlt": "Fotografia de produtos da categoria {{category}}",
+    "detailAlt": "Detalhe de produto da categoria {{category}}",
+    "status": "Slide {{current}} de {{total}}: {{category}}",
+    "categories": {
+      "technology": "Tecnologia",
+      "books": "Livros",
+      "automotive": "Automotivo",
+      "home": "Casa",
+      "fashion": "Moda",
+      "sports": "Esportes"
+    }
+  },
   "features": {
     "sectionLabel": "Recursos da plataforma",
     "centralized": {
