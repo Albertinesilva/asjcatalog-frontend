@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Badge, Button, Card } from "@/components/ui";
-import homeImage from "@/assets/illustrations/catalog/home-catalog-variety.png";
+import ProductShowcase from "@/components/ProductShowcase";
 
 /**
  * HomePage — Fase 10.4.
@@ -19,7 +19,7 @@ export default function HomePage() {
   return (
     <div className="w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
       <Card padding="none" elevated bordered className="overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-xl px-md py-xl lg:px-2xl lg:py-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-2xl px-md py-xl lg:px-2xl lg:py-2xl">
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-md">
             <Badge variant="outline" className="uppercase tracking-wider">
               {t("home:badge")}
@@ -43,15 +43,8 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="flex items-center justify-center lg:justify-end">
-            <img
-              src={homeImage}
-              alt={t("home:title")}
-              width={1600}
-              height={1200}
-              fetchPriority="high"
-              className="w-full max-w-[520px] h-auto rounded-lg"
-            />
+          <div className="order-last w-full min-w-0">
+            <ProductShowcase className="lg:ml-auto" />
           </div>
         </div>
       </Card>
