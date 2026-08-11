@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dscatalog.lovable.app/sitemap.xml
+Sitemap: https://asjcatalog.lovable.app/sitemap.xml
