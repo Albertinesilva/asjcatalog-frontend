@@ -17,9 +17,7 @@ export default function NotFoundPage() {
         className="w-full max-w-[420px] h-auto object-contain rounded-lg"
       />
       <h1 className="font-heading text-display text-primary m-0">404</h1>
-      <p className="text-body text-foreground-muted m-0">
-        {t("home:notFound.description")}
-      </p>
+      <p className="text-body text-foreground-muted m-0">{t("home:notFound.description")}</p>
       <Link to="/">
         <Button variant="primary" size="lg">
           {t("common:actions.backHome")}
