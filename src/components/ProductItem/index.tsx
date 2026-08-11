@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ProductPrice from "../ProductPrice";
+import ProductImage from "../ProductImage";
 import type { ProductItemProps } from "@/types";
 
 /**
@@ -20,12 +21,13 @@ export default function ProductItem(product: ProductItemProps) {
       ].join(" ")}
     >
       <div className="flex items-center justify-center min-h-[170px] p-md border-b border-border">
-        <img
+        <ProductImage
           src={imgUrl}
           alt={name}
           width={197}
           height={158}
           className="w-full max-w-[160px] h-auto object-contain"
+          fallbackClassName="w-full max-w-[160px] aspect-[197/158]"
           loading="lazy"
         />
       </div>
