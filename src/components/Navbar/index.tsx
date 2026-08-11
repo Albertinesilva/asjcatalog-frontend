@@ -138,30 +138,30 @@ export default function Navbar() {
         <div className="lg:hidden flex items-center gap-xs">
           <LanguageSelector variant="onPrimary" />
           <button
-          type="button"
-          aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
-        >
-          <span
-            className={cn(
-              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
-              open && "translate-y-[7px] rotate-45",
-            )}
-          />
-          <span
-            className={cn(
-              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-opacity duration-fast ease-standard",
-              open && "opacity-0",
-            )}
-          />
-          <span
-            className={cn(
-              "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
-              open && "-translate-y-[7px] -rotate-45",
-            )}
-          />
+            type="button"
+            aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+          >
+            <span
+              className={cn(
+                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+                open && "translate-y-[7px] rotate-45",
+              )}
+            />
+            <span
+              className={cn(
+                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-opacity duration-fast ease-standard",
+                open && "opacity-0",
+              )}
+            />
+            <span
+              className={cn(
+                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+                open && "-translate-y-[7px] -rotate-45",
+              )}
+            />
           </button>
         </div>
       </div>
@@ -224,7 +224,7 @@ export default function Navbar() {
               onClick={handleLogout}
               className="text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30"
             >
-                {t("navigation:logout")}
+              {t("navigation:logout")}
             </Button>
           </div>
         )}

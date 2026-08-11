@@ -157,7 +157,9 @@ export default function ProductForm({ mode }: Props) {
           {errors.categoryIds ? (
             <p className="text-small text-danger">{errors.categoryIds.message as string}</p>
           ) : (
-            <p className="text-small text-foreground-muted">{t("products:hints.categoriesMulti")}</p>
+            <p className="text-small text-foreground-muted">
+              {t("products:hints.categoriesMulti")}
+            </p>
           )}
         </div>
 

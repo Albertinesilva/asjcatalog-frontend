@@ -1,10 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  SUPPORTED_LANGUAGES,
-  DEFAULT_LANGUAGE,
-  type SupportedLanguage,
-} from "@/i18n/config";
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, type SupportedLanguage } from "@/i18n/config";
 
 /**
  * Hook central para leitura, troca e listagem de idiomas.
@@ -13,9 +9,7 @@ import {
 export function useLanguage() {
   const { i18n } = useTranslation();
 
-  const current = (i18n.resolvedLanguage ??
-    i18n.language ??
-    DEFAULT_LANGUAGE) as SupportedLanguage;
+  const current = (i18n.resolvedLanguage ?? i18n.language ?? DEFAULT_LANGUAGE) as SupportedLanguage;
 
   const available = useMemo(() => SUPPORTED_LANGUAGES, []);
 

@@ -16,8 +16,13 @@ export default function ResetPasswordPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const token = params.get("token");
-  const { register, handleSubmit, watch, setError, formState: { errors, isSubmitting } } =
-    useForm<FormFields>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>();
   const passwordValue = watch("password") ?? "";
   const confirmValue = watch("confirmPassword") ?? "";
 
@@ -50,21 +55,28 @@ export default function ResetPasswordPage() {
           {(() => {
             const reg = register("password", buildPasswordValidation(t));
             return (
-              <PasswordField placeholder={t("auth:reset.newPasswordPlaceholder")}
-                autoComplete="new-password" aria-label={t("auth:reset.newPasswordAria")} {...reg} />
+              <PasswordField
+                placeholder={t("auth:reset.newPasswordPlaceholder")}
+                autoComplete="new-password"
+                aria-label={t("auth:reset.newPasswordAria")}
+                {...reg}
+              />
             );
           })()}
-          {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
+          {errors.password?.message && <p className={authFieldError}>{errors.password.message}</p>}
           <PasswordRequirements password={passwordValue} />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordField placeholder={t("auth:reset.confirmPasswordPlaceholder")}
-            autoComplete="new-password" aria-label={t("auth:reset.confirmPasswordAria")}
+          <PasswordField
+            placeholder={t("auth:reset.confirmPasswordPlaceholder")}
+            autoComplete="new-password"
+            aria-label={t("auth:reset.confirmPasswordAria")}
             {...register("confirmPassword", {
               required: t("validation:password.confirm"),
               validate: (v) => v === passwordValue || t("validation:password.mismatch"),
-            })} />
+            })}
+          />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
           {errors.confirmPassword?.message && !confirmValue && (
             <p className={authFieldError}>{errors.confirmPassword.message}</p>
@@ -73,9 +85,17 @@ export default function ResetPasswordPage() {
 
         <div className="flex gap-sm mt-sm">
           <Link to="/auth/login" className="flex-1">
-            <Button type="button" variant="outline" size="lg" fullWidth>{t("auth:reset.cancel")}</Button>
+            <Button type="button" variant="outline" size="lg" fullWidth>
+              {t("auth:reset.cancel")}
+            </Button>
           </Link>
-          <Button type="submit" size="lg" loading={isSubmitting} disabled={isSubmitting || !token} className="flex-1">
+          <Button
+            type="submit"
+            size="lg"
+            loading={isSubmitting}
+            disabled={isSubmitting || !token}
+            className="flex-1"
+          >
             {isSubmitting ? t("auth:reset.submitting") : t("auth:reset.submit")}
           </Button>
         </div>

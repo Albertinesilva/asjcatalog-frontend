@@ -42,8 +42,9 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
 
   useEffect(() => {
     if (open && listRef.current) {
-      const first = listRef.current.querySelector<HTMLButtonElement>('button[data-active="true"]')
-        ?? listRef.current.querySelector<HTMLButtonElement>("button");
+      const first =
+        listRef.current.querySelector<HTMLButtonElement>('button[data-active="true"]') ??
+        listRef.current.querySelector<HTMLButtonElement>("button");
       first?.focus();
     }
   }, [open]);
@@ -70,7 +71,9 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
             : "text-foreground hover:bg-surface-hover focus-visible:ring-ring",
         )}
       >
-        <span aria-hidden className="text-body">{activeMeta.flag}</span>
+        <span aria-hidden className="text-body">
+          {activeMeta.flag}
+        </span>
         <span>{activeMeta.short}</span>
         <svg
           aria-hidden
@@ -78,7 +81,10 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
           height="12"
           viewBox="0 0 20 20"
           fill="none"
-          className={cn("transition-transform duration-DEFAULT ease-standard", open && "rotate-180")}
+          className={cn(
+            "transition-transform duration-DEFAULT ease-standard",
+            open && "rotate-180",
+          )}
         >
           <path
             d="M5 8l5 5 5-5"
@@ -112,7 +118,9 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
                       : "text-foreground hover:bg-surface-hover focus:bg-surface-hover",
                   )}
                 >
-                  <span aria-hidden className="text-body">{lang.flag}</span>
+                  <span aria-hidden className="text-body">
+                    {lang.flag}
+                  </span>
                   <span className="flex-1">{lang.label}</span>
                   {active && (
                     <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden>

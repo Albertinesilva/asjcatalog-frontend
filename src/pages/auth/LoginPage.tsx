@@ -18,7 +18,12 @@ export default function LoginPage() {
   const { authenticated, login } = useAuth();
   const [showActivationModal, setShowActivationModal] = useState(false);
   const [inactiveAccount, setInactiveAccount] = useState(false);
-  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<AuthFormFields>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<AuthFormFields>();
 
   const redirectTo = (location.state as { from?: string } | null)?.from ?? "/dashboard";
 
@@ -56,29 +61,46 @@ export default function LoginPage() {
         <h2 className={authFormTitle}>{t("auth:login.title")}</h2>
 
         <div className="flex flex-col gap-1.5">
-          <input type="email" autoComplete="email" className={inputBaseClasses}
-            placeholder={t("auth:login.emailPlaceholder")} aria-label={t("auth:login.emailPlaceholder")}
+          <input
+            type="email"
+            autoComplete="email"
+            className={inputBaseClasses}
+            placeholder={t("auth:login.emailPlaceholder")}
+            aria-label={t("auth:login.emailPlaceholder")}
             {...register("username", {
               required: t("validation:email.required"),
-              pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, message: t("validation:emailInvalid") },
-            })} />
-          {errors.username?.message && (<p className={authFieldError}>{errors.username.message}</p>)}
+              pattern: {
+                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: t("validation:emailInvalid"),
+              },
+            })}
+          />
+          {errors.username?.message && <p className={authFieldError}>{errors.username.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <PasswordField className={cn(inputBaseClasses)}
-            placeholder={t("auth:login.passwordPlaceholder")} autoComplete="current-password"
+          <PasswordField
+            className={cn(inputBaseClasses)}
+            placeholder={t("auth:login.passwordPlaceholder")}
+            autoComplete="current-password"
             aria-label={t("auth:login.passwordPlaceholder")}
-            {...register("password", { required: t("validation:password.required") })} />
-          {errors.password?.message && (<p className={authFieldError}>{errors.password.message}</p>)}
+            {...register("password", { required: t("validation:password.required") })}
+          />
+          {errors.password?.message && <p className={authFieldError}>{errors.password.message}</p>}
         </div>
 
         <div className="flex flex-col gap-xs items-start">
-          <Link to="/auth/recover" className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">
+          <Link
+            to="/auth/recover"
+            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
             {t("auth:login.forgot")}
           </Link>
-          <button type="button" onClick={() => setShowActivationModal(true)}
-            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0">
+          <button
+            type="button"
+            onClick={() => setShowActivationModal(true)}
+            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0"
+          >
             {t("auth:login.resend")}
           </button>
         </div>
@@ -87,9 +109,19 @@ export default function LoginPage() {
         {inactiveAccount && (
           <Card padding="md" bordered className="bg-surface-hover">
             <div className="flex flex-col gap-sm">
-              <h3 className="font-heading text-title text-foreground m-0">{t("auth:login.inactive.title")}</h3>
-              <p className="text-small text-foreground-muted m-0">{t("auth:login.inactive.description")}</p>
-              <Button type="button" variant="outline" size="lg" fullWidth onClick={() => setShowActivationModal(true)}>
+              <h3 className="font-heading text-title text-foreground m-0">
+                {t("auth:login.inactive.title")}
+              </h3>
+              <p className="text-small text-foreground-muted m-0">
+                {t("auth:login.inactive.description")}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                fullWidth
+                onClick={() => setShowActivationModal(true)}
+              >
                 {t("auth:login.inactive.resend")}
               </Button>
             </div>
@@ -102,7 +134,10 @@ export default function LoginPage() {
 
         <p className="text-center text-small text-foreground-muted m-0">
           {t("auth:login.noAccount")}{" "}
-          <Link to="/auth/register" className="font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">
+          <Link
+            to="/auth/register"
+            className="font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
             {t("auth:login.register")}
           </Link>
         </p>
@@ -111,16 +146,23 @@ export default function LoginPage() {
       <ConfirmDialog
         open={showActivationModal}
         title={t("auth:login.activateModal.title")}
-        description={<>
-          <p className="m-0 mb-sm">{t("auth:login.activateModal.line1")}</p>
-          <p className="m-0 mb-sm">{t("auth:login.activateModal.line2")}</p>
-          <p className="m-0 text-small text-foreground-muted">{t("auth:login.activateModal.line3")}</p>
-        </>}
+        description={
+          <>
+            <p className="m-0 mb-sm">{t("auth:login.activateModal.line1")}</p>
+            <p className="m-0 mb-sm">{t("auth:login.activateModal.line2")}</p>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("auth:login.activateModal.line3")}
+            </p>
+          </>
+        }
         cancelLabel={t("common:actions.cancel")}
         confirmLabel={t("common:actions.continue")}
         variant="primary"
         onCancel={() => setShowActivationModal(false)}
-        onConfirm={() => { setShowActivationModal(false); navigate("/auth/activation-pending"); }}
+        onConfirm={() => {
+          setShowActivationModal(false);
+          navigate("/auth/activation-pending");
+        }}
       />
     </Card>
   );

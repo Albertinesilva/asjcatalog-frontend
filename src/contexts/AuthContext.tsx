@@ -100,7 +100,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setState((s) => ({ ...s, user: user ?? userRef.current, loading: false }));
       })
       .catch(() => {
-        if (!cancelled) setState((s) => ({ ...s, user: s.user ?? userRef.current, loading: false }));
+        if (!cancelled)
+          setState((s) => ({ ...s, user: s.user ?? userRef.current, loading: false }));
       });
     return () => {
       cancelled = true;

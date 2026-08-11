@@ -60,10 +60,7 @@ export default function UserListPage() {
       await userService.delete(pendingDelete.id);
       setPendingDelete(null);
       refetch();
-      await alerts.success(
-        t("users:success.deletedTitle"),
-        t("users:success.deletedMessage"),
-      );
+      await alerts.success(t("users:success.deletedTitle"), t("users:success.deletedMessage"));
     } catch (err) {
       setDeleteError(getApiErrorMessage(err));
     } finally {

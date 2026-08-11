@@ -87,10 +87,7 @@ export default function UserForm({ mode }: Props) {
           password: data.password,
           roleIds,
         });
-        await alerts.success(
-          t("users:success.createdTitle"),
-          t("users:success.createdMessage"),
-        );
+        await alerts.success(t("users:success.createdTitle"), t("users:success.createdMessage"));
       } else if (id) {
         await userService.update(Number(id), {
           firstName: data.firstName,
@@ -98,10 +95,7 @@ export default function UserForm({ mode }: Props) {
           email: data.email,
           roleIds,
         });
-        await alerts.success(
-          t("users:success.updatedTitle"),
-          t("users:success.updatedMessage"),
-        );
+        await alerts.success(t("users:success.updatedTitle"), t("users:success.updatedMessage"));
       }
       navigate("/dashboard/users");
     } catch (err) {
@@ -143,7 +137,10 @@ export default function UserForm({ mode }: Props) {
         {mode === "create" && (
           <div className="flex flex-col gap-sm">
             {(() => {
-              const reg = register("password", buildPasswordValidation(t, () => passwordContext));
+              const reg = register(
+                "password",
+                buildPasswordValidation(t, () => passwordContext),
+              );
               return (
                 <PasswordField
                   id="user-password"
