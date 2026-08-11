@@ -130,17 +130,19 @@ export default function CatalogPage() {
         </Card>
       </header>
 
-      <div className="mb-lg overflow-hidden rounded-lg border border-border bg-surface">
-        <img
-          src={catalogProducts}
-          alt=""
-          aria-hidden="true"
-          width={1920}
-          height={640}
-          loading="lazy"
-          className="w-full h-20 sm:h-24 lg:h-28 object-cover object-center"
-        />
-      </div>
+      {products.length > 0 && (
+        <div className="mb-lg overflow-hidden rounded-lg border border-border bg-surface">
+          <img
+            src={catalogProducts}
+            alt=""
+            aria-hidden="true"
+            width={1920}
+            height={640}
+            loading="lazy"
+            className="w-full h-24 sm:h-28 lg:h-32 object-cover object-bottom"
+          />
+        </div>
+      )}
 
       {loading ? (
         <LoadingState message={t("catalog:loading")} />
@@ -158,7 +160,7 @@ export default function CatalogPage() {
               width={1920}
               height={640}
               loading="lazy"
-              className="w-full max-w-[520px] h-32 sm:h-40 object-cover object-center rounded-lg border border-border mb-sm"
+              className="w-full max-w-[520px] h-32 sm:h-40 object-cover object-bottom rounded-lg border border-border mb-sm"
             />
           }
         />
