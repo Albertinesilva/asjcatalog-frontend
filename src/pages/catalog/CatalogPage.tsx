@@ -131,7 +131,7 @@ export default function CatalogPage() {
       </header>
 
       {products.length > 0 && (
-        <div className="mb-lg mx-auto w-full max-w-[1080px] overflow-hidden rounded-lg border border-border bg-surface">
+        <div className="mb-lg mx-auto w-full max-w-[880px] overflow-hidden rounded-lg border border-border bg-surface">
           <img
             src={catalogProducts}
             alt=""
