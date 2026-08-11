@@ -259,40 +259,41 @@ export default function ProfilePage() {
                 required: t("validation:password.requiredShort"),
               })}
             />
-            {(() => {
-              const reg = registerPassword(
-                "password",
-                buildPasswordValidation(t, () => passwordContext),
-              );
-              return (
-                <PasswordField
-                  id="password"
-                  label={t("profile:fields.newPassword")}
-                  required
-                  autoComplete="new-password"
-                  error={passwordErrors.password?.message}
-                  {...reg}
-                />
-              );
-            })()}
-            <PasswordRequirements password={passwordValue} context={passwordContext} />
-
-            <PasswordField
-              id="confirmPassword"
-              label={t("profile:fields.confirmPassword")}
-              required
-              autoComplete="new-password"
-              error={
-                passwordErrors.confirmPassword && !confirmPasswordValue
-                  ? passwordErrors.confirmPassword.message
-                  : undefined
-              }
-              {...registerPassword("confirmPassword", {
-                required: t("validation:password.confirmNew"),
-                validate: (v) => v === passwordValue || t("validation:password.mismatch"),
-              })}
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+              {(() => {
+                const reg = registerPassword(
+                  "password",
+                  buildPasswordValidation(t, () => passwordContext),
+                );
+                return (
+                  <PasswordField
+                    id="password"
+                    label={t("profile:fields.newPassword")}
+                    required
+                    autoComplete="new-password"
+                    error={passwordErrors.password?.message}
+                    {...reg}
+                  />
+                );
+              })()}
+              <PasswordField
+                id="confirmPassword"
+                label={t("profile:fields.confirmPassword")}
+                required
+                autoComplete="new-password"
+                error={
+                  passwordErrors.confirmPassword && !confirmPasswordValue
+                    ? passwordErrors.confirmPassword.message
+                    : undefined
+                }
+                {...registerPassword("confirmPassword", {
+                  required: t("validation:password.confirmNew"),
+                  validate: (v) => v === passwordValue || t("validation:password.mismatch"),
+                })}
+              />
+            </div>
             <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
+            <PasswordRequirements password={passwordValue} context={passwordContext} />
 
             {passwordFeedback && (
               <div
@@ -308,8 +309,8 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div className="pt-sm">
-              <Button type="submit" variant="primary" loading={savingPassword}>
+            <div className="flex justify-end pt-1">
+              <Button type="submit" variant="primary" loading={savingPassword} className="w-full sm:w-auto">
                 {savingPassword
                   ? t("profile:actions.changingPassword")
                   : t("profile:actions.changePassword")}
