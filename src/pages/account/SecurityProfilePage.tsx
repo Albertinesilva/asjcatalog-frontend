@@ -116,94 +116,97 @@ export default function SecurityProfilePage() {
         {t("profile:hub.back")}
       </Link>
 
-      <Card padding="md" className="grid grid-cols-1 gap-md lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <Card
+        padding="md"
+        className="grid grid-cols-1 gap-md lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"
+      >
         <div className="order-2 flex min-w-0 flex-col gap-sm lg:order-1">
-        <div className="flex flex-col gap-0.5">
-          <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
-            {t("profile:sections.security")}
-          </h2>
-          <p className="m-0 text-small text-foreground-muted">
-            {t("profile:sections.securityHint")}
-          </p>
-        </div>
-        <form
-          onSubmit={handlePasswordSubmit(onChangePassword)}
-          noValidate
-          className="flex flex-col gap-sm"
-        >
-          <PasswordField
-            id="currentPassword"
-            label={t("profile:fields.currentPassword")}
-            required
-            autoComplete="current-password"
-            error={passwordErrors.currentPassword?.message}
-            {...registerPassword("currentPassword", {
-              required: t("validation:password.requiredShort"),
-            })}
-          />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
-            {(() => {
-              const reg = registerPassword(
-                "password",
-                buildPasswordValidation(t, () => passwordContext),
-              );
-              return (
-                <PasswordField
-                  id="password"
-                  label={t("profile:fields.newPassword")}
-                  required
-                  autoComplete="new-password"
-                  error={passwordErrors.password?.message}
-                  {...reg}
-                />
-              );
-            })()}
+          <div className="flex flex-col gap-0.5">
+            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+              {t("profile:sections.security")}
+            </h2>
+            <p className="m-0 text-small text-foreground-muted">
+              {t("profile:sections.securityHint")}
+            </p>
+          </div>
+          <form
+            onSubmit={handlePasswordSubmit(onChangePassword)}
+            noValidate
+            className="flex flex-col gap-sm"
+          >
             <PasswordField
-              id="confirmPassword"
-              label={t("profile:fields.confirmPassword")}
+              id="currentPassword"
+              label={t("profile:fields.currentPassword")}
               required
-              autoComplete="new-password"
-              error={
-                passwordErrors.confirmPassword && !confirmPasswordValue
-                  ? passwordErrors.confirmPassword.message
-                  : undefined
-              }
-              {...registerPassword("confirmPassword", {
-                required: t("validation:password.confirmNew"),
-                validate: (v) => v === passwordValue || t("validation:password.mismatch"),
+              autoComplete="current-password"
+              error={passwordErrors.currentPassword?.message}
+              {...registerPassword("currentPassword", {
+                required: t("validation:password.requiredShort"),
               })}
             />
-          </div>
-          <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
-          <PasswordRequirements password={passwordValue} context={passwordContext} />
-
-          {passwordFeedback && (
-            <div
-              role="status"
-              className={
-                "rounded-md border px-md py-sm text-small " +
-                (passwordFeedback.kind === "success"
-                  ? "border-success/40 bg-success/10 text-foreground"
-                  : "border-danger/40 bg-danger/10 text-danger")
-              }
-            >
-              {passwordFeedback.message}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm">
+              {(() => {
+                const reg = registerPassword(
+                  "password",
+                  buildPasswordValidation(t, () => passwordContext),
+                );
+                return (
+                  <PasswordField
+                    id="password"
+                    label={t("profile:fields.newPassword")}
+                    required
+                    autoComplete="new-password"
+                    error={passwordErrors.password?.message}
+                    {...reg}
+                  />
+                );
+              })()}
+              <PasswordField
+                id="confirmPassword"
+                label={t("profile:fields.confirmPassword")}
+                required
+                autoComplete="new-password"
+                error={
+                  passwordErrors.confirmPassword && !confirmPasswordValue
+                    ? passwordErrors.confirmPassword.message
+                    : undefined
+                }
+                {...registerPassword("confirmPassword", {
+                  required: t("validation:password.confirmNew"),
+                  validate: (v) => v === passwordValue || t("validation:password.mismatch"),
+                })}
+              />
             </div>
-          )}
+            <PasswordMatch password={passwordValue} confirm={confirmPasswordValue} />
+            <PasswordRequirements password={passwordValue} context={passwordContext} />
 
-          <div className="flex justify-end pt-1">
-            <Button
-              type="submit"
-              variant="primary"
-              loading={savingPassword}
-              className="w-full sm:w-auto"
-            >
-              {savingPassword
-                ? t("profile:actions.changingPassword")
-                : t("profile:actions.changePassword")}
-            </Button>
-          </div>
-        </form>
+            {passwordFeedback && (
+              <div
+                role="status"
+                className={
+                  "rounded-md border px-md py-sm text-small " +
+                  (passwordFeedback.kind === "success"
+                    ? "border-success/40 bg-success/10 text-foreground"
+                    : "border-danger/40 bg-danger/10 text-danger")
+                }
+              >
+                {passwordFeedback.message}
+              </div>
+            )}
+
+            <div className="flex justify-end pt-1">
+              <Button
+                type="submit"
+                variant="primary"
+                loading={savingPassword}
+                className="w-full sm:w-auto"
+              >
+                {savingPassword
+                  ? t("profile:actions.changingPassword")
+                  : t("profile:actions.changePassword")}
+              </Button>
+            </div>
+          </form>
         </div>
         <div className="order-1 overflow-hidden rounded-md bg-surface-hover lg:order-2 lg:h-full">
           <img
