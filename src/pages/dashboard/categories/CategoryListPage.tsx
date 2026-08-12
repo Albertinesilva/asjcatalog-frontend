@@ -7,9 +7,9 @@ import {
   ConfirmDialog,
   ErrorState,
   SearchInput,
+  TableSkeleton,
   TableToolbar,
 } from "@/components";
-import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";

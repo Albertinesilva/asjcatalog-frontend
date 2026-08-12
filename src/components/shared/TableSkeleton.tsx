@@ -1,12 +1,14 @@
+import { useTranslation } from "react-i18next";
 import { Card, Skeleton } from "@/components/ui";
 
 type Props = { rows?: number };
 
 /** Placeholder de carregamento para listagens tabulares do dashboard. */
 export default function TableSkeleton({ rows = 6 }: Props) {
+  const { t } = useTranslation();
   return (
     <Card padding="lg" className="flex flex-col gap-md" role="status" aria-busy="true">
-      <span className="sr-only">…</span>
+      <span className="sr-only">{t("common:states.loading")}</span>
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex items-center gap-md">
           <Skeleton className="h-4 w-10 shrink-0" />

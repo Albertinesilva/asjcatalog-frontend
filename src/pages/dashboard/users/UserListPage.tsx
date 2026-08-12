@@ -8,8 +8,8 @@ import {
   ConfirmDialog,
   TableToolbar,
   SearchInput,
+  TableSkeleton,
 } from "@/components";
-import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-error";
