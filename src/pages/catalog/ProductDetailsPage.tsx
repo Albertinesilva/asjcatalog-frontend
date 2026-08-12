@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AxiosError } from "axios";
 
-import { ProductPrice, LoadingState, EmptyState, ProductImage } from "@/components";
+import { ProductPrice, ProductDetailsSkeleton, EmptyState, ProductImage } from "@/components";
 import { Button, Card } from "@/components/ui";
 import { productService } from "@/services/product-service";
 import { alerts } from "@/utils/alerts";
@@ -54,7 +54,7 @@ export default function ProductDetailsPage() {
   }, [productId, t]);
 
   if (loading) {
-    return <LoadingState message={t("catalog:details.loading")} />;
+    return <ProductDetailsSkeleton />;
   }
 
   if (notFound || !data) {
