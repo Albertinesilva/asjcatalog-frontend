@@ -105,6 +105,26 @@ function resolveBreadcrumb(
   }
 
   // Profile
+  if (pathname.startsWith("/account/profile/personal")) {
+    return {
+      title: t("navigation:breadcrumbs.titles.profilePersonal"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.profile"), to: "/account/profile" },
+        { label: t("navigation:breadcrumbs.profilePersonal") },
+      ],
+    };
+  }
+  if (pathname.startsWith("/account/profile/security")) {
+    return {
+      title: t("navigation:breadcrumbs.titles.profileSecurity"),
+      crumbs: [
+        base,
+        { label: t("navigation:breadcrumbs.profile"), to: "/account/profile" },
+        { label: t("navigation:breadcrumbs.profileSecurity") },
+      ],
+    };
+  }
   if (pathname.startsWith("/account/profile")) {
     return {
       title: t("navigation:breadcrumbs.titles.profile"),
