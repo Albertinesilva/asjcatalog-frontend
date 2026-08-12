@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Button, Card } from "@/components/ui";
+import { Card, buttonClasses } from "@/components/ui";
 import personalImage from "@/assets/account/profile-personal.jpg";
 import securityImage from "@/assets/account/profile-security.jpg";
 
@@ -67,9 +67,12 @@ export default function ProfilePage() {
               <p className="m-0 text-small text-foreground-muted">{section.description}</p>
             </div>
             <div className="mt-auto flex justify-end pt-1">
-              <Button asChild variant="primary" className="w-full sm:w-auto">
-                <Link to={section.to}>{section.action}</Link>
-              </Button>
+              <Link
+                to={section.to}
+                className={`${buttonClasses("primary", "md")} w-full sm:w-auto`}
+              >
+                {section.action}
+              </Link>
             </div>
           </Card>
         ))}
