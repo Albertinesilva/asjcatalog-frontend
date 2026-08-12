@@ -33,5 +33,15 @@
   "failPasswordTitle": "Error al cambiar contraseña",
   "failPasswordMessage": "No fue posible cambiar la contraseña.",
   "emailChangeNotice": "El próximo inicio de sesión deberá usar el nuevo email.",
-  "passwordUpdateError": "No fue posible actualizar la contraseña. Verifique la contraseña actual y las reglas de la nueva contraseña."
+  "passwordUpdateError": "No fue posible actualizar la contraseña. Verifique la contraseña actual y las reglas de la nueva contraseña.",
+  "hub": {
+    "intro": "Administre su información personal y la configuración de seguridad de su cuenta.",
+    "personalDescription": "Actualice su nombre, apellido y email de acceso.",
+    "personalAction": "Editar datos personales",
+    "personalImageAlt": "Ilustración de una tarjeta de perfil con datos personales",
+    "securityDescription": "Cambie su contraseña para mantener su cuenta protegida.",
+    "securityAction": "Cambiar contraseña",
+    "securityImageAlt": "Ilustración de un escudo con candado que representa la seguridad de la cuenta",
+    "back": "Volver a Mi Perfil"
+  }
 }

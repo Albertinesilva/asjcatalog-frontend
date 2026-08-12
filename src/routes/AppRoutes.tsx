@@ -32,6 +32,8 @@ const UserListPage = lazy(() => import("@/pages/dashboard/users/UserListPage"));
 const UserForm = lazy(() => import("@/pages/dashboard/users/UserForm"));
 const UserDetailsPage = lazy(() => import("@/pages/dashboard/users/UserDetailsPage"));
 const ProfilePage = lazy(() => import("@/pages/account/ProfilePage"));
+const PersonalProfilePage = lazy(() => import("@/pages/account/PersonalProfilePage"));
+const SecurityProfilePage = lazy(() => import("@/pages/account/SecurityProfilePage"));
 
 export default function AppRoutes() {
   return (
@@ -60,6 +62,8 @@ export default function AppRoutes() {
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/account/profile" element={<ProfilePage />} />
+            <Route path="/account/profile/personal" element={<PersonalProfilePage />} />
+            <Route path="/account/profile/security" element={<SecurityProfilePage />} />
             <Route path="/dashboard/products" element={<ProductListPage />} />
             <Route path="/dashboard/products/new" element={<ProductForm mode="create" />} />
             <Route path="/dashboard/products/:id" element={<ProductForm mode="edit" />} />

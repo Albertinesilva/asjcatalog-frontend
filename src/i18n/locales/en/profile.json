@@ -33,5 +33,15 @@
   "failPasswordTitle": "Failed to change password",
   "failPasswordMessage": "Could not change the password.",
   "emailChangeNotice": "Your next sign-in must use the new email.",
-  "passwordUpdateError": "Could not update the password. Check your current password and the new password rules."
+  "passwordUpdateError": "Could not update the password. Check your current password and the new password rules.",
+  "hub": {
+    "intro": "Manage your personal information and your account security settings.",
+    "personalDescription": "Update your first name, last name and sign-in email.",
+    "personalAction": "Edit personal data",
+    "personalImageAlt": "Illustration of a profile card with personal data",
+    "securityDescription": "Change your password to keep your account protected.",
+    "securityAction": "Change password",
+    "securityImageAlt": "Illustration of a shield with a padlock representing account security",
+    "back": "Back to My Profile"
+  }
 }
