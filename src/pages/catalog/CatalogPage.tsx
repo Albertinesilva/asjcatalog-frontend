@@ -136,10 +136,10 @@ export default function CatalogPage() {
             src={catalogProducts}
             alt=""
             aria-hidden="true"
-            width={1920}
+            width={2064}
             height={512}
             loading="lazy"
-            className="block w-full h-auto aspect-[15/4] object-cover"
+            className="block w-full h-auto aspect-[4/1] object-cover"
           />
         </div>
       )}
@@ -157,10 +157,10 @@ export default function CatalogPage() {
               src={catalogProducts}
               alt=""
               aria-hidden="true"
-              width={1920}
+              width={2064}
               height={512}
               loading="lazy"
-              className="block w-full max-w-[640px] h-auto aspect-[15/4] object-cover rounded-lg border border-border mb-sm"
+              className="block w-full max-w-[640px] h-auto aspect-[4/1] object-cover rounded-lg border border-border mb-sm"
             />
           }
         />
