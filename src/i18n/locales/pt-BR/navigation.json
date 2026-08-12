@@ -19,7 +19,10 @@
     "categories": "Categorias",
     "users": "Usuários",
     "profile": "Meu Perfil",
-    "publicCatalog": "Catálogo Público"
+    "publicCatalog": "Catálogo Público",
+    "profilePersonal": "Dados pessoais",
+    "profileSecurity": "Segurança",
+    "toggleProfile": "Expandir ou recolher o submenu Meu Perfil"
   },
   "breadcrumbs": {
     "root": "Dashboard",
