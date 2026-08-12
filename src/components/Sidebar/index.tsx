@@ -232,8 +232,8 @@ export default function Sidebar() {
               aria-expanded={profileOpen}
               aria-controls="sidebar-profile-submenu"
               className={cn(
-                itemClassName({ isActive: profileOpen }),
-                "cursor-pointer lg:justify-between",
+                itemClassName({ isActive: profileOpen || inProfileArea, spread: true }),
+                "cursor-pointer",
               )}
             >
               <span className="inline-flex items-center gap-sm">
