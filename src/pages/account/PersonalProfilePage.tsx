@@ -9,6 +9,7 @@ import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
+import personalImage from "@/assets/account/profile-personal.jpg";
 
 type ProfileFields = {
   firstName: string;
@@ -87,7 +88,7 @@ export default function PersonalProfilePage() {
   };
 
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-md">
+    <div className="flex w-full max-w-5xl flex-col gap-md">
       <Link
         to="/account/profile"
         className="inline-flex items-center gap-xs self-start text-small text-foreground-muted transition-colors duration-DEFAULT ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
@@ -96,7 +97,18 @@ export default function PersonalProfilePage() {
         {t("profile:hub.back")}
       </Link>
 
-      <Card padding="md" className="flex flex-col gap-sm">
+      <Card padding="md" className="grid grid-cols-1 gap-md lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <div className="order-1 overflow-hidden rounded-md bg-surface-hover lg:h-full">
+          <img
+            src={personalImage}
+            alt={t("profile:hub.personalImageAlt")}
+            loading="lazy"
+            width={1200}
+            height={800}
+            className="h-40 w-full object-cover sm:h-56 lg:h-full lg:min-h-[320px]"
+          />
+        </div>
+        <div className="order-2 flex min-w-0 flex-col gap-sm">
         <div className="flex flex-col gap-0.5">
           <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
             {t("profile:sections.personal")}
@@ -177,6 +189,7 @@ export default function PersonalProfilePage() {
             </Button>
           </div>
         </form>
+        </div>
       </Card>
     </div>
   );
