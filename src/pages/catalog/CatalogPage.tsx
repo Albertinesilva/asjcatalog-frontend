@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ProductItem, LoadingState, ErrorState, EmptyState } from "@/components";
+import { ProductItem, ProductGridSkeleton, ErrorState, EmptyState } from "@/components";
 import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
+import { catalogGridClasses } from "@/components/shared/catalog-grid";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import type { Category, ProductResponse, SpringPage } from "@/types";
@@ -145,7 +146,7 @@ export default function CatalogPage() {
       )}
 
       {loading ? (
-        <LoadingState message={t("catalog:loading")} />
+        <ProductGridSkeleton count={pageSize} />
       ) : error ? (
         <ErrorState message={error} />
       ) : products.length === 0 ? (
@@ -165,7 +166,7 @@ export default function CatalogPage() {
           }
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-md">
+        <div className={catalogGridClasses}>
           {products.map((product) => (
             <ProductItem key={product.id} {...product} />
           ))}
