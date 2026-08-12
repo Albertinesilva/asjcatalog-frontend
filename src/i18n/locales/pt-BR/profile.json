@@ -33,5 +33,15 @@
   "failPasswordTitle": "Falha ao alterar senha",
   "failPasswordMessage": "Não foi possível alterar a senha.",
   "emailChangeNotice": "O próximo login deverá usar o novo email.",
-  "passwordUpdateError": "Não foi possível atualizar a senha. Verifique a senha atual e as regras da nova senha."
+  "passwordUpdateError": "Não foi possível atualizar a senha. Verifique a senha atual e as regras da nova senha.",
+  "hub": {
+    "intro": "Gerencie suas informações pessoais e as configurações de segurança da sua conta.",
+    "personalDescription": "Atualize seu nome, sobrenome e e-mail de acesso.",
+    "personalAction": "Editar dados pessoais",
+    "personalImageAlt": "Ilustração de um cartão de perfil com dados pessoais",
+    "securityDescription": "Altere sua senha para manter sua conta protegida.",
+    "securityAction": "Alterar senha",
+    "securityImageAlt": "Ilustração de escudo com cadeado representando segurança da conta",
+    "back": "Voltar para Meu Perfil"
+  }
 }

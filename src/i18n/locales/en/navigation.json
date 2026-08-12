@@ -43,9 +43,13 @@
       "userNew": "New user",
       "userEdit": "Edit user",
       "userDetails": "User details",
-      "profile": "My Profile"
+      "profile": "My Profile",
+      "profilePersonal": "Personal data",
+      "profileSecurity": "Security"
     },
-    "label": "Breadcrumb"
+    "label": "Breadcrumb",
+    "profilePersonal": "Personal data",
+    "profileSecurity": "Security"
   },
   "footer": "ASJ Catalog · © {{year}}"
 }
