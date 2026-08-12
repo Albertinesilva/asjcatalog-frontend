@@ -6,10 +6,10 @@ import {
   Authorization,
   ConfirmDialog,
   ErrorState,
-  LoadingState,
   SearchInput,
   TableToolbar,
 } from "@/components";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
@@ -90,7 +90,7 @@ export default function CategoryListPage() {
       {deleteError && <ErrorState message={deleteError} />}
 
       {isLoading ? (
-        <LoadingState />
+        <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={load} />
       ) : (

@@ -7,11 +7,11 @@ import {
   Authorization,
   ConfirmDialog,
   ErrorState,
-  LoadingState,
   Pagination,
   SearchInput,
   TableToolbar,
 } from "@/components";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getApiErrorMessage } from "@/utils/api-error";
@@ -126,7 +126,7 @@ export default function ProductListPage() {
       {deleteError && <ErrorState message={deleteError} />}
 
       {isLoading ? (
-        <LoadingState />
+        <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={refetch} />
       ) : (

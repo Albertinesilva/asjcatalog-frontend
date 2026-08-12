@@ -141,15 +141,10 @@ export default {
           "0%": { opacity: "0", transform: "scale(0.96)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-400px 0" },
-          "100%": { backgroundPosition: "400px 0" },
-        },
       },
       animation: {
         "fade-in": "fade-in 220ms cubic-bezier(0, 0, 0.2, 1) both",
         "scale-in": "scale-in 180ms cubic-bezier(0.2, 0, 0, 1) both",
-        shimmer: "shimmer 1.4s linear infinite",
       },
     },
   },
