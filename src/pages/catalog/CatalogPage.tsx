@@ -131,15 +131,15 @@ export default function CatalogPage() {
       </header>
 
       {products.length > 0 && (
-        <div className="mb-lg mx-auto w-full max-w-[880px] overflow-hidden rounded-lg border border-border bg-surface">
+        <div className="mb-lg w-full overflow-hidden rounded-lg border border-border bg-surface">
           <img
             src={catalogProducts}
             alt=""
             aria-hidden="true"
-            width={1920}
-            height={640}
+            width={2064}
+            height={512}
             loading="lazy"
-            className="block w-full h-auto aspect-[3/1] object-contain"
+            className="block w-full h-auto aspect-[4/1] object-cover"
           />
         </div>
       )}
@@ -157,10 +157,10 @@ export default function CatalogPage() {
               src={catalogProducts}
               alt=""
               aria-hidden="true"
-              width={1920}
-              height={640}
+              width={2064}
+              height={512}
               loading="lazy"
-              className="block w-full max-w-[520px] h-auto aspect-[3/1] object-contain rounded-lg border border-border mb-sm"
+              className="block w-full max-w-[640px] h-auto aspect-[4/1] object-cover rounded-lg border border-border mb-sm"
             />
           }
         />
