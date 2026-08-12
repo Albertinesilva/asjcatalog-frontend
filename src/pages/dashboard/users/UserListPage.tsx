@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
 import {
-  LoadingState,
   ErrorState,
   Pagination,
   ConfirmDialog,
   TableToolbar,
   SearchInput,
+  TableSkeleton,
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
@@ -89,7 +89,7 @@ export default function UserListPage() {
       {deleteError && <ErrorState message={deleteError} />}
 
       {isLoading ? (
-        <LoadingState />
+        <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={refetch} />
       ) : (

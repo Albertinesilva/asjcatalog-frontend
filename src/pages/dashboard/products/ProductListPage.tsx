@@ -7,9 +7,9 @@ import {
   Authorization,
   ConfirmDialog,
   ErrorState,
-  LoadingState,
   Pagination,
   SearchInput,
+  TableSkeleton,
   TableToolbar,
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
@@ -126,7 +126,7 @@ export default function ProductListPage() {
       {deleteError && <ErrorState message={deleteError} />}
 
       {isLoading ? (
-        <LoadingState />
+        <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={refetch} />
       ) : (
