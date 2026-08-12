@@ -19,7 +19,10 @@
     "categories": "Categories",
     "users": "Users",
     "profile": "My Profile",
-    "publicCatalog": "Public Catalog"
+    "publicCatalog": "Public Catalog",
+    "profilePersonal": "Personal data",
+    "profileSecurity": "Security",
+    "toggleProfile": "Expand or collapse the My Profile submenu"
   },
   "breadcrumbs": {
     "root": "Dashboard",
