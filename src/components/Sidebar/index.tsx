@@ -146,12 +146,13 @@ const linkBase =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
 /** Chip variant used on mobile/tablet; pill variant used on desktop. */
-function itemClassName({ isActive }: { isActive: boolean }) {
+function itemClassName({ isActive, spread }: { isActive: boolean; spread?: boolean }) {
   return cn(
     linkBase,
     // Mobile / tablet: pill chip.
     "shrink-0 whitespace-nowrap px-md py-sm text-small font-heading font-semibold",
-    "lg:w-full lg:justify-start lg:px-md lg:py-sm lg:text-body lg:relative",
+    "lg:w-full lg:px-md lg:py-sm lg:text-body lg:relative",
+    spread ? "lg:justify-between" : "lg:justify-start",
     isActive
       ? "bg-primary/10 text-primary lg:before:content-[''] lg:before:absolute lg:before:left-0 lg:before:top-1.5 lg:before:bottom-1.5 lg:before:w-1 lg:before:rounded-full lg:before:bg-primary"
       : "bg-transparent text-foreground-muted hover:bg-surface-hover hover:text-foreground",
