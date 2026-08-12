@@ -7,6 +7,7 @@ import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
+import { ProductFormSkeleton } from "@/components";
 import { inputBaseClasses } from "@/components/ui/Input";
 import { handleApiError } from "@/utils/api-error-handler";
 import { getApiErrorMessage } from "@/utils/api-error";
@@ -29,6 +30,7 @@ export default function ProductForm({ mode }: Props) {
   const { id: productId } = useParams<{ id: string }>();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(mode === "edit");
   const [saveError, setSaveError] = useState<string | null>(null);
 
   const {
@@ -52,16 +54,23 @@ export default function ProductForm({ mode }: Props) {
   }, []);
 
   useEffect(() => {
-    if (mode !== "edit" || !productId) return;
-    productService.findById(Number(productId)).then((p) => {
-      reset({
-        name: p.name,
-        price: p.price,
-        imgUrl: p.imgUrl,
-        description: p.description,
-        categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
-      });
-    });
+    if (mode !== "edit" || !productId) {
+      setIsFetching(false);
+      return;
+    }
+    setIsFetching(true);
+    productService
+      .findById(Number(productId))
+      .then((p) => {
+        reset({
+          name: p.name,
+          price: p.price,
+          imgUrl: p.imgUrl,
+          description: p.description,
+          categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
+        });
+      })
+      .finally(() => setIsFetching(false));
   }, [mode, productId, reset]);
 
   const onSubmit = async (data: FormFields) => {
@@ -99,6 +108,8 @@ export default function ProductForm({ mode }: Props) {
       setLoading(false);
     }
   };
+
+  if (isFetching) return <ProductFormSkeleton />;
 
   return (
     <Card padding="lg">

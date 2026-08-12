@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
-import { PasswordField, PasswordRequirements } from "@/components";
+import { PasswordField, PasswordRequirements, UserFormSkeleton } from "@/components";
 import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
@@ -31,6 +31,7 @@ export default function UserForm({ mode }: Props) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [isFetching, setIsFetching] = useState(mode === "edit");
 
   const {
     register,
@@ -60,7 +61,11 @@ export default function UserForm({ mode }: Props) {
   };
 
   useEffect(() => {
-    if (mode !== "edit" || !id) return;
+    if (mode !== "edit" || !id) {
+      setIsFetching(false);
+      return;
+    }
+    setIsFetching(true);
     userService
       .findById(Number(id))
       .then((u) =>
@@ -72,7 +77,8 @@ export default function UserForm({ mode }: Props) {
           roleIds: (u.roles ?? []).map((r) => String(r.id)),
         }),
       )
-      .catch((err: Error) => setSaveError(err.message));
+      .catch((err: Error) => setSaveError(err.message))
+      .finally(() => setIsFetching(false));
   }, [mode, id, reset]);
 
   const onSubmit = async (data: FormFields) => {
@@ -109,6 +115,8 @@ export default function UserForm({ mode }: Props) {
       }
     }
   };
+
+  if (isFetching) return <UserFormSkeleton />;
 
   return (
     <Card padding="lg">
