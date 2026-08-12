@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentType, type SVGProps } from "react";
+import { useEffect, useRef, useState, type ComponentType, type SVGProps } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useRoles } from "@/hooks/useRoles";
@@ -146,12 +146,13 @@ const linkBase =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
 /** Chip variant used on mobile/tablet; pill variant used on desktop. */
-function itemClassName({ isActive }: { isActive: boolean }) {
+function itemClassName({ isActive, spread }: { isActive: boolean; spread?: boolean }) {
   return cn(
     linkBase,
     // Mobile / tablet: pill chip.
     "shrink-0 whitespace-nowrap px-md py-sm text-small font-heading font-semibold",
-    "lg:w-full lg:justify-start lg:px-md lg:py-sm lg:text-body lg:relative",
+    "lg:w-full lg:px-md lg:py-sm lg:text-body lg:relative",
+    spread ? "lg:justify-between" : "lg:justify-start",
     isActive
       ? "bg-primary/10 text-primary lg:before:content-[''] lg:before:absolute lg:before:left-0 lg:before:top-1.5 lg:before:bottom-1.5 lg:before:w-1 lg:before:rounded-full lg:before:bg-primary"
       : "bg-transparent text-foreground-muted hover:bg-surface-hover hover:text-foreground",
@@ -164,9 +165,13 @@ export default function Sidebar() {
   const { pathname } = useLocation();
   const inProfileArea = pathname.startsWith("/account/profile");
   const [profileOpen, setProfileOpen] = useState(inProfileArea);
+  const previousInProfileArea = useRef(inProfileArea);
 
+  // Sincroniza apenas quando o usuário ENTRA na área de perfil vindo de fora.
+  // Nunca sobrescreve um toggle manual feito pelo usuário na mesma rota.
   useEffect(() => {
-    if (inProfileArea) setProfileOpen(true);
+    if (inProfileArea && !previousInProfileArea.current) setProfileOpen(true);
+    previousInProfileArea.current = inProfileArea;
   }, [inProfileArea]);
 
   const topItems: Item[] = [
@@ -221,49 +226,52 @@ export default function Sidebar() {
           ))}
 
           <li className="contents lg:block lg:w-full">
-            <div className="flex items-center gap-xs lg:w-full">
-              <NavLink to="/account/profile" end className={itemClassName}>
-                <UserIcon width={18} height={18} aria-hidden className="shrink-0" />
-                <span>{t("navigation:sidebar.profile")}</span>
-              </NavLink>
-              <button
-                type="button"
-                onClick={() => setProfileOpen((open) => !open)}
-                aria-expanded={profileOpen}
-                aria-controls="sidebar-profile-submenu"
-                aria-label={t("navigation:sidebar.toggleProfile")}
-                className={cn(
-                  linkBase,
-                  "hidden lg:inline-flex shrink-0 rounded-md p-1 text-foreground-muted hover:bg-surface-hover hover:text-foreground",
-                )}
-              >
-                <ChevronDownIcon
-                  width={16}
-                  height={16}
-                  aria-hidden
-                  className={cn(
-                    "transition-transform duration-DEFAULT ease-standard",
-                    profileOpen ? "rotate-180" : "rotate-0",
-                  )}
-                />
-              </button>
-            </div>
-            <ul
-              id="sidebar-profile-submenu"
+            <button
+              type="button"
+              onClick={() => setProfileOpen((open) => !open)}
+              aria-expanded={profileOpen}
+              aria-controls="sidebar-profile-submenu"
               className={cn(
-                "contents lg:mt-xs lg:flex lg:flex-col lg:gap-xs lg:pl-md",
-                profileOpen ? "" : "lg:hidden",
+                itemClassName({ isActive: profileOpen || inProfileArea, spread: true }),
+                "cursor-pointer",
               )}
             >
-              {profileChildren.map((child) => (
-                <li key={child.to} className="lg:w-full">
-                  <NavLink to={child.to} className={itemClassName}>
-                    <child.icon width={16} height={16} aria-hidden className="shrink-0" />
-                    <span>{child.label}</span>
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
+              <span className="inline-flex items-center gap-sm">
+                <UserIcon width={18} height={18} aria-hidden className="shrink-0" />
+                <span>{t("navigation:sidebar.profile")}</span>
+              </span>
+              <ChevronDownIcon
+                width={16}
+                height={16}
+                aria-hidden
+                className={cn(
+                  "shrink-0 transition-transform duration-DEFAULT ease-standard",
+                  profileOpen ? "rotate-180" : "rotate-0",
+                )}
+              />
+            </button>
+            <div
+              className={cn(
+                "lg:overflow-hidden lg:transition-all lg:duration-DEFAULT lg:ease-standard",
+                profileOpen
+                  ? "contents lg:block lg:max-h-40 lg:opacity-100"
+                  : "hidden lg:block lg:max-h-0 lg:opacity-0 lg:invisible",
+              )}
+            >
+              <ul
+                id="sidebar-profile-submenu"
+                className="contents lg:mt-xs lg:flex lg:flex-col lg:gap-xs lg:pl-md lg:ml-sm lg:border-l lg:border-border"
+              >
+                {profileChildren.map((child) => (
+                  <li key={child.to} className="lg:w-full">
+                    <NavLink to={child.to} className={itemClassName}>
+                      <child.icon width={16} height={16} aria-hidden className="shrink-0" />
+                      <span>{child.label}</span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </li>
 
           {bottomItems.map((item) => (
