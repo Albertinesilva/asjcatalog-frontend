@@ -84,7 +84,11 @@ export default function SecurityProfilePage() {
         // 422 de negócio: mantém sessão, mantém campos e permite nova tentativa.
         const message = parsed.message || t("profile:passwordUpdateError");
         setPasswordFeedback({ kind: "error", message });
-        passwordForm.setError("currentPassword", { type: "server", message }, { shouldFocus: true });
+        passwordForm.setError(
+          "currentPassword",
+          { type: "server", message },
+          { shouldFocus: true },
+        );
         return;
       }
       const handled = await handleApiError(err, {

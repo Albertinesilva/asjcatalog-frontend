@@ -171,7 +171,9 @@ export default function PersonalProfilePage() {
               loading={savingProfile}
               className="w-full sm:w-auto"
             >
-              {savingProfile ? t("profile:actions.savingProfile") : t("profile:actions.saveProfile")}
+              {savingProfile
+                ? t("profile:actions.savingProfile")
+                : t("profile:actions.saveProfile")}
             </Button>
           </div>
         </form>
