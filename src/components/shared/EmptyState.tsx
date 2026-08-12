@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/components/ui";
+import {
+  stateActionClasses,
+  stateContainerClasses,
+  stateDescriptionClasses,
+  stateTitleClasses,
+} from "./state-layout";
 
 type Props = {
   title?: string;
@@ -24,12 +30,7 @@ export default function EmptyState({
   const { t } = useTranslation();
   const resolvedTitle = title ?? t("common:states.empty");
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center py-xl text-center gap-sm",
-        className,
-      )}
-    >
+    <div className={cn(stateContainerClasses, className)}>
       {illustration ?? (
         <svg
           width="36"
@@ -47,9 +48,9 @@ export default function EmptyState({
           <path d="m20 20-3.5-3.5" />
         </svg>
       )}
-      <h5 className="font-heading text-title text-foreground m-0">{resolvedTitle}</h5>
-      {description && <p className="text-body text-foreground-muted m-0">{description}</p>}
-      {action && <div className="mt-sm">{action}</div>}
+      <h5 className={stateTitleClasses}>{resolvedTitle}</h5>
+      {description && <p className={stateDescriptionClasses}>{description}</p>}
+      {action && <div className={stateActionClasses}>{action}</div>}
     </div>
   );
 }
