@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { accountService } from "@/services/account-service";
 import { ConfirmDialog } from "@/components";
-import { Button, Card, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { parseApiError } from "@/utils/api-error";
 import {
@@ -166,26 +166,26 @@ export default function ActivationPendingPage() {
             <label htmlFor="activation-email" className="sr-only">
               {t("auth:activationPending.emailLabel")}
             </label>
-            <input
+            <Input
               id="activation-email"
               type="email"
               autoComplete="email"
-              className={inputBaseClasses}
               placeholder={t("auth:activationPending.emailPlaceholder")}
               aria-label={t("auth:activationPending.emailAria")}
               aria-describedby="resend-cooldown-hint"
               disabled={sending}
+              error={
+                errors.email?.type === "required"
+                  ? t("auth:activationPending.emailRequired")
+                  : errors.email?.type === "pattern"
+                    ? t("auth:activationPending.emailInvalid")
+                    : undefined
+              }
               {...register("email", {
                 required: true,
                 pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
               })}
             />
-            {errors.email?.type === "required" && (
-              <p className={authFieldError}>{t("auth:activationPending.emailRequired")}</p>
-            )}
-            {errors.email?.type === "pattern" && (
-              <p className={authFieldError}>{t("auth:activationPending.emailInvalid")}</p>
-            )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-sm">
