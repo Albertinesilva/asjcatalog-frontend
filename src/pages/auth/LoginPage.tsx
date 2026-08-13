@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmDialog, PasswordField } from "@/components";
-import { Button, Card, Input, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Input } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
 import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
