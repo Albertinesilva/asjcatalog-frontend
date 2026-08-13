@@ -13,7 +13,7 @@ import {
   savePendingEmail,
   startResendCooldown,
 } from "@/utils/storage";
-import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
+import { authFieldHint, authFormTitle } from "./_ui";
 
 type EmailFormFields = { email: string };
 

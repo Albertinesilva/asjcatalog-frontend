@@ -18,8 +18,6 @@ type Props = SelectHTMLAttributes<HTMLSelectElement> & {
   selectClassName?: string;
 };
 
-export const selectBaseClasses = inputBaseClasses;
-
 const Select = forwardRef<HTMLSelectElement, Props>(function Select(
   {
     label,
@@ -62,7 +60,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
         aria-invalid={hasError || undefined}
         aria-describedby={hasError ? errorId : helperText ? helperId : undefined}
         className={cn(
-          selectBaseClasses,
+          inputBaseClasses,
           multiple && "h-auto py-2",
           hasError && "border-danger focus:border-danger focus:ring-danger/30",
           selectClassName,
