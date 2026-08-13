@@ -6,7 +6,7 @@ import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
-import { Button, Card, Input } from "@/components/ui";
+import { Button, Card, Input, Select } from "@/components/ui";
 import { ProductFormSkeleton } from "@/components";
 import { inputBaseClasses } from "@/components/ui/Input";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -142,37 +142,24 @@ export default function ProductForm({ mode }: Props) {
           {...register("imgUrl", { required: t("validation:imgUrlRequired") })}
         />
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="product-categories" className="text-small font-medium text-foreground">
-            {t("products:fields.categories")}{" "}
-            <span aria-hidden="true" className="text-danger ml-0.5">
-              *
-            </span>
-          </label>
-          <select
-            id="product-categories"
-            multiple
-            className={`${inputBaseClasses} h-auto py-2`}
-            size={Math.min(6, categories.length + 1)}
-            aria-invalid={errors.categoryIds ? true : undefined}
-            {...register("categoryIds", {
-              validate: (v) => v.length > 0 || t("validation:categoriesRequired"),
-            })}
-          >
-            {categories.map((c) => (
-              <option key={c.id} value={String(c.id)}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          {errors.categoryIds ? (
-            <p className="text-small text-danger">{errors.categoryIds.message as string}</p>
-          ) : (
-            <p className="text-small text-foreground-muted">
-              {t("products:hints.categoriesMulti")}
-            </p>
-          )}
-        </div>
+        <Select
+          id="product-categories"
+          multiple
+          required
+          label={t("products:fields.categories")}
+          size={Math.min(6, categories.length + 1)}
+          error={errors.categoryIds?.message as string | undefined}
+          helperText={t("products:hints.categoriesMulti")}
+          {...register("categoryIds", {
+            validate: (v) => v.length > 0 || t("validation:categoriesRequired"),
+          })}
+        >
+          {categories.map((c) => (
+            <option key={c.id} value={String(c.id)}>
+              {c.name}
+            </option>
+          ))}
+        </Select>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="product-description" className="text-small font-medium text-foreground">

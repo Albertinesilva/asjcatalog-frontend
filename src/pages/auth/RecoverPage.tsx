@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { accountService } from "@/services/account-service";
-import { Button, Card, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { handleApiError } from "@/utils/api-error-handler";
-import { authFieldError, authFormTitle } from "./_ui";
+import { authFormTitle } from "./_ui";
 
 type RecoverFormFields = { email: string; emailConfirm: string };
 
@@ -41,40 +41,32 @@ export default function RecoverPage() {
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>{t("auth:recover.title")}</h2>
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputBaseClasses}
-            placeholder={t("auth:recover.emailPlaceholder")}
-            aria-label={t("auth:recover.emailPlaceholder")}
-            {...register("email", {
-              required: t("validation:email.requiredShort"),
-              pattern: {
-                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: t("validation:emailInvalid"),
-              },
-            })}
-          />
-          {errors.email?.message && <p className={authFieldError}>{errors.email.message}</p>}
-        </div>
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder={t("auth:recover.emailPlaceholder")}
+          aria-label={t("auth:recover.emailPlaceholder")}
+          error={errors.email?.message}
+          {...register("email", {
+            required: t("validation:email.requiredShort"),
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: t("validation:emailInvalid"),
+            },
+          })}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputBaseClasses}
-            placeholder={t("auth:recover.confirmEmailPlaceholder")}
-            aria-label={t("auth:recover.confirmEmailAria")}
-            {...register("emailConfirm", {
-              required: t("validation:email.confirm"),
-              validate: (v) => v === emailValue || t("validation:email.mismatch"),
-            })}
-          />
-          {errors.emailConfirm?.message && (
-            <p className={authFieldError}>{errors.emailConfirm.message}</p>
-          )}
-        </div>
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder={t("auth:recover.confirmEmailPlaceholder")}
+          aria-label={t("auth:recover.confirmEmailAria")}
+          error={errors.emailConfirm?.message}
+          {...register("emailConfirm", {
+            required: t("validation:email.confirm"),
+            validate: (v) => v === emailValue || t("validation:email.mismatch"),
+          })}
+        />
 
         <div className="flex gap-sm mt-sm">
           <Link to="/auth/login" className="flex-1">

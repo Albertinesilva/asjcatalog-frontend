@@ -18,7 +18,7 @@ import { getApiErrorMessage } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import type { Category, Paginated, ProductResponse } from "@/types";
 import { buttonClasses } from "@/components/ui";
-import { inputBaseClasses } from "@/components/ui/Input";
+import { Select } from "@/components/ui";
 import { ProductTable } from "./components";
 import type { ProductFilters } from "./types";
 
@@ -108,8 +108,8 @@ export default function ProductListPage() {
             ariaLabel={t("products:filters.searchAria")}
           />
         </div>
-        <select
-          className={`${inputBaseClasses} md:max-w-[260px]`}
+        <Select
+          wrapperClassName="md:max-w-[260px]"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           aria-label={t("products:filters.categoryAria")}
@@ -120,7 +120,7 @@ export default function ProductListPage() {
               {c.name}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
 
       {deleteError && <ErrorState message={deleteError} />}

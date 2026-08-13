@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ProductItem, ProductGridSkeleton, ErrorState, EmptyState } from "@/components";
-import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Select, cn, inputBaseClasses } from "@/components/ui";
 import { catalogGridClasses } from "@/components/shared/catalog-grid";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
@@ -103,11 +103,9 @@ export default function CatalogPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <select
-            className={cn(
-              inputBaseClasses,
-              "flex-1 border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none",
-            )}
+          <Select
+            wrapperClassName="flex-1"
+            className="border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none"
             value={categoryIds}
             onChange={(e) => setCategoryIds(e.target.value)}
             aria-label={t("catalog:filterCategoryAria")}
@@ -118,7 +116,7 @@ export default function CatalogPage() {
                 {c.name}
               </option>
             ))}
-          </select>
+          </Select>
           <Button
             type="button"
             variant="ghost"

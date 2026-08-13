@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { accountService } from "@/services/account-service";
 import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components";
-import { Button, Card, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -72,55 +72,44 @@ export default function RegisterPage() {
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>{t("auth:register.title")}</h2>
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="text"
-            autoComplete="given-name"
-            className={inputBaseClasses}
-            placeholder={t("auth:register.firstName")}
-            aria-label={t("auth:register.firstName")}
-            {...register("firstName", {
-              required: t("validation:firstNameRequired"),
-              maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
-            })}
-          />
-          {errors.firstName?.message && (
-            <p className={authFieldError}>{errors.firstName.message}</p>
-          )}
-        </div>
+        <Input
+          type="text"
+          autoComplete="given-name"
+          placeholder={t("auth:register.firstName")}
+          aria-label={t("auth:register.firstName")}
+          error={errors.firstName?.message}
+          {...register("firstName", {
+            required: t("validation:firstNameRequired"),
+            maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
+          })}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="text"
-            autoComplete="family-name"
-            className={inputBaseClasses}
-            placeholder={t("auth:register.lastName")}
-            aria-label={t("auth:register.lastName")}
-            {...register("lastName", {
-              required: t("validation:lastNameRequired"),
-              maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
-            })}
-          />
-          {errors.lastName?.message && <p className={authFieldError}>{errors.lastName.message}</p>}
-        </div>
+        <Input
+          type="text"
+          autoComplete="family-name"
+          placeholder={t("auth:register.lastName")}
+          aria-label={t("auth:register.lastName")}
+          error={errors.lastName?.message}
+          {...register("lastName", {
+            required: t("validation:lastNameRequired"),
+            maxLength: { value: 80, message: t("validation:maxChars", { count: 80 }) },
+          })}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputBaseClasses}
-            placeholder={t("auth:register.email")}
-            aria-label={t("auth:register.email")}
-            {...register("email", {
-              required: t("validation:email.requiredShort"),
-              pattern: {
-                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: t("validation:emailInvalid"),
-              },
-            })}
-          />
-          {errors.email?.message && <p className={authFieldError}>{errors.email.message}</p>}
-        </div>
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder={t("auth:register.email")}
+          aria-label={t("auth:register.email")}
+          error={errors.email?.message}
+          {...register("email", {
+            required: t("validation:email.requiredShort"),
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: t("validation:emailInvalid"),
+            },
+          })}
+        />
 
         <div className="flex flex-col gap-sm">
           {(() => {

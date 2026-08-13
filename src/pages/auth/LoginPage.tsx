@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmDialog, PasswordField } from "@/components";
-import { Button, Card, cn, inputBaseClasses } from "@/components/ui";
+import { Button, Card, Input } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
 import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
@@ -60,34 +60,28 @@ export default function LoginPage() {
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>{t("auth:login.title")}</h2>
 
-        <div className="flex flex-col gap-1.5">
-          <input
-            type="email"
-            autoComplete="email"
-            className={inputBaseClasses}
-            placeholder={t("auth:login.emailPlaceholder")}
-            aria-label={t("auth:login.emailPlaceholder")}
-            {...register("username", {
-              required: t("validation:email.required"),
-              pattern: {
-                value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: t("validation:emailInvalid"),
-              },
-            })}
-          />
-          {errors.username?.message && <p className={authFieldError}>{errors.username.message}</p>}
-        </div>
+        <Input
+          type="email"
+          autoComplete="email"
+          placeholder={t("auth:login.emailPlaceholder")}
+          aria-label={t("auth:login.emailPlaceholder")}
+          error={errors.username?.message}
+          {...register("username", {
+            required: t("validation:email.required"),
+            pattern: {
+              value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: t("validation:emailInvalid"),
+            },
+          })}
+        />
 
-        <div className="flex flex-col gap-1.5">
-          <PasswordField
-            className={cn(inputBaseClasses)}
-            placeholder={t("auth:login.passwordPlaceholder")}
-            autoComplete="current-password"
-            aria-label={t("auth:login.passwordPlaceholder")}
-            {...register("password", { required: t("validation:password.required") })}
-          />
-          {errors.password?.message && <p className={authFieldError}>{errors.password.message}</p>}
-        </div>
+        <PasswordField
+          placeholder={t("auth:login.passwordPlaceholder")}
+          autoComplete="current-password"
+          aria-label={t("auth:login.passwordPlaceholder")}
+          error={errors.password?.message}
+          {...register("password", { required: t("validation:password.required") })}
+        />
 
         <div className="flex flex-col gap-xs items-start">
           <Link
