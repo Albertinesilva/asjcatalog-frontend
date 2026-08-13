@@ -7,7 +7,7 @@ import { PasswordField, PasswordRequirements, UserFormSkeleton } from "@/compone
 import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
-import { inputBaseClasses } from "@/components/ui/Input";
+import { Select } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
 import { buildPasswordValidation } from "@/utils/password";
 
@@ -163,33 +163,23 @@ export default function UserForm({ mode }: Props) {
             <PasswordRequirements password={passwordValue} context={passwordContext} />
           </div>
         )}
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="user-roles" className="text-small font-medium text-foreground">
-            {t("users:fields.roles")}{" "}
-            <span aria-hidden="true" className="text-danger ml-0.5">
-              *
-            </span>
-          </label>
-          <select
-            id="user-roles"
-            multiple
-            className={`${inputBaseClasses} h-auto py-2`}
-            size={AVAILABLE_ROLES.length}
-            aria-invalid={errors.roleIds ? true : undefined}
-            {...register("roleIds", {
-              validate: (v) => v.length > 0 || t("validation:rolesRequired"),
-            })}
-          >
-            {AVAILABLE_ROLES.map((r) => (
-              <option key={r.id} value={String(r.id)}>
-                {t(`users:roles.${r.authority}`)}
-              </option>
-            ))}
-          </select>
-          {errors.roleIds && (
-            <p className="text-small text-danger">{errors.roleIds.message as string}</p>
-          )}
-        </div>
+        <Select
+          id="user-roles"
+          multiple
+          required
+          label={t("users:fields.roles")}
+          size={AVAILABLE_ROLES.length}
+          error={errors.roleIds?.message as string | undefined}
+          {...register("roleIds", {
+            validate: (v) => v.length > 0 || t("validation:rolesRequired"),
+          })}
+        >
+          {AVAILABLE_ROLES.map((r) => (
+            <option key={r.id} value={String(r.id)}>
+              {t(`users:roles.${r.authority}`)}
+            </option>
+          ))}
+        </Select>
         {saveError && (
           <p className="text-small text-danger m-0" role="alert">
             {t("users:errors.savePrefix")}: {saveError}
