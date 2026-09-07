@@ -109,7 +109,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [state.authenticated, state.token?.exp, refresh]);
 
-
   useEffect(() => {
     if (!state.authenticated) {
       userRef.current = null;

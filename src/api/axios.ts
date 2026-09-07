@@ -47,8 +47,7 @@ http.interceptors.response.use(
         const { refreshSession } = await import("./auth-api");
         const data = await refreshSession();
         config.headers = config.headers ?? {};
-        (config.headers as Record<string, string>).Authorization =
-          `Bearer ${data.access_token}`;
+        (config.headers as Record<string, string>).Authorization = `Bearer ${data.access_token}`;
         return http.request(config);
       } catch {
         endSession();
@@ -69,4 +68,3 @@ http.interceptors.response.use(
 export function buildAuthUrl(path: string): string {
   return isLovablePreview() ? `/api/proxy${path}` : `${API_BASE_URL}${path}`;
 }
-
