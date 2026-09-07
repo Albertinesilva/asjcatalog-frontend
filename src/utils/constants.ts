@@ -8,6 +8,10 @@ export const CLIENT_SECRET =
 
 export const TOKEN_KEY = "authData";
 
+/** Margem de segurança para renovar o Access Token antes do `exp`. */
+export const TOKEN_REFRESH_SKEW_MS = 60_000;
+
+
 export const ENDPOINTS = {
   token: "/oauth2/token",
   users: "/api/v1/users",
