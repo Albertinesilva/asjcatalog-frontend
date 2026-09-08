@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "query-string";
-import { buildAuthUrl } from "./axios";
+import { buildAuthUrl } from "./base-url";
 import { CLIENT_ID, CLIENT_SECRET, ENDPOINTS } from "@/utils/constants";
 import { getAuthData, saveAuthData } from "@/utils/storage";
 import type { LoginRequest, LoginResponse } from "@/types";

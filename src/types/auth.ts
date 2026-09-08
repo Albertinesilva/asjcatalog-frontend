@@ -10,14 +10,13 @@ export type LoginRequest = {
 export type LoginResponse = {
   access_token: string;
   /**
-   * Token opaco de renovação (OAuth2 `refresh_token`). Opcional apenas por
-   * defesa: o backend atual sempre o retorna (com rotação habilitada).
-   * NUNCA deve ser decodificado como JWT.
+   * Token opaco de renovação (OAuth2 `refresh_token`). Sempre retornado pelo
+   * backend (rotação habilitada). NUNCA deve ser decodificado como JWT.
    */
-  refresh_token?: string;
+  refresh_token: string;
   token_type: string;
   expires_in: number;
-  scope?: string;
+  scope: string;
 };
 
 /**
