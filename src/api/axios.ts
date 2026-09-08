@@ -1,16 +1,13 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import { API_BASE_URL } from "@/utils/constants";
+import { getHttpBaseUrl } from "./base-url";
+import { refreshSession } from "./auth-api";
 import { getAuthData, removeAuthData } from "@/utils/storage";
 import { isTokenValid } from "@/utils/permissions";
+import { isPrivatePath } from "@/routes/route-access";
 import { getAcceptLanguageHeader } from "@/i18n/http";
 
-function isLovablePreview(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.location.hostname.includes("lovable.app");
-}
-
 export const http = axios.create({
-  baseURL: isLovablePreview() ? "/api/proxy" : API_BASE_URL,
+  baseURL: getHttpBaseUrl(),
 });
 
 /** Marca de retry para impedir loop 401 -> refresh -> 401 -> refresh. */
@@ -29,7 +26,9 @@ http.interceptors.request.use((config) => {
 
 function endSession() {
   removeAuthData();
-  if (typeof window !== "undefined") {
+  // Em rota pública apenas limpamos a sessão: redirecionar tiraria o usuário
+  // do catálogo sem necessidade.
+  if (typeof window !== "undefined" && isPrivatePath(window.location.pathname)) {
     window.location.assign("/auth/login");
   }
 }
@@ -43,8 +42,6 @@ http.interceptors.response.use(
     if (status === 401 && config && !config._retry && getAuthData()?.refresh_token) {
       config._retry = true;
       try {
-        // Import dinâmico: evita ciclo estático axios.ts <-> auth-api.ts.
-        const { refreshSession } = await import("./auth-api");
         const data = await refreshSession();
         config.headers = config.headers ?? {};
         (config.headers as Record<string, string>).Authorization = `Bearer ${data.access_token}`;
@@ -64,7 +61,3 @@ http.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export function buildAuthUrl(path: string): string {
-  return isLovablePreview() ? `/api/proxy${path}` : `${API_BASE_URL}${path}`;
-}
