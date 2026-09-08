@@ -19,7 +19,6 @@ export type LoginResponse = {
   scope: string;
 };
 
-
 /**
  * Payload exato do Access Token emitido pelo backend (OAuth2 / Spring Authorization Server).
  * `sub` e `aud` referem-se ao *client* OAuth2; a identidade do usuário vem de
