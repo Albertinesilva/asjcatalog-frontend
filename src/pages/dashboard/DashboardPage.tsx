@@ -131,7 +131,7 @@ export default function DashboardPage() {
     setState((s) => ({ ...s, loading: true, error: null }));
 
     const productsP = productService.findAll({ page: 0, size: 1 });
-    const categoriesP = categoryService.findAll();
+    const categoriesP = categoryService.findPage({ page: 0, size: 1 });
     const usersP = isAdmin ? userService.findAll({ page: 0, size: 1 }) : Promise.resolve(null);
 
     Promise.all([productsP, categoriesP, usersP])
@@ -139,7 +139,7 @@ export default function DashboardPage() {
         if (cancelled) return;
         setState({
           products: products.totalElements,
-          categories: categories.length,
+          categories: categories.totalElements,
           users: users ? users.totalElements : null,
           loading: false,
           error: null,

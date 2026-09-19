@@ -8,6 +8,8 @@
     "slidesRegion": "Showcase slides. Use the left and right arrow keys to navigate.",
     "previous": "Previous category",
     "next": "Next category",
+    "pause": "Pause automatic rotation",
+    "play": "Start automatic rotation",
     "mainAlt": "Product photography from the {{category}} category",
     "detailAlt": "Product detail from the {{category}} category",
     "status": "Slide {{current}} of {{total}}: {{category}}",

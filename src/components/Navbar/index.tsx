@@ -134,10 +134,10 @@ export default function Navbar() {
               </Link>
               <Button
                 type="button"
-                variant="ghost"
+                variant="inverse"
                 size="sm"
                 onClick={handleLogout}
-                className="text-primary-foreground hover:bg-primary-foreground/10"
+                className="border-transparent"
               >
                 {t("navigation:logout")}
               </Button>
@@ -232,10 +232,10 @@ export default function Navbar() {
             </Link>
             <Button
               type="button"
-              variant="ghost"
+              variant="inverse"
               size="sm"
               onClick={handleLogout}
-              className="text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30"
+              className="border-primary-foreground/30"
             >
               {t("navigation:logout")}
             </Button>

@@ -5,6 +5,7 @@ import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import {
   Authorization,
+  CategoryFilterSelect,
   ConfirmDialog,
   ErrorState,
   Pagination,
@@ -18,7 +19,6 @@ import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import type { Category, Paginated, ProductResponse } from "@/types";
 import { buttonClasses } from "@/components/ui";
-import { Select } from "@/components/ui";
 import { ProductTable } from "./components";
 import type { ProductFilters } from "./types";
 
@@ -108,30 +108,23 @@ export default function ProductListPage() {
         </Authorization>
       </TableToolbar>
 
-      <div className="mb-lg flex flex-col md:flex-row gap-sm">
-        <div className="flex-1">
-          <SearchInput
-            value={search}
-            onChange={setSearch}
-            onClear={() => setSearch("")}
-            placeholder={t("products:placeholders.search")}
-            ariaLabel={t("products:filters.searchAria")}
+      <SearchInput
+        className="mb-lg"
+        value={search}
+        onChange={setSearch}
+        onClear={clearFilters}
+        placeholder={t("products:placeholders.search")}
+        ariaLabel={t("products:filters.searchAria")}
+        filters={
+          <CategoryFilterSelect
+            categories={categories}
+            value={categoryId}
+            onChange={setCategoryId}
+            placeholder={t("products:placeholders.category")}
+            ariaLabel={t("products:filters.categoryAria")}
           />
-        </div>
-        <Select
-          wrapperClassName="md:max-w-[260px]"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-          aria-label={t("products:filters.categoryAria")}
-        >
-          <option value="">{t("products:placeholders.category")}</option>
-          {categories.map((c) => (
-            <option key={c.id} value={String(c.id)}>
-              {c.name}
-            </option>
-          ))}
-        </Select>
-      </div>
+        }
+      />
 
       {isLoading ? (
         <TableSkeleton />

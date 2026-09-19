@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ProductItem, ProductGridSkeleton, ErrorState, EmptyState } from "@/components";
-import { Button, Card, Select, cn, inputBaseClasses } from "@/components/ui";
+import {
+  ProductItem,
+  ProductGridSkeleton,
+  ErrorState,
+  EmptyState,
+  SearchInput,
+  CategoryFilterSelect,
+} from "@/components";
+import { Button, cn } from "@/components/ui";
 import { catalogGridClasses } from "@/components/shared/catalog-grid";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
@@ -109,47 +116,24 @@ export default function CatalogPage() {
     <div className="w-full mx-auto max-w-page px-md py-lg lg:px-xl lg:py-xl">
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-lg">
         <h1 className="font-heading text-h2 text-foreground m-0">{t("catalog:title")}</h1>
-        <Card
-          padding="none"
-          elevated={false}
-          bordered
-          className="flex-1 md:max-w-[720px] flex flex-col md:flex-row md:items-stretch overflow-hidden"
-        >
-          <input
-            type="search"
-            className={cn(
-              inputBaseClasses,
-              "flex-1 border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none",
-            )}
-            placeholder={t("catalog:search")}
-            aria-label={t("catalog:searchAria")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Select
-            wrapperClassName="flex-1"
-            className="border-0 shadow-none bg-transparent md:border-r md:border-border rounded-none"
-            value={categoryIds}
-            onChange={(e) => setCategoryIds(e.target.value)}
-            aria-label={t("catalog:filterCategoryAria")}
-          >
-            <option value="">{t("catalog:filterCategory")}</option>
-            {categories.map((c) => (
-              <option key={c.id} value={String(c.id)}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
-          <Button
-            type="button"
-            variant="ghost"
-            size="md"
-            onClick={clearFilters}
-            className="rounded-none md:min-w-[160px] text-foreground-muted hover:text-accent"
-          >
-            {t("catalog:clearFilters")}
-          </Button>
-        </Card>
+        <SearchInput
+          className="flex-1 md:max-w-[720px]"
+          value={search}
+          onChange={setSearch}
+          onClear={clearFilters}
+          placeholder={t("catalog:search")}
+          ariaLabel={t("catalog:searchAria")}
+          clearLabel={t("catalog:clearFilters")}
+          filters={
+            <CategoryFilterSelect
+              categories={categories}
+              value={categoryIds}
+              onChange={setCategoryIds}
+              placeholder={t("catalog:filterCategory")}
+              ariaLabel={t("catalog:filterCategoryAria")}
+            />
+          }
+        />
       </header>
 
       {products.length > 0 && (

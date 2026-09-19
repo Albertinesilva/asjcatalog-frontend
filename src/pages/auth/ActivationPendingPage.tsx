@@ -205,7 +205,7 @@ export default function ActivationPendingPage() {
               size="lg"
               disabled={sending || remaining > 0}
               loading={sending}
-              className="min-w-0 px-4 sm:flex-1"
+              className="h-auto min-h-12 min-w-0 px-4 py-2 text-center !whitespace-normal sm:flex-1"
             >
               {submitLabel}
             </Button>

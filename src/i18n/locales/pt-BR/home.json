@@ -8,6 +8,8 @@
     "slidesRegion": "Slides do showcase. Use as setas esquerda e direita para navegar.",
     "previous": "Categoria anterior",
     "next": "Próxima categoria",
+    "pause": "Pausar rotação automática",
+    "play": "Iniciar rotação automática",
     "mainAlt": "Fotografia de produtos da categoria {{category}}",
     "detailAlt": "Detalhe de produto da categoria {{category}}",
     "status": "Slide {{current}} de {{total}}: {{category}}",

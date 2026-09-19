@@ -22,7 +22,7 @@
   },
   "placeholders": {
     "search": "Pesquisar Produto",
-    "category": "Filtrar por Categoria"
+    "category": "Filtrar por categoria"
   },
   "hints": {
     "categoriesMulti": "Use Ctrl/Cmd para selecionar várias."

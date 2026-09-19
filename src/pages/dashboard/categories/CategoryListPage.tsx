@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { categoryService } from "@/services/category-service";
@@ -6,52 +6,44 @@ import {
   Authorization,
   ConfirmDialog,
   ErrorState,
+  Pagination,
   SearchInput,
   TableSkeleton,
   TableToolbar,
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
-import type { Category } from "@/types";
+import type { Category, Paginated } from "@/types";
 import { buttonClasses } from "@/components/ui";
 import { CategoryTable } from "./components";
+import type { CategoryFilters } from "./types";
 
 export default function CategoryListPage() {
   const { t } = useTranslation(["categories", "common"]);
-  const [data, setData] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [search, setSearch] = useState("");
   const debouncedName = useDebouncedValue(search.trim(), 400);
+  const filters = useMemo<CategoryFilters>(() => ({ name: debouncedName }), [debouncedName]);
 
-  // Só a resposta da requisição mais recente altera dados/erro/loading.
-  const latestRequest = useRef(0);
-  const load = useCallback(() => {
-    const requestId = ++latestRequest.current;
-    setIsLoading(true);
-    setError(null);
-    categoryService
-      .findAll()
-      .then((categories) => {
-        if (requestId === latestRequest.current) setData(categories);
-      })
-      .catch((err) => {
-        if (requestId === latestRequest.current) setError(getUiErrorMessage(err));
-      })
-      .finally(() => {
-        if (requestId === latestRequest.current) setIsLoading(false);
-      });
-  }, []);
+  const fetcher = useCallback(
+    ({
+      page,
+      size,
+      filters,
+    }: {
+      page: number;
+      size: number;
+      filters: CategoryFilters;
+    }): Promise<Paginated<Category>> =>
+      categoryService.findPage({ page, size, name: filters.name }),
+    [],
+  );
 
-  useEffect(load, [load]);
-
-  const filtered = useMemo(() => {
-    const term = debouncedName.toLowerCase();
-    if (!term) return data;
-    return data.filter((c) => c.name.toLowerCase().includes(term));
-  }, [data, debouncedName]);
+  const { data, isLoading, error, pagination, refetch } = usePagedQuery<Category, CategoryFilters>(
+    fetcher,
+    { initialSize: 10, filters },
+  );
 
   const [pendingDelete, setPendingDelete] = useState<Category | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -69,7 +61,7 @@ export default function CategoryListPage() {
     try {
       await categoryService.delete(pendingDelete.id);
       closeDeleteDialog();
-      load();
+      refetch();
       await alerts.success(
         t("categories:delete.successTitle"),
         t("categories:delete.successMessage"),
@@ -83,7 +75,7 @@ export default function CategoryListPage() {
 
   return (
     <div>
-      <TableToolbar counter={filtered.length}>
+      <TableToolbar counter={pagination.totalElements}>
         <Authorization roles={["ROLE_OPERATOR", "ROLE_ADMIN"]}>
           <Link to="/dashboard/categories/new" className={buttonClasses("primary", "md")}>
             {t("categories:add")}
@@ -104,14 +96,21 @@ export default function CategoryListPage() {
       {isLoading ? (
         <TableSkeleton />
       ) : error ? (
-        <ErrorState message={error} onRetry={load} />
+        <ErrorState message={error} onRetry={refetch} />
       ) : (
-        <CategoryTable
-          categories={filtered}
-          filtered={Boolean(debouncedName)}
-          onClearFilters={() => setSearch("")}
-          onDelete={setPendingDelete}
-        />
+        <>
+          <CategoryTable
+            categories={data}
+            filtered={Boolean(filters.name)}
+            onClearFilters={() => setSearch("")}
+            onDelete={setPendingDelete}
+          />
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onChange={pagination.goToPage}
+          />
+        </>
       )}
 
       <ConfirmDialog

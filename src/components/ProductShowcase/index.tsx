@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useState, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/components/ui/cn";
 import { showcaseSlides } from "./slides";
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 5000;
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -15,6 +15,23 @@ function usePrefersReducedMotion() {
     return () => mq.removeEventListener("change", update);
   }, []);
   return reduced;
+}
+
+function PauseIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <rect x="6" y="5" width="4" height="14" rx="1" />
+      <rect x="14" y="5" width="4" height="14" rx="1" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" />
+    </svg>
+  );
 }
 
 function Chevron({ direction }: { direction: "left" | "right" }) {
@@ -42,34 +59,30 @@ export default function ProductShowcase({ className }: { className?: string }) {
   const { t } = useTranslation();
   const reducedMotion = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+  // Pausa explícita (botão) e pausa enquanto o foco de TECLADO está no carrossel.
+  // Nenhuma das duas é permanente: o autoplay retoma ao despausar/perder o foco.
+  const [userPaused, setUserPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
   const total = showcaseSlides.length;
-  const interacted = useRef(false);
+  const playing = !reducedMotion && !userPaused && !focusPaused;
 
   const go = useCallback((next: number) => setIndex(((next % total) + total) % total), [total]);
 
-  const onUserNav = useCallback(
-    (next: number) => {
-      interacted.current = true;
-      setPaused(true);
-      go(next);
-    },
-    [go],
-  );
-
+  // Um único timeout por slide: navegar (manual ou automático) troca `index`, o cleanup
+  // cancela o timeout anterior e um novo é armado — nunca há dois timers vivos.
   useEffect(() => {
-    if (reducedMotion || paused) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % total), AUTOPLAY_MS);
-    return () => window.clearInterval(id);
-  }, [reducedMotion, paused, total]);
+    if (!playing) return;
+    const id = window.setTimeout(() => setIndex((i) => (i + 1) % total), AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+  }, [playing, index, total]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      onUserNav(index - 1);
+      go(index - 1);
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      onUserNav(index + 1);
+      go(index + 1);
     }
   };
 
@@ -80,9 +93,12 @@ export default function ProductShowcase({ className }: { className?: string }) {
       aria-roledescription="carousel"
       aria-label={t("home:showcase.label")}
       className={cn("w-full max-w-[560px] mx-auto lg:mx-0", className)}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(interacted.current)}
-      onFocus={() => setPaused(true)}
+      onFocus={(e) => {
+        if (e.target.matches(":focus-visible")) setFocusPaused(true);
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setFocusPaused(false);
+      }}
     >
       <div
         tabIndex={0}
@@ -150,7 +166,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
         </div>
       </div>
 
-      <p className="sr-only" aria-live="polite">
+      <p className="sr-only" aria-live={playing ? "off" : "polite"}>
         {t("home:showcase.status", {
           current: index + 1,
           total,
@@ -158,7 +174,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
         })}
       </p>
 
-      <div className="mt-xl flex items-center justify-between gap-md">
+      <div className="mt-xl flex flex-wrap items-center justify-between gap-md">
         <ul className="flex items-center m-0 p-0 list-none">
           {showcaseSlides.map((slide, i) => (
             <li key={slide.key}>
@@ -166,7 +182,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
                 type="button"
                 aria-label={label(slide.key)}
                 aria-current={i === index ? "true" : undefined}
-                onClick={() => onUserNav(i)}
+                onClick={() => go(i)}
                 className={cn(
                   // hit area 24px (the dot itself stays 10px): visual density preserved
                   "group inline-flex h-6 items-center justify-center rounded-full px-[7px]",
@@ -187,10 +203,20 @@ export default function ProductShowcase({ className }: { className?: string }) {
         </ul>
 
         <div className="flex items-center gap-sm">
+          {!reducedMotion && (
+            <button
+              type="button"
+              aria-label={userPaused ? t("home:showcase.play") : t("home:showcase.pause")}
+              onClick={() => setUserPaused((v) => !v)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              {userPaused ? <PlayIcon /> : <PauseIcon />}
+            </button>
+          )}
           <button
             type="button"
             aria-label={t("home:showcase.previous")}
-            onClick={() => onUserNav(index - 1)}
+            onClick={() => go(index - 1)}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <Chevron direction="left" />
@@ -198,7 +224,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
           <button
             type="button"
             aria-label={t("home:showcase.next")}
-            onClick={() => onUserNav(index + 1)}
+            onClick={() => go(index + 1)}
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <Chevron direction="right" />
