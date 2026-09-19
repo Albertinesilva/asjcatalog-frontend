@@ -26,9 +26,9 @@ export default function UserTableRow({ user, onDelete }: Props) {
           {initials(user.firstName, user.lastName)}
         </span>
         <div className="min-w-0">
-          <h3 className="m-0 font-heading font-semibold text-subtitle text-foreground truncate">
+          <h2 className="m-0 font-heading font-semibold text-subtitle text-foreground truncate">
             {user.firstName} {user.lastName}
-          </h3>
+          </h2>
           <p className="m-0 text-small text-foreground-muted truncate">{user.email}</p>
           {user.roles?.length ? (
             <div className="mt-xs flex flex-wrap gap-xs">

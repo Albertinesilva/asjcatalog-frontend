@@ -34,7 +34,7 @@ export default function AuthLayout() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
-      <main className="flex-1 w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
+      <main className="flex-1 w-full mx-auto max-w-page px-md py-xl lg:px-xl lg:py-2xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl lg:gap-2xl items-center">
           <section className="flex flex-col gap-md max-w-[520px] mx-auto lg:mx-0">
             <h1 className="font-heading text-h1 lg:text-display text-foreground m-0">

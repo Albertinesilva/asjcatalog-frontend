@@ -91,6 +91,13 @@ export default {
         "3xl": "4rem", // 64px
       },
 
+      /* --- Containers (page-level max widths) ------------------ */
+      maxWidth: {
+        page: "1200px", // standard page container (home, product details, auth, dashboard)
+        "page-wide": "1400px", // catalog listing
+        form: "440px", // auth card / single-column form
+      },
+
       /* --- Border radius -------------------------------------- */
       borderRadius: {
         sm: "0.25rem", // 4px
@@ -137,14 +144,9 @@ export default {
           "0%": { opacity: "0", transform: "translateY(6px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        "scale-in": {
-          "0%": { opacity: "0", transform: "scale(0.96)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
       },
       animation: {
         "fade-in": "fade-in 220ms cubic-bezier(0, 0, 0.2, 1) both",
-        "scale-in": "scale-in 180ms cubic-bezier(0.2, 0, 0, 1) both",
       },
     },
   },

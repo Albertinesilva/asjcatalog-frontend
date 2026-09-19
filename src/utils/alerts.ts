@@ -16,10 +16,10 @@ import i18n from "@/i18n/config";
  * - `heightAuto: false` evita scroll-lock residual no <body> após navegação.
  */
 
-const baseTheme = {
-  confirmButtonColor: "#2986CC",
-  cancelButtonColor: "#9E9E9E",
-};
+/*
+ * Cores dos botões/ícones vêm exclusivamente dos tokens em `globals.css`
+ * (`.swal2-styled.*`); não passamos `confirmButtonColor`/`cancelButtonColor`.
+ */
 
 /** Traduz sempre no idioma ativo (fora do ciclo React). */
 const tr = (key: string, fallback: string): string =>
@@ -38,7 +38,6 @@ export const alerts = {
       icon: "success",
       title,
       text,
-      ...baseTheme,
       confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
@@ -48,7 +47,6 @@ export const alerts = {
       icon: "error",
       title,
       text,
-      ...baseTheme,
       confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
@@ -58,7 +56,6 @@ export const alerts = {
       icon: "warning",
       title,
       text,
-      ...baseTheme,
       confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
@@ -68,7 +65,6 @@ export const alerts = {
       icon: "info",
       title,
       text,
-      ...baseTheme,
       confirmButtonText: tr("common:actions.ok", "OK"),
     });
   },
@@ -84,7 +80,6 @@ export const alerts = {
       title,
       text,
       showCancelButton: true,
-      ...baseTheme,
       confirmButtonText: confirmText ?? tr("common:actions.confirm", "Confirmar"),
       cancelButtonText: cancelText ?? tr("common:actions.cancel", "Cancelar"),
     });

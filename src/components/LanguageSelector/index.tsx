@@ -65,7 +65,7 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
         aria-label={t("common:language.select")}
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "inline-flex items-center gap-xs rounded-md px-sm py-xs text-small font-heading font-semibold transition-colors duration-DEFAULT ease-standard focus-visible:outline-none focus-visible:ring-2",
+          "inline-flex items-center gap-xs rounded-md px-sm py-xs text-small font-heading font-semibold transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2",
           isOnPrimary
             ? "text-primary-foreground hover:bg-primary-foreground/10 focus-visible:ring-primary-foreground/60"
             : "text-foreground hover:bg-surface-hover focus-visible:ring-ring",
@@ -81,10 +81,7 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
           height="12"
           viewBox="0 0 20 20"
           fill="none"
-          className={cn(
-            "transition-transform duration-DEFAULT ease-standard",
-            open && "rotate-180",
-          )}
+          className={cn("transition-transform ease-standard", open && "rotate-180")}
         >
           <path
             d="M5 8l5 5 5-5"

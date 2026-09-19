@@ -173,7 +173,7 @@ export default function DashboardLayout() {
                   {c.to ? (
                     <Link
                       to={c.to}
-                      className="text-foreground-muted transition-colors duration-DEFAULT ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
+                      className="text-foreground-muted transition-colors ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
                     >
                       {c.label}
                     </Link>
@@ -189,7 +189,7 @@ export default function DashboardLayout() {
           </header>
 
           <section className="flex-1 px-md py-md lg:px-xl lg:py-xl">
-            <div className="mx-auto w-full max-w-[1200px]">
+            <div className="mx-auto w-full max-w-page">
               <Outlet />
             </div>
           </section>

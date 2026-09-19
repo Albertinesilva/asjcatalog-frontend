@@ -142,7 +142,7 @@ type Item = {
 };
 
 const linkBase =
-  "group inline-flex items-center gap-sm rounded-md transition-colors duration-DEFAULT ease-standard " +
+  "group inline-flex items-center gap-sm rounded-md transition-colors ease-standard " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface";
 
 /** Chip variant used on mobile/tablet; pill variant used on desktop. */
@@ -245,14 +245,14 @@ export default function Sidebar() {
                 height={16}
                 aria-hidden
                 className={cn(
-                  "shrink-0 transition-transform duration-DEFAULT ease-standard",
+                  "shrink-0 transition-transform ease-standard",
                   profileOpen ? "rotate-180" : "rotate-0",
                 )}
               />
             </button>
             <div
               className={cn(
-                "lg:overflow-hidden lg:transition-all lg:duration-DEFAULT lg:ease-standard",
+                "lg:overflow-hidden lg:transition-all lg:ease-standard",
                 profileOpen
                   ? "contents lg:block lg:max-h-40 lg:opacity-100"
                   : "hidden lg:block lg:max-h-0 lg:opacity-0 lg:invisible",

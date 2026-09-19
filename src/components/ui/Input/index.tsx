@@ -18,7 +18,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 export const inputBaseClasses =
   "block w-full h-11 px-4 rounded-md border bg-input text-foreground text-body " +
   "placeholder:text-foreground-muted border-input-border " +
-  "transition-colors duration-DEFAULT ease-standard " +
+  "transition-colors ease-standard " +
   "focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring/40 " +
   "disabled:opacity-60 disabled:cursor-not-allowed read-only:bg-surface-hover";
 

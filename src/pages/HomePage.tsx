@@ -20,7 +20,7 @@ export default function HomePage() {
     { title: t("home:features.users.title"), description: t("home:features.users.description") },
   ];
   return (
-    <div className="w-full mx-auto max-w-[1200px] px-md py-xl lg:px-xl lg:py-2xl">
+    <div className="w-full mx-auto max-w-page px-md py-xl lg:px-xl lg:py-2xl">
       <Card padding="none" elevated bordered className="overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-2xl px-md py-xl lg:px-2xl lg:py-2xl">
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-md">
@@ -58,7 +58,7 @@ export default function HomePage() {
       >
         {features.map((f) => (
           <Card key={f.title} padding="lg" elevated={false} bordered>
-            <h3 className="font-heading text-title text-foreground m-0">{f.title}</h3>
+            <h2 className="font-heading text-title text-foreground m-0">{f.title}</h2>
             <p className="mt-xs text-body text-foreground-muted m-0">{f.description}</p>
           </Card>
         ))}

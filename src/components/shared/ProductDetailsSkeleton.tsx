@@ -5,7 +5,7 @@ import { Card, Skeleton } from "@/components/ui";
 export default function ProductDetailsSkeleton() {
   const { t } = useTranslation();
   return (
-    <div className="w-full mx-auto max-w-[1200px] px-md py-lg lg:px-xl lg:py-xl">
+    <div className="w-full mx-auto max-w-page px-md py-lg lg:px-xl lg:py-xl">
       <Card
         padding="none"
         elevated

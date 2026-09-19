@@ -37,7 +37,7 @@ export default function RecoverPage() {
   };
 
   return (
-    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+    <Card padding="lg" elevated bordered className="w-full max-w-form">
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>{t("auth:recover.title")}</h2>
 

@@ -34,10 +34,10 @@ export default function TableToolbar({
     >
       <div className="flex flex-col gap-xs">
         {title ? (
-          <h4 className="m-0 font-heading font-bold text-h3 text-foreground inline-flex items-center gap-sm">
+          <h2 className="m-0 font-heading font-bold text-h3 text-foreground inline-flex items-center gap-sm">
             {title}
             {hasCounter && <Badge variant="default">{counter}</Badge>}
-          </h4>
+          </h2>
         ) : (
           hasCounter && (
             <Badge variant="default">{t("common:table.records", { count: counter })}</Badge>

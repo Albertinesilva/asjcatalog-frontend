@@ -74,11 +74,11 @@ export default function ProductDetailsPage() {
   const { imgUrl, name, price, description } = data;
 
   return (
-    <div className="w-full mx-auto max-w-[1200px] px-md py-lg lg:px-xl lg:py-xl">
+    <div className="w-full mx-auto max-w-page px-md py-lg lg:px-xl lg:py-xl">
       <Card padding="none" elevated bordered className="p-md lg:p-2xl">
         <Link
           to="/catalog"
-          className="inline-flex items-center gap-sm text-small font-heading font-semibold uppercase tracking-wider text-accent hover:text-primary transition-colors duration-DEFAULT ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm mb-lg"
+          className="inline-flex items-center gap-sm text-small font-heading font-semibold uppercase tracking-wider text-accent hover:text-primary transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm mb-lg"
         >
           <svg
             width="16"
@@ -108,7 +108,7 @@ export default function ProductDetailsPage() {
               />
             </div>
             <h1 className="font-heading text-h2 lg:text-h1 text-foreground mt-lg mb-0">{name}</h1>
-            <ProductPrice price={String(price)} />
+            <ProductPrice price={String(price)} className="mt-md" />
           </div>
 
           <div className="rounded-lg border border-border p-md lg:p-lg min-h-[220px]">

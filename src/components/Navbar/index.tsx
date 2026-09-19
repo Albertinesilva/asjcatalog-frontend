@@ -102,7 +102,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/account/profile"
-                className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+                className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
               >
                 <span
                   aria-hidden
@@ -142,11 +142,11 @@ export default function Navbar() {
             aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+            className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
           >
             <span
               className={cn(
-                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform ease-standard",
                 open && "translate-y-[7px] rotate-45",
               )}
             />
@@ -158,7 +158,7 @@ export default function Navbar() {
             />
             <span
               className={cn(
-                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform duration-DEFAULT ease-standard",
+                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform ease-standard",
                 open && "-translate-y-[7px] -rotate-45",
               )}
             />
@@ -202,7 +202,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between gap-sm pt-md border-t border-primary-foreground/10">
             <Link
               to="/account/profile"
-              className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors duration-DEFAULT ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+              className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
             >
               <span
                 aria-hidden

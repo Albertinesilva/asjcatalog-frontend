@@ -112,7 +112,7 @@ export default function ActivateAccountPage() {
   );
 
   return (
-    <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
+    <Card padding="lg" elevated bordered className="w-full max-w-form">
       <div className="flex flex-col gap-md">
         {status === "loading" && (
           <>

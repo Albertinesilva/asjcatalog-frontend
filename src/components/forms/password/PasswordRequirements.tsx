@@ -50,7 +50,7 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
-    className={cn("transition-transform duration-DEFAULT ease-standard", open && "rotate-180")}
+    className={cn("transition-transform ease-standard", open && "rotate-180")}
   >
     <polyline points="6 9 12 15 18 9" />
   </svg>
@@ -184,7 +184,7 @@ export default function PasswordRequirements({
         className={cn(
           "w-full flex items-center justify-between gap-sm px-md py-sm",
           "text-small font-medium text-foreground bg-transparent border-0 cursor-pointer",
-          "transition-colors duration-DEFAULT ease-standard hover:bg-surface-hover",
+          "transition-colors ease-standard hover:bg-surface-hover",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         )}
       >

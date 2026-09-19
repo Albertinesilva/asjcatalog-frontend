@@ -1,8 +1,7 @@
 import type { ProductResponse } from "@/types";
 import { Card } from "@/components/ui";
-import { ProductImage } from "@/components";
+import { ProductImage, ProductPrice } from "@/components";
 import ProductCategoryBadge from "./ProductCategoryBadge";
-import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
 
 type Props = {
@@ -29,12 +28,10 @@ export default function ProductTableRow({ product, onDelete }: Props) {
         />
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="m-0 font-heading font-semibold text-subtitle text-foreground truncate">
+        <h2 className="m-0 font-heading font-semibold text-subtitle text-foreground truncate">
           {product.name}
-        </h3>
-        <div className="mt-xs">
-          <ProductPrice value={product.price} />
-        </div>
+        </h2>
+        <ProductPrice price={String(product.price)} size="sm" className="mt-xs" />
         {product.categories?.length ? (
           <div className="mt-sm flex flex-wrap gap-xs">
             {product.categories.map((c) => (

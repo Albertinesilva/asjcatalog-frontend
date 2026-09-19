@@ -30,7 +30,7 @@ function buildPages(current: number, total: number): (number | "…")[] {
  */
 const dotBase =
   "inline-flex items-center justify-center h-9 min-w-9 px-2 rounded-full text-small font-heading font-semibold " +
-  "transition-colors duration-DEFAULT ease-standard " +
+  "transition-colors ease-standard " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background " +
   "disabled:opacity-50 disabled:cursor-not-allowed";
 

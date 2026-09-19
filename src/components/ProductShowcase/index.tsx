@@ -168,7 +168,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
                 aria-current={i === index ? "true" : undefined}
                 onClick={() => onUserNav(i)}
                 className={cn(
-                  "h-2.5 rounded-full transition-all duration-DEFAULT ease-standard",
+                  "h-2.5 rounded-full transition-all ease-standard",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   i === index ? "w-7 bg-primary" : "w-2.5 bg-border hover:bg-secondary",
@@ -183,7 +183,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
             type="button"
             aria-label={t("home:showcase.previous")}
             onClick={() => onUserNav(index - 1)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors duration-DEFAULT ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <Chevron direction="left" />
           </button>
@@ -191,7 +191,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
             type="button"
             aria-label={t("home:showcase.next")}
             onClick={() => onUserNav(index + 1)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors duration-DEFAULT ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors ease-standard hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <Chevron direction="right" />
           </button>

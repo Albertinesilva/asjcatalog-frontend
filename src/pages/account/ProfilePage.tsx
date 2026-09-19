@@ -61,9 +61,7 @@ export default function ProfilePage() {
               />
             </div>
             <div className="flex flex-col gap-0.5">
-              <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
-                {section.title}
-              </h2>
+              <h2 className="m-0 font-heading text-title text-foreground">{section.title}</h2>
               <p className="m-0 text-small text-foreground-muted">{section.description}</p>
             </div>
             <div className="mt-auto flex justify-end pt-1">

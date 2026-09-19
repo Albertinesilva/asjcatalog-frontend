@@ -15,7 +15,7 @@ export default function ProductItem(product: ProductItemProps) {
       to={`/catalog/${id}`}
       className={[
         "group flex flex-col bg-card text-card-foreground rounded-lg border border-border",
-        "shadow-sm transition-all duration-DEFAULT ease-standard",
+        "shadow-sm transition-all ease-standard",
         "hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       ].join(" ")}
@@ -32,10 +32,10 @@ export default function ProductItem(product: ProductItemProps) {
         />
       </div>
       <div className="p-md">
-        <h3 className="font-heading text-body font-semibold text-foreground m-0 min-h-[3rem] line-clamp-2">
+        <h2 className="font-heading text-body font-semibold text-foreground m-0 min-h-[3rem] line-clamp-2">
           {name}
-        </h3>
-        <ProductPrice price={String(price)} />
+        </h2>
+        <ProductPrice price={String(price)} className="mt-md" />
       </div>
     </Link>
   );

@@ -110,7 +110,7 @@ export default function SecurityProfilePage() {
     <div className="flex w-full max-w-5xl flex-col gap-md">
       <Link
         to="/account/profile"
-        className="inline-flex items-center gap-xs self-start text-small text-foreground-muted transition-colors duration-DEFAULT ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
+        className="inline-flex items-center gap-xs self-start text-small text-foreground-muted transition-colors ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
       >
         <span aria-hidden>&larr;</span>
         {t("profile:hub.back")}
@@ -122,7 +122,7 @@ export default function SecurityProfilePage() {
       >
         <div className="order-2 flex min-w-0 flex-col gap-sm lg:order-1">
           <div className="flex flex-col gap-0.5">
-            <h2 className="m-0 font-heading font-semibold text-h4 text-foreground">
+            <h2 className="m-0 font-heading text-title text-foreground">
               {t("profile:sections.security")}
             </h2>
             <p className="m-0 text-small text-foreground-muted">

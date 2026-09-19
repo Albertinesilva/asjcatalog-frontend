@@ -99,11 +99,11 @@ export default function CatalogPage() {
 
   const pageBtn =
     "inline-flex items-center justify-center w-9 h-9 rounded-full text-small font-semibold " +
-    "transition-colors duration-DEFAULT ease-standard " +
+    "transition-colors ease-standard " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
   return (
-    <div className="w-full mx-auto max-w-[1400px] px-md py-lg lg:px-xl lg:py-xl">
+    <div className="w-full mx-auto max-w-page-wide px-md py-lg lg:px-xl lg:py-xl">
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-md mb-lg">
         <h1 className="font-heading text-h2 text-foreground m-0">{t("catalog:title")}</h1>
         <Card

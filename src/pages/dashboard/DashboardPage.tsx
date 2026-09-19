@@ -99,7 +99,7 @@ function MetricCard({
   return (
     <Link
       to={to}
-      className="group block rounded-lg border border-border bg-card text-card-foreground shadow-md p-lg transition-all duration-DEFAULT ease-standard hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="group block rounded-lg border border-border bg-card text-card-foreground shadow-md p-lg transition-all ease-standard hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <div className="flex items-start justify-between mb-md">
         <span className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
@@ -246,7 +246,7 @@ export default function DashboardPage() {
             <Link
               key={i.to}
               to={i.to}
-              className="group block rounded-lg border border-border bg-card text-card-foreground shadow-md p-lg transition-all duration-DEFAULT ease-standard hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group block rounded-lg border border-border bg-card text-card-foreground shadow-md p-lg transition-all ease-standard hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <span className="inline-flex items-center justify-center h-9 w-9 rounded-md bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground mb-md">
                 <Icon name={i.icon} className="h-5 w-5" />

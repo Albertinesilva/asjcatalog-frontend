@@ -48,7 +48,7 @@ export default function EmptyState({
           <path d="m20 20-3.5-3.5" />
         </svg>
       )}
-      <h5 className={stateTitleClasses}>{resolvedTitle}</h5>
+      <h2 className={stateTitleClasses}>{resolvedTitle}</h2>
       {description && <p className={stateDescriptionClasses}>{description}</p>}
       {action && <div className={stateActionClasses}>{action}</div>}
     </div>

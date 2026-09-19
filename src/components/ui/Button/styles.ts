@@ -10,7 +10,7 @@ export type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 export const buttonBaseClasses =
   "inline-flex items-center justify-center gap-2 font-heading font-semibold whitespace-nowrap " +
-  "select-none rounded-md border transition-colors duration-DEFAULT ease-standard " +
+  "select-none rounded-md border transition-colors ease-standard " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 " +
   "focus-visible:ring-offset-background disabled:opacity-60 disabled:cursor-not-allowed";
 
