@@ -6,6 +6,7 @@ import { ConfirmDialog, PasswordField } from "@/components";
 import { Button, Card, Input } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
+import { parseApiError } from "@/utils/api-error";
 import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
 import { authFieldError, authFormTitle } from "./_ui";
 
@@ -41,6 +42,14 @@ export default function LoginPage() {
       if (code === "ACCESS_DISABLED") {
         setInactiveAccount(true);
         setError("root", { message: t("auth:login.inactive.error") });
+        return;
+      }
+      // OAuth2 password grant: credenciais inválidas retornam `error=invalid_grant`
+      // sem o contrato próprio da aplicação (sem `code`/`message`), então
+      // precisam ser reconhecidas aqui antes de cair no tratamento genérico.
+      const parsed = parseApiError(err);
+      if (parsed.error === "invalid_grant") {
+        setError("root", { message: t("auth:login.invalid") });
         return;
       }
       const handled = await handleApiError(err, {
