@@ -65,9 +65,20 @@ export function refreshSession(): Promise<LoginResponse> {
 
   refreshPromise = refreshTokenRequest(current)
     .then((data) => {
+      // Resposta sem access_token utilizável (ex.: corpo vazio/malformado) não
+      // é sucesso: rejeita para que o chamador siga o fluxo de falha já existente.
+      if (!data?.access_token) {
+        throw new Error("INVALID_REFRESH_RESPONSE");
+      }
       // Defensivo: se o backend omitir o refresh_token, mantém o atual em vez
       // de apagá-lo. O contrato esperado é sempre retornar um novo.
       const next: LoginResponse = { ...data, refresh_token: data.refresh_token ?? current };
+      // Compare-and-swap: só persiste se o refresh token que originou esta
+      // chamada ainda for o que está em storage. Evita que um resultado tardio
+      // de uma sessão já encerrada/substituída sobrescreva a sessão atual.
+      if (getAuthData()?.refresh_token !== current) {
+        throw new Error("STALE_REFRESH_DISCARDED");
+      }
       saveAuthData(next);
       return next;
     })
