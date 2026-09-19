@@ -7,6 +7,7 @@ import { ConfirmDialog } from "@/components";
 import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { parseApiError } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import {
   getPendingEmail,
   getResendCooldownRemainingMs,
@@ -55,7 +56,7 @@ export default function ActivationPendingPage() {
     if (parsed.status === 429) {
       return {
         title: t("auth:activationPending.rateLimitTitle"),
-        text: parsed.message || t("auth:activationPending.rateLimitDefault"),
+        text: getUiErrorMessage(err, t("auth:activationPending.rateLimitDefault")),
       };
     }
     if (parsed.status && parsed.status >= 500) {
@@ -72,7 +73,7 @@ export default function ActivationPendingPage() {
     }
     return {
       title: t("auth:activationPending.errorTitle"),
-      text: parsed.message || t("auth:activationPending.errorMessage"),
+      text: getUiErrorMessage(err, t("auth:activationPending.errorMessage")),
     };
   };
 

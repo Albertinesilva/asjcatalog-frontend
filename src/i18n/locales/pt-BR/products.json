@@ -32,9 +32,13 @@
     "categoryAria": "Filtrar por categoria"
   },
   "table": {
-    "empty": {
+    "emptyFiltered": {
       "title": "Nenhum produto encontrado",
-      "description": "Tente ajustar os filtros ou adicionar um novo produto."
+      "description": "Nenhum produto corresponde aos filtros aplicados."
+    },
+    "emptyAll": {
+      "title": "Nenhum produto cadastrado",
+      "description": "Cadastre o primeiro produto para começar."
     }
   },
   "dialogs": {
@@ -56,6 +60,7 @@
   },
   "errors": {
     "saveTitle": "Falha ao salvar produto",
-    "savePrefix": "Erro ao salvar"
+    "savePrefix": "Erro ao salvar",
+    "categoriesLoad": "Não foi possível carregar as categorias."
   }
 }

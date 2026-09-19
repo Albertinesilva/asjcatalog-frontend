@@ -16,6 +16,7 @@
     "create": "Criar",
     "search": "Pesquisar",
     "clear": "Limpar",
+    "clearFilters": "Limpar filtros",
     "retry": "Tentar novamente",
     "backHome": "Voltar para o início",
     "loading": "Carregando...",
@@ -27,7 +28,9 @@
     "loading": "Carregando...",
     "empty": "Nenhum resultado encontrado",
     "error": "Ocorreu um erro inesperado",
-    "processing": "Processando..."
+    "processing": "Processando...",
+    "notFound": "Registro não encontrado",
+    "notFoundDescription": "O item solicitado não existe ou foi removido."
   },
   "table": {
     "records_one": "{{count}} registro",
@@ -42,6 +45,7 @@
   "confirm": { "confirming": "Confirmando..." },
   "errors": {
     "generic": "Ocorreu um erro inesperado.",
+    "network": "Falha de conexão. Verifique sua internet e tente novamente.",
     "validation": "Dados inválidos",
     "title": "Erro",
     "prefix": "Erro"

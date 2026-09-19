@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
-import type { Category, ProductRequest } from "@/types";
+import type { ProductRequest } from "@/types";
 import { Button, Card, Input, Select, Textarea } from "@/components/ui";
-import { ProductFormSkeleton } from "@/components";
+import { ErrorState, NotFoundState, ProductFormSkeleton } from "@/components";
+import { useResource } from "@/hooks/useResource";
 import { handleApiError } from "@/utils/api-error-handler";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 
 type FormFields = {
   name: string;
@@ -27,9 +28,7 @@ export default function ProductForm({ mode }: Props) {
   const { t } = useTranslation(["products", "validation"]);
   const navigate = useNavigate();
   const { id: productId } = useParams<{ id: string }>();
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(mode === "edit");
   const [saveError, setSaveError] = useState<string | null>(null);
 
   const {
@@ -48,29 +47,29 @@ export default function ProductForm({ mode }: Props) {
     },
   });
 
-  useEffect(() => {
-    categoryService.findAll().then(setCategories);
-  }, []);
+  // Categorias e (no modo edição) o produto precisam estar carregados antes do
+  // formulário: sem as opções, o multi-select perderia a seleção do `reset`.
+  const fetchCategories = useCallback(() => categoryService.findAll(), []);
+  const { state: categoriesState, reload: reloadCategories } = useResource(fetchCategories);
+
+  const id = Number(productId);
+  const invalidEditId = mode === "edit" && (!productId || Number.isNaN(id));
+  const fetchProduct = useCallback(() => productService.findById(id), [id]);
+  const { state: productState, reload: reloadProduct } = useResource(
+    mode === "edit" && !invalidEditId ? fetchProduct : null,
+  );
 
   useEffect(() => {
-    if (mode !== "edit" || !productId) {
-      setIsFetching(false);
-      return;
-    }
-    setIsFetching(true);
-    productService
-      .findById(Number(productId))
-      .then((p) => {
-        reset({
-          name: p.name,
-          price: p.price,
-          imgUrl: p.imgUrl,
-          description: p.description,
-          categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
-        });
-      })
-      .finally(() => setIsFetching(false));
-  }, [mode, productId, reset]);
+    if (productState.status !== "success" || categoriesState.status !== "success") return;
+    const p = productState.data;
+    reset({
+      name: p.name,
+      price: p.price,
+      imgUrl: p.imgUrl,
+      description: p.description,
+      categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
+    });
+  }, [productState, categoriesState, reset]);
 
   const onSubmit = async (data: FormFields) => {
     setLoading(true);
@@ -102,13 +101,32 @@ export default function ProductForm({ mode }: Props) {
         setError: (name, error) => setError(name as keyof FormFields, error),
         fallbackTitle: t("products:errors.saveTitle"),
       });
-      if (!handled) setSaveError(getApiErrorMessage(err));
+      if (!handled) setSaveError(getUiErrorMessage(err));
     } finally {
       setLoading(false);
     }
   };
 
-  if (isFetching) return <ProductFormSkeleton />;
+  if (invalidEditId || productState.status === "notFound") {
+    return <NotFoundState backTo="/dashboard/products" />;
+  }
+  if (productState.status === "error") {
+    return <ErrorState message={productState.message} onRetry={reloadProduct} />;
+  }
+  if (categoriesState.status === "error") {
+    return (
+      <ErrorState
+        title={t("products:errors.categoriesLoad")}
+        description={categoriesState.message}
+        onRetry={reloadCategories}
+      />
+    );
+  }
+  if (productState.status === "loading" || categoriesState.status !== "success") {
+    return <ProductFormSkeleton />;
+  }
+
+  const categories = categoriesState.data;
 
   return (
     <Card padding="lg">

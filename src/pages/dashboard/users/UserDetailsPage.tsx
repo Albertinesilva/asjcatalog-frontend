@@ -1,36 +1,34 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
-import { LoadingState, ErrorState } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-error";
-import type { UserDetails } from "@/types";
+import { LoadingState, ErrorState, NotFoundState } from "@/components";
+import { useResource } from "@/hooks/useResource";
 import { Card, buttonClasses } from "@/components/ui";
 import UserRoleBadge from "./components/UserRoleBadge";
 
 export default function UserDetailsPage() {
   const { t } = useTranslation(["users"]);
   const { id } = useParams<{ id: string }>();
-  const [user, setUser] = useState<UserDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const load = () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
-    userService
-      .findById(Number(id))
-      .then(setUser)
-      .catch((err) => setError(getApiErrorMessage(err)))
-      .finally(() => setIsLoading(false));
-  };
+  // Id não numérico nunca chega à API: é recurso inexistente.
+  const userId = Number(id);
+  const validId = Boolean(id) && !Number.isNaN(userId);
+  const fetchUser = useCallback(() => userService.findById(userId), [userId]);
+  const { state, reload } = useResource(validId ? fetchUser : null);
 
-  useEffect(load, [id]);
-
-  if (isLoading) return <LoadingState />;
-  if (error) return <ErrorState message={error} onRetry={load} />;
-  if (!user) return null;
+  if (state.status === "loading") return <LoadingState />;
+  if (state.status === "error") return <ErrorState message={state.message} onRetry={reload} />;
+  if (state.status !== "success") {
+    return (
+      <NotFoundState
+        backTo="/dashboard/users"
+        backLabel={t("users:actions.back")}
+        title={t("users:details.notFound")}
+      />
+    );
+  }
+  const user = state.data;
 
   return (
     <Card padding="lg" className="max-w-3xl flex flex-col gap-md">

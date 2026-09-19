@@ -11,7 +11,8 @@ import {
   PasswordMatch,
   PasswordRequirements,
 } from "@/components";
-import { getApiErrorMessage, parseApiError } from "@/utils/api-error";
+import { parseApiError } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -33,8 +34,9 @@ type Feedback = { kind: "success" | "error"; message: string } | null;
  */
 export default function SecurityProfilePage() {
   const { t } = useTranslation();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth();
   const [passwordFeedback, setPasswordFeedback] = useState<Feedback>(null);
+  const [retrying, setRetrying] = useState(false);
 
   const passwordForm = useForm<PasswordFields>({
     defaultValues: { currentPassword: "", password: "", confirmPassword: "" },
@@ -50,12 +52,20 @@ export default function SecurityProfilePage() {
   const passwordValue = watchPassword("password") ?? "";
   const confirmPasswordValue = watchPassword("confirmPassword") ?? "";
 
-  if (loading && !user) {
+  if ((loading && !user) || retrying) {
     return <LoadingState message={t("profile:loading")} />;
   }
 
   if (!user) {
-    return <ErrorState message={t("profile:loadError")} />;
+    return (
+      <ErrorState
+        message={t("profile:loadError")}
+        onRetry={() => {
+          setRetrying(true);
+          void refreshUser().finally(() => setRetrying(false));
+        }}
+      />
+    );
   }
 
   const passwordContext = {
@@ -100,7 +110,7 @@ export default function SecurityProfilePage() {
       if (!handled) {
         setPasswordFeedback({
           kind: "error",
-          message: getApiErrorMessage(err, t("profile:failPasswordMessage")),
+          message: getUiErrorMessage(err, t("profile:failPasswordMessage")),
         });
       }
     }

@@ -1,15 +1,23 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { userService } from "@/services/user-service";
-import { PasswordField, PasswordRequirements, UserFormSkeleton } from "@/components";
+import {
+  ErrorState,
+  NotFoundState,
+  PasswordField,
+  PasswordRequirements,
+  UserFormSkeleton,
+} from "@/components";
+import { useResource } from "@/hooks/useResource";
 import { alerts } from "@/utils/alerts";
 import type { Role } from "@/types";
 import { Button, Card, Input } from "@/components/ui";
 import { Select } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
 import { buildPasswordValidation } from "@/utils/password";
+import { getUiErrorMessage } from "@/utils/ui-error";
 
 const AVAILABLE_ROLES: { id: number; authority: Role }[] = [
   { id: 1, authority: "ROLE_OPERATOR" },
@@ -31,7 +39,6 @@ export default function UserForm({ mode }: Props) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [isFetching, setIsFetching] = useState(mode === "edit");
 
   const {
     register,
@@ -60,26 +67,22 @@ export default function UserForm({ mode }: Props) {
     email: emailValue,
   };
 
+  const userId = Number(id);
+  const invalidEditId = mode === "edit" && (!id || Number.isNaN(userId));
+  const fetchUser = useCallback(() => userService.findById(userId), [userId]);
+  const { state, reload } = useResource(mode === "edit" && !invalidEditId ? fetchUser : null);
+
   useEffect(() => {
-    if (mode !== "edit" || !id) {
-      setIsFetching(false);
-      return;
-    }
-    setIsFetching(true);
-    userService
-      .findById(Number(id))
-      .then((u) =>
-        reset({
-          firstName: u.firstName,
-          lastName: u.lastName,
-          email: u.email,
-          password: "",
-          roleIds: (u.roles ?? []).map((r) => String(r.id)),
-        }),
-      )
-      .catch((err: Error) => setSaveError(err.message))
-      .finally(() => setIsFetching(false));
-  }, [mode, id, reset]);
+    if (state.status !== "success") return;
+    const u = state.data;
+    reset({
+      firstName: u.firstName,
+      lastName: u.lastName,
+      email: u.email,
+      password: "",
+      roleIds: (u.roles ?? []).map((r) => String(r.id)),
+    });
+  }, [state, reset]);
 
   const onSubmit = async (data: FormFields) => {
     setSaveError(null);
@@ -111,12 +114,16 @@ export default function UserForm({ mode }: Props) {
         fallbackMessage: t("users:errors.saveMessage"),
       });
       if (!handled) {
-        setSaveError((err as Error).message);
+        setSaveError(getUiErrorMessage(err, t("users:errors.saveMessage")));
       }
     }
   };
 
-  if (isFetching) return <UserFormSkeleton />;
+  if (invalidEditId || state.status === "notFound") {
+    return <NotFoundState backTo="/dashboard/users" title={t("users:details.notFound")} />;
+  }
+  if (state.status === "error") return <ErrorState message={state.message} onRetry={reload} />;
+  if (state.status === "loading") return <UserFormSkeleton />;
 
   return (
     <Card padding="lg">

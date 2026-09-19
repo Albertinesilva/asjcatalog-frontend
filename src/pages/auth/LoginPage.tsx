@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { alerts } from "@/utils/alerts";
 import { parseApiError } from "@/utils/api-error";
 import { getApiErrorCode, handleApiError } from "@/utils/api-error-handler";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { authFieldError, authFormTitle } from "./_ui";
 
 type AuthFormFields = { username: string; password: string };
@@ -58,8 +59,10 @@ export default function LoginPage() {
         fallbackMessage: t("auth:login.failMessage"),
       });
       if (!handled) {
-        setError("root", { message: t("auth:login.invalid") });
-        await alerts.error(t("auth:login.failTitle"), t("auth:login.failMessage"));
+        // Sem resposta HTTP (rede/timeout): não é falha de credenciais.
+        const message = getUiErrorMessage(err, t("auth:login.failMessage"));
+        setError("root", { message });
+        await alerts.error(t("auth:login.failTitle"), message);
       }
     }
   };

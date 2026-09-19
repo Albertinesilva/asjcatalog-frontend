@@ -81,6 +81,9 @@ export default function CatalogPage() {
     setCategoryIds("");
   };
 
+  // Distingue "nenhum resultado para os filtros" de "catálogo sem produtos".
+  const filtersActive = debouncedSearch !== "" || categoryIds !== "";
+
   const totalPages = data?.totalPages ?? 0;
   const currentPage = page + 1;
 
@@ -169,8 +172,15 @@ export default function CatalogPage() {
         <ErrorState description={error.message ?? undefined} onRetry={fetchProducts} />
       ) : products.length === 0 ? (
         <EmptyState
-          title={t("catalog:empty")}
-          description={t("catalog:emptyHint")}
+          title={filtersActive ? t("catalog:empty") : t("catalog:emptyAll")}
+          description={filtersActive ? t("catalog:emptyHint") : undefined}
+          action={
+            filtersActive ? (
+              <Button variant="outline" onClick={clearFilters}>
+                {t("catalog:clearFilters")}
+              </Button>
+            ) : undefined
+          }
           illustration={
             <img
               src={catalogProducts}

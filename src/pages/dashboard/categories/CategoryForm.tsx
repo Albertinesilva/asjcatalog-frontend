@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
+import { CategoryFormSkeleton, ErrorState, NotFoundState } from "@/components";
+import { useResource } from "@/hooks/useResource";
 import { handleApiError } from "@/utils/api-error-handler";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 
 type FormFields = { name: string };
 type Props = { mode: "create" | "edit" };
@@ -24,13 +26,14 @@ export default function CategoryForm({ mode }: Props) {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ defaultValues: { name: "" } });
 
+  const categoryId = Number(id);
+  const invalidEditId = mode === "edit" && (!id || Number.isNaN(categoryId));
+  const fetchCategory = useCallback(() => categoryService.findById(categoryId), [categoryId]);
+  const { state, reload } = useResource(mode === "edit" && !invalidEditId ? fetchCategory : null);
+
   useEffect(() => {
-    if (mode !== "edit" || !id) return;
-    categoryService
-      .findById(Number(id))
-      .then((c) => reset({ name: c.name }))
-      .catch((err) => setSaveError(getApiErrorMessage(err)));
-  }, [mode, id, reset]);
+    if (state.status === "success") reset({ name: state.data.name });
+  }, [state, reset]);
 
   const onSubmit = async (data: FormFields) => {
     setSaveError(null);
@@ -57,9 +60,15 @@ export default function CategoryForm({ mode }: Props) {
         setError: (name, error) => setError(name as keyof FormFields, error),
         fallbackTitle: t("categories:form.failTitle"),
       });
-      if (!handled) setSaveError(getApiErrorMessage(err));
+      if (!handled) setSaveError(getUiErrorMessage(err));
     }
   };
+
+  if (invalidEditId || state.status === "notFound") {
+    return <NotFoundState backTo="/dashboard/categories" />;
+  }
+  if (state.status === "error") return <ErrorState message={state.message} onRetry={reload} />;
+  if (state.status === "loading") return <CategoryFormSkeleton />;
 
   return (
     <Card padding="lg" className="max-w-2xl">

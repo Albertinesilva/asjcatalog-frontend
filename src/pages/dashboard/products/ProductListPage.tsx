@@ -14,7 +14,7 @@ import {
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import type { Category, Paginated, ProductResponse } from "@/types";
 import { buttonClasses } from "@/components/ui";
@@ -69,20 +69,30 @@ export default function ProductListPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  const clearFilters = () => {
+    setSearch("");
+    setCategoryId("");
+  };
+
+  const closeDeleteDialog = () => {
+    setPendingDelete(null);
+    setDeleteError(null);
+  };
+
   const confirmDelete = async () => {
     if (!pendingDelete) return;
     setIsDeleting(true);
     setDeleteError(null);
     try {
       await productService.delete(pendingDelete.id);
-      setPendingDelete(null);
+      closeDeleteDialog();
       refetch();
       await alerts.success(
         t("products:success.deletedTitle"),
         t("products:success.deletedMessage"),
       );
     } catch (err) {
-      setDeleteError(getApiErrorMessage(err));
+      setDeleteError(getUiErrorMessage(err));
     } finally {
       setIsDeleting(false);
     }
@@ -123,15 +133,18 @@ export default function ProductListPage() {
         </Select>
       </div>
 
-      {deleteError && <ErrorState message={deleteError} />}
-
       {isLoading ? (
         <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={refetch} />
       ) : (
         <>
-          <ProductTable products={data} onDelete={setPendingDelete} />
+          <ProductTable
+            products={data}
+            filtered={Boolean(filters.name || filters.categoryId)}
+            onClearFilters={clearFilters}
+            onDelete={setPendingDelete}
+          />
           <Pagination
             page={pagination.page}
             totalPages={pagination.totalPages}
@@ -159,7 +172,8 @@ export default function ProductListPage() {
         confirmingLabel={t("products:dialogs.delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
-        onCancel={() => setPendingDelete(null)}
+        error={deleteError}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
     </div>

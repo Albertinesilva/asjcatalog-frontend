@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { categoryService } from "@/services/category-service";
@@ -11,7 +11,7 @@ import {
   TableToolbar,
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import type { Category } from "@/types";
 import { buttonClasses } from "@/components/ui";
@@ -26,17 +26,26 @@ export default function CategoryListPage() {
   const [search, setSearch] = useState("");
   const debouncedName = useDebouncedValue(search.trim(), 400);
 
-  const load = () => {
+  // Só a resposta da requisição mais recente altera dados/erro/loading.
+  const latestRequest = useRef(0);
+  const load = useCallback(() => {
+    const requestId = ++latestRequest.current;
     setIsLoading(true);
     setError(null);
     categoryService
       .findAll()
-      .then(setData)
-      .catch((err) => setError(getApiErrorMessage(err)))
-      .finally(() => setIsLoading(false));
-  };
+      .then((categories) => {
+        if (requestId === latestRequest.current) setData(categories);
+      })
+      .catch((err) => {
+        if (requestId === latestRequest.current) setError(getUiErrorMessage(err));
+      })
+      .finally(() => {
+        if (requestId === latestRequest.current) setIsLoading(false);
+      });
+  }, []);
 
-  useEffect(load, []);
+  useEffect(load, [load]);
 
   const filtered = useMemo(() => {
     const term = debouncedName.toLowerCase();
@@ -48,20 +57,25 @@ export default function CategoryListPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  const closeDeleteDialog = () => {
+    setPendingDelete(null);
+    setDeleteError(null);
+  };
+
   const confirmDelete = async () => {
     if (!pendingDelete) return;
     setIsDeleting(true);
     setDeleteError(null);
     try {
       await categoryService.delete(pendingDelete.id);
-      setPendingDelete(null);
+      closeDeleteDialog();
       load();
       await alerts.success(
         t("categories:delete.successTitle"),
         t("categories:delete.successMessage"),
       );
     } catch (err) {
-      setDeleteError(getApiErrorMessage(err));
+      setDeleteError(getUiErrorMessage(err));
     } finally {
       setIsDeleting(false);
     }
@@ -87,14 +101,17 @@ export default function CategoryListPage() {
         />
       </div>
 
-      {deleteError && <ErrorState message={deleteError} />}
-
       {isLoading ? (
         <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={load} />
       ) : (
-        <CategoryTable categories={filtered} onDelete={setPendingDelete} />
+        <CategoryTable
+          categories={filtered}
+          filtered={Boolean(debouncedName)}
+          onClearFilters={() => setSearch("")}
+          onDelete={setPendingDelete}
+        />
       )}
 
       <ConfirmDialog
@@ -116,7 +133,8 @@ export default function CategoryListPage() {
         confirmingLabel={t("categories:delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
-        onCancel={() => setPendingDelete(null)}
+        error={deleteError}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
     </div>

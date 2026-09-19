@@ -177,17 +177,3 @@ export function parseApiError(err: unknown): ApiError {
     isNetworkError: false,
   };
 }
-
-/**
- * Atalho para obter apenas a mensagem legível do erro. Consumido por
- * fluxos que não usam react-hook-form (listagens, exclusões, dashboard).
- *
- * A mensagem do backend (`message`) é sempre priorizada pois já vem
- * localizada via `Accept-Language`. O `fallback` só é aplicado quando
- * o backend não retornou mensagem alguma.
- */
-export function getApiErrorMessage(err: unknown, fallback = FALLBACK_MESSAGE): string {
-  const parsed = parseApiError(err);
-  if (parsed.isNetworkError) return parsed.message || fallback;
-  return parsed.message || fallback;
-}

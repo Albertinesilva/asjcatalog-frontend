@@ -7,6 +7,7 @@ import { alerts } from "@/utils/alerts";
 import { getPendingEmail, removePendingEmail } from "@/utils/storage";
 import { authFieldError, authFieldHint, authFormTitle } from "./_ui";
 import { parseApiError } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 
 type Status = "loading" | "success" | "expired" | "invalid" | "already" | "missing" | "error";
 
@@ -18,11 +19,15 @@ export default function ActivateAccountPage() {
   const [status, setStatus] = useState<Status>("loading");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [resending, setResending] = useState(false);
-  const ran = useRef(false);
+  const [attempt, setAttempt] = useState(0);
+  // Uma ativação por (token, tentativa): evita o disparo duplo do StrictMode e
+  // permite repetir a mesma operação em "tentar novamente".
+  const ran = useRef<string | null>(null);
 
   useEffect(() => {
-    if (ran.current) return;
-    ran.current = true;
+    const runKey = `${token}:${attempt}`;
+    if (ran.current === runKey) return;
+    ran.current = runKey;
 
     if (!token) {
       setStatus("missing");
@@ -36,7 +41,8 @@ export default function ActivateAccountPage() {
         setStatus("success");
       } catch (err) {
         const parsed = parseApiError(err);
-        setErrorMsg(parsed.message || null);
+        // Só texto do contrato da API ou de conexão; nunca `AxiosError.message` bruto.
+        setErrorMsg(parsed.code || parsed.isNetworkError ? getUiErrorMessage(err) : null);
         switch (parsed.code) {
           case "INVALID_TOKEN":
             setStatus("expired");
@@ -53,7 +59,7 @@ export default function ActivateAccountPage() {
         }
       }
     })();
-  }, [token]);
+  }, [token, attempt]);
 
   const resend = async () => {
     const email = getPendingEmail();
@@ -76,12 +82,12 @@ export default function ActivateAccountPage() {
       if (parsed.status === 429) {
         await alerts.warning(
           t("auth:activate.resendCooldownTitle"),
-          parsed.message || t("auth:activate.resendCooldownDefault"),
+          getUiErrorMessage(err, t("auth:activate.resendCooldownDefault")),
         );
       } else {
         await alerts.error(
           t("auth:activate.resendFailTitle"),
-          parsed.message || t("auth:activate.resendFailDefault"),
+          getUiErrorMessage(err, t("auth:activate.resendFailDefault")),
         );
       }
     } finally {
@@ -172,7 +178,21 @@ export default function ActivateAccountPage() {
         {status === "error" && (
           <>
             <h2 className={authFormTitle}>{t("auth:activate.errorTitle")}</h2>
-            <p className={authFieldError}>{errorMsg ?? t("auth:activate.errorDefault")}</p>
+            <p className={authFieldError} role="alert">
+              {errorMsg ?? t("auth:activate.errorDefault")}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              fullWidth
+              onClick={() => {
+                setStatus("loading");
+                setAttempt((n) => n + 1);
+              }}
+            >
+              {t("common:actions.retry")}
+            </Button>
             {renderActions(t("auth:activate.resendEmail"))}
           </>
         )}

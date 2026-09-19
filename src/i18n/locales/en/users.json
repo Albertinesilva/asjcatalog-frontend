@@ -32,9 +32,13 @@
     "searchAria": "Search by name"
   },
   "table": {
-    "empty": {
+    "emptyFiltered": {
       "title": "No users found",
-      "description": "Try adjusting the filters or adding a new user."
+      "description": "No user matches the applied filter."
+    },
+    "emptyAll": {
+      "title": "No users yet",
+      "description": "Add the first user to get started."
     }
   },
   "roles": {

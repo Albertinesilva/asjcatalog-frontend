@@ -12,7 +12,7 @@ import {
 } from "@/components";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import type { Paginated, User } from "@/types";
 import { buttonClasses } from "@/components/ui";
@@ -52,17 +52,22 @@ export default function UserListPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  const closeDeleteDialog = () => {
+    setPendingDelete(null);
+    setDeleteError(null);
+  };
+
   const confirmDelete = async () => {
     if (!pendingDelete) return;
     setIsDeleting(true);
     setDeleteError(null);
     try {
       await userService.delete(pendingDelete.id);
-      setPendingDelete(null);
+      closeDeleteDialog();
       refetch();
       await alerts.success(t("users:success.deletedTitle"), t("users:success.deletedMessage"));
     } catch (err) {
-      setDeleteError(getApiErrorMessage(err));
+      setDeleteError(getUiErrorMessage(err));
     } finally {
       setIsDeleting(false);
     }
@@ -86,15 +91,18 @@ export default function UserListPage() {
         />
       </div>
 
-      {deleteError && <ErrorState message={deleteError} />}
-
       {isLoading ? (
         <TableSkeleton />
       ) : error ? (
         <ErrorState message={error} onRetry={refetch} />
       ) : (
         <>
-          <UserTable users={data} onDelete={setPendingDelete} />
+          <UserTable
+            users={data}
+            filtered={Boolean(filters.firstName)}
+            onClearFilters={() => setSearch("")}
+            onDelete={setPendingDelete}
+          />
           <Pagination
             page={pagination.page}
             totalPages={pagination.totalPages}
@@ -122,7 +130,8 @@ export default function UserListPage() {
         confirmingLabel={t("users:dialogs.delete.confirming")}
         variant="danger"
         isConfirming={isDeleting}
-        onCancel={() => setPendingDelete(null)}
+        error={deleteError}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
     </div>

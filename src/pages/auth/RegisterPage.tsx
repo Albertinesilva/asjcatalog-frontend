@@ -8,6 +8,7 @@ import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
 import { handleApiError } from "@/utils/api-error-handler";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { buildPasswordValidation } from "@/utils/password";
 import { authFormTitle } from "./_ui";
 
@@ -69,7 +70,10 @@ export default function RegisterPage() {
         fallbackMessage: t("auth:register.failMessage"),
       });
       if (!handled)
-        await alerts.error(t("auth:register.failTitle"), t("auth:register.failMessage"));
+        await alerts.error(
+          t("auth:register.failTitle"),
+          getUiErrorMessage(err, t("auth:register.failMessage")),
+        );
     }
   };
 

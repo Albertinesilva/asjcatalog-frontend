@@ -13,6 +13,8 @@ type Props = {
   confirmingLabel?: string;
   variant?: Variant;
   isConfirming?: boolean;
+  /** Falha da última tentativa de confirmar; o diálogo permanece aberto e confirmar tenta de novo. */
+  error?: string | null;
   disableClose?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
@@ -55,6 +57,7 @@ export default function ConfirmDialog({
   confirmingLabel,
   variant = "danger",
   isConfirming = false,
+  error,
   disableClose = false,
   onConfirm,
   onCancel,
@@ -154,6 +157,11 @@ export default function ConfirmDialog({
           <div id={descId} className="px-lg py-md text-body text-foreground">
             {typeof description === "string" ? <p className="m-0">{description}</p> : description}
           </div>
+        )}
+        {error && (
+          <p role="alert" className="px-lg pb-md m-0 text-small text-danger break-words">
+            {error}
+          </p>
         )}
         <div className="px-lg py-md border-t border-border flex justify-end gap-sm">
           <Button

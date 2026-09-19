@@ -5,6 +5,7 @@ import { accountService } from "@/services/account-service";
 import { Button, Card, Input } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { handleApiError } from "@/utils/api-error-handler";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { authFormTitle } from "./_ui";
 
 type RecoverFormFields = { email: string; emailConfirm: string };
@@ -32,7 +33,11 @@ export default function RecoverPage() {
         fallbackTitle: t("auth:recover.failTitle"),
         fallbackMessage: t("auth:recover.failMessage"),
       });
-      if (!handled) await alerts.error(t("auth:recover.failTitle"), t("auth:recover.failMessage"));
+      if (!handled)
+        await alerts.error(
+          t("auth:recover.failTitle"),
+          getUiErrorMessage(err, t("auth:recover.failMessage")),
+        );
     }
   };
 

@@ -1,6 +1,7 @@
 import i18n from "@/i18n";
 import { alerts } from "@/utils/alerts";
 import { parseApiError, type ApiError, type ApiErrorCode } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 
 type SetFormError = (
   fieldName: string,
@@ -27,7 +28,9 @@ export async function handleApiError(
 ): Promise<boolean> {
   const parsed = parseApiError(err);
   const title = options.fallbackTitle ?? i18n.t("common:errors.title");
-  const message = parsed.message || options.fallbackMessage || "";
+  // Só o texto do contrato da API (localizado pelo backend) é exibido verbatim;
+  // payload fora do contrato cai no fallback do chamador, nunca em `AxiosError.message`.
+  const message = getUiErrorMessage(err, options.fallbackMessage);
   if (parsed.isNetworkError) return false;
 
   switch (parsed.code) {

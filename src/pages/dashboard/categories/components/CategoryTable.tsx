@@ -1,18 +1,32 @@
 import type { Category } from "@/types";
 import { EmptyState } from "@/components";
+import { Button } from "@/components/ui";
 import { useTranslation } from "react-i18next";
 import CategoryTableRow from "./CategoryTableRow";
 
 type Props = {
   categories: Category[];
+  /** Há filtro ativo: distingue "nenhum resultado" de "nada cadastrado". */
+  filtered: boolean;
+  onClearFilters: () => void;
   onDelete: (category: Category) => void;
 };
 
-export default function CategoryTable({ categories, onDelete }: Props) {
-  const { t } = useTranslation("categories");
+export default function CategoryTable({ categories, filtered, onClearFilters, onDelete }: Props) {
+  const { t } = useTranslation(["categories", "common"]);
   if (categories.length === 0) {
-    return (
-      <EmptyState title={t("emptyFiltered.title")} description={t("emptyFiltered.description")} />
+    return filtered ? (
+      <EmptyState
+        title={t("categories:emptyFiltered.title")}
+        description={t("categories:emptyFiltered.description")}
+        action={
+          <Button variant="outline" onClick={onClearFilters}>
+            {t("common:actions.clearFilters")}
+          </Button>
+        }
+      />
+    ) : (
+      <EmptyState title={t("categories:empty")} />
     );
   }
 

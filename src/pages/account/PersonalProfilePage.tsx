@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { userService } from "@/services/user-service";
 import { LoadingState, ErrorState } from "@/components";
-import { getApiErrorMessage } from "@/utils/api-error";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { alerts } from "@/utils/alerts";
 import { Button, Card, Input } from "@/components/ui";
 import { handleApiError } from "@/utils/api-error-handler";
@@ -28,6 +28,7 @@ export default function PersonalProfilePage() {
   const { t } = useTranslation();
   const { user, loading, refreshUser } = useAuth();
   const [profileFeedback, setProfileFeedback] = useState<Feedback>(null);
+  const [retrying, setRetrying] = useState(false);
 
   const profileForm = useForm<ProfileFields>({
     defaultValues: { firstName: "", lastName: "", email: "" },
@@ -49,12 +50,20 @@ export default function PersonalProfilePage() {
     formState: { errors: profileErrors, isSubmitting: savingProfile },
   } = profileForm;
 
-  if (loading && !user) {
+  if ((loading && !user) || retrying) {
     return <LoadingState message={t("profile:loading")} />;
   }
 
   if (!user) {
-    return <ErrorState message={t("profile:loadError")} />;
+    return (
+      <ErrorState
+        message={t("profile:loadError")}
+        onRetry={() => {
+          setRetrying(true);
+          void refreshUser().finally(() => setRetrying(false));
+        }}
+      />
+    );
   }
 
   const onSaveProfile = async (data: ProfileFields) => {
@@ -81,7 +90,7 @@ export default function PersonalProfilePage() {
       if (!handled) {
         setProfileFeedback({
           kind: "error",
-          message: getApiErrorMessage(err, t("profile:failProfileMessage")),
+          message: getUiErrorMessage(err, t("profile:failProfileMessage")),
         });
       }
     }

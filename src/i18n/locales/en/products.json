@@ -32,9 +32,13 @@
     "categoryAria": "Filter by category"
   },
   "table": {
-    "empty": {
+    "emptyFiltered": {
       "title": "No products found",
-      "description": "Try adjusting the filters or adding a new product."
+      "description": "No product matches the applied filters."
+    },
+    "emptyAll": {
+      "title": "No products yet",
+      "description": "Add the first product to get started."
     }
   },
   "dialogs": {
@@ -56,6 +60,7 @@
   },
   "errors": {
     "saveTitle": "Failed to save product",
-    "savePrefix": "Error while saving"
+    "savePrefix": "Error while saving",
+    "categoriesLoad": "Could not load the categories."
   }
 }

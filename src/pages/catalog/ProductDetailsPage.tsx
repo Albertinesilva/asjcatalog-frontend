@@ -1,77 +1,54 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import type { AxiosError } from "axios";
 
-import { ProductPrice, ProductDetailsSkeleton, EmptyState, ProductImage } from "@/components";
-import { Button, Card } from "@/components/ui";
+import {
+  ProductPrice,
+  ProductDetailsSkeleton,
+  ErrorState,
+  NotFoundState,
+  ProductImage,
+} from "@/components";
+import { Card } from "@/components/ui";
+import { useResource } from "@/hooks/useResource";
 import { productService } from "@/services/product-service";
-import { alerts } from "@/utils/alerts";
-
-import type { ProductResponse } from "@/types";
 
 export default function ProductDetailsPage() {
   const { t } = useTranslation(["catalog"]);
   const { productId } = useParams<{ productId: string }>();
 
-  const [data, setData] = useState<ProductResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  // Id não numérico nunca chega à API: é recurso inexistente.
+  const id = Number(productId);
+  const validId = Boolean(productId) && !Number.isNaN(id);
+  const fetchProduct = useCallback(() => productService.findById(id), [id]);
+  const { state, reload } = useResource(validId ? fetchProduct : null);
 
-  useEffect(() => {
-    const loadProduct = async () => {
-      try {
-        if (!productId) {
-          setNotFound(true);
-          return;
-        }
-
-        const id = Number(productId);
-
-        if (Number.isNaN(id)) {
-          setNotFound(true);
-          return;
-        }
-
-        const product = await productService.findById(id);
-
-        setData(product);
-      } catch (error: unknown) {
-        const err = error as AxiosError;
-
-        if (err.response?.status === 404) {
-          setNotFound(true);
-          return;
-        }
-
-        await alerts.error(t("catalog:loadErrorTitle"), t("catalog:loadErrorMessage"));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    void loadProduct();
-  }, [productId, t]);
-
-  if (loading) {
+  if (state.status === "loading") {
     return <ProductDetailsSkeleton />;
   }
 
-  if (notFound || !data) {
+  if (state.status === "error") {
     return (
-      <EmptyState
-        title={t("catalog:details.notFoundTitle")}
-        description={t("catalog:details.notFoundDescription")}
-        action={
-          <Link to="/catalog">
-            <Button variant="primary">{t("catalog:details.backCatalog")}</Button>
-          </Link>
-        }
+      <ErrorState
+        title={t("catalog:loadErrorTitle")}
+        description={state.message}
+        onRetry={reload}
       />
     );
   }
 
-  const { imgUrl, name, price, description } = data;
+  if (state.status !== "success") {
+    return (
+      <NotFoundState
+        backTo="/catalog"
+        backLabel={t("catalog:details.backCatalog")}
+        title={t("catalog:details.notFoundTitle")}
+        description={t("catalog:details.notFoundDescription")}
+      />
+    );
+  }
+
+  const { imgUrl, name, price, description } = state.data;
 
   return (
     <div className="w-full mx-auto max-w-page px-md py-lg lg:px-xl lg:py-xl">

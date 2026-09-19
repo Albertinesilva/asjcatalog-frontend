@@ -32,9 +32,13 @@
     "searchAria": "Pesquisar por nome"
   },
   "table": {
-    "empty": {
+    "emptyFiltered": {
       "title": "Nenhum usuário encontrado",
-      "description": "Tente ajustar os filtros ou adicionar um novo usuário."
+      "description": "Nenhum usuário corresponde ao filtro aplicado."
+    },
+    "emptyAll": {
+      "title": "Nenhum usuário cadastrado",
+      "description": "Cadastre o primeiro usuário para começar."
     }
   },
   "roles": {

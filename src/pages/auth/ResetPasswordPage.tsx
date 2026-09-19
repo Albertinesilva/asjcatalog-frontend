@@ -6,6 +6,7 @@ import { PasswordField, PasswordMatch, PasswordRequirements } from "@/components
 import { Button, Card } from "@/components/ui";
 import { alerts } from "@/utils/alerts";
 import { handleApiError } from "@/utils/api-error-handler";
+import { getUiErrorMessage } from "@/utils/ui-error";
 import { buildPasswordValidation } from "@/utils/password";
 import { authFieldError, authFormTitle } from "./_ui";
 
@@ -41,7 +42,11 @@ export default function ResetPasswordPage() {
         fallbackTitle: t("auth:reset.failTitle"),
         fallbackMessage: t("auth:reset.failMessage"),
       });
-      if (!handled) await alerts.error(t("auth:reset.failTitle"), t("auth:reset.failMessage"));
+      if (!handled)
+        await alerts.error(
+          t("auth:reset.failTitle"),
+          getUiErrorMessage(err, t("auth:reset.failMessage")),
+        );
     }
   };
 

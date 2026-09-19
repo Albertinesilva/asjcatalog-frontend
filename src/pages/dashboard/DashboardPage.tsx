@@ -6,8 +6,8 @@ import { useRoles } from "@/hooks/useRoles";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { userService } from "@/services/user-service";
-import { getApiErrorMessage } from "@/utils/api-error";
-import { Badge, Card } from "@/components/ui";
+import { getUiErrorMessage } from "@/utils/ui-error";
+import { Badge, Button, Card } from "@/components/ui";
 
 type MetricState = {
   products: number | null;
@@ -122,6 +122,7 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const { isAdmin } = useRoles();
   const [state, setState] = useState<MetricState>(INITIAL);
+  const [attempt, setAttempt] = useState(0);
 
   const greetingName = user?.firstName ?? user?.email ?? t("dashboard:greetingFallback");
 
@@ -151,14 +152,14 @@ export default function DashboardPage() {
           categories: null,
           users: null,
           loading: false,
-          error: getApiErrorMessage(err, t("dashboard:metricsError")),
+          error: getUiErrorMessage(err, t("dashboard:metricsError")),
         });
       });
 
     return () => {
       cancelled = true;
     };
-  }, [isAdmin, t]);
+  }, [isAdmin, t, attempt]);
 
   type Shortcut = { to: string; titleKey: string; descKey: string; icon: IconName; show?: boolean };
   const shortcuts: Shortcut[] = (
@@ -199,7 +200,17 @@ export default function DashboardPage() {
 
       {state.error && (
         <Card padding="md" className="border-warning/40 bg-warning/10">
-          <p className="m-0 text-small text-foreground">{state.error}</p>
+          <div className="flex flex-wrap items-center justify-between gap-sm" role="alert">
+            <p className="m-0 text-small text-foreground">{state.error}</p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setAttempt((n) => n + 1)}
+            >
+              {t("common:actions.retry")}
+            </Button>
+          </div>
         </Card>
       )}
 

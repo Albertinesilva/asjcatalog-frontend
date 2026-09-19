@@ -32,9 +32,13 @@
     "searchAria": "Buscar por nombre"
   },
   "table": {
-    "empty": {
+    "emptyFiltered": {
       "title": "No se encontraron usuarios",
-      "description": "Intente ajustar los filtros o agregar un nuevo usuario."
+      "description": "Ningún usuario coincide con el filtro aplicado."
+    },
+    "emptyAll": {
+      "title": "Aún no hay usuarios",
+      "description": "Agregue el primer usuario para comenzar."
     }
   },
   "roles": {
