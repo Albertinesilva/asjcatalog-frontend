@@ -16,7 +16,7 @@ export default function ProductItem(product: ProductItemProps) {
       className={[
         "group flex flex-col bg-card text-card-foreground rounded-lg border border-border",
         "shadow-sm transition-all ease-standard",
-        "hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30",
+        "hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30 active:translate-y-0 active:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       ].join(" ")}
     >

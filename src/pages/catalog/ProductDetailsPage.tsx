@@ -52,7 +52,7 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="w-full mx-auto max-w-page px-md py-lg lg:px-xl lg:py-xl">
-      <Card padding="none" elevated bordered className="p-md lg:p-2xl">
+      <Card padding="none" elevated bordered className="p-md lg:p-2xl animate-fade-in">
         <Link
           to="/catalog"
           className="inline-flex min-h-6 items-center gap-sm text-small font-heading font-semibold uppercase tracking-wider text-accent hover:text-primary transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm mb-lg"

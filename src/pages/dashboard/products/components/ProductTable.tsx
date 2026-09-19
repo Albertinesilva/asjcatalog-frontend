@@ -34,7 +34,7 @@ export default function ProductTable({ products, filtered, onClearFilters, onDel
   }
 
   return (
-    <div className="flex flex-col gap-sm">
+    <div className="flex flex-col gap-sm animate-fade-in">
       {products.map((p) => (
         <ProductTableRow key={p.id} product={p} onDelete={onDelete} />
       ))}

@@ -34,7 +34,7 @@ export default function UserTable({ users, filtered, onClearFilters, onDelete }:
   }
 
   return (
-    <div className="flex flex-col gap-sm">
+    <div className="flex flex-col gap-sm animate-fade-in">
       {users.map((u) => (
         <UserTableRow key={u.id} user={u} onDelete={onDelete} />
       ))}

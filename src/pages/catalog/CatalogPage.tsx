@@ -194,7 +194,7 @@ export default function CatalogPage() {
           }
         />
       ) : (
-        <div className={catalogGridClasses}>
+        <div className={cn(catalogGridClasses, "animate-fade-in")}>
           {products.map((product) => (
             <ProductItem key={product.id} {...product} />
           ))}

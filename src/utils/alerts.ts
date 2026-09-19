@@ -25,9 +25,13 @@ import i18n from "@/i18n/config";
 const tr = (key: string, fallback: string): string =>
   (i18n.t(key, { defaultValue: fallback }) as string) ?? fallback;
 
+/** Entrada discreta (mesma do ConfirmDialog); o zoom padrão do SweetAlert faz overshoot. */
+const showClass = { popup: "animate-fade-in" };
+
 function fire(options: SweetAlertOptions): Promise<SweetAlertResult> {
   return Swal.fire({
     heightAuto: false,
+    showClass,
     ...options,
   });
 }
@@ -93,6 +97,7 @@ export const alerts = {
       title: title ?? tr("common:states.processing", "Processando..."),
       text,
       heightAuto: false,
+      showClass,
       allowOutsideClick: false,
       allowEscapeKey: false,
       didOpen: () => Swal.showLoading(),

@@ -31,7 +31,7 @@ export default function CategoryTable({ categories, filtered, onClearFilters, on
   }
 
   return (
-    <div className="flex flex-col gap-sm">
+    <div className="flex flex-col gap-sm animate-fade-in">
       {categories.map((c) => (
         <CategoryTableRow key={c.id} category={c} onDelete={onDelete} />
       ))}

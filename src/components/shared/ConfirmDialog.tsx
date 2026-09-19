@@ -136,7 +136,7 @@ export default function ConfirmDialog({
       aria-labelledby={titleId}
       aria-describedby={description ? descId : undefined}
       tabIndex={-1}
-      className="fixed inset-0 z-modal flex items-center justify-center bg-overlay/50 focus:outline-none pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))]"
+      className="fixed inset-0 z-modal flex items-center justify-center bg-overlay/50 animate-overlay-in focus:outline-none pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))]"
       onClick={() => {
         if (isConfirming || disableClose) return;
         onCancel();
@@ -146,7 +146,7 @@ export default function ConfirmDialog({
         padding="none"
         elevated
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg max-h-full overflow-y-auto overflow-x-hidden"
+        className="w-full max-w-lg max-h-full overflow-y-auto overflow-x-hidden animate-fade-in"
       >
         <div className="px-lg py-md border-b border-border">
           <h2 id={titleId} className="font-heading text-title text-foreground m-0">

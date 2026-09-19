@@ -143,9 +143,16 @@ export default {
           "0%": { opacity: "0", transform: "translateY(6px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        // Backdrops: opacity only (a full-screen layer must never translate).
+        "overlay-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
       },
       animation: {
-        "fade-in": "fade-in 220ms cubic-bezier(0, 0, 0.2, 1) both",
+        // duration = transitionDuration.DEFAULT, easing = transitionTimingFunction.entrance
+        "fade-in": "fade-in 180ms cubic-bezier(0, 0, 0.2, 1) both",
+        "overlay-in": "overlay-in 180ms cubic-bezier(0, 0, 0.2, 1) both",
       },
     },
   },

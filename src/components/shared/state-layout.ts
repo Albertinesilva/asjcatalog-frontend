@@ -3,7 +3,7 @@
  * a mesma hierarquia visual, espaçamento e comportamento responsivo.
  */
 export const stateContainerClasses =
-  "flex flex-col items-center justify-center py-xl px-md text-center gap-sm w-full";
+  "flex flex-col items-center justify-center py-xl px-md text-center gap-sm w-full animate-fade-in";
 
 export const stateTitleClasses =
   "font-heading text-title text-foreground m-0 max-w-prose break-words";

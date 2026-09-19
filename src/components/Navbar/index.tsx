@@ -184,7 +184,7 @@ export default function Navbar() {
           type="button"
           aria-label={t("navigation:closeMenu")}
           onClick={() => setOpen(false)}
-          className="lg:hidden fixed inset-0 z-overlay bg-overlay/40 border-0 p-0 cursor-default"
+          className="lg:hidden fixed inset-0 z-overlay bg-overlay/40 border-0 p-0 cursor-default animate-overlay-in"
         />
       )}
       <div
@@ -192,7 +192,7 @@ export default function Navbar() {
           "lg:hidden fixed left-0 right-0 top-16 z-overlay bg-primary text-primary-foreground shadow-lg border-t border-primary-hover/40",
           "flex-col gap-md py-md pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]",
           "max-h-[calc(100dvh-4rem)] overflow-y-auto",
-          open ? "flex" : "hidden",
+          open ? "flex animate-fade-in" : "hidden",
         )}
       >
         <ul className="flex flex-col m-0 p-0 list-none divide-y divide-primary-foreground/10">
