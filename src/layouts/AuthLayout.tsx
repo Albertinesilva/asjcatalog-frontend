@@ -32,7 +32,7 @@ export default function AuthLayout() {
   const { pathname } = useLocation();
   const heroImage = AUTH_HERO_BY_PATH[pathname] ?? authLoginImage;
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-dvh bg-background">
       <Navbar />
       <main className="flex-1 w-full mx-auto max-w-page px-md py-xl lg:px-xl lg:py-2xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl lg:gap-2xl items-center">

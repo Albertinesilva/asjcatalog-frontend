@@ -206,7 +206,7 @@ export default function Sidebar() {
       className={cn(
         "w-full bg-surface border-b border-border",
         "lg:w-[260px] lg:shrink-0 lg:border-b-0 lg:border-r lg:border-border",
-        "lg:sticky lg:top-[70px] lg:self-start lg:h-[calc(100vh-70px)]",
+        "lg:sticky lg:top-[71px] lg:self-start lg:h-[calc(100dvh-71px)] lg:overflow-y-auto",
       )}
     >
       <nav className="h-full">

@@ -440,7 +440,7 @@ declarados em `src/styles/globals.css` e expostos via
 - **Plugins**: `@tailwindcss/forms`, `@tailwindcss/typography`.
 - **Mobile-first**: `safe-area-insets`, `input { font-size: 16px }`
   (evita zoom no iOS), `-webkit-tap-highlight-color: transparent`.
-- **Navbar** colapsa em hambúrguer abaixo de 992px.
+- **Navbar** colapsa em hambúrguer abaixo de 1024px (`lg` do Tailwind).
 - **Sidebar** (Dashboard): submenu "Meu Perfil" com toggle manual,
   chevron animado e sincronização de rota.
 - **Catálogo**: barra de busca com filtro por categoria e paginação

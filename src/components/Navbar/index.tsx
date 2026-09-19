@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NavbarLink from "../NavbarLink";
 import { useAuth } from "@/hooks/useAuth";
@@ -30,10 +30,23 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Escape fecha o menu mobile e devolve o foco ao botão que o abriu.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -59,11 +72,11 @@ export default function Navbar() {
       aria-label={t("navigation:mainNav")}
       className="sticky top-0 z-sticky bg-primary text-primary-foreground border-b border-primary-hover/40 backdrop-blur"
     >
-      <div className="h-16 lg:h-[70px] px-md lg:px-xl flex items-center justify-between gap-md">
+      <div className="mx-auto w-full max-w-page h-16 lg:h-[70px] px-md lg:px-xl flex items-center justify-between gap-md lg:grid lg:grid-cols-[1fr_auto_1fr]">
         {/* Brand */}
         <Link
           to="/"
-          className="inline-flex items-center gap-sm font-heading text-body-lg text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60 rounded-sm"
+          className="inline-flex items-center justify-self-start gap-sm font-heading text-body-lg text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60 rounded-sm"
         >
           <img
             src={logo}
@@ -98,7 +111,7 @@ export default function Navbar() {
         {/* Desktop user block */}
         <div className="hidden lg:flex items-center gap-md justify-end">
           <LanguageSelector variant="onPrimary" />
-          {authenticated ? (
+          {authenticated && (
             <>
               <Link
                 to="/account/profile"
@@ -129,8 +142,6 @@ export default function Navbar() {
                 {t("navigation:logout")}
               </Button>
             </>
-          ) : (
-            <div aria-hidden className="w-[100px]" />
           )}
         </div>
 
@@ -138,6 +149,7 @@ export default function Navbar() {
         <div className="lg:hidden flex items-center gap-xs">
           <LanguageSelector variant="onPrimary" />
           <button
+            ref={toggleRef}
             type="button"
             aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
             aria-expanded={open}
@@ -178,7 +190,8 @@ export default function Navbar() {
       <div
         className={cn(
           "lg:hidden fixed left-0 right-0 top-16 z-overlay bg-primary text-primary-foreground shadow-lg border-t border-primary-hover/40",
-          "flex-col gap-md px-md py-md",
+          "flex-col gap-md py-md pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]",
+          "max-h-[calc(100dvh-4rem)] overflow-y-auto",
           open ? "flex" : "hidden",
         )}
       >

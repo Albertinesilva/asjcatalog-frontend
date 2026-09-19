@@ -8,7 +8,7 @@ type Props = { name: string };
  */
 export default function ProductCategoryBadge({ name }: Props) {
   return (
-    <Badge variant="outline" className="uppercase tracking-wider">
+    <Badge variant="outline" title={name} className="uppercase tracking-wider">
       {name}
     </Badge>
   );

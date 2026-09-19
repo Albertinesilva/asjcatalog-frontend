@@ -93,8 +93,7 @@ export default {
 
       /* --- Containers (page-level max widths) ------------------ */
       maxWidth: {
-        page: "1200px", // standard page container (home, product details, auth, dashboard)
-        "page-wide": "1400px", // catalog listing
+        page: "1400px", // shell: Navbar + every page container (catalog, home, details, auth, dashboard)
         form: "440px", // auth card / single-column form
       },
 

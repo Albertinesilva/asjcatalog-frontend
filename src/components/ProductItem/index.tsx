@@ -32,7 +32,7 @@ export default function ProductItem(product: ProductItemProps) {
         />
       </div>
       <div className="p-md">
-        <h2 className="font-heading text-body font-semibold text-foreground m-0 min-h-[3rem] line-clamp-2">
+        <h2 className="font-heading text-body font-semibold text-foreground m-0 min-h-[3rem] line-clamp-2 break-words">
           {name}
         </h2>
         <ProductPrice price={String(price)} className="mt-md" />

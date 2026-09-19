@@ -252,7 +252,7 @@ export default function DashboardPage() {
         <h2 id="shortcuts-title" className="font-heading font-bold text-h3 text-foreground m-0">
           {t("dashboard:shortcutsTitle")}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-md">
           {shortcuts.map((i) => (
             <Link
               key={i.to}

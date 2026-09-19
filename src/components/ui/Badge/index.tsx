@@ -26,14 +26,14 @@ export default function Badge({ variant = "default", className, children, ...res
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 " +
+        "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-0.5 " +
           "text-caption font-medium leading-none whitespace-nowrap",
         variants[variant],
         className,
       )}
       {...rest}
     >
-      {children}
+      <span className="min-w-0 truncate py-px -my-px">{children}</span>
     </span>
   );
 }

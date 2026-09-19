@@ -55,7 +55,7 @@ export default function ProductDetailsPage() {
       <Card padding="none" elevated bordered className="p-md lg:p-2xl">
         <Link
           to="/catalog"
-          className="inline-flex items-center gap-sm text-small font-heading font-semibold uppercase tracking-wider text-accent hover:text-primary transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm mb-lg"
+          className="inline-flex min-h-6 items-center gap-sm text-small font-heading font-semibold uppercase tracking-wider text-accent hover:text-primary transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm mb-lg"
         >
           <svg
             width="16"

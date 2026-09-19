@@ -159,7 +159,7 @@ export default function ProductShowcase({ className }: { className?: string }) {
       </p>
 
       <div className="mt-xl flex items-center justify-between gap-md">
-        <ul className="flex items-center gap-sm m-0 p-0 list-none">
+        <ul className="flex items-center m-0 p-0 list-none">
           {showcaseSlides.map((slide, i) => (
             <li key={slide.key}>
               <button
@@ -168,12 +168,20 @@ export default function ProductShowcase({ className }: { className?: string }) {
                 aria-current={i === index ? "true" : undefined}
                 onClick={() => onUserNav(i)}
                 className={cn(
-                  "h-2.5 rounded-full transition-all ease-standard",
+                  // hit area 24px (the dot itself stays 10px): visual density preserved
+                  "group inline-flex h-6 items-center justify-center rounded-full px-[7px]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  i === index ? "w-7 bg-primary" : "w-2.5 bg-border hover:bg-secondary",
                 )}
-              />
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "block h-2.5 rounded-full transition-all ease-standard",
+                    i === index ? "w-7 bg-primary" : "w-2.5 bg-border group-hover:bg-secondary",
+                  )}
+                />
+              </button>
             </li>
           ))}
         </ul>

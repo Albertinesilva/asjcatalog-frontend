@@ -98,14 +98,14 @@ export default function LoginPage() {
         <div className="flex flex-col gap-xs items-start">
           <Link
             to="/auth/recover"
-            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            className="inline-flex min-h-6 items-center text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
           >
             {t("auth:login.forgot")}
           </Link>
           <button
             type="button"
             onClick={() => setShowActivationModal(true)}
-            className="text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0"
+            className="inline-flex min-h-6 items-center text-small font-semibold text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm bg-transparent p-0"
           >
             {t("auth:login.resend")}
           </button>

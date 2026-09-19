@@ -234,6 +234,28 @@ a {
   color: hsl(var(--accent)) !important;
 }
 
+/* Fullscreen overlay: keep the popup clear of notches/home indicator (landscape phones). */
+.swal2-container {
+  padding-top: max(0.625em, env(safe-area-inset-top)) !important;
+  padding-right: max(0.625em, env(safe-area-inset-right)) !important;
+  padding-bottom: max(0.625em, env(safe-area-inset-bottom)) !important;
+  padding-left: max(0.625em, env(safe-area-inset-left)) !important;
+}
+
+/* Short viewports (e.g. phone landscape): compact popup so title, text and buttons fit. */
+@media (max-height: 480px) {
+  .swal2-popup {
+    padding: 1rem !important;
+  }
+  .swal2-icon {
+    font-size: 0.7rem;
+    margin: 0.25rem auto 0.5rem !important;
+  }
+  .swal2-actions {
+    margin-top: 0.75rem !important;
+  }
+}
+
 /* Respect users who prefer reduced motion. */
 @media (prefers-reduced-motion: reduce) {
   *,

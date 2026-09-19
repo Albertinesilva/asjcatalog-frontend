@@ -99,7 +99,7 @@ export default function ActivateAccountPage() {
 
   const renderActions = (resendLabel: string): ReactNode => (
     <div className="flex flex-col sm:flex-row gap-sm mt-sm">
-      <Link to="/auth/login" className="flex-1 min-w-0">
+      <Link to="/auth/login" className="min-w-0 sm:flex-1">
         <Button type="button" variant="outline" size="lg" fullWidth disabled={resending}>
           {t("auth:activate.goToLogin")}
         </Button>
@@ -110,7 +110,7 @@ export default function ActivateAccountPage() {
         onClick={resend}
         loading={resending}
         disabled={resending}
-        className="flex-1 min-w-0 px-4"
+        className="min-w-0 px-4 sm:flex-1"
       >
         {resendLabel}
       </Button>

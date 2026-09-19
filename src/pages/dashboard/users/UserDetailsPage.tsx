@@ -32,11 +32,11 @@ export default function UserDetailsPage() {
 
   return (
     <Card padding="lg" className="max-w-3xl flex flex-col gap-md">
-      <div>
-        <h2 className="m-0 font-heading font-bold text-h2 text-foreground">
+      <div className="min-w-0">
+        <h2 className="m-0 font-heading font-bold text-h2 text-foreground break-words">
           {user.firstName} {user.lastName}
         </h2>
-        <p className="mt-xs mb-0 text-body text-foreground-muted">{user.email}</p>
+        <p className="mt-xs mb-0 text-body text-foreground-muted break-words">{user.email}</p>
       </div>
 
       <div className="flex flex-col gap-xs">

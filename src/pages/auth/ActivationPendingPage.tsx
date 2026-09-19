@@ -196,7 +196,7 @@ export default function ActivationPendingPage() {
               size="lg"
               onClick={() => setShowLeaveModal(true)}
               disabled={sending}
-              className="flex-1 min-w-0 px-4"
+              className="min-w-0 px-4 sm:flex-1"
             >
               {t("auth:activationPending.goToLogin")}
             </Button>
@@ -205,7 +205,7 @@ export default function ActivationPendingPage() {
               size="lg"
               disabled={sending || remaining > 0}
               loading={sending}
-              className="flex-1 min-w-0 px-4"
+              className="min-w-0 px-4 sm:flex-1"
             >
               {submitLabel}
             </Button>

@@ -153,7 +153,7 @@ export default function DashboardLayout() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-dvh bg-background">
       <Navbar />
       <div className="flex flex-col lg:flex-row flex-1 min-h-0">
         <Sidebar />
@@ -173,7 +173,7 @@ export default function DashboardLayout() {
                   {c.to ? (
                     <Link
                       to={c.to}
-                      className="text-foreground-muted transition-colors ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
+                      className="py-1 -my-1 text-foreground-muted transition-colors ease-standard hover:text-accent focus-visible:outline-none focus-visible:text-accent"
                     >
                       {c.label}
                     </Link>
