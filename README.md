@@ -434,7 +434,7 @@ declarados em `src/styles/globals.css` e expostos via
 - **Sombras**: `sm`, `md`, `lg`, `xl`.
 - **Motion**: durações `fast` (120ms), `DEFAULT` (180ms), `slow`
   (280ms) com curvas `standard`, `entrance`, `exit`; keyframes
-  `fade-in` e `scale-in`.
+  `fade-in` e `overlay-in`.
 - **Dark mode**: scaffolding via `darkMode: "class"` (reservado para
   futuro, não ativado).
 - **Plugins**: `@tailwindcss/forms`, `@tailwindcss/typography`.

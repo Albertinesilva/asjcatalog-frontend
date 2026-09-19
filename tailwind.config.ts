@@ -28,6 +28,12 @@ export default {
           hover: "hsl(var(--surface-hover) / <alpha-value>)",
         },
 
+        // Barra de marca (Navbar): idêntica nos dois temas.
+        brand: {
+          DEFAULT: "hsl(var(--brand) / <alpha-value>)",
+          hover: "hsl(var(--brand-hover) / <alpha-value>)",
+          foreground: "hsl(var(--brand-foreground) / <alpha-value>)",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           hover: "hsl(var(--primary-hover) / <alpha-value>)",

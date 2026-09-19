@@ -10,11 +10,9 @@
   "password": {
     "required": "O preenchimento da senha é obrigatório",
     "requiredShort": "A senha é obrigatória",
-    "rule": "A senha deve ter no mínimo 10 caracteres e conter maiúsculas, minúsculas, números e símbolos",
     "confirm": "Confirme a senha",
     "confirmNew": "Confirme a nova senha",
     "mismatch": "As senhas não coincidem",
-    "minLength": "Mínimo 10 caracteres",
     "maxLength": "Máximo 72 caracteres",
     "show": "Mostrar senha",
     "hide": "Ocultar senha",

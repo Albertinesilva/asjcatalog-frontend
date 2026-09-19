@@ -6,7 +6,7 @@ import { cn } from "@/components/ui/cn";
  *
  * Compact status/label token. Consumes only semantic tokens.
  */
-export type BadgeVariant = "default" | "primary" | "success" | "warning" | "danger" | "outline";
+export type BadgeVariant = "default" | "primary" | "outline";
 
 type Props = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
@@ -16,9 +16,6 @@ type Props = HTMLAttributes<HTMLSpanElement> & {
 const variants: Record<BadgeVariant, string> = {
   default: "bg-surface-hover text-foreground border-transparent",
   primary: "bg-primary text-primary-foreground border-transparent",
-  success: "bg-success text-primary-foreground border-transparent",
-  warning: "bg-warning text-foreground border-transparent",
-  danger: "bg-danger text-primary-foreground border-transparent",
   outline: "bg-transparent text-foreground border-border",
 };
 

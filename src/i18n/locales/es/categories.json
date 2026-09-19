@@ -1,9 +1,7 @@
 {
-  "title": "Categorías",
   "add": "Agregar",
   "search": "Buscar categoría",
   "searchAria": "Buscar categoría",
-  "columns": { "id": "ID", "name": "Nombre", "actions": "Acciones" },
   "empty": "Ninguna categoría registrada.",
   "emptyFiltered": {
     "title": "No se encontraron categorías",
@@ -12,8 +10,6 @@
   "actions": { "edit": "Editar", "delete": "Eliminar" },
   "delete": {
     "title": "Eliminar categoría",
-    "confirmBefore": "¿Está seguro de que desea eliminar",
-    "confirmAfter": "? Esta acción no se puede deshacer.",
     "confirmMessage": "¿Está seguro de que desea eliminar <strong>{{name}}</strong>? Esta acción no se puede deshacer.",
     "confirm": "Eliminar",
     "confirming": "Eliminando...",
@@ -22,8 +18,6 @@
     "successMessage": "Categoría eliminada correctamente."
   },
   "form": {
-    "titleNew": "Nueva categoría",
-    "titleEdit": "Editar categoría",
     "name": "Nombre",
     "submit": "Guardar",
     "submitting": "Guardando...",
@@ -32,7 +26,6 @@
     "successNewMessage": "Categoría creada correctamente.",
     "successEditTitle": "Categoría actualizada",
     "successEditMessage": "Categoría actualizada correctamente.",
-    "failTitle": "Error al guardar categoría",
-    "failMessage": "Revise los datos e intente de nuevo."
+    "failTitle": "Error al guardar categoría"
   }
 }

@@ -24,10 +24,10 @@ export const buttonVariantClasses: Record<ButtonVariant, string> = {
     "bg-danger text-primary-foreground border-transparent hover:bg-danger/90 active:bg-danger/80",
   ghost:
     "bg-transparent text-foreground border-transparent hover:bg-surface-hover active:bg-border",
-  // Para superfícies `bg-primary` (Navbar): mesmo hover translúcido dos demais itens da Navbar.
-  // Não define cor de borda: o consumidor escolhe (transparent / primary-foreground/30).
+  // Para superfícies `bg-brand` (Navbar): mesmo hover translúcido dos demais itens da Navbar.
+  // Não define cor de borda: o consumidor escolhe (transparent / brand-foreground/30).
   inverse:
-    "bg-transparent text-primary-foreground hover:bg-primary-foreground/10 active:bg-primary-foreground/20",
+    "bg-transparent text-brand-foreground hover:bg-brand-foreground/10 active:bg-brand-foreground/20",
 };
 
 export const buttonSizeClasses: Record<ButtonSize, string> = {

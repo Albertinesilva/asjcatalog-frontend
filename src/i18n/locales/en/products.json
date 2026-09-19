@@ -1,9 +1,4 @@
 {
-  "title": "Products",
-  "form": {
-    "titleNew": "New product",
-    "titleEdit": "Edit product"
-  },
   "actions": {
     "create": "Add",
     "edit": "Edit",

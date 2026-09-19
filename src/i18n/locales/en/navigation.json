@@ -6,6 +6,13 @@
   "logout": "Sign out",
   "openMenu": "Open menu",
   "closeMenu": "Close menu",
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "current": "Theme: {{current}}",
+    "toggle": "Theme: {{current}}. Switch to {{next}}"
+  },
   "mainNav": "Main navigation",
   "greeting": "Hi, {{name}}",
   "roles": {
@@ -21,8 +28,7 @@
     "profile": "My Profile",
     "publicCatalog": "Public Catalog",
     "profilePersonal": "Personal data",
-    "profileSecurity": "Security",
-    "toggleProfile": "Expand or collapse the My Profile submenu"
+    "profileSecurity": "Security"
   },
   "breadcrumbs": {
     "root": "Dashboard",

@@ -1,9 +1,7 @@
 {
-  "title": "Categorias",
   "add": "Adicionar",
   "search": "Pesquisar Categoria",
   "searchAria": "Pesquisar categoria",
-  "columns": { "id": "ID", "name": "Nome", "actions": "Ações" },
   "empty": "Nenhuma categoria cadastrada.",
   "emptyFiltered": {
     "title": "Nenhuma categoria encontrada",
@@ -12,8 +10,6 @@
   "actions": { "edit": "Editar", "delete": "Excluir" },
   "delete": {
     "title": "Excluir categoria",
-    "confirmBefore": "Tem certeza que deseja excluir",
-    "confirmAfter": "? Esta ação não pode ser desfeita.",
     "confirmMessage": "Tem certeza que deseja excluir <strong>{{name}}</strong>? Esta ação não pode ser desfeita.",
     "confirm": "Excluir",
     "confirming": "Excluindo...",
@@ -22,8 +18,6 @@
     "successMessage": "Categoria removida com sucesso."
   },
   "form": {
-    "titleNew": "Nova categoria",
-    "titleEdit": "Editar categoria",
     "name": "Nome",
     "submit": "Salvar",
     "submitting": "Salvando...",
@@ -32,7 +26,6 @@
     "successNewMessage": "Categoria criada com sucesso.",
     "successEditTitle": "Categoria atualizada",
     "successEditMessage": "Categoria atualizada com sucesso.",
-    "failTitle": "Falha ao salvar categoria",
-    "failMessage": "Verifique os dados e tente novamente."
+    "failTitle": "Falha ao salvar categoria"
   }
 }

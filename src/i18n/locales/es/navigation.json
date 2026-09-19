@@ -6,6 +6,13 @@
   "logout": "Salir",
   "openMenu": "Abrir menú",
   "closeMenu": "Cerrar menú",
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "current": "Tema: {{current}}",
+    "toggle": "Tema: {{current}}. Cambiar a {{next}}"
+  },
   "mainNav": "Navegación principal",
   "greeting": "Hola, {{name}}",
   "roles": {
@@ -21,8 +28,7 @@
     "profile": "Mi Perfil",
     "publicCatalog": "Catálogo Público",
     "profilePersonal": "Datos personales",
-    "profileSecurity": "Seguridad",
-    "toggleProfile": "Expandir o contraer el submenú Mi Perfil"
+    "profileSecurity": "Seguridad"
   },
   "breadcrumbs": {
     "root": "Panel",

@@ -1,7 +1,5 @@
 {
-  "title": "Dashboard",
   "welcome": "Bienvenido(a) a ASJ Catalog",
-  "summary": "Vista general rápida de su catálogo.",
   "greetingFallback": "usuario(a)",
   "greeting": "Hola, {{name}}. Bienvenido(a) al panel de gestión de ASJ Catalog.",
   "metricsTitle": "Vista general",
@@ -22,11 +20,5 @@
     "newCategory": { "title": "Nueva categoría", "desc": "Crear una categoría para organizar el catálogo." },
     "newUser": { "title": "Nuevo usuario", "desc": "Registrar un usuario con acceso a la plataforma." },
     "viewCatalog": { "title": "Ver catálogo público", "desc": "Ver el catálogo como visitante." }
-  },
-  "cta": {
-    "manageProducts": "Gestionar productos",
-    "manageCategories": "Gestionar categorías",
-    "manageUsers": "Gestionar usuarios"
-  },
-  "recent": "Registros recientes"
+  }
 }

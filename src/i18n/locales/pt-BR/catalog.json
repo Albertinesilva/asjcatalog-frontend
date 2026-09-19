@@ -4,7 +4,6 @@
   "searchAria": "Pesquisar produto",
   "filterCategory": "Filtrar por categoria",
   "filterCategoryAria": "Filtrar por categoria",
-  "allCategories": "Todas as categorias",
   "clearFilters": "Limpar filtros",
   "loading": "Carregando produtos...",
   "empty": "Nenhum produto encontrado",
@@ -17,10 +16,8 @@
   "details": {
     "back": "Voltar",
     "backCatalog": "Voltar ao catálogo",
-    "category": "Categoria",
     "description": "Descrição do produto",
     "notFoundTitle": "Produto não encontrado",
-    "notFoundDescription": "O produto solicitado não existe ou não está mais disponível.",
-    "loading": "Carregando produto..."
+    "notFoundDescription": "O produto solicitado não existe ou não está mais disponível."
   }
 }

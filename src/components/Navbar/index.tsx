@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRoles } from "@/hooks/useRoles";
 import { Button, cn } from "@/components/ui";
 import LanguageSelector from "../LanguageSelector";
+import ThemeToggle from "../ThemeToggle";
 import logo from "@/assets/asj-logo.png";
 
 /**
@@ -70,13 +71,13 @@ export default function Navbar() {
   return (
     <nav
       aria-label={t("navigation:mainNav")}
-      className="sticky top-0 z-sticky bg-primary text-primary-foreground border-b border-primary-hover/40 backdrop-blur"
+      className="sticky top-0 z-sticky bg-brand text-brand-foreground border-b border-brand-hover/40 backdrop-blur"
     >
       <div className="mx-auto w-full max-w-page h-16 lg:h-[70px] px-md lg:px-xl flex items-center justify-between gap-md lg:grid lg:grid-cols-[1fr_auto_1fr]">
         {/* Brand */}
         <Link
           to="/"
-          className="inline-flex items-center justify-self-start gap-sm font-heading text-body-lg text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60 rounded-sm"
+          className="inline-flex items-center justify-self-start gap-sm font-heading text-body-lg text-brand-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-foreground/60 rounded-sm"
         >
           <img
             src={logo}
@@ -110,24 +111,25 @@ export default function Navbar() {
 
         {/* Desktop user block */}
         <div className="hidden lg:flex items-center gap-md justify-end">
+          <ThemeToggle />
           <LanguageSelector variant="onPrimary" />
           {authenticated && (
             <>
               <Link
                 to="/account/profile"
-                className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+                className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-brand-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-foreground/60"
               >
                 <span
                   aria-hidden
-                  className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-foreground/15 text-primary-foreground font-heading font-semibold text-small"
+                  className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-foreground/15 text-brand-foreground font-heading font-semibold text-small"
                 >
                   {getInitials(user)}
                 </span>
                 <span className="flex flex-col leading-tight">
-                  <span className="text-small font-semibold text-primary-foreground truncate max-w-[160px]">
+                  <span className="text-small font-semibold text-brand-foreground truncate max-w-[160px]">
                     {greeting}
                   </span>
-                  <span className="text-caption uppercase tracking-wider text-primary-foreground/70">
+                  <span className="text-caption uppercase tracking-wider text-brand-foreground/70">
                     {roleLabel}
                   </span>
                 </span>
@@ -154,23 +156,23 @@ export default function Navbar() {
             aria-label={open ? t("navigation:closeMenu") : t("navigation:openMenu")}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+            className="inline-flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-md bg-transparent border-0 cursor-pointer transition-colors ease-standard hover:bg-brand-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-foreground/60"
           >
             <span
               className={cn(
-                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform ease-standard",
+                "block w-6 h-0.5 rounded-full bg-brand-foreground transition-transform ease-standard",
                 open && "translate-y-[7px] rotate-45",
               )}
             />
             <span
               className={cn(
-                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-opacity duration-fast ease-standard",
+                "block w-6 h-0.5 rounded-full bg-brand-foreground transition-opacity duration-fast ease-standard",
                 open && "opacity-0",
               )}
             />
             <span
               className={cn(
-                "block w-6 h-0.5 rounded-full bg-primary-foreground transition-transform ease-standard",
+                "block w-6 h-0.5 rounded-full bg-brand-foreground transition-transform ease-standard",
                 open && "-translate-y-[7px] -rotate-45",
               )}
             />
@@ -189,13 +191,13 @@ export default function Navbar() {
       )}
       <div
         className={cn(
-          "lg:hidden fixed left-0 right-0 top-16 z-overlay bg-primary text-primary-foreground shadow-lg border-t border-primary-hover/40",
+          "lg:hidden fixed left-0 right-0 top-16 z-overlay bg-brand text-brand-foreground shadow-lg border-t border-brand-hover/40",
           "flex-col gap-md py-md pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]",
           "max-h-[calc(100dvh-4rem)] overflow-y-auto",
           open ? "flex animate-fade-in" : "hidden",
         )}
       >
-        <ul className="flex flex-col m-0 p-0 list-none divide-y divide-primary-foreground/10">
+        <ul className="flex flex-col m-0 p-0 list-none divide-y divide-brand-foreground/10">
           <li>
             <NavbarLink label={t("navigation:home")} target="/" />
           </li>
@@ -211,21 +213,25 @@ export default function Navbar() {
           </li>
         </ul>
 
+        <div className="pt-md border-t border-brand-foreground/10">
+          <ThemeToggle withLabel />
+        </div>
+
         {authenticated && (
-          <div className="flex items-center justify-between gap-sm pt-md border-t border-primary-foreground/10">
+          <div className="flex items-center justify-between gap-sm pt-md border-t border-brand-foreground/10">
             <Link
               to="/account/profile"
-              className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
+              className="inline-flex items-center gap-sm rounded-md px-sm py-xs transition-colors ease-standard hover:bg-brand-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-foreground/60"
             >
               <span
                 aria-hidden
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary-foreground/15 text-primary-foreground font-heading font-semibold text-small"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-brand-foreground/15 text-brand-foreground font-heading font-semibold text-small"
               >
                 {getInitials(user)}
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-small font-semibold text-primary-foreground">{greeting}</span>
-                <span className="text-caption uppercase tracking-wider text-primary-foreground/70">
+                <span className="text-small font-semibold text-brand-foreground">{greeting}</span>
+                <span className="text-caption uppercase tracking-wider text-brand-foreground/70">
                   {roleLabel}
                 </span>
               </span>
@@ -235,7 +241,7 @@ export default function Navbar() {
               variant="inverse"
               size="sm"
               onClick={handleLogout}
-              className="border-primary-foreground/30"
+              className="border-brand-foreground/30"
             >
               {t("navigation:logout")}
             </Button>

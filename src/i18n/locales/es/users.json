@@ -1,11 +1,5 @@
 {
-  "title": "Usuarios",
-  "form": {
-    "titleNew": "Nuevo usuario",
-    "titleEdit": "Editar usuario"
-  },
   "details": {
-    "title": "Detalles del usuario",
     "notFound": "Usuario no encontrado."
   },
   "actions": {

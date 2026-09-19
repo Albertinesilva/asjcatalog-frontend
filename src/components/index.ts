@@ -28,3 +28,4 @@ export { default as TableToolbar } from "./shared/TableToolbar";
 export { default as SearchInput } from "./shared/SearchInput";
 export { default as CategoryFilterSelect } from "./shared/CategoryFilterSelect";
 export { default as LanguageSelector } from "./LanguageSelector";
+export { default as ThemeToggle } from "./ThemeToggle";

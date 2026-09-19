@@ -1,9 +1,6 @@
 {
-  "title": "Meu Perfil",
-  "intro": "Gerencie seus dados pessoais e credenciais de acesso.",
   "sections": {
     "personal": "Dados pessoais",
-    "password": "Alterar senha",
     "personalHint": "Atualize seu nome e email de acesso.",
     "security": "Segurança",
     "securityHint": "Atualize sua senha para manter sua conta protegida."

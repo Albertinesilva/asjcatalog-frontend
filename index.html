@@ -43,6 +43,19 @@
       rel="stylesheet"
     />
     <title>ASJ Catalog — Plataforma de gestão de catálogo</title>
+    <script>
+      // Tema antes da primeira pintura (evita FOUC). Regras idênticas ao ThemeProvider:
+      // "dark" => escuro; "light" => claro; "system"/ausente/inválido => prefers-color-scheme.
+      (function () {
+        try {
+          var t = localStorage.getItem("asj.theme");
+          var dark =
+            t === "dark" ||
+            (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

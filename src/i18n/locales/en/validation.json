@@ -10,11 +10,9 @@
   "password": {
     "required": "Password is required",
     "requiredShort": "Password is required",
-    "rule": "Password must be at least 10 characters and contain uppercase, lowercase, numbers and symbols",
     "confirm": "Confirm the password",
     "confirmNew": "Confirm the new password",
     "mismatch": "Passwords do not match",
-    "minLength": "Minimum 10 characters",
     "maxLength": "Maximum 72 characters",
     "show": "Show password",
     "hide": "Hide password",

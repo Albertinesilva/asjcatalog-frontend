@@ -1,9 +1,6 @@
 {
-  "title": "My Profile",
-  "intro": "Manage your personal data and access credentials.",
   "sections": {
     "personal": "Personal data",
-    "password": "Change password",
     "personalHint": "Update your name and sign-in email.",
     "security": "Security",
     "securityHint": "Update your password to keep your account protected."

@@ -67,7 +67,7 @@ export default function LanguageSelector({ variant = "onPrimary", className }: P
         className={cn(
           "inline-flex items-center gap-xs rounded-md px-sm py-xs text-small font-heading font-semibold transition-colors ease-standard focus-visible:outline-none focus-visible:ring-2",
           isOnPrimary
-            ? "text-primary-foreground hover:bg-primary-foreground/10 focus-visible:ring-primary-foreground/60"
+            ? "text-brand-foreground hover:bg-brand-foreground/10 focus-visible:ring-brand-foreground/60"
             : "text-foreground hover:bg-surface-hover focus-visible:ring-ring",
         )}
       >

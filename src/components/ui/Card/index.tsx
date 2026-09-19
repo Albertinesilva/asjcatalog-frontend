@@ -9,7 +9,6 @@ import { cn } from "@/components/ui/cn";
 type Padding = "none" | "sm" | "md" | "lg";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
-  as?: "div" | "section" | "article";
   padding?: Padding;
   bordered?: boolean;
   elevated?: boolean;
@@ -24,7 +23,6 @@ const paddings: Record<Padding, string> = {
 };
 
 export default function Card({
-  as: Tag = "div",
   padding = "md",
   bordered = true,
   elevated = true,
@@ -33,7 +31,7 @@ export default function Card({
   ...rest
 }: Props) {
   return (
-    <Tag
+    <div
       className={cn(
         "bg-card text-card-foreground rounded-lg",
         bordered && "border border-border",
@@ -44,6 +42,6 @@ export default function Card({
       {...rest}
     >
       {children}
-    </Tag>
+    </div>
   );
 }

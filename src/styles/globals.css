@@ -19,6 +19,8 @@
  * border-border, ...) and never reference raw palette colors.
  * ============================================================ */
 :root {
+  color-scheme: light; /* controles nativos (select, scrollbar, autofill) seguem o tema */
+
   /* Surfaces */
   --background: 210 40% 98%;
   --foreground: 222 47% 11%;
@@ -29,6 +31,12 @@
 
   --card: 0 0% 100%;
   --card-foreground: 222 47% 11%;
+
+  /* Brand bar (Navbar): mesmo azul-marinho nos dois temas para preservar identidade/logo.
+   * Diferente de --primary, que é cor de AÇÃO/texto e por isso clareia no tema escuro. */
+  --brand: 214 51% 25%;
+  --brand-hover: 214 51% 20%;
+  --brand-foreground: 0 0% 100%;
 
   /* Brand */
   --primary: 214 51% 25%;
@@ -57,7 +65,9 @@
 }
 
 .dark {
-  /* Reserved for future dark theme. Not activated. */
+  /* Tema escuro: ativado pela classe `.dark` no <html> (ThemeProvider). */
+  color-scheme: dark;
+
   --background: 222 47% 6%;
   --foreground: 210 40% 98%;
   --foreground-muted: 215 20% 65%;
@@ -68,18 +78,23 @@
   --card: 222 47% 9%;
   --card-foreground: 210 40% 98%;
 
-  --primary: 221 83% 60%;
-  --primary-hover: 221 83% 55%;
+  /* 64%: texto primário sobre fundos tingidos (pílula ativa da Sidebar, hover) >= 4.5:1
+   * (era 60%: 4.2:1). Hover mais claro: 7.7:1 com o texto escuro. */
+  --primary: 221 83% 64%;
+  --primary-hover: 221 83% 70%;
   --primary-foreground: 222 47% 6%;
 
   --secondary: 215 20% 65%;
   --secondary-foreground: 222 47% 6%;
 
-  --accent: 221 83% 60%;
+  --accent: 221 83% 64%;
   --accent-foreground: 222 47% 6%;
 
+  /* Ajustado p/ WCAG AA (era 0 74% 51%: 3.9-4.1:1 como texto e no botão). Agora >= 4.9:1 */
+  --danger: 0 84% 62%;
+
   --border: 222 47% 18%;
-  --ring: 221 83% 60%;
+  --ring: 221 83% 64%;
   --overlay: 0 0% 0%;
 
   --input: 222 47% 9%;

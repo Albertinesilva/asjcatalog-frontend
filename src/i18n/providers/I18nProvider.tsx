@@ -28,5 +28,3 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     </I18nextProvider>
   );
 }
-
-export default I18nProvider;
