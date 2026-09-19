@@ -6,9 +6,8 @@ import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
 import { alerts } from "@/utils/alerts";
 import type { Category, ProductRequest } from "@/types";
-import { Button, Card, Input, Select } from "@/components/ui";
+import { Button, Card, Input, Select, Textarea } from "@/components/ui";
 import { ProductFormSkeleton } from "@/components";
-import { inputBaseClasses } from "@/components/ui/Input";
 import { handleApiError } from "@/utils/api-error-handler";
 import { getApiErrorMessage } from "@/utils/api-error";
 
@@ -161,24 +160,14 @@ export default function ProductForm({ mode }: Props) {
           ))}
         </Select>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="product-description" className="text-small font-medium text-foreground">
-            {t("products:fields.description")}{" "}
-            <span aria-hidden="true" className="text-danger ml-0.5">
-              *
-            </span>
-          </label>
-          <textarea
-            id="product-description"
-            rows={4}
-            className={`${inputBaseClasses} h-auto py-2 resize-y`}
-            aria-invalid={errors.description ? true : undefined}
-            {...register("description", { required: t("validation:descriptionRequired") })}
-          />
-          {errors.description && (
-            <p className="text-small text-danger">{errors.description.message}</p>
-          )}
-        </div>
+        <Textarea
+          id="product-description"
+          label={t("products:fields.description")}
+          required
+          rows={4}
+          error={errors.description?.message}
+          {...register("description", { required: t("validation:descriptionRequired") })}
+        />
 
         {saveError && (
           <p className="text-small text-danger m-0" role="alert">

@@ -98,7 +98,6 @@ const PasswordField = forwardRef<HTMLInputElement, Props>(function PasswordField
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? t("validation:password.hide") : t("validation:password.show")}
           aria-pressed={visible}
-          tabIndex={-1}
           className={cn(
             "absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center",
             "h-9 w-9 rounded-md bg-transparent border-0 text-foreground-muted cursor-pointer",

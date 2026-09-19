@@ -9,7 +9,7 @@ import { alerts } from "@/utils/alerts";
 import { savePendingEmail, startResendCooldown } from "@/utils/storage";
 import { handleApiError } from "@/utils/api-error-handler";
 import { buildPasswordValidation } from "@/utils/password";
-import { authFieldError, authFormTitle } from "./_ui";
+import { authFormTitle } from "./_ui";
 
 type RegisterFormFields = {
   firstName: string;
@@ -40,6 +40,12 @@ export default function RegisterPage() {
     email: emailValue,
   };
   const [requirementsOpen, setRequirementsOpen] = useState(false);
+  // A mensagem só aparece no campo quando está vazio (obrigatório) ou vem do servidor;
+  // a divergência entre as senhas é comunicada em tempo real por <PasswordMatch>.
+  const confirmError =
+    errors.passwordConfirm?.message && (!confirmValue || errors.passwordConfirm.type === "server")
+      ? errors.passwordConfirm.message
+      : undefined;
 
   const onSubmit = async (data: RegisterFormFields) => {
     try {
@@ -124,12 +130,12 @@ export default function RegisterPage() {
                 placeholder={t("auth:register.password")}
                 autoComplete="new-password"
                 aria-label={t("auth:register.password")}
+                error={errors.password?.message}
                 {...reg}
                 onFocus={() => setRequirementsOpen(true)}
               />
             );
           })()}
-          {errors.password?.message && <p className={authFieldError}>{errors.password.message}</p>}
           <PasswordRequirements
             password={passwordValue}
             collapsible
@@ -144,18 +150,13 @@ export default function RegisterPage() {
             placeholder={t("auth:register.confirm")}
             autoComplete="new-password"
             aria-label={t("auth:register.confirmAria")}
+            error={confirmError}
             {...register("passwordConfirm", {
               required: t("validation:password.confirm"),
               validate: (value) => value === passwordValue || t("validation:password.mismatch"),
             })}
           />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
-          {errors.passwordConfirm?.message && !confirmValue && (
-            <p className={authFieldError}>{errors.passwordConfirm.message}</p>
-          )}
-          {errors.passwordConfirm?.type === "server" && confirmValue && (
-            <p className={authFieldError}>{errors.passwordConfirm.message}</p>
-          )}
         </div>
 
         <div className="flex gap-sm mt-sm">

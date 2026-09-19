@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ProductItem, ProductGridSkeleton, ErrorState, EmptyState } from "@/components";
 import { Button, Card, Select, cn, inputBaseClasses } from "@/components/ui";
 import { catalogGridClasses } from "@/components/shared/catalog-grid";
 import { productService } from "@/services/product-service";
 import { categoryService } from "@/services/category-service";
+import { parseApiError } from "@/utils/api-error";
 import type { Category, ProductResponse, SpringPage } from "@/types";
 import catalogProducts from "@/assets/catalog/catalog-products.jpg";
 
@@ -13,7 +14,10 @@ export default function CatalogPage() {
   const [data, setData] = useState<SpringPage<ProductResponse> | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // `message` só é preenchida quando o backend devolveu um erro do contrato da API
+  // (já localizado via Accept-Language); nos demais casos a UI usa o texto i18n padrão.
+  const [error, setError] = useState<{ message: string | null } | null>(null);
+  const latestRequest = useRef(0);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryIds, setCategoryIds] = useState<string>("");
@@ -31,8 +35,12 @@ export default function CatalogPage() {
     setPage(0);
   }, [debouncedSearch, categoryIds]);
 
-  useEffect(() => {
+  // Também usada como "tentar novamente": repete a busca com página/filtros atuais.
+  // Só a resposta da requisição mais recente pode alterar dados/erro/loading.
+  const fetchProducts = useCallback(() => {
+    const requestId = ++latestRequest.current;
     setLoading(true);
+    setError(null);
     productService
       .findAll({
         page,
@@ -40,10 +48,22 @@ export default function CatalogPage() {
         name: debouncedSearch,
         categoryIds: categoryIds || "0",
       })
-      .then((products) => setData(products))
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setLoading(false));
+      .then((products) => {
+        if (requestId === latestRequest.current) setData(products);
+      })
+      .catch((err: unknown) => {
+        if (requestId !== latestRequest.current) return;
+        const parsed = parseApiError(err);
+        setError({ message: parsed.code ? parsed.message : null });
+      })
+      .finally(() => {
+        if (requestId === latestRequest.current) setLoading(false);
+      });
   }, [page, debouncedSearch, categoryIds]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     categoryService
@@ -146,7 +166,7 @@ export default function CatalogPage() {
       {loading ? (
         <ProductGridSkeleton count={pageSize} />
       ) : error ? (
-        <ErrorState message={error} />
+        <ErrorState description={error.message ?? undefined} onRetry={fetchProducts} />
       ) : products.length === 0 ? (
         <EmptyState
           title={t("catalog:empty")}

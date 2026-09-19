@@ -108,7 +108,11 @@ export default function LoginPage() {
           </button>
         </div>
 
-        {errors.root && <p className={authFieldError}>{errors.root.message}</p>}
+        {errors.root && (
+          <p className={authFieldError} role="alert">
+            {errors.root.message}
+          </p>
+        )}
         {inactiveAccount && (
           <Card padding="md" bordered className="bg-surface-hover">
             <div className="flex flex-col gap-sm">

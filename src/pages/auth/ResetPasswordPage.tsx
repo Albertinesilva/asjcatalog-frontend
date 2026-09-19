@@ -49,7 +49,11 @@ export default function ResetPasswordPage() {
     <Card padding="lg" elevated bordered className="w-full max-w-[440px]">
       <form className="flex flex-col gap-md" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className={authFormTitle}>{t("auth:reset.title")}</h2>
-        {!token && <p className={authFieldError}>{t("auth:reset.tokenMissing")}</p>}
+        {!token && (
+          <p className={authFieldError} role="alert">
+            {t("auth:reset.tokenMissing")}
+          </p>
+        )}
 
         <div className="flex flex-col gap-sm">
           {(() => {
@@ -59,11 +63,11 @@ export default function ResetPasswordPage() {
                 placeholder={t("auth:reset.newPasswordPlaceholder")}
                 autoComplete="new-password"
                 aria-label={t("auth:reset.newPasswordAria")}
+                error={errors.password?.message}
                 {...reg}
               />
             );
           })()}
-          {errors.password?.message && <p className={authFieldError}>{errors.password.message}</p>}
           <PasswordRequirements password={passwordValue} />
         </div>
 
@@ -72,15 +76,17 @@ export default function ResetPasswordPage() {
             placeholder={t("auth:reset.confirmPasswordPlaceholder")}
             autoComplete="new-password"
             aria-label={t("auth:reset.confirmPasswordAria")}
+            error={
+              errors.confirmPassword?.message && !confirmValue
+                ? errors.confirmPassword.message
+                : undefined
+            }
             {...register("confirmPassword", {
               required: t("validation:password.confirm"),
               validate: (v) => v === passwordValue || t("validation:password.mismatch"),
             })}
           />
           <PasswordMatch password={passwordValue} confirm={confirmValue} />
-          {errors.confirmPassword?.message && !confirmValue && (
-            <p className={authFieldError}>{errors.confirmPassword.message}</p>
-          )}
         </div>
 
         <div className="flex gap-sm mt-sm">
