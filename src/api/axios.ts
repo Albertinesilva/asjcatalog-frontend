@@ -41,13 +41,20 @@ http.interceptors.response.use(
 
     if (status === 401 && config && !config._retry && getAuthData()?.refresh_token) {
       config._retry = true;
+      const refreshTokenAtAttempt = getAuthData()?.refresh_token;
       try {
         const data = await refreshSession();
         config.headers = config.headers ?? {};
         (config.headers as Record<string, string>).Authorization = `Bearer ${data.access_token}`;
         return http.request(config);
       } catch {
-        endSession();
+        // Só encerra a sessão se ela ainda for a mesma que originou esta tentativa
+        // de refresh. Sem isso, uma operação iniciada por uma sessão já substituída
+        // (logout/login, ou rotação vencida por outra aba, ocorridos enquanto este
+        // refresh estava em andamento) poderia derrubar a sessão atual por engano.
+        if (getAuthData()?.refresh_token === refreshTokenAtAttempt) {
+          endSession();
+        }
         return Promise.reject(error);
       }
     }
