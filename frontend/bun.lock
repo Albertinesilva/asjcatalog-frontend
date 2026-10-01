@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "tanstack_start_ts",
+      "name": "asjcatalog",
       "dependencies": {
         "axios": "^1.16.1",
         "i18next": "^26.3.6",
