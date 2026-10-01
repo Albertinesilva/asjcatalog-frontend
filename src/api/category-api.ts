@@ -11,13 +11,25 @@ export type CategoryQueryParams = {
 
 export const categoryApi = {
   /**
-   * Retorna sempre um array de categorias, normalizando o formato
-   * retornado pelo backend (Spring Page ou lista pura).
+   * Retorna TODAS as categorias, não apenas a primeira página.
+   *
+   * `GET /categories` sem `size` cai no tamanho de página padrão do Spring
+   * Data Web (20): a resposta é sempre um `Page<CategoryResponse>`, mesmo sem
+   * paginação explícita. Por isso a primeira página é buscada com um `size`
+   * generoso e, se `totalPages` indicar mais páginas (backend aplicou um
+   * teto menor, por exemplo), as demais são buscadas e concatenadas — sem
+   * depender de um número mágico coincidir com o total real de categorias.
    */
-  findAll: (): Promise<Category[]> =>
-    http
-      .get<{ content: Category[] } | Category[]>(ENDPOINTS.categories)
-      .then((r) => (Array.isArray(r.data) ? r.data : (r.data?.content ?? []))),
+  findAll: async (): Promise<Category[]> => {
+    const first = await categoryApi.findPage({ page: 0, size: 200, sort: "name,asc" });
+    if (first.totalPages <= 1) return first.content;
+    const rest = await Promise.all(
+      Array.from({ length: first.totalPages - 1 }, (_, i) =>
+        categoryApi.findPage({ page: i + 1, size: first.size, sort: "name,asc" }),
+      ),
+    );
+    return [first.content, ...rest.map((p) => p.content)].flat();
+  },
 
   /**
    * Página de categorias (`GET /categories?name&page&size&sort` → `Page<CategoryResponse>`).

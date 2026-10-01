@@ -15,7 +15,8 @@
     "confirming": "Deleting...",
     "cancel": "Cancel",
     "successTitle": "Category removed",
-    "successMessage": "Category removed successfully."
+    "successMessage": "Category removed successfully.",
+    "conflictMessage": "This category can't be deleted because it still has products associated with it. Remove or move those products before trying again."
   },
   "form": {
     "name": "Name",

@@ -14,6 +14,7 @@ import {
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { usePagedQuery } from "@/hooks/usePagedQuery";
 import { getUiErrorMessage } from "@/utils/ui-error";
+import { parseApiError } from "@/utils/api-error";
 import { alerts } from "@/utils/alerts";
 import type { Category, Paginated } from "@/types";
 import { buttonClasses } from "@/components/ui";
@@ -67,7 +68,18 @@ export default function CategoryListPage() {
         t("categories:delete.successMessage"),
       );
     } catch (err) {
-      setDeleteError(getUiErrorMessage(err));
+      // HTTP 409 nesta ação específica (exclusão de categoria) só ocorre pela
+      // violação de FK de `tb_product_category`: o backend não distingue esse
+      // caso de outros conflitos de integridade e devolve uma mensagem
+      // genérica ("Conflito de dados"). Como aqui o significado é inequívoco,
+      // a UI substitui o texto por uma orientação específica; os demais 409
+      // do sistema continuam usando a mensagem padrão do backend.
+      const parsed = parseApiError(err);
+      setDeleteError(
+        parsed.code === "CONFLICT"
+          ? t("categories:delete.conflictMessage")
+          : getUiErrorMessage(err),
+      );
     } finally {
       setIsDeleting(false);
     }

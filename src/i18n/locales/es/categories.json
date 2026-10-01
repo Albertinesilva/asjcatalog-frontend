@@ -15,7 +15,8 @@
     "confirming": "Eliminando...",
     "cancel": "Cancelar",
     "successTitle": "Categoría eliminada",
-    "successMessage": "Categoría eliminada correctamente."
+    "successMessage": "Categoría eliminada correctamente.",
+    "conflictMessage": "No es posible eliminar esta categoría porque tiene productos asociados. Quite o mueva esos productos antes de volver a intentarlo."
   },
   "form": {
     "name": "Nombre",

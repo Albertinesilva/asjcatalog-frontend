@@ -15,7 +15,8 @@
     "confirming": "Excluindo...",
     "cancel": "Cancelar",
     "successTitle": "Categoria removida",
-    "successMessage": "Categoria removida com sucesso."
+    "successMessage": "Categoria removida com sucesso.",
+    "conflictMessage": "Não é possível excluir esta categoria porque existem produtos associados a ela. Remova ou mova esses produtos antes de tentar novamente."
   },
   "form": {
     "name": "Nome",
