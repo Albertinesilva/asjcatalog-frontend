@@ -1,5 +1,5 @@
 /**
- * ASJ Catalog — Global stylesheet.
+ * ASJCatalog — Global stylesheet.
  *
  * The application depends exclusively on the ASJ Design System tokens
  * and Tailwind utilities. No third-party CSS frameworks are used.
@@ -153,7 +153,7 @@ a {
 }
 
 /* ============================================================
- * SweetAlert2 — ASJ Catalog theme
+ * SweetAlert2 — ASJCatalog theme
  * ============================================================ */
 .swal2-container.swal2-backdrop-show {
   background-color: hsl(var(--overlay) / 0.5);

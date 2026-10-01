@@ -1,6 +1,6 @@
 {
-  "name": "ASJ Catalog",
-  "short_name": "ASJ Catalog",
+  "name": "ASJCatalog",
+  "short_name": "ASJCatalog",
   "description": "Plataforma profissional para gestão e organização de catálogos de produtos.",
   "start_url": "/",
   "scope": "/",

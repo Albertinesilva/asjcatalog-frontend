@@ -60,5 +60,5 @@
     "profilePersonal": "Datos personales",
     "profileSecurity": "Seguridad"
   },
-  "footer": "ASJ Catalog · © {{year}}"
+  "footer": "ASJCatalog · © {{year}}"
 }

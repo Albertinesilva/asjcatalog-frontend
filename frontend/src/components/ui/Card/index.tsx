@@ -4,7 +4,7 @@ import { cn } from "@/components/ui/cn";
 /**
  * Card — ASJ Design System.
  *
- * Standard surface primitive of the ASJ Catalog Design System.
+ * Standard surface primitive of the ASJ Design System.
  */
 type Padding = "none" | "sm" | "md" | "lg";
 

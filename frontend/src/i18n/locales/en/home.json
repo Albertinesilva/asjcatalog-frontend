@@ -1,5 +1,5 @@
 {
-  "badge": "ASJ Catalog · Platform",
+  "badge": "ASJCatalog · Platform",
   "title": "Professional catalog management",
   "description": "Professional platform to manage and organize product catalogs, with centralized control and streamlined administration.",
   "cta": { "catalog": "Open catalog", "login": "Sign in" },
@@ -29,8 +29,8 @@
     "users": { "title": "User control", "description": "Define permissions and manage your team's access securely." }
   },
   "authHero": {
-    "title": "Manage your catalog with ASJ Catalog",
+    "title": "Manage your catalog with ASJCatalog",
     "description": "Sign in to your account to manage products, categories and users in a centralized, professional environment."
   },
-  "notFound": { "description": "The requested page does not exist or was moved in ASJ Catalog." }
+  "notFound": { "description": "The requested page does not exist or was moved in ASJCatalog." }
 }

@@ -1,7 +1,7 @@
 {
-  "welcome": "Bem-vindo(a) ao ASJ Catalog",
+  "welcome": "Bem-vindo(a) ao ASJCatalog",
   "greetingFallback": "usuário(a)",
-  "greeting": "Olá, {{name}}. Bem-vindo(a) ao painel de gestão do ASJ Catalog.",
+  "greeting": "Olá, {{name}}. Bem-vindo(a) ao painel de gestão do ASJCatalog.",
   "metricsTitle": "Visão geral",
   "shortcutsTitle": "Atalhos",
   "activityTitle": "Atividade recente",

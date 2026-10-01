@@ -88,7 +88,7 @@ export default function Navbar() {
             className="w-8 h-8 drop-shadow-sm"
           />
           <span className="tracking-tight">
-            <strong className="font-bold mr-1">ASJ</strong>Catalog
+            <strong className="font-bold">ASJ</strong>Catalog
           </span>
         </Link>
 

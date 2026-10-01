@@ -3,7 +3,7 @@ import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 
 /**
- * ASJ Catalog — Tailwind CSS configuration.
+ * ASJCatalog — Tailwind CSS configuration.
  *
  * Only semantic tokens declared in `src/styles/globals.css` should be
  * consumed by components. Bootstrap and legacy CSS Modules have been
