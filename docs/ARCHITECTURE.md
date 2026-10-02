@@ -152,7 +152,7 @@ sequenceDiagram
     end
 ```
 
-A renovação de sessão e o tratamento de erros serão detalhados nos documentos de autenticação e de tratamento de erros, nos próximos lotes da documentação.
+A renovação de sessão é detalhada em [AUTHENTICATION.md](AUTHENTICATION.md#renovação-da-sessão-refresh), e o tratamento de erros, em [ERROR-HANDLING.md](ERROR-HANDLING.md).
 
 ## Papel de cada pasta de `frontend/src`
 
@@ -223,4 +223,7 @@ Como ler o mapa:
 
 - [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md): como instalar e rodar o projeto.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): mapa completo de rotas e proteções.
+- [API-AND-SERVICES.md](API-AND-SERVICES.md): instância `http`, interceptadores e tabela de endpoints.
+- [AUTHENTICATION.md](AUTHENTICATION.md): login, sessão e renovação de token.
+- [ERROR-HANDLING.md](ERROR-HANDLING.md): como os erros da API chegam à tela.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

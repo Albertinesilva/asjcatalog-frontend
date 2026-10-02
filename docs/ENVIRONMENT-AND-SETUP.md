@@ -275,4 +275,6 @@ copy .env.example .env.local
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): camadas e fluxo de uma requisição.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): mapa de rotas e carregamento sob demanda.
+- [API-AND-SERVICES.md](API-AND-SERVICES.md): instância `http` e cabeçalhos enviados à API.
+- [AUTHENTICATION.md](AUTHENTICATION.md): como `VITE_CLIENT_ID` e `VITE_CLIENT_SECRET` são usados no login.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.
