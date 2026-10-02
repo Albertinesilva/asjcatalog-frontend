@@ -101,7 +101,7 @@ npm run dev
 
 Abra no navegador o endereço exibido no terminal (por padrão, `http://localhost:5173`).
 
-> Por que `.env.local` e não `.env`? O Vite lê os dois, mas só o `.env.local` está no `.gitignore`. Assim seus valores não vão parar num commit por engano.
+> Por que `.env.local` e não `.env`? O `frontend/.gitignore` ignora o `.env` e todos os `.env.*`, inclusive o `.env.local`. A única exceção é o `.env.example`, que é o modelo versionado. Assim, nenhum arquivo com valores reais entra em commits. Entre os arquivos lidos pelo Vite, o `.env.local` tem prioridade sobre o `.env`, o que o torna o lugar indicado para os valores da sua máquina.
 
 ### Scripts disponíveis
 

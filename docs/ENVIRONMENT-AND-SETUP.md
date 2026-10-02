@@ -13,7 +13,7 @@ Este documento detalha o que o [README](../README.md#como-executar) resume. Aqui
 | `frontend/.nvmrc` | Versão de Node usada no projeto (para o nvm) |
 | `frontend/package-lock.json` | Versões exatas instaladas pelo npm |
 | `frontend/.env.example` | Modelo das variáveis de ambiente |
-| `frontend/.gitignore` | Arquivos que o Git ignora (inclui `*.local`) |
+| `frontend/.gitignore` | Arquivos que o Git ignora (inclui `.env`, `.env.*` e `*.local`; o `.env.example` continua versionado) |
 | `frontend/src/utils/constants.ts` | Lê as variáveis de ambiente |
 | `frontend/src/api/base-url.ts` | Decide o endereço base das requisições |
 | `frontend/vite.config.ts` | Alias `@`, plugin do React e proxy de desenvolvimento |
@@ -74,16 +74,16 @@ cp .env.example .env.local
 
 Por que `.env.local`?
 
-- O `frontend/.gitignore` tem a regra `*.local`, então o `.env.local` **não** entra em commits.
-- Um arquivo `.env` (sem `.local`) **não** está no `.gitignore`. Se você criá-lo, ele pode ser commitado por engano.
+- O `frontend/.gitignore` ignora o `.env` e todos os `.env.*`, inclusive o `.env.local`. A única exceção é o `.env.example`, que é o modelo versionado. Assim, nenhum arquivo com valores reais entra em commits.
+- Entre os arquivos lidos pelo Vite, o `.env.local` tem prioridade sobre o `.env`, o que o torna o lugar indicado para os valores da sua máquina.
 
 Por padrão, o Vite carrega os arquivos nesta ordem, e os mais específicos têm prioridade:
 
 | Arquivo | Quando é lido |
 | --- | --- |
-| `.env` | Sempre |
+| `.env` | Sempre (ignorado pelo Git) |
 | `.env.local` | Sempre (ignorado pelo Git) |
-| `.env.[modo]` | Só no modo indicado (`development` no `dev`, `production` no `build`) |
+| `.env.[modo]` | Só no modo indicado (`development` no `dev`, `production` no `build`) (ignorado pelo Git) |
 | `.env.[modo].local` | Só no modo indicado (ignorado pelo Git) |
 
 > Depois de alterar um arquivo `.env*`, **reinicie** o `npm run dev`. Esse é um comportamento padrão do Vite: ele só lê esses arquivos ao iniciar.
@@ -265,7 +265,6 @@ copy .env.example .env.local
 - **Só Node 20.x:** com `engines` + `engine-strict`, versões mais novas do Node não instalam o projeto. ([#3](https://github.com/Albertinesilva/asjcatalog-frontend/issues/3))
 - **Variáveis no bundle:** `VITE_CLIENT_SECRET` fica visível para qualquer pessoa que abrir o JavaScript do site. ([#2](https://github.com/Albertinesilva/asjcatalog-frontend/issues/2))
 - **Valores padrão silenciosos:** se uma variável faltar, o código usa o padrão de `constants.ts` sem avisar. Um build de produção sem `VITE_API_BASE_URL` aponta para `http://localhost:8080`. ([#13](https://github.com/Albertinesilva/asjcatalog-frontend/issues/13))
-- **`.env` não é ignorado:** só os arquivos `*.local` estão no `.gitignore`.
 - **Build sem checagem de tipos** e **nenhum script de testes**. ([#15](https://github.com/Albertinesilva/asjcatalog-frontend/issues/15), [#4](https://github.com/Albertinesilva/asjcatalog-frontend/issues/4))
 - **Lint falha no Windows** por causa do fim de linha, sem `.gitattributes` no repositório. ([#14](https://github.com/Albertinesilva/asjcatalog-frontend/issues/14))
 - **Dois lockfiles** (`package-lock.json` e `bun.lock`) convivem na pasta. ([#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16))
