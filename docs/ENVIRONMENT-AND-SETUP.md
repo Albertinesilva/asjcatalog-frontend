@@ -19,8 +19,8 @@ Este documento detalha o que o [README](../README.md#como-executar) resume. Aqui
 | `frontend/vite.config.ts` | Alias `@`, plugin do React e proxy de desenvolvimento |
 | `frontend/tsconfig.json` | Regras do TypeScript (modo estrito) e alias `@/*` |
 | `frontend/eslint.config.js` e `frontend/.prettierrc` | Regras de lint e de formatação |
-| `package.json` (raiz) | Repassa os comandos para `frontend/`, para compatibilidade com a plataforma de publicação |
-| `.gitignore` (raiz) | Ignora `node_modules/` e lockfiles criados por engano na raiz |
+| `package.json` (raiz) | Scripts usados pelo Lovable para publicar o site; repassam os comandos para `frontend/` (veja [Arquivos usados pela publicação no Lovable](#arquivos-usados-pela-publicação-no-lovable)) |
+| `.gitignore` (raiz) | Ignora `node_modules/`, lockfiles e `dist/` criados na raiz pelos scripts do Lovable ou por engano |
 
 ## Node.js 20.x
 
@@ -58,25 +58,43 @@ nvm use       # ativa essa versão no terminal atual
 O passo a passo está no [README](../README.md#como-executar). Alguns detalhes:
 
 - O gerenciador de pacotes adotado no README é o **npm**. O lockfile dele é o `package-lock.json`.
-- A pasta `frontend/` também contém um `bun.lock` (lockfile do gerenciador Bun). Ele não é usado no passo a passo do README.
+- A pasta `frontend/` também contém um `bun.lock` (lockfile do gerenciador Bun). Ele é usado pelo Lovable para publicar o site e não faz parte do passo a passo do README (veja [Arquivos usados pela publicação no Lovable](#arquivos-usados-pela-publicação-no-lovable)).
 - Todos os comandos rodam **dentro de `frontend/`**, onde ficam as dependências e os scripts do projeto.
 
-### O `package.json` da raiz
+### Arquivos usados pela publicação no Lovable
 
-A raiz do repositório tem um `package.json` mínimo, sem dependências, que existe para compatibilidade com a plataforma de publicação: ele só repassa os comandos para `frontend/`. O fluxo recomendado continua sendo entrar em `frontend/` e rodar os comandos lá.
+O site do ASJCatalog é publicado pelo **Lovable**. Ele lê o repositório a partir da **raiz** e instala e gera o build com o **Bun** (outro gerenciador de pacotes). Como o código fica em `frontend/`, alguns arquivos existem só para o Lovable e não fazem parte do desenvolvimento local, que continua sendo feito dentro de `frontend/`, com o npm.
 
-| Script da raiz | Comando real | Funciona localmente? |
+| Arquivo ou pasta | Para que serve | Usado localmente? |
 | --- | --- | --- |
-| `dev` | `cd frontend && node node_modules/vite/bin/vite.js` | Sim, depois de instalar as dependências em `frontend/`. Faz o mesmo que `npm run dev` dentro de `frontend/` |
-| `build` | `cd frontend && bun run build` | Só com o Bun instalado. Com apenas o npm, o comando falha |
-| `preview` | `cd frontend && bun run preview` | Só com o Bun instalado |
+| `package.json` (raiz) | Scripts que o Lovable executa: repassam os comandos para `frontend/`, instalando e gerando o build com o Bun | Não. Use os scripts de `frontend/package.json` (detalhes na tabela abaixo) |
+| `.gitignore` (raiz) | Impede que `node_modules/`, lockfiles e `dist/` criados na raiz entrem em commits | Só como proteção: evita versionar algo criado na raiz por engano |
+| `dist/` (raiz) | Saída do build gerado pelos scripts da raiz (`--outDir ../dist`). Não fica no repositório | Não. O build local fica em `frontend/dist/` |
+| `frontend/bun.lock` | Lockfile do Bun, com as versões que o Lovable instala | Não. Localmente, o lockfile usado é o `frontend/package-lock.json`, do npm |
 
-Como alternativa, `npm run dev` na raiz também sobe o servidor de desenvolvimento, desde que `npm install` já tenha sido feito em `frontend/`.
+> [!IMPORTANT]
+> Esses arquivos **não são sobras do template** do projeto. Não os remova enquanto o site for publicado pelo Lovable: sem eles, a pré-visualização e a publicação param de funcionar.
+>
+> - A issue [#17](https://github.com/Albertinesilva/asjcatalog-frontend/issues/17) (remover sobras do template) **não se aplica** a eles.
+> - A issue [#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16) (manter um único lockfile) precisa levar em conta que o Lovable usa o Bun e depende do `frontend/bun.lock`.
+
+Scripts do `package.json` da raiz:
+
+| Script da raiz | Comando real | O que faz | Funciona localmente? |
+| --- | --- | --- | --- |
+| `dev` | `cd frontend && (test -f node_modules/vite/bin/vite.js \|\| bun install) && node node_modules/vite/bin/vite.js` | Se o Vite já estiver instalado em `frontend/`, só inicia o servidor. Se não estiver, instala as dependências com o Bun antes | **Windows:** não. O npm executa o script no `cmd.exe`, que não tem o comando `test`; o script então tenta `bun install` e, sem o Bun, para antes de iniciar o Vite. **Linux e macOS:** sim, se as dependências já estiverem instaladas em `frontend/`; caso contrário, precisa do Bun |
+| `build` | `cd frontend && bun install && bun run build -- --outDir ../dist --emptyOutDir` | Instala as dependências com o Bun e gera o build em `dist/` **na raiz** (não em `frontend/dist/`) | Só com o Bun instalado |
+| `build:dev` | `cd frontend && bun install && bun run build:dev -- --outDir ../dist --emptyOutDir` | Igual ao `build`, no modo `development` | Só com o Bun instalado |
+| `preview` | `cd frontend && bun run preview` | Serve o build de `frontend/dist/`, e não o `dist/` da raiz gerado pelos dois scripts acima | Só com o Bun instalado |
+
+Em Linux e macOS, `npm run dev` na raiz ainda funciona como alternativa quando `npm install` já foi feito em `frontend/`. No Windows, use `npm run dev` dentro de `frontend/`.
 
 Cuidados:
 
 - **Não rode `npm install` na raiz.** O `package.json` da raiz não tem dependências, então isso não instala o projeto e pode criar um lockfile na raiz. O `.gitignore` da raiz impede que `node_modules/` e lockfiles criados ali sejam versionados.
-- A verificação de versão do Node (`engines` + `engine-strict`) acontece no `npm install` dentro de `frontend/`. Rodar o `dev` pela raiz não refaz essa verificação.
+- **Os scripts da raiz podem alterar `frontend/bun.lock`.** Com o Bun instalado, `build` e `build:dev` sempre rodam `bun install` em `frontend/`. O `dev` também roda quando o Vite não está instalado, ou sempre no Windows, porque o `test` falha no `cmd.exe`. O `bun install` cria ou atualiza o `frontend/bun.lock`, que é versionado, e instala `frontend/node_modules` pelo Bun. O `package-lock.json` não é alterado. Depois de usar esses scripts, confira o `git status` antes de commitar.
+- **O Bun não aplica `engines` nem `engine-strict`.** Essas regras são do npm; uma instalação feita pelos scripts da raiz não verifica a versão do Node. Rodar o `dev` pela raiz também não refaz essa verificação.
+- **Build na raiz:** `build` e `build:dev` gravam o resultado em `dist/` na raiz do repositório. Essa pasta é ignorada pelo `.gitignore` da raiz (regra `/dist/`), então não entra em commits.
 
 ## Variáveis de ambiente
 
@@ -172,7 +190,7 @@ npx tsc --noEmit
 O arquivo `frontend/src/api/base-url.ts` decide para onde as requisições vão:
 
 - **Caso normal** (desenvolvimento local, `preview` e produção): as requisições vão **direto** para `VITE_API_BASE_URL`.
-- **Caso especial:** quando a aplicação roda em um domínio de pré-visualização específico, verificado pelo nome do host em `base-url.ts`, as requisições usam o caminho relativo `/api/proxy`.
+- **Caso especial:** quando a aplicação roda no domínio do Lovable (nome do host com `lovable.app`, verificado em `base-url.ts`), as requisições usam o caminho relativo `/api/proxy`.
 
 O login (`/oauth2/token`) segue a mesma regra, pela função `buildAuthUrl`.
 
@@ -250,7 +268,7 @@ Ao abrir `/catalog/7` diretamente, ou ao recarregar a página, o servidor procur
 
 O repositório **não traz** configuração de deploy (nenhum arquivo de servidor, hospedagem ou CI foi encontrado). Ao publicar, configure esse fallback no serviço escolhido.
 
-Também revise os arquivos `frontend/public/robots.txt` e `frontend/public/sitemap.xml`. Eles contêm um domínio fixo e precisam apontar para o endereço onde o app for publicado.
+Também revise os arquivos `frontend/public/robots.txt` e `frontend/public/sitemap.xml`. Eles apontam para o endereço do site no Lovable e precisam ser atualizados se o site passar a ser publicado em outro endereço.
 
 ## Observações para Windows
 

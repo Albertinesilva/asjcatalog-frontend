@@ -143,8 +143,8 @@ Os nomes e um exemplo de preenchimento estão em [`frontend/.env.example`](front
 ```text
 asjcatalog-frontend/
 ├── README.md
-├── package.json           # Só repassa comandos para frontend/ (compatibilidade com a publicação)
-├── .gitignore             # Evita versionar instalações feitas por engano na raiz
+├── package.json           # Usado só pelo Lovable para publicar o site (repassa comandos para frontend/)
+├── .gitignore             # Ignora o que o Lovable ou uma instalação por engano criam na raiz
 ├── docs/                  # Documentação técnica (um arquivo por assunto)
 └── frontend/
     ├── public/            # Arquivos servidos como estão (ícones, manifesto, robots.txt)
@@ -167,6 +167,9 @@ asjcatalog-frontend/
         ├── App.tsx        # Composição dos providers e das rotas
         └── main.tsx       # Ponto de entrada da aplicação
 ```
+
+> [!NOTE]
+> O `package.json` e o `.gitignore` da raiz existem apenas para o **Lovable**, plataforma que publica o site a partir deste repositório. Eles não são usados no desenvolvimento local, que é feito dentro de `frontend/` com o npm. A explicação completa está em [Arquivos usados pela publicação no Lovable](docs/ENVIRONMENT-AND-SETUP.md#arquivos-usados-pela-publicação-no-lovable).
 
 O alias `@/` aponta para `frontend/src/`. Exemplo: `import { useAuth } from "@/hooks/useAuth"`.
 

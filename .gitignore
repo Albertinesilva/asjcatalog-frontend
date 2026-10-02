@@ -1,9 +1,13 @@
 # As dependências reais do projeto ficam em frontend/ (com o .gitignore próprio de lá).
-# O package.json da raiz só repassa comandos para frontend/; estas regras valem apenas
-# para a raiz (barra inicial) e evitam versionar instalações feitas aqui por engano.
+# O package.json da raiz existe só para o Lovable, que publica o site e repassa os comandos
+# para frontend/. Estas regras valem apenas para a raiz (barra inicial) e evitam versionar
+# instalações feitas aqui pelo Lovable ou por engano.
 /node_modules/
 /package-lock.json
 /bun.lock
 /bun.lockb
 /yarn.lock
 /pnpm-lock.yaml
+
+# Saída do build gerado pelos scripts do Lovable no package.json da raiz (--outDir ../dist).
+/dist/
