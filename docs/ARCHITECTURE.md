@@ -226,4 +226,5 @@ Como ler o mapa:
 - [API-AND-SERVICES.md](API-AND-SERVICES.md): instância `http`, interceptadores e tabela de endpoints.
 - [AUTHENTICATION.md](AUTHENTICATION.md): login, sessão e renovação de token.
 - [ERROR-HANDLING.md](ERROR-HANDLING.md): como os erros da API chegam à tela.
+- [CONTEXTS.md](CONTEXTS.md), [HOOKS.md](HOOKS.md) e [COMPONENTS.md](COMPONENTS.md): detalhes de `contexts/`, `hooks/` e `components/`.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

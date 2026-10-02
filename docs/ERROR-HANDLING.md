@@ -304,4 +304,6 @@ try {
 
 - [API-AND-SERVICES.md](API-AND-SERVICES.md): de onde vêm as requisições e o interceptador de 401.
 - [AUTHENTICATION.md](AUTHENTICATION.md): o que acontece quando a sessão expira.
+- [HOOKS.md](HOOKS.md): `usePagedQuery` e `useResource`, que já convertem erros em mensagem.
+- [COMPONENTS.md](COMPONENTS.md): `ErrorState`, `NotFoundState`, `ConfirmDialog` e demais componentes de estado.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

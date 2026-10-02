@@ -96,7 +96,7 @@ sequenceDiagram
 
 Se o login falhar, a tela trata três casos de forma especial: conta inativa (`ACCESS_DISABLED`), credenciais inválidas (`invalid_grant`) e falha de rede. Os detalhes estão em [ERROR-HANDLING.md](ERROR-HANDLING.md#erros-no-login).
 
-O papel do `AuthContext` aqui é guardar o estado da sessão e disponibilizá-lo para toda a aplicação. O funcionamento interno dele será detalhado em `CONTEXTS.md` (próximo lote).
+O papel do `AuthContext` aqui é guardar o estado da sessão e disponibilizá-lo para toda a aplicação. O funcionamento interno dele está em [CONTEXTS.md](CONTEXTS.md#authcontext).
 
 ## Onde a sessão fica guardada
 
@@ -306,6 +306,7 @@ Essas verificações só **escondem** telas e botões. Quem impede de fato uma a
 
 - [API-AND-SERVICES.md](API-AND-SERVICES.md): instância `http`, interceptadores e endpoints.
 - [ERROR-HANDLING.md](ERROR-HANDLING.md): como os erros de login e de sessão chegam à tela.
+- [CONTEXTS.md](CONTEXTS.md): o `AuthContext` em detalhe.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): `PrivateRoute`, `RoleRoute` e redirecionamento após o login.
 - [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md): variáveis `VITE_CLIENT_ID` e `VITE_CLIENT_SECRET`.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

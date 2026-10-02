@@ -12,6 +12,9 @@ Cabeçalho HTTP que informa ao servidor o idioma preferido. O frontend envia o i
 **Access token**
 Nome em inglês do token de acesso. Veja **Token de acesso**.
 
+**Acessibilidade**
+Fazer a interface funcionar para todas as pessoas, inclusive quem navega só pelo teclado ou usa leitor de tela.
+
 **Alias de import**
 Atalho para um caminho de pasta. No projeto, `@/` significa `frontend/src/`, então `@/hooks/useAuth` é o mesmo que `frontend/src/hooks/useAuth`.
 
@@ -21,8 +24,14 @@ Atalho para um caminho de pasta. No projeto, `@/` significa `frontend/src/`, ent
 **API REST**
 Estilo de API em que cada recurso (produto, categoria, usuário) tem um endereço, e as ações usam os métodos HTTP: `GET` lê, `POST` cria, `PUT`/`PATCH` alteram, `DELETE` remove.
 
+**ARIA**
+*Accessible Rich Internet Applications*: atributos HTML (`role`, `aria-label`, `aria-expanded`, `aria-live`…) que informam às tecnologias assistivas o papel e o estado de um elemento.
+
 **Authorization (cabeçalho)**
 Cabeçalho HTTP que leva a credencial da requisição. Nas chamadas comuns, contém `Bearer <token de acesso>`; no pedido de token, contém as credenciais do cliente no formato Basic.
+
+**Barrel**
+Arquivo `index.ts` que reexporta vários módulos de uma pasta, para importar tudo de um só lugar. Exemplo: `import { ErrorState, Pagination } from "@/components"`.
 
 **Base64**
 Forma de representar qualquer texto usando só letras, números e alguns símbolos. É uma codificação, não criptografia: qualquer um consegue decodificar.
@@ -57,7 +66,7 @@ Número que a API devolve para indicar o resultado: `200` (sucesso), `401` (não
 **Compare-and-swap**
 Técnica de "só gravar se o valor ainda for o esperado". Na renovação de sessão, o novo token só é salvo se o refresh token guardado ainda for o mesmo que originou o pedido.
 
-**Context (React)**
+**Context API (Context do React)**
 Recurso do React para compartilhar dados com muitos componentes sem passá-los de um em um. O projeto tem `AuthContext` (sessão) e `ThemeContext` (tema).
 
 **Contrato de erro**
@@ -71,6 +80,9 @@ Pequeno dado que o servidor pede ao navegador para guardar e reenviar nas próxi
 
 **CRLF e LF**
 Os caracteres que marcam o fim de uma linha de texto. O Windows costuma usar CRLF (`\r\n`); Linux e macOS usam LF (`\n`). A diferença causa os erros `Delete ␍` do lint no Windows.
+
+**Debounce**
+Técnica de esperar um tempo sem novas mudanças antes de agir. Na busca, a requisição só sai depois que o usuário para de digitar por 400 ms.
 
 **Deploy**
 Publicar a aplicação em um servidor para que outras pessoas possam acessá-la.
@@ -90,8 +102,23 @@ Ferramenta que analisa o código em busca de erros e de padrões fora das regras
 **Fallback de SPA**
 Configuração do servidor que devolve o `index.html` para qualquer caminho que não seja um arquivo real. Sem ela, abrir diretamente uma URL como `/catalog/7` resulta em 404.
 
+**Fast Refresh**
+Recurso do ambiente de desenvolvimento que atualiza a tela ao salvar um arquivo, sem recarregar a página e mantendo o estado dos componentes.
+
+**Focus trap (foco preso)**
+Técnica que mantém o foco do teclado dentro de um diálogo enquanto ele está aberto: a tecla Tab circula só entre os elementos do diálogo.
+
+**forwardRef**
+Função do React que permite a um componente repassar uma referência (`ref`) para o elemento HTML interno. É o que deixa o React Hook Form acessar o `<input>` dentro do componente `Input`.
+
+**FOUC**
+*Flash of Unstyled Content*: um "piscar" da página com o estilo errado antes de o estilo certo ser aplicado. O script de tema do `index.html` evita isso.
+
 **Função pura**
 Função que, para a mesma entrada, sempre devolve o mesmo resultado e não causa efeitos fora dela (não mostra alertas, não grava dados). `parseApiError` é um exemplo.
+
+**Genérico (TypeScript)**
+Tipo com "parâmetro", escrito como `<T>`, que permite à mesma função ou tipo trabalhar com dados diferentes. Exemplo: `useDebouncedValue<T>` funciona com texto, número ou objeto.
 
 **Grant type**
 No OAuth2, a forma de pedir um token. O frontend usa `password` (login com usuário e senha) e `refresh_token` (renovação).
@@ -101,6 +128,9 @@ Componente que decide se uma rota pode ser exibida. No projeto, `PrivateRoute` e
 
 **Hook**
 Função do React que começa com `use` e dá acesso a recursos como estado e contexto. O projeto tem hooks próprios, como `useAuth` e `usePagedQuery`.
+
+**Hook customizado (custom hook)**
+Hook escrito pelo próprio projeto, que junta lógica de estado e efeitos reaproveitada por várias telas. Exemplos: `usePagedQuery`, `useResource`.
 
 **HTTP**
 *HyperText Transfer Protocol*: o protocolo usado pelo navegador para conversar com servidores. Cada requisição tem um método (`GET`, `POST`…), um endereço, cabeçalhos e, às vezes, um corpo.
@@ -129,6 +159,9 @@ Componente que desenha a "moldura" comum a várias telas (barra de navegação, 
 **Lazy loading**
 Carregamento sob demanda: o código de uma tela só é baixado quando ela é aberta. Deixa a primeira carga do site mais leve.
 
+**Leitor de tela**
+Programa que lê em voz alta o conteúdo da tela para pessoas cegas ou com baixa visão. Depende de rótulos e atributos ARIA para descrever a interface.
+
 **Lint**
 Análise automática do código para encontrar erros e inconsistências de estilo, sem executar o programa.
 
@@ -137,6 +170,9 @@ Armazenamento do navegador que guarda textos por site e não se apaga ao fechar 
 
 **Lockfile**
 Arquivo que registra as versões exatas de cada dependência instalada, para que todos instalem as mesmas versões. O do npm é o `package-lock.json`.
+
+**Media query**
+Condição do CSS (ou do JavaScript, via `matchMedia`) sobre o ambiente, como a largura da tela ou a preferência do sistema por tema escuro (`prefers-color-scheme: dark`).
 
 **Node.js**
 Ambiente que executa JavaScript fora do navegador. É necessário para instalar as dependências e rodar o Vite.
@@ -183,6 +219,12 @@ Ferramenta que formata o código automaticamente (aspas, espaços, quebras de li
 **Promise**
 Objeto do JavaScript que representa um resultado que ainda vai chegar, como a resposta de uma requisição. Usa-se `await` ou `.then()` para obter o valor e `try/catch` ou `.catch()` para tratar o erro.
 
+**Prop drilling**
+Passar uma prop por vários níveis de componentes só para que um componente lá embaixo a receba. A Context API evita isso.
+
+**Props**
+As "propriedades" passadas a um componente, como os atributos de uma tag HTML. Exemplo: em `<Button variant="danger">`, `variant` é uma prop.
+
 **Provider**
 Componente que disponibiliza dados de um Context para todos os componentes dentro dele. Exemplo: `AuthProvider`.
 
@@ -216,6 +258,9 @@ No projeto, módulo da pasta `services/` que as telas usam para obter dados. Fic
 **Single-flight**
 Padrão que garante uma única execução de uma operação por vez: quem chega enquanto ela está em andamento recebe o mesmo resultado, em vez de disparar outra. É usado na renovação de sessão.
 
+**Skeleton (esqueleto de carregamento)**
+Blocos cinzas com o formato aproximado do conteúdo, exibidos enquanto os dados carregam.
+
 **SPA**
 *Single Page Application* (aplicação de página única). O navegador carrega uma única página HTML, e a troca de telas é feita pelo JavaScript, sem recarregar.
 
@@ -239,6 +284,12 @@ Credencial temporária devolvida pela API no login. É enviada no cabeçalho `Au
 
 **TypeScript**
 Linguagem que adiciona tipos ao JavaScript. Os tipos são verificados antes da execução (`npx tsc --noEmit`), o que ajuda a achar erros cedo.
+
+**useCallback**
+Hook do React que mantém a mesma função entre renderizações enquanto as dependências não mudam. É necessário nos `fetcher`s de `usePagedQuery` e `useResource`, para não disparar buscas a cada renderização.
+
+**Variante**
+Versão pré-definida de um componente, escolhida por uma prop. Exemplo: `variant="danger"` no `Button` gera o botão vermelho de ações destrutivas.
 
 **Variável de ambiente**
 Valor de configuração definido fora do código, por exemplo em `.env.local`. No Vite, só as variáveis com prefixo `VITE_` chegam ao código do frontend.

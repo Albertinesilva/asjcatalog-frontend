@@ -264,7 +264,7 @@ O mesmo bloco se repete em `categoryApi.findPage` e `userApi.findAll`.
 
 `categoryApi.findAll` vai além: pede a primeira página com `size: 200` e, se `totalPages` indicar mais páginas, busca as restantes em paralelo e junta tudo num único array de `Category`.
 
-Do lado das telas, quem consome essas páginas é o hook `usePagedQuery`, que será documentado em `HOOKS.md` (próximos lotes).
+Do lado das telas, quem consome essas páginas é o hook `usePagedQuery`, documentado em [HOOKS.md](HOOKS.md#usepagedquery).
 
 ## Como adicionar um novo endpoint
 

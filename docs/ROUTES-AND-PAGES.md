@@ -118,7 +118,7 @@ O projeto tem duas proteções (*guards*), com papéis separados:
 - **`PrivateRoute`**: verifica **autenticação**, ou seja, se há alguém logado.
 - **`RoleRoute`**: verifica **autorização**, ou seja, se a pessoa logada tem o perfil necessário.
 
-As duas leem o estado de sessão pelo hook `useAuth`, que vem do `AuthContext`.
+As duas leem o estado de sessão pelo hook `useAuth`, que vem do `AuthContext` (veja [CONTEXTS.md](CONTEXTS.md#authcontext) e [HOOKS.md](HOOKS.md#useauth)).
 
 ### `PrivateRoute`
 
@@ -303,4 +303,5 @@ Todas as rotas ficam dentro de um `<Suspense fallback={<LoadingState />}>`. Enqu
 - [ARCHITECTURE.md](ARCHITECTURE.md): camadas e fluxo de uma requisição.
 - [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md): build, preview e fallback para `index.html` no deploy.
 - [AUTHENTICATION.md](AUTHENTICATION.md): de onde vêm a sessão e os perfis usados pelas proteções de rota.
+- [COMPONENTS.md](COMPONENTS.md): `Navbar`, `Sidebar` e os demais componentes usados nos layouts.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.
