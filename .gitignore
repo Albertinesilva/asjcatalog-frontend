@@ -1,0 +1,9 @@
+# As dependências reais do projeto ficam em frontend/ (com o .gitignore próprio de lá).
+# O package.json da raiz só repassa comandos para frontend/; estas regras valem apenas
+# para a raiz (barra inicial) e evitam versionar instalações feitas aqui por engano.
+/node_modules/
+/package-lock.json
+/bun.lock
+/bun.lockb
+/yarn.lock
+/pnpm-lock.yaml

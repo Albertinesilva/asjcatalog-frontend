@@ -143,6 +143,9 @@ Os nomes e um exemplo de preenchimento estão em [`frontend/.env.example`](front
 ```text
 asjcatalog-frontend/
 ├── README.md
+├── package.json           # Só repassa comandos para frontend/ (compatibilidade com a publicação)
+├── .gitignore             # Evita versionar instalações feitas por engano na raiz
+├── docs/                  # Documentação técnica (um arquivo por assunto)
 └── frontend/
     ├── public/            # Arquivos servidos como estão (ícones, manifesto, robots.txt)
     ├── index.html         # Página HTML base da SPA

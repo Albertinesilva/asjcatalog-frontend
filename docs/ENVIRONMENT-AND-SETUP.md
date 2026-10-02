@@ -19,6 +19,8 @@ Este documento detalha o que o [README](../README.md#como-executar) resume. Aqui
 | `frontend/vite.config.ts` | Alias `@`, plugin do React e proxy de desenvolvimento |
 | `frontend/tsconfig.json` | Regras do TypeScript (modo estrito) e alias `@/*` |
 | `frontend/eslint.config.js` e `frontend/.prettierrc` | Regras de lint e de formatação |
+| `package.json` (raiz) | Repassa os comandos para `frontend/`, para compatibilidade com a plataforma de publicação |
+| `.gitignore` (raiz) | Ignora `node_modules/` e lockfiles criados por engano na raiz |
 
 ## Node.js 20.x
 
@@ -57,7 +59,24 @@ O passo a passo está no [README](../README.md#como-executar). Alguns detalhes:
 
 - O gerenciador de pacotes adotado no README é o **npm**. O lockfile dele é o `package-lock.json`.
 - A pasta `frontend/` também contém um `bun.lock` (lockfile do gerenciador Bun). Ele não é usado no passo a passo do README.
-- Todos os comandos rodam **dentro de `frontend/`**. A raiz do repositório não tem `package.json`.
+- Todos os comandos rodam **dentro de `frontend/`**, onde ficam as dependências e os scripts do projeto.
+
+### O `package.json` da raiz
+
+A raiz do repositório tem um `package.json` mínimo, sem dependências, que existe para compatibilidade com a plataforma de publicação: ele só repassa os comandos para `frontend/`. O fluxo recomendado continua sendo entrar em `frontend/` e rodar os comandos lá.
+
+| Script da raiz | Comando real | Funciona localmente? |
+| --- | --- | --- |
+| `dev` | `cd frontend && node node_modules/vite/bin/vite.js` | Sim, depois de instalar as dependências em `frontend/`. Faz o mesmo que `npm run dev` dentro de `frontend/` |
+| `build` | `cd frontend && bun run build` | Só com o Bun instalado. Com apenas o npm, o comando falha |
+| `preview` | `cd frontend && bun run preview` | Só com o Bun instalado |
+
+Como alternativa, `npm run dev` na raiz também sobe o servidor de desenvolvimento, desde que `npm install` já tenha sido feito em `frontend/`.
+
+Cuidados:
+
+- **Não rode `npm install` na raiz.** O `package.json` da raiz não tem dependências, então isso não instala o projeto e pode criar um lockfile na raiz. O `.gitignore` da raiz impede que `node_modules/` e lockfiles criados ali sejam versionados.
+- A verificação de versão do Node (`engines` + `engine-strict`) acontece no `npm install` dentro de `frontend/`. Rodar o `dev` pela raiz não refaz essa verificação.
 
 ## Variáveis de ambiente
 
