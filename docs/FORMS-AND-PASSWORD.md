@@ -304,4 +304,6 @@ Depois do cadastro, o e-mail é guardado em `localStorage` (`pendingActivationEm
 - [COMPONENTS.md](COMPONENTS.md): `Input`, `Select`, `Button` e demais componentes.
 - [HOOKS.md](HOOKS.md#useresource): `useResource`, usado no modo de edição.
 - [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): onde ficam as mensagens de validação.
+- [CONVENTIONS.md](CONVENTIONS.md#guia-como-criar-uma-nova-tela-crud): o formulário dentro do passo a passo de uma tela CRUD.
+- [TESTING.md](TESTING.md#exemplo-primeiro-teste-de-uma-função-pura): exemplo de teste das regras de senha.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

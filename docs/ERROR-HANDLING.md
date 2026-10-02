@@ -308,4 +308,5 @@ try {
 - [COMPONENTS.md](COMPONENTS.md): `ErrorState`, `NotFoundState`, `ConfirmDialog` e demais componentes de estado.
 - [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md): os formulários que usam `handleApiError`.
 - [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): o `Accept-Language` e as traduções do frontend.
+- [UTILS-AND-TYPES.md](UTILS-AND-TYPES.md): os arquivos de `utils/` envolvidos.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

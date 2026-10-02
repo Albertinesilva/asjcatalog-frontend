@@ -307,4 +307,5 @@ Apesar do nome "Table", esses componentes **não** usam `<table>`: são listas d
 - [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md): formulários e componentes de senha.
 - [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md): tokens, tipografia e escalas usados pelos componentes.
 - [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): textos padrão traduzidos dos componentes.
+- [CONVENTIONS.md](CONVENTIONS.md): nomenclatura e o guia de uma tela CRUD completa.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

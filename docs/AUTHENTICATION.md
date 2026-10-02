@@ -309,4 +309,6 @@ Essas verificações só **escondem** telas e botões. Quem impede de fato uma a
 - [CONTEXTS.md](CONTEXTS.md): o `AuthContext` em detalhe.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): `PrivateRoute`, `RoleRoute` e redirecionamento após o login.
 - [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md): variáveis `VITE_CLIENT_ID` e `VITE_CLIENT_SECRET`.
+- [UTILS-AND-TYPES.md](UTILS-AND-TYPES.md): funções de `storage.ts` e `permissions.ts`.
+- [TESTING.md](TESTING.md#áreas-prioritárias): testes sugeridos para a renovação de sessão.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

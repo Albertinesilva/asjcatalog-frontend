@@ -54,6 +54,9 @@ Processo que transforma o código-fonte (TypeScript, JSX, CSS) em arquivos otimi
 **Bundle**
 O conjunto de arquivos JavaScript e CSS gerado pelo build e enviado ao navegador. Tudo o que está no bundle pode ser lido por quem acessa o site.
 
+**camelCase, PascalCase e kebab-case**
+Formas de escrever nomes compostos. camelCase: `usePagedQuery`. PascalCase: `ProductForm`. kebab-case: `api-error-handler.ts`. Há ainda o UPPER_SNAKE_CASE, usado em constantes como `TOKEN_KEY`.
+
 **Chave de tradução**
 Identificador de um texto traduzido, no formato `namespace:caminho`, como `auth:login.title`. O código usa a chave, e o arquivo de cada idioma traz o texto.
 
@@ -81,6 +84,9 @@ Recurso do React para compartilhar dados com muitos componentes sem passá-los d
 **Contrato de erro**
 Formato combinado entre API e frontend para as respostas de erro: campos como `code`, `message` e `fieldErrors`. O frontend o interpreta em `utils/api-error.ts`.
 
+**Conventional Commits**
+Padrão de mensagem de commit no formato `tipo(escopo): descrição`, como `fix(auth): handle invalid credentials on login`. É o padrão dos commits recentes do projeto.
+
 **Cookie**
 Pequeno dado que o servidor pede ao navegador para guardar e reenviar nas próximas requisições. O frontend do ASJCatalog não usa cookies para a sessão: ele envia o token no cabeçalho `Authorization`.
 
@@ -89,6 +95,9 @@ Pequeno dado que o servidor pede ao navegador para guardar e reenviar nas próxi
 
 **CRLF e LF**
 Os caracteres que marcam o fim de uma linha de texto. O Windows costuma usar CRLF (`\r\n`); Linux e macOS usam LF (`\n`). A diferença causa os erros `Delete ␍` do lint no Windows.
+
+**CRUD**
+*Create, Read, Update, Delete*: as quatro operações básicas sobre um tipo de registro (criar, ler, alterar e excluir). As telas de produtos, categorias e usuários do dashboard são CRUDs.
 
 **Debounce**
 Técnica de esperar um tempo sem novas mudanças antes de agir. Na busca, a requisição só sai depois que o usuário para de digitar por 400 ms.
@@ -156,6 +165,9 @@ Marca de um cookie que impede o JavaScript da página de lê-lo. É uma alternat
 **i18n**
 Abreviação de *internationalization* (internacionalização): o "i", 18 letras no meio e o "n". É o suporte a vários idiomas. O projeto usa a biblioteca i18next.
 
+**Integração contínua (CI)**
+Execução automática de verificações (lint, tipos, testes) a cada envio de código ao repositório. O projeto ainda não tem CI.
+
 **Interceptador**
 Função do Axios que roda automaticamente antes de cada requisição ou depois de cada resposta. No projeto, adiciona cabeçalhos e tenta renovar a sessão quando a API responde 401.
 
@@ -164,6 +176,9 @@ Nome em inglês do interceptador. Veja **Interceptador**.
 
 **Interpolação**
 Substituição de variáveis dentro de um texto traduzido. Em `"Olá, {{name}}"`, o `{{name}}` é trocado pelo valor passado a `t`.
+
+**jsdom**
+Biblioteca que simula o navegador (DOM, `window`, `localStorage`) dentro do Node.js, para rodar testes de componentes sem abrir um navegador.
 
 **JSON**
 *JavaScript Object Notation*: formato de texto para representar dados, como `{ "id": 7, "name": "Notebook" }`. É o formato usado pela API.
@@ -194,6 +209,9 @@ Condição do CSS (ou do JavaScript, via `matchMedia`) sobre o ambiente, como a 
 
 **Mobile-first**
 Forma de escrever estilos começando pelas telas pequenas: as classes sem prefixo valem para o celular, e os prefixos (`md:`, `lg:`) ajustam telas maiores.
+
+**MSW**
+*Mock Service Worker*: biblioteca que intercepta requisições e devolve respostas simuladas. Permite testar telas sem a API real.
 
 **Namespace (i18n)**
 Grupo de textos de um mesmo assunto, guardado num arquivo próprio por idioma, como `auth.json` ou `products.json`.
@@ -237,6 +255,9 @@ Papel do usuário que define o que ele pode fazer. O frontend conhece `ROLE_ADMI
 **Plural (i18n)**
 Escolha automática da forma singular ou plural de um texto conforme a quantidade. No i18next, usa as chaves com sufixo `_one` e `_other` e o valor `count`.
 
+**Pre-commit hook**
+Script executado automaticamente antes de cada commit, por exemplo para rodar o lint. O projeto não tem.
+
 **Preflight**
 Requisição automática (`OPTIONS`) que o navegador faz antes de certas chamadas para outro endereço, perguntando à API se ela aceita a chamada. Faz parte do CORS.
 
@@ -267,11 +288,17 @@ Biblioteca de formulários usada no projeto. Registra os campos (`register`), va
 **React Router**
 Biblioteca que liga URLs a componentes React e permite navegar sem recarregar a página.
 
+**React Testing Library**
+Biblioteca para testar componentes React do jeito que o usuário os usa: procurando elementos por texto e rótulo, clicando e digitando.
+
 **Refresh token**
 Token de longa duração usado para pedir um novo token de acesso quando o atual expira, sem precisar fazer login de novo.
 
 **Regex (expressão regular)**
 Padrão de texto usado para verificar ou encontrar trechos, como o formato de um e-mail. Exemplo: `/^\d+$/` aceita só dígitos.
+
+**Relógio simulado (fake timers)**
+Recurso das ferramentas de teste que controla `setTimeout` e o tempo atual, permitindo "avançar o relógio" sem esperar de verdade. Útil para testar debounce e renovação agendada.
 
 **RFC**
 *Request for Comments*: documentos que definem os padrões da internet. O OAuth2 e suas recomendações de segurança (como a RFC 9700) são publicados como RFCs.
@@ -306,6 +333,9 @@ Biblioteca de janelas de alerta usada no projeto, sempre por meio de `utils/aler
 **Tailwind CSS**
 Framework de CSS baseado em classes utilitárias, como `flex`, `p-md` e `text-foreground`, aplicadas diretamente no JSX.
 
+**Teste automatizado**
+Código que verifica outro código. Os tipos mais comuns: **unitário** (uma função isolada), **de componente** (um componente renderizado), **de integração** (várias partes juntas) e **de ponta a ponta** (*end-to-end*, o sistema inteiro num navegador).
+
 **Timeout**
 Tempo máximo de espera por uma resposta. Passado esse tempo, a requisição é cancelada com erro. A instância `http` do projeto não define timeout.
 
@@ -332,6 +362,9 @@ Valor de configuração definido fora do código, por exemplo em `.env.local`. N
 
 **Vite**
 Ferramenta de desenvolvimento e build do projeto. Sobe o servidor local (`npm run dev`) e gera os arquivos de produção (`npm run build`).
+
+**Vitest**
+Ferramenta de testes feita para projetos com Vite. Reaproveita a configuração do Vite, como o alias `@/`. É a ferramenta sugerida na proposta de testes.
 
 **WCAG**
 *Web Content Accessibility Guidelines*: diretrizes de acessibilidade para a web. O nível AA exige, por exemplo, contraste de pelo menos 4,5:1 entre texto normal e fundo.

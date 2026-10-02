@@ -228,4 +228,5 @@ Como ler o mapa:
 - [ERROR-HANDLING.md](ERROR-HANDLING.md): como os erros da API chegam à tela.
 - [CONTEXTS.md](CONTEXTS.md), [HOOKS.md](HOOKS.md) e [COMPONENTS.md](COMPONENTS.md): detalhes de `contexts/`, `hooks/` e `components/`.
 - [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md), [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md) e [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): formulários, estilo e idiomas.
+- [UTILS-AND-TYPES.md](UTILS-AND-TYPES.md), [CONVENTIONS.md](CONVENTIONS.md) e [TESTING.md](TESTING.md): utilitários e tipos, padrões do projeto e testes.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

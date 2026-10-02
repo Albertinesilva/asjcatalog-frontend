@@ -194,7 +194,25 @@ O alias `@/` aponta para `frontend/src/`. Exemplo: `import { useAuth } from "@/h
 
 ## Documentação
 
-A documentação técnica detalhada, com um arquivo por módulo, está sendo organizada na pasta `docs/`.
+A documentação técnica fica na pasta [`docs/`](docs/), com um arquivo por assunto. A ordem abaixo é a de leitura recomendada; cada documento tem links "Anterior" e "Próximo".
+
+1. [Arquitetura](docs/ARCHITECTURE.md): camadas do projeto, caminho de uma requisição e papel de cada pasta.
+2. [Ambiente e configuração](docs/ENVIRONMENT-AND-SETUP.md): Node 20, variáveis de ambiente, scripts, proxy, CORS, build e deploy.
+3. [Rotas e páginas](docs/ROUTES-AND-PAGES.md): mapa de rotas, layouts, rotas protegidas e perfis exigidos.
+4. [API e services](docs/API-AND-SERVICES.md): instância HTTP, interceptadores e tabela de endpoints consumidos.
+5. [Autenticação](docs/AUTHENTICATION.md): login OAuth2, armazenamento e renovação da sessão, logout e perfis.
+6. [Tratamento de erros](docs/ERROR-HANDLING.md): como os erros da API são interpretados e exibidos.
+7. [Contexts](docs/CONTEXTS.md): `AuthContext` e `ThemeContext`.
+8. [Hooks](docs/HOOKS.md): hooks customizados, com assinatura e exemplos.
+9. [Componentes](docs/COMPONENTS.md): design system, componentes compartilhados e acessibilidade.
+10. [Formulários e senha](docs/FORMS-AND-PASSWORD.md): React Hook Form, validação de senha e de e-mail.
+11. [Estilo e tema](docs/STYLING-AND-THEMING.md): Tailwind, tokens de cor e modo escuro.
+12. [Internacionalização](docs/INTERNATIONALIZATION.md): idiomas, namespaces e como manter as traduções.
+13. [Utilitários e tipos](docs/UTILS-AND-TYPES.md): funções de `utils/` e tipos de `types/`.
+14. [Convenções](docs/CONVENTIONS.md): nomes, lint, commits e o guia para criar uma tela CRUD.
+15. [Testes](docs/TESTING.md): estado atual e proposta de estratégia de testes.
+
+Consulta: [Glossário](docs/GLOSSARY.md), com os termos técnicos usados na documentação.
 
 ---
 
