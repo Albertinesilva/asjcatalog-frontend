@@ -1,0 +1,10 @@
+{
+  "name": "asjcatalog-root",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cd frontend && bun run dev",
+    "build": "cd frontend && bun run build",
+    "preview": "cd frontend && bun run preview"
+  }
+}
