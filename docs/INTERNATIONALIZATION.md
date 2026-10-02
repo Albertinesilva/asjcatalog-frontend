@@ -270,17 +270,17 @@ Sem saída, significa que nenhuma chave do `pt-BR` falta em `en` ou `es`.
 
 ## Cuidados e limitações
 
-- **Tudo no bundle:** os 33 arquivos de tradução são importados de forma estática. O usuário baixa os três idiomas, mesmo usando só um.
-- **Chave inexistente:** `CategoryForm` usa `common:error`, que não existe; o texto cai no `defaultValue` fixo "Erro", em português.
-- **Sem verificação de chaves pelo TypeScript:** as chaves são texto livre. Um erro de digitação não gera erro de compilação, e a tela mostra a própria chave ou o fallback.
+- **Tudo no bundle:** os 33 arquivos de tradução são importados de forma estática. O usuário baixa os três idiomas, mesmo usando só um. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+- **Chave inexistente:** `CategoryForm` usa `common:error`, que não existe; o texto cai no `defaultValue` fixo "Erro", em português. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+- **Sem verificação de chaves pelo TypeScript:** as chaves são texto livre. Um erro de digitação não gera erro de compilação, e a tela mostra a própria chave ou o fallback. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
 - **Textos e formatos fixos:**
-  - `ProductPrice` sempre mostra `R$` e o formato brasileiro (`1.234,56`), em qualquer idioma;
-  - `parseApiError` tem dois textos padrão em português;
+  - `ProductPrice` sempre mostra `R$` e o formato brasileiro (`1.234,56`), em qualquer idioma; ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+  - `parseApiError` tem dois textos padrão em português; ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
   - o `aria-label` do breadcrumb usa `"Breadcrumb"` como `defaultValue`.
-- **Bandeiras em emoji:** o seletor usa emojis de bandeira (🇧🇷, 🇺🇸, 🇪🇸). No Windows, os navegadores costumam mostrar as letras do país em vez da bandeira; a sigla (`PT`, `EN`, `ES`) aparece ao lado.
-- **Login sem `Accept-Language`:** as mensagens de erro do pedido de token não seguem o idioma escolhido.
-- **`<html lang>` atualizado em dois lugares:** pelo `I18nProvider` e pelo `change` do `useLanguage`.
-- **Chaves sem uso aparente:** `catalog:loading`, `dashboard:welcome`, `common:actions.edit`, `common:actions.delete` e `validation:required`.
+- **Bandeiras em emoji:** o seletor usa emojis de bandeira (🇧🇷, 🇺🇸, 🇪🇸). No Windows, os navegadores costumam mostrar as letras do país em vez da bandeira; a sigla (`PT`, `EN`, `ES`) aparece ao lado. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+- **Login sem `Accept-Language`:** as mensagens de erro do pedido de token não seguem o idioma escolhido. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+- **`<html lang>` atualizado em dois lugares:** pelo `I18nProvider` e pelo `change` do `useLanguage`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Chaves sem uso aparente:** `catalog:loading`, `dashboard:welcome`, `common:actions.edit`, `common:actions.delete` e `validation:required`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 
 ## Veja também
 

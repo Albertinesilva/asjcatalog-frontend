@@ -431,10 +431,10 @@ O catálogo público (`CatalogPage`) **não** usa esse padrão: ele tem debounce
 ## Cuidados e limitações
 
 - **Funções estáveis:** `usePagedQuery` e `useResource` dependem de `fetcher` declarado com `useCallback`. Esquecer isso gera requisições em excesso.
-- **Requisição extra ao filtrar fora da página 0:** consequência da ordem dos efeitos em `usePagedQuery` (descrita na seção do hook).
-- **Código sem uso:** `usePagination().setSize` e `useRoles().isOperator`.
+- **Requisição extra ao filtrar fora da página 0:** consequência da ordem dos efeitos em `usePagedQuery` (descrita na seção do hook). ([#25](https://github.com/Albertinesilva/asjcatalog-frontend/issues/25))
+- **Código sem uso:** `usePagination().setSize` e `useRoles().isOperator`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Hooks fora de `hooks/`:** `useLanguage` fica em `i18n/hooks/`, e `usePrefersReducedMotion` é local ao carrossel.
-- **Catálogo fora do padrão:** a `CatalogPage` repete debounce, paginação e descarte de respostas antigas em vez de usar os hooks.
+- **Catálogo fora do padrão:** a `CatalogPage` repete debounce, paginação e descarte de respostas antigas em vez de usar os hooks. ([#8](https://github.com/Albertinesilva/asjcatalog-frontend/issues/8))
 - **Sem cache:** os hooks não guardam resultados entre telas; voltar a uma lista busca tudo de novo.
 
 ## Veja também

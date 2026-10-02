@@ -294,11 +294,11 @@ As props de cada componente ficam num `type Props` dentro do próprio arquivo, s
 
 - **Chaves de armazenamento espalhadas e com nomes diferentes:** `authData`, `pendingActivationEmail` e `activationResendAvailableAt` estão em `constants.ts`; `asj.theme` e `asj.lang` estão em `contexts/theme-context.ts` e `i18n/config.ts`, com outro padrão de nome.
 - **`constants.ts` mistura assuntos:** variáveis de ambiente, endpoints, chaves de armazenamento e tempos ficam no mesmo arquivo.
-- **Funções sem uso em `alerts.ts`:** `info`, `confirm`, `loading` e `close`.
-- **Tipos fora do lugar esperado:** `SpringPage` está em `product.ts`, embora seja genérico; os tipos de erro estão em `utils/`; e `types/index.ts` mistura tipos de dados com props de componentes.
-- **Dois nomes para o mesmo conceito:** `Paginated` e `SpringPage`, e `JwtPayload` e `AccessToken`.
-- **`categoryApi.update` usa `Category`** (com `id`), e não um tipo de requisição.
-- **Sem módulo de formatação:** a formatação de preço fica dentro do componente.
+- **Funções sem uso em `alerts.ts`:** `info`, `confirm`, `loading` e `close`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Tipos fora do lugar esperado:** `SpringPage` está em `product.ts`, embora seja genérico; os tipos de erro estão em `utils/`; e `types/index.ts` mistura tipos de dados com props de componentes. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Dois nomes para o mesmo conceito:** `Paginated` e `SpringPage`, e `JwtPayload` e `AccessToken`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **`categoryApi.update` usa `Category`** (com `id`), e não um tipo de requisição. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Sem módulo de formatação:** a formatação de preço fica dentro do componente. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
 
 ## Veja também
 

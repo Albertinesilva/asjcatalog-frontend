@@ -186,7 +186,7 @@ A lista de senhas comuns é pequena e local. O comentário no código lembra que
 O componente `PasswordStrength` mostra esse texto, uma barra de 5 segmentos e uma porcentagem.
 
 > [!WARNING]
-> A **barra e a porcentagem** não usam o mesmo cálculo do texto. Elas usam o campo `score`, que conta os **nove** critérios, dividido por 5. Na prática, a senha `abc` aparece com 100% e as cinco barras cheias (com o texto "Muito fraca"), e uma senha forte aparece com 180%. O texto do nível está correto; a barra e a porcentagem não. Esse comportamento foi registrado para correção.
+> A **barra e a porcentagem** não usam o mesmo cálculo do texto. Elas usam o campo `score`, que conta os **nove** critérios, dividido por 5. Na prática, a senha `abc` aparece com 100% e as cinco barras cheias (com o texto "Muito fraca"), e uma senha forte aparece com 180%. O texto do nível está correto; a barra e a porcentagem não. Esse comportamento foi registrado para correção. ([#5](https://github.com/Albertinesilva/asjcatalog-frontend/issues/5))
 
 ### Componentes
 
@@ -290,12 +290,12 @@ Depois do cadastro, o e-mail é guardado em `localStorage` (`pendingActivationEm
 
 ## Cuidados e limitações
 
-- **Medidor de força errado:** a barra e a porcentagem usam os nove critérios divididos por cinco (até 180%), embora o texto do nível esteja certo.
-- **Regex de e-mail restritiva e inconsistente:** recusa `+`, `'` e domínios com mais de 4 letras no login e no cadastro, mas o perfil aceita esses e-mails.
-- **E-mail sem formato no cadastro de usuário (admin):** o `UserForm` só exige o campo.
-- **Regras espalhadas:** cada tela escreve suas regras (por exemplo, limite de 80 caracteres no cadastro e de 100 no perfil para o mesmo campo "nome").
+- **Medidor de força errado:** a barra e a porcentagem usam os nove critérios divididos por cinco (até 180%), embora o texto do nível esteja certo. ([#5](https://github.com/Albertinesilva/asjcatalog-frontend/issues/5))
+- **Regex de e-mail restritiva e inconsistente:** recusa `+`, `'` e domínios com mais de 4 letras no login e no cadastro, mas o perfil aceita esses e-mails. ([#1](https://github.com/Albertinesilva/asjcatalog-frontend/issues/1))
+- **E-mail sem formato no cadastro de usuário (admin):** o `UserForm` só exige o campo. ([#22](https://github.com/Albertinesilva/asjcatalog-frontend/issues/22))
+- **Regras espalhadas:** cada tela escreve suas regras (por exemplo, limite de 80 caracteres no cadastro e de 100 no perfil para o mesmo campo "nome"). ([#22](https://github.com/Albertinesilva/asjcatalog-frontend/issues/22))
 - **Validação nativa desligada:** com `noValidate`, os atributos `required` e `type="email"` não bloqueiam o envio; tudo depende das regras do RHF.
-- **Tempo de espera não usado na tela de ativação:** o reenvio na `ActivateAccountPage` ignora o tempo de espera local.
+- **Tempo de espera não usado na tela de ativação:** o reenvio na `ActivateAccountPage` ignora o tempo de espera local. ([#22](https://github.com/Albertinesilva/asjcatalog-frontend/issues/22))
 - **Regex com a flag `g`** na `ActivationPendingPage` (`/.../g`): é diferente das outras telas e pode confundir quem reaproveitar o padrão, já que regex globais guardam estado entre usos de `test()`.
 
 ## Veja também

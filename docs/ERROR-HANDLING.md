@@ -293,12 +293,12 @@ try {
 
 ## Cuidados e limitações
 
-- **Erro de campo que não aparece:** `handleApiError` grava cada `fieldErrors[].fieldName` no formulário sem verificar se o campo existe, e devolve `true`. Se o nome não coincidir, o usuário não vê nada. Exemplo: a tela de segurança registra o campo `password`, mas envia à API o campo `newPassword`. Um erro de validação devolvido para `newPassword` não seria exibido (comportamento deduzido do código; depende do nome que a API usa nos `fieldErrors`).
-- **Catálogo sem mensagem de conexão:** o `CatalogPage` usa `parseApiError` diretamente e, numa falha de rede, mostra o erro genérico em vez de "falha de conexão".
-- **Chave de tradução inexistente:** `CategoryForm` usa `common:error`, que não existe nos arquivos de tradução. O texto cai no padrão fixo "Erro", em português, em qualquer idioma.
-- **Login sem `Accept-Language`:** mensagens de erro vindas do `/oauth2/token` não seguem o idioma escolhido.
+- **Erro de campo que não aparece:** `handleApiError` grava cada `fieldErrors[].fieldName` no formulário sem verificar se o campo existe, e devolve `true`. Se o nome não coincidir, o usuário não vê nada. Exemplo: a tela de segurança registra o campo `password`, mas envia à API o campo `newPassword`. Um erro de validação devolvido para `newPassword` não seria exibido (comportamento deduzido do código; depende do nome que a API usa nos `fieldErrors`). ([#6](https://github.com/Albertinesilva/asjcatalog-frontend/issues/6))
+- **Catálogo sem mensagem de conexão:** o `CatalogPage` usa `parseApiError` diretamente e, numa falha de rede, mostra o erro genérico em vez de "falha de conexão". ([#25](https://github.com/Albertinesilva/asjcatalog-frontend/issues/25))
+- **Chave de tradução inexistente:** `CategoryForm` usa `common:error`, que não existe nos arquivos de tradução. O texto cai no padrão fixo "Erro", em português, em qualquer idioma. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
+- **Login sem `Accept-Language`:** mensagens de erro vindas do `/oauth2/token` não seguem o idioma escolhido. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
 - **403 sem tratamento próprio:** a falta de permissão aparece como um erro comum, com a mensagem da API.
-- **Textos fixos em português** em `parseApiError` (padrões usados quando não há mensagem).
+- **Textos fixos em português** em `parseApiError` (padrões usados quando não há mensagem). ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
 
 ## Veja também
 

@@ -22,7 +22,7 @@ Hoje, qualquer mudança só é verificada manualmente, no navegador.
 ## Proposta de estratégia
 
 > [!NOTE]
-> **Proposta, ainda não implementada.** Nada desta seção existe no projeto. Antes de adotar, é preciso escolher versões compatíveis com o Vite 5 e o Node 20 do projeto e registrar as dependências no `package.json`.
+> **Proposta, ainda não implementada.** Nada desta seção existe no projeto. Antes de adotar, é preciso escolher versões compatíveis com o Vite 5 e o Node 20 do projeto e registrar as dependências no `package.json`. ([#4](https://github.com/Albertinesilva/asjcatalog-frontend/issues/4))
 
 ### Ferramentas sugeridas
 
@@ -109,8 +109,8 @@ Para rodar um arquivo assim, seria preciso instalar o Vitest, acrescentar um scr
 
 ## Cuidados e limitações
 
-- **Tudo nesta página, exceto "Estado atual", é proposta.** Nenhuma ferramenta, configuração ou arquivo de teste foi criado.
-- **Dependências novas exigem atenção:** o projeto exige Node 20 (`engine-strict`) e tem dois lockfiles (veja [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md#instalação)). Instale com o gerenciador adotado pelo projeto (npm) e confira a compatibilidade das versões.
+- **Tudo nesta página, exceto "Estado atual", é proposta.** Nenhuma ferramenta, configuração ou arquivo de teste foi criado. ([#4](https://github.com/Albertinesilva/asjcatalog-frontend/issues/4))
+- **Dependências novas exigem atenção:** o projeto exige Node 20 (`engine-strict`) e tem dois lockfiles (veja [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md#instalação)). Instale com o gerenciador adotado pelo projeto (npm) e confira a compatibilidade das versões. ([#3](https://github.com/Albertinesilva/asjcatalog-frontend/issues/3), [#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16))
 - **Código que depende do navegador:** `storage.ts`, `permissions.ts`, o interceptador e o `AuthContext` usam `window`, `localStorage` e eventos. Os testes precisam de um ambiente que simule o navegador (como o jsdom) e de limpar o `localStorage` entre os testes.
 - **Redirecionamento com recarga:** o interceptador usa `window.location.assign("/auth/login")`, que precisa ser simulado nos testes.
 - **Timers:** a renovação agendada, o debounce e o tempo de espera de reenvio dependem do relógio. Os testes devem usar relógio simulado (*fake timers*).

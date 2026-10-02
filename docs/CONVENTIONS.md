@@ -87,8 +87,8 @@ Regras de formatação (`.prettierrc`): linhas de até 100 caracteres, ponto e v
 Ajustes do projeto no ESLint:
 
 - `@typescript-eslint/no-unused-vars` está **desligada**, e o `tsconfig.json` também desliga `noUnusedLocals` e `noUnusedParameters`. Variáveis e imports sem uso não geram aviso.
-- Há uma regra `no-restricted-imports` que bloqueia o pacote `server-only`. O projeto não usa esse pacote, e a mensagem da regra cita um framework que o projeto também não usa.
-- Os padrões ignorados (`dist`, `.output`, `.vinxi`) incluem pastas que não existem no projeto.
+- Há uma regra `no-restricted-imports` que bloqueia o pacote `server-only`. O projeto não usa esse pacote, e a mensagem da regra cita um framework que o projeto também não usa. ([#17](https://github.com/Albertinesilva/asjcatalog-frontend/issues/17))
+- Os padrões ignorados (`dist`, `.output`, `.vinxi`) incluem pastas que não existem no projeto. ([#17](https://github.com/Albertinesilva/asjcatalog-frontend/issues/17))
 
 ### Scripts
 
@@ -154,13 +154,13 @@ Opcional: um total no dashboard (`DashboardPage`, cartão de métricas e atalho)
 Inconsistências de padrão encontradas no código:
 
 - **Nomes de componentes:** os de topo e de `ui/` usam `Nome/index.tsx`; os de `shared/` e `forms/password/` usam `Nome.tsx`.
-- **Arquivos fora do padrão kebab-case:** `pages/auth/_ui.ts` (com sublinhado) e os nomes simples `cn.ts`, `styles.ts`, `slides.ts`, `config.ts`, `http.ts`.
+- **Arquivos fora do padrão kebab-case:** `pages/auth/_ui.ts` (com sublinhado) e os nomes simples `cn.ts`, `styles.ts`, `slides.ts`, `config.ts`, `http.ts`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Chaves de tradução sem prefixo** apenas em `CategoryActions` (`t("actions.edit")`).
-- **Três formas de importar `cn`** e duas de importar o i18n (`@/i18n` e `@/i18n/config`).
-- **Imports relativos entre pastas** dentro de `components/` (`../NavbarLink`, `../cn`).
+- **Três formas de importar `cn`** e duas de importar o i18n (`@/i18n` e `@/i18n/config`). ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Imports relativos entre pastas** dentro de `components/` (`../NavbarLink`, `../cn`). ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Variáveis sem uso não são apontadas**, porque as regras correspondentes estão desligadas no ESLint e no TypeScript.
 - **Formulários sem sufixo `Page`:** `ProductForm`, `CategoryForm` e `UserForm` são telas de rota, mas seguem o padrão `Form`.
-- **Comentários de processo** ("Fase 10.3", "Architecture Freeze") ainda aparecem no código.
+- **Comentários de processo** ("Fase 10.3", "Architecture Freeze") ainda aparecem no código. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 
 ## Veja também
 

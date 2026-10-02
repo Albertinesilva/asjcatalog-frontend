@@ -269,11 +269,11 @@ Apesar do nome "Table", esses componentes **não** usam `<table>`: são listas d
 
 ### O que falta
 
-- **Botão dentro de link:** em dez lugares, um `<Button>` fica dentro de um `<Link>`. Isso gera `<button>` dentro de `<a>` (HTML inválido) e dois elementos focáveis para a mesma ação. Ocorrências: `HomePage` (2), `NotFoundPage`, `RegisterPage`, `RecoverPage`, `ResetPasswordPage`, `ActivateAccountPage` (3) e `NotFoundState`. A alternativa já usada no projeto é `buttonClasses` no `<Link>`.
-- **Seletor de idioma:** o comentário de `LanguageSelector` cita navegação por setas e fechamento ao perder o foco, mas o código só trata Escape e clique fora. Além disso, usa `role="listbox"` com `role="option"` em `<li>` que contêm `<button>`, um padrão que não segue a especificação ARIA de listbox.
-- **Listas sem semântica de tabela:** as `*Table` do dashboard são divs e cards, sem cabeçalhos de coluna para leitores de tela.
-- **Campos só com `aria-label`:** nas telas de autenticação e no `SearchInput`, vários campos não têm rótulo visível, apenas `placeholder` e `aria-label`.
-- **Sem "pular para o conteúdo":** não há link de atalho para pular a barra de navegação.
+- **Botão dentro de link:** em dez lugares, um `<Button>` fica dentro de um `<Link>`. Isso gera `<button>` dentro de `<a>` (HTML inválido) e dois elementos focáveis para a mesma ação. Ocorrências: `HomePage` (2), `NotFoundPage`, `RegisterPage`, `RecoverPage`, `ResetPasswordPage`, `ActivateAccountPage` (3) e `NotFoundState`. A alternativa já usada no projeto é `buttonClasses` no `<Link>`. ([#9](https://github.com/Albertinesilva/asjcatalog-frontend/issues/9))
+- **Seletor de idioma:** o comentário de `LanguageSelector` cita navegação por setas e fechamento ao perder o foco, mas o código só trata Escape e clique fora. Além disso, usa `role="listbox"` com `role="option"` em `<li>` que contêm `<button>`, um padrão que não segue a especificação ARIA de listbox. ([#10](https://github.com/Albertinesilva/asjcatalog-frontend/issues/10))
+- **Listas sem semântica de tabela:** as `*Table` do dashboard são divs e cards, sem cabeçalhos de coluna para leitores de tela. ([#21](https://github.com/Albertinesilva/asjcatalog-frontend/issues/21))
+- **Campos só com `aria-label`:** nas telas de autenticação e no `SearchInput`, vários campos não têm rótulo visível, apenas `placeholder` e `aria-label`. ([#21](https://github.com/Albertinesilva/asjcatalog-frontend/issues/21))
+- **Sem "pular para o conteúdo":** não há link de atalho para pular a barra de navegação. ([#21](https://github.com/Albertinesilva/asjcatalog-frontend/issues/21))
 
 ## Como criar um novo componente
 
@@ -291,12 +291,12 @@ Apesar do nome "Table", esses componentes **não** usam `<table>`: são listas d
 
 ## Cuidados e limitações
 
-- **Botão dentro de link** em dez lugares (lista em [O que falta](#o-que-falta)).
-- **Componentes de domínio em pastas genéricas:** os de produto ficam na raiz de `components/`, e `CategoryFilterSelect` e os esqueletos de tela ficam em `shared/`.
-- **Paginação do catálogo duplicada:** a `CatalogPage` tem paginação própria em vez de usar `Pagination`. Com mais de 11 páginas, ela mostra de 1 a 10, reticências e a última página. As páginas intermediárias além da 10ª não aparecem, e a página atual fica sem destaque.
-- **Ícones SVG repetidos:** cada componente desenha os próprios ícones (`Sidebar`, `DashboardPage`, `ProductShowcase`, `ThemeToggle`…), sem uma biblioteca ou módulo comum.
-- **`cn` não resolve conflitos** de classes Tailwind.
-- **Três formas de importar `cn`:** `@/components/ui`, `@/components/ui/cn` e `../cn`.
+- **Botão dentro de link** em dez lugares (lista em [O que falta](#o-que-falta)). ([#9](https://github.com/Albertinesilva/asjcatalog-frontend/issues/9))
+- **Componentes de domínio em pastas genéricas:** os de produto ficam na raiz de `components/`, e `CategoryFilterSelect` e os esqueletos de tela ficam em `shared/`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Paginação do catálogo duplicada:** a `CatalogPage` tem paginação própria em vez de usar `Pagination`. Com mais de 11 páginas, ela mostra de 1 a 10, reticências e a última página. As páginas intermediárias além da 10ª não aparecem, e a página atual fica sem destaque. ([#8](https://github.com/Albertinesilva/asjcatalog-frontend/issues/8))
+- **Ícones SVG repetidos:** cada componente desenha os próprios ícones (`Sidebar`, `DashboardPage`, `ProductShowcase`, `ThemeToggle`…), sem uma biblioteca ou módulo comum. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **`cn` não resolve conflitos** de classes Tailwind. ([#23](https://github.com/Albertinesilva/asjcatalog-frontend/issues/23))
+- **Três formas de importar `cn`:** `@/components/ui`, `@/components/ui/cn` e `../cn`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Sem componente de modal genérico:** diálogos que não sejam de confirmação precisariam de um componente novo.
 
 ## Veja também

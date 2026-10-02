@@ -228,7 +228,7 @@ As duas páginas leem o token da query string com `useSearchParams`, então func
 ```
 
 > [!WARNING]
-> **Não remova nem renomeie `/activate-account` e `/reset-password`** sem antes alterar os links enviados pelo backend. Se uma dessas rotas sumir, os links dos e-mails, inclusive os já enviados e ainda válidos, passam a cair na página 404, e o usuário não consegue ativar a conta nem redefinir a senha.
+> **Não remova nem renomeie `/activate-account` e `/reset-password`** sem antes alterar os links enviados pelo backend. Se uma dessas rotas sumir, os links dos e-mails, inclusive os já enviados e ainda válidos, passam a cair na página 404, e o usuário não consegue ativar a conta nem redefinir a senha. ([#26](https://github.com/Albertinesilva/asjcatalog-frontend/issues/26))
 
 ### Mantidas por compatibilidade
 
@@ -292,11 +292,11 @@ Todas as rotas ficam dentro de um `<Suspense fallback={<LoadingState />}>`. Enqu
 
 - **Proteção só na interface:** `PrivateRoute`, `RoleRoute` e `Authorization` apenas escondem telas e botões. Quem garante a segurança é a API, que deve recusar requisições sem permissão.
 - **Lista de prefixos duplicada:** `route-access.ts` repete manualmente os prefixos protegidos em `AppRoutes.tsx`.
-- **Rotas antigas sem redirecionamento:** `/login`, `/forgot-password` e `/activation-pending` mostram a mesma página de uma rota em `/auth/...`, ou seja, a mesma tela em dois endereços.
-- **Rotas usadas pelos e-mails do backend:** `/activate-account` e `/reset-password` dependem dos links montados pelo backend. Qualquer mudança nelas precisa ser feita junto com o backend.
-- **Breadcrumb por sequência de `if`:** `resolveBreadcrumb` cresce a cada nova rota do dashboard.
-- **404 sem layout:** a `NotFoundPage` não mostra a barra de navegação, e caminhos inválidos na área privada não exigem login.
-- **Botão dentro de link:** a `NotFoundPage` (e outras telas) colocam um `<Button>` dentro de um `<Link>`. Isso gera um `<button>` dentro de um `<a>`, o que é HTML inválido e atrapalha a navegação por teclado.
+- **Rotas antigas sem redirecionamento:** `/login`, `/forgot-password` e `/activation-pending` mostram a mesma página de uma rota em `/auth/...`, ou seja, a mesma tela em dois endereços. ([#19](https://github.com/Albertinesilva/asjcatalog-frontend/issues/19))
+- **Rotas usadas pelos e-mails do backend:** `/activate-account` e `/reset-password` dependem dos links montados pelo backend. Qualquer mudança nelas precisa ser feita junto com o backend. ([#26](https://github.com/Albertinesilva/asjcatalog-frontend/issues/26))
+- **Breadcrumb por sequência de `if`:** `resolveBreadcrumb` cresce a cada nova rota do dashboard. ([#19](https://github.com/Albertinesilva/asjcatalog-frontend/issues/19))
+- **404 sem layout:** a `NotFoundPage` não mostra a barra de navegação, e caminhos inválidos na área privada não exigem login. ([#19](https://github.com/Albertinesilva/asjcatalog-frontend/issues/19))
+- **Botão dentro de link:** a `NotFoundPage` (e outras telas) colocam um `<Button>` dentro de um `<Link>`. Isso gera um `<button>` dentro de um `<a>`, o que é HTML inválido e atrapalha a navegação por teclado. ([#9](https://github.com/Albertinesilva/asjcatalog-frontend/issues/9))
 
 ## Veja também
 

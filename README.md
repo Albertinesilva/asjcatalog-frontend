@@ -186,9 +186,11 @@ O alias `@/` aponta para `frontend/src/`. Exemplo: `import { useAuth } from "@/h
 
 ## Limitações conhecidas e próximos passos
 
-- **Somente Node 20.x:** o `npm install` não roda em versões mais novas. Próximo passo: revisar o campo `engines`.
-- **Tokens no `localStorage`:** o token de acesso e o de renovação ficam no armazenamento do navegador, que fica exposto se houver uma falha de XSS (*Cross-Site Scripting*, injeção de script na página). Próximo passo: avaliar outra forma de guardar a sessão junto com a API.
-- **Sem testes automatizados:** ainda não há testes nem ferramenta de teste configurada. Próximo passo: começar pelos fluxos de login e renovação de sessão e pela validação de senha.
+- **Somente Node 20.x:** o `npm install` não roda em versões mais novas. Próximo passo: revisar o campo `engines`. ([#3](https://github.com/Albertinesilva/asjcatalog-frontend/issues/3))
+- **Tokens no `localStorage`:** o token de acesso e o de renovação ficam no armazenamento do navegador, que fica exposto se houver uma falha de XSS (*Cross-Site Scripting*, injeção de script na página). Próximo passo: avaliar outra forma de guardar a sessão junto com a API. ([#2](https://github.com/Albertinesilva/asjcatalog-frontend/issues/2))
+- **Sem testes automatizados:** ainda não há testes nem ferramenta de teste configurada. Próximo passo: começar pelos fluxos de login e renovação de sessão e pela validação de senha. ([#4](https://github.com/Albertinesilva/asjcatalog-frontend/issues/4))
+
+A lista completa de melhorias e correções planejadas está nas [issues abertas](https://github.com/Albertinesilva/asjcatalog-frontend/issues).
 
 ---
 

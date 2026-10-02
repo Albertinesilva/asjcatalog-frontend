@@ -180,7 +180,7 @@ Um **proxy** é um intermediário: o navegador chama o próprio servidor do Vite
 - `changeOrigin: true` faz o Vite trocar o cabeçalho `Host` da requisição pelo endereço do destino.
 - O proxy só existe enquanto o servidor do Vite está rodando. Num build publicado em outro servidor, ele não existe.
 
-Na prática, **no desenvolvimento local o proxy não é usado**: como a aplicação roda em `localhost`, o `base-url.ts` escolhe o endereço direto da API.
+Na prática, **no desenvolvimento local o proxy não é usado**: como a aplicação roda em `localhost`, o `base-url.ts` escolhe o endereço direto da API. ([#17](https://github.com/Albertinesilva/asjcatalog-frontend/issues/17))
 
 ### CORS
 
@@ -262,14 +262,14 @@ copy .env.example .env.local
 
 ## Cuidados e limitações
 
-- **Só Node 20.x:** com `engines` + `engine-strict`, versões mais novas do Node não instalam o projeto.
-- **Variáveis no bundle:** `VITE_CLIENT_SECRET` fica visível para qualquer pessoa que abrir o JavaScript do site.
-- **Valores padrão silenciosos:** se uma variável faltar, o código usa o padrão de `constants.ts` sem avisar. Um build de produção sem `VITE_API_BASE_URL` aponta para `http://localhost:8080`.
+- **Só Node 20.x:** com `engines` + `engine-strict`, versões mais novas do Node não instalam o projeto. ([#3](https://github.com/Albertinesilva/asjcatalog-frontend/issues/3))
+- **Variáveis no bundle:** `VITE_CLIENT_SECRET` fica visível para qualquer pessoa que abrir o JavaScript do site. ([#2](https://github.com/Albertinesilva/asjcatalog-frontend/issues/2))
+- **Valores padrão silenciosos:** se uma variável faltar, o código usa o padrão de `constants.ts` sem avisar. Um build de produção sem `VITE_API_BASE_URL` aponta para `http://localhost:8080`. ([#13](https://github.com/Albertinesilva/asjcatalog-frontend/issues/13))
 - **`.env` não é ignorado:** só os arquivos `*.local` estão no `.gitignore`.
-- **Build sem checagem de tipos** e **nenhum script de testes**.
-- **Lint falha no Windows** por causa do fim de linha, sem `.gitattributes` no repositório.
-- **Dois lockfiles** (`package-lock.json` e `bun.lock`) convivem na pasta.
-- **Sem configuração de deploy:** o fallback para `index.html` precisa ser configurado à parte.
+- **Build sem checagem de tipos** e **nenhum script de testes**. ([#15](https://github.com/Albertinesilva/asjcatalog-frontend/issues/15), [#4](https://github.com/Albertinesilva/asjcatalog-frontend/issues/4))
+- **Lint falha no Windows** por causa do fim de linha, sem `.gitattributes` no repositório. ([#14](https://github.com/Albertinesilva/asjcatalog-frontend/issues/14))
+- **Dois lockfiles** (`package-lock.json` e `bun.lock`) convivem na pasta. ([#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16))
+- **Sem configuração de deploy:** o fallback para `index.html` precisa ser configurado à parte. ([#18](https://github.com/Albertinesilva/asjcatalog-frontend/issues/18))
 
 ## Veja também
 

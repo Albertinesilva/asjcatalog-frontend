@@ -280,13 +280,13 @@ Os alertas do **SweetAlert2** (veja [ERROR-HANDLING.md](ERROR-HANDLING.md#quando
 
 ## Cuidados e limitações
 
-- **Cor do navegador diferente da marca:** a `theme-color` do `index.html` e o `theme_color` do manifesto usam `#1F6FEB`, que não corresponde a nenhum token (a cor da marca, `--brand`, é aproximadamente `#1F3B60`). O `background_color` do manifesto (`#f5f8fc`) também é um valor fixo, próximo mas diferente de `--background`.
+- **Cor do navegador diferente da marca:** a `theme-color` do `index.html` e o `theme_color` do manifesto usam `#1F6FEB`, que não corresponde a nenhum token (a cor da marca, `--brand`, é aproximadamente `#1F3B60`). O `background_color` do manifesto (`#f5f8fc`) também é um valor fixo, próximo mas diferente de `--background`. ([#23](https://github.com/Albertinesilva/asjcatalog-frontend/issues/23))
 - **Fontes declaradas em três lugares:** `tailwind.config.ts`, `globals.css` (`body` e `h1`–`h6`) e o tema do SweetAlert2.
 - **Valores fixos no tema do SweetAlert2:** sombra, raio, tamanhos de fonte e curva de transição repetem os valores do Tailwind em vez de usar os tokens.
-- **Plugin `@tailwindcss/typography` sem uso:** está instalado e configurado, mas nenhuma classe `prose` é usada.
+- **Plugin `@tailwindcss/typography` sem uso:** está instalado e configurado, mas nenhuma classe `prose` é usada. ([#23](https://github.com/Albertinesilva/asjcatalog-frontend/issues/23))
 - **Sem `@layer`:** os estilos base ficam fora das camadas do Tailwind. Hoje isso não causa conflito, porque as utilidades (classes) têm mais prioridade que os seletores de elemento, mas pode surpreender quem acrescentar regras com classes no `globals.css`.
 - **Valores arbitrários:** vários componentes usam tamanhos fixos entre colchetes (`min-h-[320px]`, `max-w-[160px]`), fora das escalas do design system.
-- **Regras de tema duplicadas** no `index.html` e no `ThemeProvider` (veja [CONTEXTS.md](CONTEXTS.md#cuidados-e-limitações)).
+- **Regras de tema duplicadas** no `index.html` e no `ThemeProvider` (veja [CONTEXTS.md](CONTEXTS.md#cuidados-e-limitações)). ([#23](https://github.com/Albertinesilva/asjcatalog-frontend/issues/23))
 
 ## Veja também
 

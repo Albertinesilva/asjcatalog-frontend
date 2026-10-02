@@ -284,13 +284,13 @@ Exemplo hipotético: buscar as categorias de um produto.
 
 ## Cuidados e limitações
 
-- **Sem timeout:** a instância `http` não define `timeout`. Se a API travar, a tela fica em "carregando" indefinidamente.
+- **Sem timeout:** a instância `http` não define `timeout`. Se a API travar, a tela fica em "carregando" indefinidamente. ([#12](https://github.com/Albertinesilva/asjcatalog-frontend/issues/12))
 - **Services finos:** a maioria dos services só repete a `api/`. A camada existe, mas quase não tem lógica.
-- **Funções duplicadas:** `updateOwnPassword` faz o mesmo que `accountApi.updatePassword`, e `userService.updateAuthenticatedUser` faz o mesmo que `accountApi.updateMe`. Além disso, um endpoint de conta é oferecido pelo service de usuários.
-- **Código sem uso:** `userApi.register`, `userApi.activate` e `userApi.deactivate` (e o caminho `ENDPOINTS.usersRegister`) não são chamados por nenhuma tela.
-- **Normalização repetida:** o bloco que converte array em página aparece três vezes.
-- **Tipos inconsistentes:** `categoryApi.update` recebe uma `Category` completa (com `id` no corpo), enquanto `create` recebe `CategoryRequest`; `Paginated` e `SpringPage` são usados misturados.
-- **Inversão de camada:** `api/axios.ts` importa `routes/route-access.ts` e `i18n/http.ts`. Veja [ARCHITECTURE.md](ARCHITECTURE.md#mapa-de-dependências-entre-módulos).
+- **Funções duplicadas:** `updateOwnPassword` faz o mesmo que `accountApi.updatePassword`, e `userService.updateAuthenticatedUser` faz o mesmo que `accountApi.updateMe`. Além disso, um endpoint de conta é oferecido pelo service de usuários. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Código sem uso:** `userApi.register`, `userApi.activate` e `userApi.deactivate` (e o caminho `ENDPOINTS.usersRegister`) não são chamados por nenhuma tela. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Normalização repetida:** o bloco que converte array em página aparece três vezes. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Tipos inconsistentes:** `categoryApi.update` recebe uma `Category` completa (com `id` no corpo), enquanto `create` recebe `CategoryRequest`; `Paginated` e `SpringPage` são usados misturados. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Inversão de camada:** `api/axios.ts` importa `routes/route-access.ts` e `i18n/http.ts`. Veja [ARCHITECTURE.md](ARCHITECTURE.md#mapa-de-dependências-entre-módulos). ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 
 ## Veja também
 

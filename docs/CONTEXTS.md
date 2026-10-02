@@ -231,10 +231,10 @@ Os detalhes de `useAuth`, `useRoles` e `useTheme` estão em [HOOKS.md](HOOKS.md)
 
 ## Cuidados e limitações
 
-- **`isAuthenticated()` e `hasRole()` sem uso:** fazem parte de `AuthContextData`, mas nenhum componente os chama.
-- **Tema com regras duplicadas:** o script do `index.html` e o `ThemeProvider` repetem a mesma lógica e a mesma chave `asj.theme`. Mudar um sem o outro faz a tela "piscar" ou mostrar o tema errado ao carregar.
-- **Renovação proativa no contexto:** o `AuthContext` encerra a sessão em qualquer falha da renovação agendada, sem a checagem extra feita pelo interceptador. Veja [AUTHENTICATION.md](AUTHENTICATION.md#cuidados-e-limitações).
-- **Contexto chamando a API diretamente:** o `AuthProvider` importa `refreshSession` e `hasRefreshToken` de `api/auth-api.ts`, sem passar por `services/`.
+- **`isAuthenticated()` e `hasRole()` sem uso:** fazem parte de `AuthContextData`, mas nenhum componente os chama. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Tema com regras duplicadas:** o script do `index.html` e o `ThemeProvider` repetem a mesma lógica e a mesma chave `asj.theme`. Mudar um sem o outro faz a tela "piscar" ou mostrar o tema errado ao carregar. ([#23](https://github.com/Albertinesilva/asjcatalog-frontend/issues/23))
+- **Renovação proativa no contexto:** o `AuthContext` encerra a sessão em qualquer falha da renovação agendada, sem a checagem extra feita pelo interceptador. Veja [AUTHENTICATION.md](AUTHENTICATION.md#cuidados-e-limitações). ([#7](https://github.com/Albertinesilva/asjcatalog-frontend/issues/7))
+- **Contexto chamando a API diretamente:** o `AuthProvider` importa `refreshSession` e `hasRefreshToken` de `api/auth-api.ts`, sem passar por `services/`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Mensagens de erro dos hooks em português:** são mensagens para desenvolvedores, não aparecem para o usuário final.
 
 ## Veja também

@@ -215,9 +215,9 @@ Como ler o mapa:
 ## Cuidados e limitações
 
 - **Services finos:** `product-service` e `category-service` são só um "apelido" da `api/`. `user-service` acrescenta uma função que chama o endpoint de conta (`accountApi.updateMe`). A camada existe, mas quase não tem lógica própria.
-- **Inversão de camada:** `api/axios.ts` importa `routes/route-access.ts` e `i18n/http.ts`. Em uma arquitetura em camadas estrita, a camada HTTP não conheceria rotas.
-- **Context chamando a API direto:** `contexts/AuthContext.tsx` importa `api/auth-api.ts`, pulando a camada `services/`.
-- **Componentes de domínio em pasta genérica:** `ProductItem`, `ProductPrice`, `ProductImage`, `ProductShowcase` e alguns itens de `components/shared/` são específicos de uma tela, mas ficam junto dos componentes genéricos.
+- **Inversão de camada:** `api/axios.ts` importa `routes/route-access.ts` e `i18n/http.ts`. Em uma arquitetura em camadas estrita, a camada HTTP não conheceria rotas. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Context chamando a API direto:** `contexts/AuthContext.tsx` importa `api/auth-api.ts`, pulando a camada `services/`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Componentes de domínio em pasta genérica:** `ProductItem`, `ProductPrice`, `ProductImage`, `ProductShowcase` e alguns itens de `components/shared/` são específicos de uma tela, mas ficam junto dos componentes genéricos. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 
 ## Veja também
 
