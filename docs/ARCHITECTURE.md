@@ -227,4 +227,5 @@ Como ler o mapa:
 - [AUTHENTICATION.md](AUTHENTICATION.md): login, sessão e renovação de token.
 - [ERROR-HANDLING.md](ERROR-HANDLING.md): como os erros da API chegam à tela.
 - [CONTEXTS.md](CONTEXTS.md), [HOOKS.md](HOOKS.md) e [COMPONENTS.md](COMPONENTS.md): detalhes de `contexts/`, `hooks/` e `components/`.
+- [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md), [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md) e [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): formulários, estilo e idiomas.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

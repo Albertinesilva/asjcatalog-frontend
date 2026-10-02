@@ -35,7 +35,7 @@ O projeto usa contexto só para o que é realmente **global**: a sessão e o tem
 
 Os providers são montados em `App.tsx`, nesta ordem: `ThemeProvider` → `I18nProvider` → `BrowserRouter` → `AuthProvider` → rotas. O código e a explicação da ordem estão em [ARCHITECTURE.md](ARCHITECTURE.md#visão-geral).
 
-O `I18nProvider` não é um contexto do projeto: ele repassa a instância do i18next usada pela biblioteca de tradução e mantém o atributo `lang` do `<html>` atualizado. Os detalhes ficam no documento de internacionalização (próximo lote).
+O `I18nProvider` não é um contexto do projeto: ele repassa a instância do i18next usada pela biblioteca de tradução e mantém o atributo `lang` do `<html>` atualizado. Os detalhes estão em [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md).
 
 ## AuthContext
 
@@ -169,7 +169,7 @@ Guarda a **preferência de tema** do usuário e aplica o tema na página.
   }, [resolvedTheme]);
 ```
 
-O provider só coloca ou tira a classe **`dark`** do elemento `<html>`. As cores mudam porque o CSS global define variáveis diferentes quando essa classe está presente. As cores e os tokens serão detalhados no documento de estilo e tema (próximo lote).
+O provider só coloca ou tira a classe **`dark`** do elemento `<html>`. As cores mudam porque o CSS global define variáveis diferentes quando essa classe está presente. As cores e os tokens estão em [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md#modo-escuro).
 
 ### Persistência (`asj.theme`)
 
@@ -243,4 +243,6 @@ Os detalhes de `useAuth`, `useRoles` e `useTheme` estão em [HOOKS.md](HOOKS.md)
 - [HOOKS.md](HOOKS.md): `useAuth`, `useRoles`, `useTheme` e os demais hooks.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): como `PrivateRoute` e `RoleRoute` usam o `AuthContext`.
 - [ARCHITECTURE.md](ARCHITECTURE.md): ordem dos providers e camadas.
+- [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md): tokens de cor e modo escuro.
+- [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): o `I18nProvider` e o idioma.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

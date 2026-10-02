@@ -45,17 +45,26 @@ Tipo de credencial do cabeçalho `Authorization: Bearer <token>`. Significa "por
 **Breadcrumb**
 "Trilha de navegação" exibida acima do título, como `Dashboard / Produtos / Editar`. Mostra onde o usuário está e permite voltar aos níveis anteriores.
 
+**Breakpoint**
+Largura de tela a partir da qual um estilo com prefixo passa a valer. No Tailwind, `lg:flex` só vale a partir de 1024 px. O projeto usa os breakpoints padrão (`sm`, `md`, `lg`, `xl`, `2xl`).
+
 **Build**
 Processo que transforma o código-fonte (TypeScript, JSX, CSS) em arquivos otimizados que o navegador entende. No projeto, `npm run build` gera a pasta `frontend/dist/`.
 
 **Bundle**
 O conjunto de arquivos JavaScript e CSS gerado pelo build e enviado ao navegador. Tudo o que está no bundle pode ser lido por quem acessa o site.
 
+**Chave de tradução**
+Identificador de um texto traduzido, no formato `namespace:caminho`, como `auth:login.title`. O código usa a chave, e o arquivo de cada idioma traz o texto.
+
 **Chunk**
 Um pedaço do bundle gerado separadamente. Telas carregadas com lazy loading viram chunks próprios, baixados só quando necessários.
 
 **Claim**
 Cada informação dentro do payload de um JWT, como `exp` (expiração), `userId` ou `authorities` (perfis).
+
+**Classe utilitária**
+Classe CSS que faz uma única coisa, como `flex`, `p-md` ou `text-danger`. O Tailwind é formado por classes utilitárias combinadas no JSX.
 
 **Cliente público (OAuth2)**
 Aplicação que não consegue guardar um segredo, porque o código dela fica acessível ao usuário. SPAs que rodam no navegador são clientes públicos.
@@ -99,6 +108,9 @@ Um endereço específico da API que responde a uma ação. Exemplo: `GET /api/v1
 **ESLint**
 Ferramenta que analisa o código em busca de erros e de padrões fora das regras do projeto. Roda com `npm run lint`.
 
+**Fallback de idioma**
+Idioma usado quando o idioma do usuário não é suportado ou quando falta uma tradução. No projeto, é o `pt-BR`.
+
 **Fallback de SPA**
 Configuração do servidor que devolve o `index.html` para qualquer caminho que não seja um arquivo real. Sem ela, abrir diretamente uma URL como `/catalog/7` resulta em 404.
 
@@ -132,6 +144,9 @@ Função do React que começa com `use` e dá acesso a recursos como estado e co
 **Hook customizado (custom hook)**
 Hook escrito pelo próprio projeto, que junta lógica de estado e efeitos reaproveitada por várias telas. Exemplos: `usePagedQuery`, `useResource`.
 
+**HSL**
+Forma de descrever uma cor por matiz (*hue*, de 0 a 360), saturação e luminosidade (*lightness*), como `214 51% 25%`. Os tokens de cor do projeto usam esse formato.
+
 **HTTP**
 *HyperText Transfer Protocol*: o protocolo usado pelo navegador para conversar com servidores. Cada requisição tem um método (`GET`, `POST`…), um endereço, cabeçalhos e, às vezes, um corpo.
 
@@ -146,6 +161,9 @@ Função do Axios que roda automaticamente antes de cada requisição ou depois 
 
 **Interceptor**
 Nome em inglês do interceptador. Veja **Interceptador**.
+
+**Interpolação**
+Substituição de variáveis dentro de um texto traduzido. Em `"Olá, {{name}}"`, o `{{name}}` é trocado pelo valor passado a `t`.
 
 **JSON**
 *JavaScript Object Notation*: formato de texto para representar dados, como `{ "id": 7, "name": "Notebook" }`. É o formato usado pela API.
@@ -173,6 +191,12 @@ Arquivo que registra as versões exatas de cada dependência instalada, para que
 
 **Media query**
 Condição do CSS (ou do JavaScript, via `matchMedia`) sobre o ambiente, como a largura da tela ou a preferência do sistema por tema escuro (`prefers-color-scheme: dark`).
+
+**Mobile-first**
+Forma de escrever estilos começando pelas telas pequenas: as classes sem prefixo valem para o celular, e os prefixos (`md:`, `lg:`) ajustam telas maiores.
+
+**Namespace (i18n)**
+Grupo de textos de um mesmo assunto, guardado num arquivo próprio por idioma, como `auth.json` ou `products.json`.
 
 **Node.js**
 Ambiente que executa JavaScript fora do navegador. É necessário para instalar as dependências e rodar o Vite.
@@ -210,6 +234,9 @@ Papel do usuário que define o que ele pode fazer. O frontend conhece `ROLE_ADMI
 **PKCE**
 *Proof Key for Code Exchange*: extensão do OAuth2 que protege o fluxo *Authorization Code* em clientes públicos, como SPAs. É o fluxo recomendado hoje para aplicações que rodam no navegador.
 
+**Plural (i18n)**
+Escolha automática da forma singular ou plural de um texto conforme a quantidade. No i18next, usa as chaves com sufixo `_one` e `_other` e o valor `count`.
+
 **Preflight**
 Requisição automática (`OPTIONS`) que o navegador faz antes de certas chamadas para outro endereço, perguntando à API se ela aceita a chamada. Faz parte do CORS.
 
@@ -242,6 +269,9 @@ Biblioteca que liga URLs a componentes React e permite navegar sem recarregar a 
 
 **Refresh token**
 Token de longa duração usado para pedir um novo token de acesso quando o atual expira, sem precisar fazer login de novo.
+
+**Regex (expressão regular)**
+Padrão de texto usado para verificar ou encontrar trechos, como o formato de um e-mail. Exemplo: `/^\d+$/` aceita só dígitos.
 
 **RFC**
 *Request for Comments*: documentos que definem os padrões da internet. O OAuth2 e suas recomendações de segurança (como a RFC 9700) são publicados como RFCs.
@@ -282,11 +312,17 @@ Tempo máximo de espera por uma resposta. Passado esse tempo, a requisição é 
 **Token de acesso**
 Credencial temporária devolvida pela API no login. É enviada no cabeçalho `Authorization` para provar quem está fazendo a requisição.
 
+**Token de design**
+Nome que representa um valor de design, como uma cor ou um espaçamento. No projeto, os tokens de cor são semânticos (`--primary`, `--danger`) e mudam de valor entre os temas claro e escuro.
+
 **TypeScript**
 Linguagem que adiciona tipos ao JavaScript. Os tipos são verificados antes da execução (`npx tsc --noEmit`), o que ajuda a achar erros cedo.
 
 **useCallback**
 Hook do React que mantém a mesma função entre renderizações enquanto as dependências não mudam. É necessário nos `fetcher`s de `usePagedQuery` e `useResource`, para não disparar buscas a cada renderização.
+
+**useTranslation**
+Hook da biblioteca react-i18next que devolve a função `t`, usada para obter os textos traduzidos no idioma ativo.
 
 **Variante**
 Versão pré-definida de um componente, escolhida por uma prop. Exemplo: `variant="danger"` no `Button` gera o botão vermelho de ações destrutivas.
@@ -296,6 +332,9 @@ Valor de configuração definido fora do código, por exemplo em `.env.local`. N
 
 **Vite**
 Ferramenta de desenvolvimento e build do projeto. Sobe o servidor local (`npm run dev`) e gera os arquivos de produção (`npm run build`).
+
+**WCAG**
+*Web Content Accessibility Guidelines*: diretrizes de acessibilidade para a web. O nível AA exige, por exemplo, contraste de pelo menos 4,5:1 entre texto normal e fundo.
 
 **x-www-form-urlencoded**
 Formato de corpo de requisição com pares `chave=valor` separados por `&`, como nos formulários HTML. É o formato exigido pelo endpoint `/oauth2/token`.

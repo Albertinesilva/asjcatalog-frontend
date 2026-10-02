@@ -380,7 +380,7 @@ export function useLanguage() {
   const { current, activeMeta, available, change } = useLanguage();
 ```
 
-Os detalhes de i18n ficam no documento de internacionalização (próximo lote).
+Os detalhes de i18n estão em [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md).
 
 ## Outros hooks
 

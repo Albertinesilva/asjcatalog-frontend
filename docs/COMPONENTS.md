@@ -304,4 +304,7 @@ Apesar do nome "Table", esses componentes **não** usam `<table>`: são listas d
 - [HOOKS.md](HOOKS.md): hooks usados pelos componentes (`useRoles`, `useTheme`, `useLanguage`, `useDebouncedValue`).
 - [ERROR-HANDLING.md](ERROR-HANDLING.md): quando usar `ErrorState`, `NotFoundState` e alertas.
 - [ROUTES-AND-PAGES.md](ROUTES-AND-PAGES.md): layouts que usam `Navbar` e `Sidebar`.
+- [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md): formulários e componentes de senha.
+- [STYLING-AND-THEMING.md](STYLING-AND-THEMING.md): tokens, tipografia e escalas usados pelos componentes.
+- [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): textos padrão traduzidos dos componentes.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

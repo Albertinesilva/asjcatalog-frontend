@@ -306,4 +306,6 @@ try {
 - [AUTHENTICATION.md](AUTHENTICATION.md): o que acontece quando a sessão expira.
 - [HOOKS.md](HOOKS.md): `usePagedQuery` e `useResource`, que já convertem erros em mensagem.
 - [COMPONENTS.md](COMPONENTS.md): `ErrorState`, `NotFoundState`, `ConfirmDialog` e demais componentes de estado.
+- [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md): os formulários que usam `handleApiError`.
+- [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md): o `Accept-Language` e as traduções do frontend.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.
