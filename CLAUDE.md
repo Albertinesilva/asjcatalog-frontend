@@ -203,8 +203,8 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - Sempre use `--repo Albertinesilva/asjcatalog-frontend` nos comandos `gh`.
 - Antes de criar, confira se já existe uma issue igual (`gh issue list --state all`).
 - Corpo em português, com as seções: Contexto, Problema, Proposta, Critérios de aceitação, Documentação relacionada e Envolve o backend.
-- Labels de tipo: `bug`, `security`, `enhancement`, `tech-debt` (antes `refactor`; renomeação pendente), `accessibility`, `i18n`, `tests`, `documentation`; de prioridade: `priority: high`, `priority: medium`, `priority: low`; **`backend`** quando a mudança exigir alteração no backend; `production-readiness` (a criar) para o necessário à produção; e `good first issue` para quem está começando.
-- Milestone proposto: **Pronto para produção**, como no backend (a criar, se aprovado).
+- Labels de tipo: `bug`, `security`, `enhancement`, `tech-debt` (antes `refactor`), `accessibility`, `i18n`, `tests`, `documentation`; de prioridade: `priority: high`, `priority: medium`, `priority: low`; **`backend`** quando a mudança exigir alteração no backend; `production-readiness` para o necessário à produção; e `good first issue` para quem está começando.
+- Milestone **Pronto para produção**, como no backend, para o que precisa estar resolvido antes do deploy.
 - Links para o código em issues usam *permalink* com o SHA do commit, para não apontarem para linhas que mudaram.
 - Ao citar issues do outro repositório, use a referência completa (`Albertinesilva/<repositório>#N`).
 - Passe o corpo por arquivo (`--body-file`), com o arquivo temporário fora do repositório.
@@ -251,16 +251,21 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 
 ## 16. Estado atual (atualizar a cada etapa)
 
-Atualizado em 16/10/2026.
+Atualizado em 17/10/2026.
 
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
-- Documentação completa em `docs/` e 26 issues abertas (#1 a #26).
-- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT, os modelos de issue e de PR, o CI (com o lint bloqueando) e os ajustes em `docs/`. Falta ligar as issues do frontend às do backend.
-- **Bug em correção, sem issue:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
-  - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
+- Documentação completa em `docs/` e 31 issues abertas (#1 a #31).
+- Padrão de trabalho do backend aplicado: este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e de PR, CI (com o lint bloqueando) e ajustes em `docs/`.
+- Issues ligadas entre os dois repositórios, com comentários de referência cruzada:
+  - novas no frontend: #27 (respostas de erro do backend), #28 (dono dos produtos e categorias), #29 (desativação e reativação de conta), #30 (confirmação da troca de e-mail) e #31 (itens inativos);
+  - novas no backend: #46 (link de recuperação com `/auth/reset-password`, par da #26), #47 (revogação do refresh token, par da #11) e #48 (dono dos produtos e categorias, par da #28);
+  - issues do backend com a label `frontend`: #2 a #6, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39, #44, #46, #47 e #48.
+- Milestone **Pronto para produção** criado com #1, #11, #13, #28 e #30. As #2, #7 e #18 ficam fora por enquanto.
+- **Regra de negócio decidida e ainda não implementada** (#28 aqui e #48 no backend): cada produto e categoria registra quem o cadastrou; o OPERATOR só altera o que cadastrou, e os registros do banco populado, só o ADMIN; categoria associada a produto não pode ser excluída nem desativada por ninguém.
+- **Bug a corrigir sem issue, numa branch própria:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
+  - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:64`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).
   - A correção precisa enviar `name` mesmo quando só a descrição muda (`@NotBlank` no `CategoryUpdateRequest` do backend).
-- Próximo passo depois disso: comparar todas as chamadas à API com a tabela de endpoints do backend e listar divergências.
-- Issues do backend com a label `frontend`: #2 a #6, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39 e #44 (produto criado sem preço).
+- Próximos passos: configurar no GitHub os rulesets e as opções de segurança (as labels já estão configuradas); levar a `develop` para a `main` e publicar; corrigir o bug da categoria; comparar todas as chamadas à API com a tabela de endpoints do backend.
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.
