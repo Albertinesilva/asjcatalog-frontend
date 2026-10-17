@@ -93,7 +93,7 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - **Sempre** rode `npx tsc --noEmit`, `npm run build` e `npm run lint` em `frontend/` depois de alterar código.
 - O lint acusa erros de fim de linha (CRLF) no Windows enquanto não houver `.gitattributes` (issue #14): separe esses avisos dos erros reais. O repositório guarda os arquivos em LF; o CRLF aparece só na cópia de trabalho do Windows (`core.autocrlf=true`).
 - **Testes:** ainda não existem (issue #4; proposta em [TESTING.md](docs/TESTING.md)).
-- **CI:** ainda não existe; será criado em `.github/workflows/ci.yml`.
+- **CI:** `.github/workflows/ci.yml` roda em `pull_request` e `push` na `develop` (nunca `pull_request_target`): Node do `frontend/.nvmrc`, `npm ci`, `npx tsc --noEmit`, `npm run build` e `npm run lint`. O lint ainda tem `continue-on-error` (não bloqueia) até a primeira execução confirmar que passa.
 - **Nunca** rode `npm install` nem os scripts do `package.json` da **raiz**.
 
 ## 6. Princípios de arquitetura (não quebrar)
@@ -256,7 +256,7 @@ Atualizado em 16/10/2026.
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
 - Documentação completa em `docs/` e 26 issues abertas (#1 a #26).
-- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT e os modelos de issue e de PR; faltam o CI e os ajustes em `docs/`.
+- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT, os modelos de issue e de PR e o CI; faltam os ajustes em `docs/`.
 - **Bug em correção, sem issue:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
   - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).
