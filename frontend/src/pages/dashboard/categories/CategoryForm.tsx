@@ -45,10 +45,7 @@ export default function CategoryForm({ mode }: Props) {
           t("categories:form.successNewMessage"),
         );
       } else if (id) {
-        await categoryService.update(Number(id), {
-          id: Number(id),
-          name: data.name,
-        });
+        await categoryService.update(Number(id), { name: data.name });
         await alerts.success(
           t("categories:form.successEditTitle"),
           t("categories:form.successEditMessage"),

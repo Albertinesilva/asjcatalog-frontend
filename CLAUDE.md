@@ -263,9 +263,11 @@ Atualizado em 17/10/2026.
   - issues do backend com a label `frontend`: #2 a #6, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39, #44, #46, #47 e #48.
 - Milestone **Pronto para produção** criado com #1, #11, #13, #28 e #30. As #2, #7 e #18 ficam fora por enquanto.
 - **Regra de negócio decidida e ainda não implementada** (#28 aqui e #48 no backend): cada produto e categoria registra quem o cadastrou; o OPERATOR só altera o que cadastrou, e os registros do banco populado, só o ADMIN; categoria associada a produto não pode ser excluída nem desativada por ninguém.
-- **Bug a corrigir sem issue, numa branch própria:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
-  - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:64`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
+- **Bug corrigido sem issue, na branch `fix/categoria-patch`:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` respondia **500**.
+  - Causa: o frontend usava `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).
-  - A correção precisa enviar `name` mesmo quando só a descrição muda (`@NotBlank` no `CategoryUpdateRequest` do backend).
-- Próximos passos: configurar no GitHub os rulesets e as opções de segurança (as labels já estão configuradas); levar a `develop` para a `main` e publicar; corrigir o bug da categoria; comparar todas as chamadas à API com a tabela de endpoints do backend.
+  - Correção: `categoryApi.update` usa `http.patch` com `CategoryRequest`, e o `CategoryForm` envia sempre o `name` (`@NotBlank` no `CategoryUpdateRequest` do backend), sem o `id` no corpo.
+  - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual).
+- Chamadas à API comparadas com a tabela de endpoints do backend: fora a categoria, verbos, rotas e corpos batem. Ficam listados `userApi.register` (rota `/api/v1/users/register` inexistente, sem uso) e `userApi.activate`/`deactivate` tipados como `User`, embora a API responda 204 (#24).
+- Próximos passos: abrir o PR da `fix/categoria-patch` para a `develop`; conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados).
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.

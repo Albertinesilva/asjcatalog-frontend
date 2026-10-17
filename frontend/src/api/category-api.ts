@@ -61,8 +61,12 @@ export const categoryApi = {
   create: (data: CategoryRequest) =>
     http.post<Category>(ENDPOINTS.categories, data).then((r) => r.data),
 
-  update: (id: number, data: Category) =>
-    http.put<Category>(`${ENDPOINTS.categories}/${id}`, data).then((r) => r.data),
+  /**
+   * Atualização (`PATCH /categories/{id}` → `CategoryResponse`). Apesar do verbo,
+   * não é parcial: o backend exige `name`; `description` ausente mantém a atual.
+   */
+  update: (id: number, data: CategoryRequest) =>
+    http.patch<Category>(`${ENDPOINTS.categories}/${id}`, data).then((r) => r.data),
 
   delete: (id: number) => http.delete<void>(`${ENDPOINTS.categories}/${id}`).then((r) => r.data),
 };

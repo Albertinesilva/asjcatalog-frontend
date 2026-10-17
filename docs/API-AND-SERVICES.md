@@ -179,7 +179,7 @@ Os caminhos ficam no objeto `ENDPOINTS` de `frontend/src/utils/constants.ts`.
 | GET | `/api/v1/categories` (todas as páginas) | `categoryApi.findAll` | `categoryService.findAll` | `CatalogPage` e `ProductListPage` (filtro), `ProductForm` (seleção de categorias) |
 | GET | `/api/v1/categories/{id}` | `categoryApi.findById` | `categoryService.findById` | `CategoryForm` (edição) |
 | POST | `/api/v1/categories` | `categoryApi.create` | `categoryService.create` | `CategoryForm` (criação) |
-| PUT | `/api/v1/categories/{id}` | `categoryApi.update` | `categoryService.update` | `CategoryForm` (edição) |
+| PATCH | `/api/v1/categories/{id}` | `categoryApi.update` | `categoryService.update` | `CategoryForm` (edição) |
 | DELETE | `/api/v1/categories/{id}` | `categoryApi.delete` | `categoryService.delete` | `CategoryListPage` |
 
 ### Usuários (administração)
@@ -289,7 +289,7 @@ Exemplo hipotético: buscar as categorias de um produto.
 - **Funções duplicadas:** `updateOwnPassword` faz o mesmo que `accountApi.updatePassword`, e `userService.updateAuthenticatedUser` faz o mesmo que `accountApi.updateMe`. Além disso, um endpoint de conta é oferecido pelo service de usuários. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Código sem uso:** `userApi.register`, `userApi.activate` e `userApi.deactivate` (e o caminho `ENDPOINTS.usersRegister`) não são chamados por nenhuma tela. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Normalização repetida:** o bloco que converte array em página aparece três vezes. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
-- **Tipos inconsistentes:** `categoryApi.update` recebe uma `Category` completa (com `id` no corpo), enquanto `create` recebe `CategoryRequest`; `Paginated` e `SpringPage` são usados misturados. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
+- **Tipos inconsistentes:** `Paginated` e `SpringPage` são usados misturados. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Inversão de camada:** `api/axios.ts` importa `routes/route-access.ts` e `i18n/http.ts`. Veja [ARCHITECTURE.md](ARCHITECTURE.md#mapa-de-dependências-entre-módulos). ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 
 ## Veja também
