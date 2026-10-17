@@ -93,7 +93,7 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - **Sempre** rode `npx tsc --noEmit`, `npm run build` e `npm run lint` em `frontend/` depois de alterar código.
 - O lint acusa erros de fim de linha (CRLF) no Windows enquanto não houver `.gitattributes` (issue #14): separe esses avisos dos erros reais. O repositório guarda os arquivos em LF; o CRLF aparece só na cópia de trabalho do Windows (`core.autocrlf=true`).
 - **Testes:** ainda não existem (issue #4; proposta em [TESTING.md](docs/TESTING.md)).
-- **CI:** `.github/workflows/ci.yml` roda em `pull_request` e `push` na `develop` (nunca `pull_request_target`): Node do `frontend/.nvmrc`, `npm ci`, `npx tsc --noEmit`, `npm run build` e `npm run lint`. O lint ainda tem `continue-on-error` (não bloqueia) até a primeira execução confirmar que passa.
+- **CI:** `.github/workflows/ci.yml` roda em `pull_request` e `push` na `develop` (nunca `pull_request_target`): Node do `frontend/.nvmrc`, `npm ci`, `npx tsc --noEmit`, `npm run build` e `npm run lint`. Os quatro passos bloqueiam: se um falhar, o CI falha.
 - **Nunca** rode `npm install` nem os scripts do `package.json` da **raiz**.
 
 ## 6. Princípios de arquitetura (não quebrar)
@@ -196,7 +196,7 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - Exemplos: `fix(categories): usa patch na edição de categoria`, `docs(readme): atualiza a seção de execução`.
 - **Sem linha `Co-Authored-By` (nem outra atribuição) de ferramentas de IA.**
 - Ao resolver uma issue, cite o número (`Refs #1`). O fechamento automático só acontece na branch padrão (`main`), então as issues resolvidas na `develop` são fechadas manualmente.
-- Atenção: os commits antigos e o [CONVENTIONS.md](docs/CONVENTIONS.md) usam inglês no imperativo; o padrão acima vale daqui em diante, e o `CONVENTIONS.md` será atualizado para segui-lo.
+- Atenção: os commits antigos e o [CONVENTIONS.md](docs/CONVENTIONS.md) usam inglês no imperativo; o padrão acima vale daqui em diante e é o mesmo descrito no `CONVENTIONS.md`.
 
 ## 12. Issues
 
@@ -256,7 +256,7 @@ Atualizado em 16/10/2026.
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
 - Documentação completa em `docs/` e 26 issues abertas (#1 a #26).
-- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT, os modelos de issue e de PR e o CI; faltam os ajustes em `docs/`.
+- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT, os modelos de issue e de PR, o CI (com o lint bloqueando) e os ajustes em `docs/`. Falta ligar as issues do frontend às do backend.
 - **Bug em correção, sem issue:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
   - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).

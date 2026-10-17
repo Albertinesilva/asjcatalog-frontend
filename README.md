@@ -174,7 +174,7 @@ asjcatalog-frontend/
 ```
 
 > [!NOTE]
-> O `package.json` e o `.gitignore` da raiz existem apenas para o **Lovable**, plataforma que publica o site a partir deste repositório. Eles não são usados no desenvolvimento local, que é feito dentro de `frontend/` com o npm. A explicação completa está em [Arquivos usados pela publicação no Lovable](docs/ENVIRONMENT-AND-SETUP.md#arquivos-usados-pela-publicação-no-lovable).
+> O `package.json` e o `.gitignore` da raiz existem apenas para o **Lovable**, plataforma que publica o site a partir da branch `main`. O Lovable gerou a base da interface, mas não é mais usado para editar o código: todo o trabalho acontece na `develop`, e a `main` só recebe o que vem dela, para publicar. Eles não são usados no desenvolvimento local, que é feito dentro de `frontend/` com o npm. A explicação completa está em [Arquivos usados pela publicação no Lovable](docs/ENVIRONMENT-AND-SETUP.md#arquivos-usados-pela-publicação-no-lovable).
 
 O alias `@/` aponta para `frontend/src/`. Exemplo: `import { useAuth } from "@/hooks/useAuth"`.
 
@@ -222,7 +222,7 @@ A documentação técnica fica na pasta [`docs/`](docs/), com um arquivo por ass
 11. [Estilo e tema](docs/STYLING-AND-THEMING.md): Tailwind, tokens de cor e modo escuro.
 12. [Internacionalização](docs/INTERNATIONALIZATION.md): idiomas, namespaces e como manter as traduções.
 13. [Utilitários e tipos](docs/UTILS-AND-TYPES.md): funções de `utils/` e tipos de `types/`.
-14. [Convenções](docs/CONVENTIONS.md): nomes, lint, commits e o guia para criar uma tela CRUD.
+14. [Convenções](docs/CONVENTIONS.md): nomes, lint, CI, commits, branches e Pull Requests e o guia para criar uma tela CRUD.
 15. [Testes](docs/TESTING.md): estado atual e proposta de estratégia de testes.
 
 Consulta: [Glossário](docs/GLOSSARY.md), com os termos técnicos usados na documentação.

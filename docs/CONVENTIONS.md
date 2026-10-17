@@ -2,7 +2,7 @@
 
 # Convenções
 
-Este documento reúne os padrões praticados no código do ASJCatalog: como nomear arquivos, pastas, componentes, funções e tipos, como organizar exports e imports, como funcionam o lint e a formatação e qual formato de mensagem de commit seguir. No fim, há um guia passo a passo para criar uma nova tela de cadastro (CRUD), com links para os documentos que detalham cada etapa.
+Este documento reúne os padrões praticados no código do ASJCatalog: como nomear arquivos, pastas, componentes, funções e tipos, como organizar exports e imports, como funcionam o lint e a formatação, qual formato de mensagem de commit seguir e como as branches e os Pull Requests se organizam. No fim, há um guia passo a passo para criar uma nova tela de cadastro (CRUD), com links para os documentos que detalham cada etapa.
 
 ## Onde fica no código
 
@@ -103,27 +103,59 @@ Rode dentro de `frontend/`:
 
 No Windows, o `lint` costuma acusar erros `Delete ␍`, causados só pelo fim de linha CRLF. Veja [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md#observações-para-windows).
 
-O projeto não tem verificação automática antes do commit (*pre-commit hooks*), integração contínua (CI) nem arquivo `.editorconfig`. Rodar o lint e a checagem de tipos é responsabilidade de quem faz a alteração.
+A **integração contínua (CI)** roda essas verificações no GitHub: o workflow `.github/workflows/ci.yml` executa `npm ci`, `npx tsc --noEmit`, `npm run build` e `npm run lint` em cada Pull Request e em cada push para a `develop`. Se um dos passos falhar, o CI falha e o Pull Request não deve entrar. Como o runner do GitHub usa Linux e recebe os arquivos em LF, os erros `Delete ␍` do Windows não aparecem lá.
+
+O projeto não tem verificação automática antes do commit (*pre-commit hooks*) nem arquivo `.editorconfig`. Por isso, rode o lint e a checagem de tipos na sua máquina antes do push, para não descobrir o erro só no CI.
 
 ## Mensagens de commit
 
-Os commits recentes seguem o padrão **Conventional Commits**, no formato `tipo(escopo opcional): descrição`, com a descrição em inglês e no imperativo.
+Os commits seguem o padrão **Conventional Commits**, no formato:
+
+```text
+tipo(escopo): descrição
+```
+
+- **tipo**: a natureza da mudança (tabela abaixo);
+- **escopo**: opcional, indica a área afetada (por exemplo, `categories`, `auth`, `i18n`, `readme`);
+- **descrição**: em português, em letra minúscula, no presente e na terceira pessoa (`adiciona`, `corrige`, `remove`), sem ponto final.
+
+| Tipo | Uso |
+| --- | --- |
+| `feat` | Funcionalidade nova |
+| `fix` | Correção |
+| `refactor` | Mudança de código sem mudar comportamento |
+| `test` | Testes |
+| `docs` | Documentação |
+| `build` | Build e dependências |
+| `ci` | Integração contínua |
 
 Exemplos reais do histórico:
 
 ```text
-fix(auth): handle invalid credentials on login
-refactor(ui): standardize UI states and error handling
-fix(a11y): improve dialog and form accessibility
-chore: standardize display name to ASJCatalog
-docs: rewrite README and add .env.example
+docs(claude): adiciona o CLAUDE.md e define o papel do Lovable só na publicação
+docs(contributing): adiciona guia de contribuição, código de conduta, licença e modelos de issue e pr
+ci: adiciona workflow com checagem de tipos, build e lint na develop
 ```
 
-Tipos usados: `feat` (funcionalidade), `fix` (correção), `refactor` (reorganização sem mudar comportamento), `chore` (manutenção), `docs` (documentação). Escopos usados: `ui`, `auth`, `a11y`, `responsive`, `theme`.
+Ao resolver uma issue, cite o número no corpo do commit ou na descrição do Pull Request (`Refs #1`).
 
-Para commits novos, siga o padrão recente: tipo em minúsculas, escopo quando ajudar, descrição curta em inglês começando com verbo no imperativo (`add`, `fix`, `remove`).
+Os commits anteriores a esse padrão estão em inglês e no imperativo (por exemplo, `fix(auth): handle invalid credentials on login`) e usam também o tipo `chore`. Eles ficam como estão no histórico; para commits novos, vale o padrão em português.
 
 Nenhuma ferramenta impõe esse padrão: o projeto não tem verificação automática das mensagens de commit. Segui-lo depende de quem faz o commit.
+
+## Branches e Pull Requests
+
+| Branch | Papel | Como recebe código |
+| --- | --- | --- |
+| `develop` | Projeto em desenvolvimento | Pull Requests de contribuição, por **squash** (todos os commits do PR viram um só) |
+| `main` | Versão publicada do site, lida pelo Lovable | Só a `develop`, por Pull Request com **merge commit** (preserva os commits e registra a junção), feito pelo mantenedor |
+
+- **Crie a branch a partir da `develop` atualizada** e abra o Pull Request de volta para ela, nunca para a `main`.
+- **Nome da branch:** `tipo/descrição-curta`. Se ela resolve uma issue, o número vem logo depois do tipo, como em `fix/1-validacao-de-email` ou `docs/atualiza-readme`.
+- **Fechamento das issues:** o GitHub só fecha uma issue sozinho quando o Pull Request entra na branch padrão (`main`). Como os PRs entram na `develop`, as issues são fechadas manualmente pelo mantenedor.
+- **Publicação:** a `develop` entra na `main` por Pull Request com merge commit, e o site é atualizado com **Publish → Update** no Lovable. Veja [Arquivos usados pela publicação no Lovable](ENVIRONMENT-AND-SETUP.md#arquivos-usados-pela-publicação-no-lovable).
+
+O passo a passo completo (fork, branch, commits, Pull Request e revisão de PRs externos) está no [guia de contribuição](../CONTRIBUTING.md).
 
 ## Guia: como criar uma nova tela CRUD
 
@@ -167,5 +199,6 @@ Inconsistências de padrão encontradas no código:
 - [ARCHITECTURE.md](ARCHITECTURE.md): camadas e papel de cada pasta.
 - [COMPONENTS.md](COMPONENTS.md): convenções de componentes e como criar um novo.
 - [ENVIRONMENT-AND-SETUP.md](ENVIRONMENT-AND-SETUP.md): scripts e observações para Windows.
+- [CONTRIBUTING.md](../CONTRIBUTING.md): como contribuir, do fork ao Pull Request.
 - [TESTING.md](TESTING.md): estado dos testes e proposta de estratégia.
 - [GLOSSARY.md](GLOSSARY.md): significado dos termos técnicos usados aqui.

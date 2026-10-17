@@ -14,7 +14,7 @@ Não há arquivos de teste, configuração de testes nem script de testes no pro
 
 - Não há arquivos `*.test.ts`, `*.test.tsx`, `*.spec.*` nem pastas `__tests__`.
 - Não há ferramenta de teste instalada no `package.json` (nenhum Vitest, Jest, Testing Library, Playwright ou Cypress).
-- Não há script `test` em `package.json` nem integração contínua (CI) que rode verificações.
+- Não há script `test` em `package.json`. A integração contínua (CI), em `.github/workflows/ci.yml`, roda só a checagem de tipos, o build e o lint, porque ainda não há testes para rodar.
 - As verificações disponíveis são o lint (`npm run lint`) e a checagem de tipos (`npx tsc --noEmit`), descritas em [CONVENTIONS.md](CONVENTIONS.md#lint-e-formatação). Elas encontram erros de tipo e de padrão, mas não verificam o **comportamento** do sistema.
 
 Hoje, qualquer mudança só é verificada manualmente, no navegador.

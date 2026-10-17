@@ -175,7 +175,7 @@ Marca de um cookie que impede o JavaScript da página de lê-lo. É uma alternat
 Abreviação de *internationalization* (internacionalização): o "i", 18 letras no meio e o "n". É o suporte a vários idiomas. O projeto usa a biblioteca i18next.
 
 **Integração contínua (CI)**
-Execução automática de verificações (lint, tipos, testes) a cada envio de código ao repositório. O projeto ainda não tem CI.
+Execução automática de verificações (lint, tipos, testes) a cada envio de código ao repositório. No projeto, o CI roda no GitHub Actions, pelo arquivo `.github/workflows/ci.yml`, a cada Pull Request e a cada push para a `develop`.
 
 **Interceptador**
 Função do Axios que roda automaticamente antes de cada requisição ou depois de cada resposta. No projeto, adiciona cabeçalhos e tenta renovar a sessão quando a API responde 401.
