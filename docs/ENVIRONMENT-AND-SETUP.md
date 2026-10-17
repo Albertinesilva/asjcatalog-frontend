@@ -63,17 +63,27 @@ O passo a passo está no [README](../README.md#como-executar). Alguns detalhes:
 
 ### Arquivos usados pela publicação no Lovable
 
-O site do ASJCatalog é publicado pelo **Lovable**. Ele lê o repositório a partir da **raiz** e instala e gera o build com o **Bun** (outro gerenciador de pacotes). Como o código fica em `frontend/`, alguns arquivos existem só para o Lovable e não fazem parte do desenvolvimento local, que continua sendo feito dentro de `frontend/`, com o npm.
+O site do ASJCatalog é publicado pelo **Lovable**. Ele lê a branch **`main`** a partir da **raiz** e instala e gera o build com o **Bun** (outro gerenciador de pacotes). Como o código fica em `frontend/`, alguns arquivos existem só para o Lovable e não fazem parte do desenvolvimento local, que continua sendo feito dentro de `frontend/`, com o npm.
+
+O Lovable gerou a base da interface, mas **não é mais usado para editar o código**: hoje ele só publica o site. Todo o trabalho acontece na `develop`, e a `main` só recebe o que vem dela:
+
+1. A `develop` entra na `main` por Pull Request, com **merge commit** (nunca squash nem rebase), feito pelo mantenedor.
+2. O Lovable recebe o novo estado da `main` pela integração com o GitHub.
+3. O site publicado só muda depois de **Publish → Update** no Lovable.
+
+A integração continua ligada nos dois sentidos: uma edição feita no Lovable viraria um commit do bot `gpt-engineer-app[bot]` direto na `main`. Se aparecer um commit novo desse bot na `main`, avise o mantenedor antes de qualquer outra coisa e não o traga para a `develop` sem combinar.
+
+O Lovable resolve as dependências na hora do build (`bun install` sem `--frozen-lockfile`). Por isso, as versões publicadas podem divergir das versões do `package-lock.json`, que são as usadas localmente e no CI. A decisão definitiva sobre os lockfiles fica para a issue [#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16).
 
 | Arquivo ou pasta | Para que serve | Usado localmente? |
 | --- | --- | --- |
 | `package.json` (raiz) | Scripts que o Lovable executa: repassam os comandos para `frontend/`, instalando e gerando o build com o Bun | Não. Use os scripts de `frontend/package.json` (detalhes na tabela abaixo) |
 | `.gitignore` (raiz) | Impede que `node_modules/`, lockfiles e `dist/` criados na raiz entrem em commits | Só como proteção: evita versionar algo criado na raiz por engano |
 | `dist/` (raiz) | Saída do build gerado pelos scripts da raiz (`--outDir ../dist`). Não fica no repositório | Não. O build local fica em `frontend/dist/` |
-| `frontend/bun.lock` | Lockfile do Bun, com as versões que o Lovable instala | Não. Localmente, o lockfile usado é o `frontend/package-lock.json`, do npm |
+| `frontend/bun.lock` | Lockfile do Bun, usado como referência pelo Lovable (que pode resolver versões diferentes no build) | Não. Localmente, o lockfile usado é o `frontend/package-lock.json`, do npm |
 
 > [!IMPORTANT]
-> Esses arquivos **não são sobras do template** do projeto. Não os remova enquanto o site for publicado pelo Lovable: sem eles, a pré-visualização e a publicação param de funcionar.
+> Esses arquivos **não são sobras do template** do projeto. Não os remova enquanto o site for publicado pelo Lovable: sem eles, a publicação para de funcionar.
 >
 > - A issue [#17](https://github.com/Albertinesilva/asjcatalog-frontend/issues/17) (remover sobras do template) **não se aplica** a eles.
 > - A issue [#16](https://github.com/Albertinesilva/asjcatalog-frontend/issues/16) (manter um único lockfile) precisa levar em conta que o Lovable usa o Bun e depende do `frontend/bun.lock`.
@@ -266,7 +276,7 @@ O app usa `BrowserRouter`, que trabalha com URLs "limpas", como `/catalog/7`. Es
 
 Ao abrir `/catalog/7` diretamente, ou ao recarregar a página, o servidor procura um arquivo com esse nome. Se não estiver configurado, responde com 404. A solução é configurar um **fallback**: qualquer caminho que não seja um arquivo existente deve devolver o `index.html`. Depois disso, o React Router mostra a tela certa.
 
-O repositório **não traz** configuração de deploy (nenhum arquivo de servidor, hospedagem ou CI foi encontrado). Ao publicar, configure esse fallback no serviço escolhido.
+O repositório **não traz** configuração de deploy (nenhum arquivo de servidor ou hospedagem). O CI em `.github/workflows/ci.yml` só verifica o código (tipos, build e lint) e não publica nada. Ao publicar em outro serviço, configure esse fallback nele.
 
 Também revise os arquivos `frontend/public/robots.txt` e `frontend/public/sitemap.xml`. Eles apontam para o endereço do site no Lovable e precisam ser atualizados se o site passar a ser publicado em outro endereço.
 

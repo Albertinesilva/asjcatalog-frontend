@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentação do frontend
+    url: https://github.com/Albertinesilva/asjcatalog-frontend/blob/develop/README.md#documentação
+    about: Consulte os documentos de docs/ antes de abrir uma issue.
+  - name: 🔌 Contrato da API (backend)
+    url: https://github.com/Albertinesilva/backend-engineering-journey-java-springboot/tree/develop/docs/guides
+    about: Rotas, autenticação, formato de erro e validações definidos pelo backend.
