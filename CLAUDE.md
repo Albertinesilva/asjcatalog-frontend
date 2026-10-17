@@ -26,6 +26,8 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 <raiz do repositório>/          ← comandos Git aqui
 ├── README.md                   ← porta de entrada e menu da documentação
 ├── CLAUDE.md
+├── CONTRIBUTING.md, CODE_OF_CONDUCT.md, LICENSE (MIT)
+├── .github/                    ← modelos de issue e de PR
 ├── package.json                ← usado SÓ pelo Lovable (seção 9.2)
 ├── .gitignore                  ← protege a raiz (node_modules/, lockfiles, dist/)
 ├── docs/                       ← documentação técnica (seção 13)
@@ -207,13 +209,14 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - Ao citar issues do outro repositório, use a referência completa (`Albertinesilva/<repositório>#N`).
 - Passe o corpo por arquivo (`--body-file`), com o arquivo temporário fora do repositório.
 - Mostre a proposta da issue antes de criar.
-- Guia de contribuição, Código de Conduta e modelos de issue e de PR, como os do backend, estão sendo criados.
+- Use os modelos de `.github/ISSUE_TEMPLATE/` (`bug.md` e `melhoria.md`), que já trazem essas seções. O fluxo de contribuição está no [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 13. Índice da documentação
 
 | Assunto | Onde |
 |---|---|
 | Visão geral, como executar e menu | [README.md](README.md) |
+| Como contribuir, labels, PRs e revisão de PRs externos | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Camadas, fluxo de uma requisição e dependências | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | Node, `.env.local`, scripts, proxy, CORS e Lovable | [docs/ENVIRONMENT-AND-SETUP.md](docs/ENVIRONMENT-AND-SETUP.md) |
 | Rotas, layouts, guards e rotas usadas por e-mail | [docs/ROUTES-AND-PAGES.md](docs/ROUTES-AND-PAGES.md) |
@@ -253,7 +256,7 @@ Atualizado em 16/10/2026.
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
 - Documentação completa em `docs/` e 26 issues abertas (#1 a #26).
-- Em andamento: aplicar o mesmo padrão de trabalho do backend (este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e PR, CI e ajustes em `docs/`).
+- Em andamento: aplicar o mesmo padrão de trabalho do backend. Já existem este arquivo, o guia de contribuição, o Código de Conduta, a licença MIT e os modelos de issue e de PR; faltam o CI e os ajustes em `docs/`.
 - **Bug em correção, sem issue:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
   - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).

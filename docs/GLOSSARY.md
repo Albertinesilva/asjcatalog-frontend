@@ -42,6 +42,9 @@ Formato de credencial em que usuário e senha são unidos por `:` e codificados 
 **Bearer**
 Tipo de credencial do cabeçalho `Authorization: Bearer <token>`. Significa "portador": quem apresenta o token é tratado como o dono dele. Por isso, um token copiado pode ser usado por outra pessoa.
 
+**Branch**
+Linha de desenvolvimento independente dentro de um repositório Git. Neste projeto, a `develop` recebe o trabalho do dia a dia e a `main` guarda a versão publicada.
+
 **Breadcrumb**
 "Trilha de navegação" exibida acima do título, como `Dashboard / Produtos / Editar`. Mostra onde o usuário está e permite voltar aos níveis anteriores.
 
@@ -108,6 +111,9 @@ Publicar a aplicação em um servidor para que outras pessoas possam acessá-la.
 **Design system**
 Conjunto padronizado de componentes visuais (botões, campos, cards) e regras de estilo (cores, espaçamentos, fontes). No projeto, fica em `frontend/src/components/ui/`.
 
+**Diff**
+Comparação que mostra as linhas acrescentadas, alteradas e removidas entre duas versões do código. No GitHub, fica na aba **Files changed** de um Pull Request.
+
 **Endpoint**
 Um endereço específico da API que responde a uma ação. Exemplo: `GET /api/v1/products/7` busca o produto 7.
 
@@ -128,6 +134,9 @@ Recurso do ambiente de desenvolvimento que atualiza a tela ao salvar um arquivo,
 
 **Focus trap (foco preso)**
 Técnica que mantém o foco do teclado dentro de um diálogo enquanto ele está aberto: a tecla Tab circula só entre os elementos do diálogo.
+
+**Fork**
+Cópia de um repositório na sua conta do GitHub. É nela que você faz as alterações antes de propor a mudança por Pull Request.
 
 **forwardRef**
 Função do React que permite a um componente repassar uma referência (`ref`) para o elemento HTML interno. É o que deixa o React Hook Form acessar o `<input>` dentro do componente `Input`.
@@ -177,6 +186,9 @@ Nome em inglês do interceptador. Veja **Interceptador**.
 **Interpolação**
 Substituição de variáveis dentro de um texto traduzido. Em `"Olá, {{name}}"`, o `{{name}}` é trocado pelo valor passado a `t`.
 
+**Issue**
+Registro, no GitHub, de um bug, melhoria ou tarefa. Serve para combinar o que será feito antes de começar.
+
 **jsdom**
 Biblioteca que simula o navegador (DOM, `window`, `localStorage`) dentro do Node.js, para rodar testes de componentes sem abrir um navegador.
 
@@ -185,6 +197,9 @@ Biblioteca que simula o navegador (DOM, `window`, `localStorage`) dentro do Node
 
 **JWT**
 *JSON Web Token*: token em três partes separadas por pontos (cabeçalho, payload e assinatura), cada uma codificada em Base64. O access token da API é um JWT. O frontend lê o payload, mas não verifica a assinatura.
+
+**Label**
+Etiqueta colorida que classifica issues e Pull Requests no GitHub, como `bug`, `i18n` ou `good first issue`.
 
 **Layout**
 Componente que desenha a "moldura" comum a várias telas (barra de navegação, menu lateral, rodapé) e mostra a tela atual no lugar do `<Outlet />`.
@@ -206,6 +221,12 @@ Arquivo que registra as versões exatas de cada dependência instalada, para que
 
 **Media query**
 Condição do CSS (ou do JavaScript, via `matchMedia`) sobre o ambiente, como a largura da tela ou a preferência do sistema por tema escuro (`prefers-color-scheme: dark`).
+
+**Merge commit**
+Forma de juntar duas branches que preserva todos os commits e cria um commit extra registrando a junção. É usada para levar a `develop` para a `main`.
+
+**Milestone**
+Agrupamento de issues no GitHub em torno de um objetivo, como deixar o projeto pronto para produção.
 
 **Mobile-first**
 Forma de escrever estilos começando pelas telas pequenas: as classes sem prefixo valem para o celular, e os prefixos (`md:`, `lg:`) ajustam telas maiores.
@@ -249,6 +270,9 @@ O "conteúdo" de uma mensagem. Num JWT, é a parte do meio, com os claims. Numa 
 **Perfil (role)**
 Papel do usuário que define o que ele pode fazer. O frontend conhece `ROLE_ADMIN` (administrador) e `ROLE_OPERATOR` (operador).
 
+**Permalink**
+Link para um arquivo fixado num commit específico (com o SHA no endereço). Continua apontando para as mesmas linhas mesmo depois que o arquivo muda.
+
 **PKCE**
 *Proof Key for Code Exchange*: extensão do OAuth2 que protege o fluxo *Authorization Code* em clientes públicos, como SPAs. É o fluxo recomendado hoje para aplicações que rodam no navegador.
 
@@ -278,6 +302,9 @@ Componente que disponibiliza dados de um Context para todos os componentes dentr
 
 **Proxy**
 Servidor intermediário que recebe uma requisição e a repassa para outro destino. O Vite tem um proxy de desenvolvimento para caminhos que começam com `/api/proxy`.
+
+**Pull Request (PR)**
+Pedido, feito no GitHub, para que as alterações de uma branch entrem em outra. É onde acontecem a revisão e a execução do CI.
 
 **Query string**
 Parte da URL depois do `?`, com pares `chave=valor`. Exemplo: em `/activate-account?token=abc`, a query string é `token=abc`.
@@ -324,6 +351,9 @@ Blocos cinzas com o formato aproximado do conteúdo, exibidos enquanto os dados 
 **SpringPage**
 Tipo do frontend (`SpringPage<T>`) que descreve uma página de resultados no formato do Spring, o framework Java do backend: `content`, `totalElements`, `totalPages`, `number` e `size`. `Paginated<T>` é um apelido para ele.
 
+**Squash**
+Forma de merge que junta todos os commits de um Pull Request num só. É usada para os Pull Requests de contribuição na `develop`.
+
 **Suspense**
 Componente do React que mostra um conteúdo provisório (o `fallback`) enquanto algo ainda está carregando, como o código de uma tela com lazy loading.
 
@@ -347,6 +377,9 @@ Nome que representa um valor de design, como uma cor ou um espaçamento. No proj
 
 **TypeScript**
 Linguagem que adiciona tipos ao JavaScript. Os tipos são verificados antes da execução (`npx tsc --noEmit`), o que ajuda a achar erros cedo.
+
+**Upstream**
+Nome dado, por convenção, ao repositório original de onde um fork foi criado. Serve para trazer as atualizações do original para a sua cópia.
 
 **useCallback**
 Hook do React que mantém a mesma função entre renderizações enquanto as dependências não mudam. É necessário nos `fetcher`s de `usePagedQuery` e `useResource`, para não disparar buscas a cada renderização.

@@ -22,7 +22,8 @@ Repositório: <https://github.com/Albertinesilva/asjcatalog-frontend>
 7. [Arquitetura em resumo](#arquitetura-em-resumo)
 8. [Limitações conhecidas e próximos passos](#limitações-conhecidas-e-próximos-passos)
 9. [Documentação](#documentação)
-10. [Autor](#autor)
+10. [Como contribuir](#como-contribuir)
+11. [Autor](#autor)
 
 ---
 
@@ -143,6 +144,10 @@ Os nomes e um exemplo de preenchimento estão em [`frontend/.env.example`](front
 ```text
 asjcatalog-frontend/
 ├── README.md
+├── CONTRIBUTING.md        # Guia de contribuição
+├── CODE_OF_CONDUCT.md     # Código de Conduta
+├── LICENSE                # Licença MIT
+├── .github/               # Modelos de issue e de Pull Request
 ├── package.json           # Usado só pelo Lovable para publicar o site (repassa comandos para frontend/)
 ├── .gitignore             # Ignora o que o Lovable ou uma instalação por engano criam na raiz
 ├── docs/                  # Documentação técnica (um arquivo por assunto)
@@ -224,6 +229,20 @@ Consulta: [Glossário](docs/GLOSSARY.md), com os termos técnicos usados na docu
 
 ---
 
+## Como contribuir
+
+Contribuições são bem-vindas, inclusive de quem está começando. O projeto é open source e sem fins comerciais.
+
+- **Pull Requests sempre para a branch `develop`**, nunca para a `main`, que é a versão publicada do site.
+- Comece pelas [issues](https://github.com/Albertinesilva/asjcatalog-frontend/issues) com a label `good first issue` e comente na issue antes de começar.
+- Antes de abrir o Pull Request, rode `npx tsc --noEmit`, `npm run build` e `npm run lint` dentro de `frontend/`.
+
+O passo a passo completo (fork, branch, commits, Pull Request e revisão) está no [guia de contribuição](CONTRIBUTING.md). Ao participar, siga o [Código de Conduta](CODE_OF_CONDUCT.md).
+
+---
+
 ## Autor
 
 Desenvolvido por **Albert Silva de Jesus**.
+
+Distribuído sob a [licença MIT](LICENSE).
