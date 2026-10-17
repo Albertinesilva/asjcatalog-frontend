@@ -34,7 +34,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Primeira execução: o lint não bloqueia. Se passar, remover o continue-on-error.
       - name: Lint
         run: npm run lint
-        continue-on-error: true
