@@ -260,7 +260,7 @@ Atualizado em 17/10/2026.
 
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
-- Documentação completa em `docs/` e 31 issues abertas (#1 a #31).
+- Documentação completa em `docs/` e 32 issues abertas (#1 a #31 e #34; #32 e #33 são Pull Requests).
 - Padrão de trabalho do backend aplicado: este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e de PR, CI (com o lint bloqueando) e ajustes em `docs/`.
 - Issues ligadas entre os dois repositórios, com comentários de referência cruzada:
   - novas no frontend: #27 (respostas de erro do backend), #28 (dono dos produtos e categorias), #29 (desativação e reativação de conta), #30 (confirmação da troca de e-mail) e #31 (itens inativos);
@@ -272,7 +272,7 @@ Atualizado em 17/10/2026.
   - Causa: o frontend usava `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).
   - Correção: `categoryApi.update` usa `http.patch` com `CategoryRequest`, e o `CategoryForm` envia sempre o `name` (`@NotBlank` no `CategoryUpdateRequest` do backend), sem o `id` no corpo.
-  - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual).
+  - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual). O campo será acrescentado na #34.
 - Chamadas à API comparadas com a tabela de endpoints do backend: fora a categoria, verbos, rotas e corpos batem. Ficam listados `userApi.register` (rota `/api/v1/users/register` inexistente, sem uso) e `userApi.activate`/`deactivate` tipados como `User`, embora a API responda 204 (#24).
 - Próximos passos: abrir o PR da `fix/categoria-patch` para a `develop`; conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados).
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.
