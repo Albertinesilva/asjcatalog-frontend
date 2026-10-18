@@ -157,6 +157,11 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 - **Pull Requests de contribuição:** partem da `develop`, voltam para ela e entram por **squash**. Se resolvem uma issue, o número vai no nome da branch (por exemplo, `fix/1-validacao-de-email`).
 - **Publicar:** a `develop` entra na `main` por Pull Request, com **merge commit** (`gh pr merge --merge`), nunca squash nem rebase. Depois, **Publish → Update** no Lovable.
 - Só o mantenedor do projeto atualiza a `main`.
+- **Exclusão de branches:**
+  - toda correção ou funcionalidade é feita numa branch própria, criada a partir da `develop`, e entra na `develop` por Pull Request;
+  - essa branch é apagada no merge para a `develop`, com `gh pr merge <n> --squash --delete-branch`;
+  - o merge da `develop` para a `main` é feito só quando o mantenedor decidir, com `gh pr merge <n> --merge`, sem `--delete-branch`: a `develop` nunca é apagada;
+  - a exclusão automática de branches do GitHub (*Automatically delete head branches*) fica desligada, porque ela apagou a `develop` no merge para a `main` (PR #32).
 - **Pull Requests externos:** nunca baixe um PR externo para a máquina local antes de revisar o diff no GitHub. Teste PRs externos só em ambiente isolado ou com `npm ci --ignore-scripts`.
 
 ### 9.2 Lovable
