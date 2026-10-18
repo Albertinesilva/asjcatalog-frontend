@@ -230,7 +230,7 @@ export type UserDetails = User & { roles: UserRole[] };
 | --- | --- | --- |
 | `LoginRequest` | `username`, `password` | `POST /oauth2/token` |
 | `ProductRequest` | `name`, `description`, `price`, `imgUrl`, `categoryIds` | `POST` e `PUT /api/v1/products` |
-| `CategoryRequest` | `name` | `POST /api/v1/categories` (o `PUT` recebe `Category`) |
+| `CategoryRequest` | `name` | `POST` e `PATCH /api/v1/categories` |
 | `UserRegisterRequest` | `firstName`, `lastName`, `email`, `password` | `POST /api/v1/accounts/register` |
 | `UserCreateRequest` | `UserRegisterRequest` + `roleIds` | `POST /api/v1/users` |
 | `UserUpdateRequest` | Todos opcionais: `firstName`, `lastName`, `email`, `password`, `roleIds` | `PUT /api/v1/users/{id}` |
@@ -297,7 +297,6 @@ As props de cada componente ficam num `type Props` dentro do próprio arquivo, s
 - **Funções sem uso em `alerts.ts`:** `info`, `confirm`, `loading` e `close`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Tipos fora do lugar esperado:** `SpringPage` está em `product.ts`, embora seja genérico; os tipos de erro estão em `utils/`; e `types/index.ts` mistura tipos de dados com props de componentes. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Dois nomes para o mesmo conceito:** `Paginated` e `SpringPage`, e `JwtPayload` e `AccessToken`. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
-- **`categoryApi.update` usa `Category`** (com `id`), e não um tipo de requisição. ([#24](https://github.com/Albertinesilva/asjcatalog-frontend/issues/24))
 - **Sem módulo de formatação:** a formatação de preço fica dentro do componente. ([#20](https://github.com/Albertinesilva/asjcatalog-frontend/issues/20))
 
 ## Veja também

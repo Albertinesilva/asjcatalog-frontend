@@ -31,6 +31,13 @@ As contribuições devem ajudar a:
 | `develop` | Projeto em desenvolvimento, com a documentação em `docs/` | ✅ **Sim, sempre** |
 | `main` | Versão publicada do site. Só recebe o que vem da `develop`, pelo mantenedor | ❌ Não |
 
+## Ciclo de vida das branches
+
+- **Toda correção ou funcionalidade é feita numa branch própria**, criada a partir da `develop`, e entra na `develop` por Pull Request.
+- **Essa branch é apagada no merge para a `develop`**, que o mantenedor faz com `gh pr merge <n> --squash --delete-branch`.
+- **A `develop` nunca é apagada.** O merge da `develop` para a `main` acontece só quando o mantenedor decide publicar, com `gh pr merge <n> --merge`, sem `--delete-branch`.
+- A exclusão automática de branches do GitHub (*Automatically delete head branches*) fica **desligada**: ela apagou a `develop` no merge para a `main`, porque a `develop` era a branch de origem daquele Pull Request.
+
 O site é publicado pelo **Lovable**, que lê a `main`. Por isso, o `package.json` e o `.gitignore` da raiz e o `frontend/bun.lock` existem só para ele: **não altere esses arquivos** num Pull Request. A explicação está em [Arquivos usados pela publicação no Lovable](docs/ENVIRONMENT-AND-SETUP.md#arquivos-usados-pela-publicação-no-lovable).
 
 ---
