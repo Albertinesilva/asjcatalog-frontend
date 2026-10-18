@@ -150,13 +150,22 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 
 | Branch | Papel | Regra |
 |---|---|---|
-| `main` | Branch padrão e **versão publicada**: é a que o Lovable lê e publica | Recebe só o que veio da `develop`, para publicar o site. Não recebe trabalho direto |
-| `develop` | Projeto em desenvolvimento | Destino de todos os Pull Requests e do trabalho do dia a dia |
+| `main` | Branch padrão e **versão publicada**: é a que o Lovable lê e publica | Recebe só o que veio da `develop`, para publicar o site. Não recebe trabalho próprio |
+| `develop` | Projeto em desenvolvimento | Destino dos Pull Requests e do trabalho do dia a dia |
 
 - Diferente do backend, a `main` do frontend tem o **código completo**, porque é dela que o Lovable publica o site.
-- **Pull Requests de contribuição:** partem da `develop`, voltam para ela e entram por **squash**. Se resolvem uma issue, o número vai no nome da branch (por exemplo, `fix/1-validacao-de-email`).
-- **Publicar:** a `develop` entra na `main` por Pull Request, com **merge commit** (`gh pr merge --merge`), nunca squash nem rebase. Depois, **Publish → Update** no Lovable.
+- **Mantenedor (admin):** os rulesets da `develop` e da `main` têm *Repository admin* com **Always allow**, então o mantenedor pode fazer commit e push direto nas duas, sem Pull Request.
+  - Em cada tarefa, **o mantenedor decide** se usa Pull Request (branch própria) ou commit direto na `develop`. **Na dúvida, pergunte antes.**
+  - **Antes de qualquer push direto**, rode `npx tsc --noEmit`, `npm run build` e `npm run lint` em `frontend/`: o CI roda na `develop` depois do push, mas não bloqueia um push direto.
+- **Contribuidores externos:** só por fork e Pull Request para a `develop`, com o CI obrigatório, entrando por **squash**. Se resolvem uma issue, o número vai no nome da branch (por exemplo, `fix/1-validacao-de-email`). O fluxo está no [CONTRIBUTING.md](CONTRIBUTING.md).
+- **Publicar:** a `develop` entra na `main` sempre com **merge commit**, nunca squash nem rebase, e só quando o mantenedor decidir. Depois, **Publish → Update** no Lovable.
+  - Sem Pull Request: `git switch main`, `git pull`, `git merge --no-ff develop`, `git push` e `git switch develop`. O `--no-ff` mantém o merge commit, como o PR com `--merge`.
+  - Com Pull Request: `gh pr merge <n> --merge`, sem `--delete-branch`.
 - Só o mantenedor do projeto atualiza a `main`.
+- **Exclusão de branches:**
+  - quando uma tarefa usa branch própria, ela é criada a partir da `develop` e apagada no merge para a `develop`, com `gh pr merge <n> --squash --delete-branch`;
+  - a `develop` nunca é apagada;
+  - a exclusão automática de branches do GitHub (*Automatically delete head branches*) fica desligada, porque ela apagou a `develop` no merge para a `main` (PR #32).
 - **Pull Requests externos:** nunca baixe um PR externo para a máquina local antes de revisar o diff no GitHub. Teste PRs externos só em ambiente isolado ou com `npm ci --ignore-scripts`.
 
 ### 9.2 Lovable
@@ -176,7 +185,7 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 
 ## 10. Regras de trabalho (obrigatórias)
 
-1. **O Claude Code não faz commit nem push**: quem usa a ferramenta faz. Ao fim de cada etapa, pare e sugira a mensagem de commit.
+1. **O Claude Code não faz commit nem push**: quem usa a ferramenta faz, mesmo podendo fazer push direto. Ao fim de cada etapa, pare e sugira a mensagem de commit. Se o pedido não disser se a tarefa vai por Pull Request ou por commit direto na `develop`, pergunte antes de começar (seção 9.1).
 2. **Plano antes de agir.** Em tarefas com várias mudanças, mostre o plano e espere o "ok". Em auditorias e investigações, não altere nada.
 3. **Escopo fechado:** corrija só o que foi pedido. Outros problemas encontrados são listados (e podem virar issue), não corrigidos.
 4. **Não invente.** Toda afirmação sobre o código precisa ser conferida no código. Cite arquivo e linha. Se não conseguir confirmar, diga que é dúvida.
@@ -186,8 +195,9 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 8. **Arquivos temporários** (corpos de issue, scripts, relatórios) ficam fora do repositório e são apagados ao final. Se um relatório local precisar ficar na raiz, ignore-o pelo `.git/info/exclude`, nunca pelo `.gitignore` do projeto.
 9. **Nunca exponha segredos**: valores de tokens, `client_id`, `client_secret`, senhas ou o conteúdo do `.env.local`, em arquivos, issues ou respostas.
 10. **Não edite pelo Lovable** nem altere os arquivos da seção 9.2 sem combinar antes.
-11. **Trabalhe na `develop`** (ou numa branch criada a partir dela), nunca direto na `main` (seção 9.1).
+11. **Trabalhe na `develop`** (ou numa branch criada a partir dela), nunca direto na `main`: a `main` só recebe o merge da `develop` (seção 9.1).
 12. **PRs externos:** revise o diff no GitHub antes de baixar qualquer coisa; teste só em ambiente isolado ou com `npm ci --ignore-scripts` (seção 9.1).
+13. **Antes de sugerir um push direto**, rode `npx tsc --noEmit`, `npm run build` e `npm run lint` em `frontend/` e mostre o resultado.
 
 ## 11. Commits (para sugerir)
 
@@ -254,8 +264,9 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 Atualizado em 17/10/2026.
 
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
+- Rulesets da `develop` e da `main` com *Repository admin* em **Always allow**: o mantenedor faz commit e push direto nas duas e decide, em cada tarefa, entre Pull Request e commit direto. Contribuidores externos seguem por fork e Pull Request, com o CI obrigatório.
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
-- Documentação completa em `docs/` e 31 issues abertas (#1 a #31).
+- Documentação completa em `docs/` e 32 issues abertas (#1 a #31 e #34; #32 e #33 são Pull Requests).
 - Padrão de trabalho do backend aplicado: este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e de PR, CI (com o lint bloqueando) e ajustes em `docs/`.
 - Issues ligadas entre os dois repositórios, com comentários de referência cruzada:
   - novas no frontend: #27 (respostas de erro do backend), #28 (dono dos produtos e categorias), #29 (desativação e reativação de conta), #30 (confirmação da troca de e-mail) e #31 (itens inativos);
@@ -263,9 +274,11 @@ Atualizado em 17/10/2026.
   - issues do backend com a label `frontend`: #2 a #6, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39, #44, #46, #47 e #48.
 - Milestone **Pronto para produção** criado com #1, #11, #13, #28 e #30. As #2, #7 e #18 ficam fora por enquanto.
 - **Regra de negócio decidida e ainda não implementada** (#28 aqui e #48 no backend): cada produto e categoria registra quem o cadastrou; o OPERATOR só altera o que cadastrou, e os registros do banco populado, só o ADMIN; categoria associada a produto não pode ser excluída nem desativada por ninguém.
-- **Bug a corrigir sem issue, numa branch própria:** ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` responde **500**.
-  - Causa: o frontend usa `http.put` (`frontend/src/api/category-api.ts:64`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
+- **Bug corrigido sem issue, na branch `fix/categoria-patch`** (PR #33, já na `develop`): ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` respondia **500**.
+  - Causa: o frontend usava `http.put` (`frontend/src/api/category-api.ts:65`), mas a API só aceita **PATCH** (`@PatchMapping` em `CategoryController.java:216`, no backend).
   - O 500 vem do 405 sem handler no backend (#36 do backend).
-  - A correção precisa enviar `name` mesmo quando só a descrição muda (`@NotBlank` no `CategoryUpdateRequest` do backend).
-- Próximos passos: configurar no GitHub os rulesets e as opções de segurança (as labels já estão configuradas); levar a `develop` para a `main` e publicar; corrigir o bug da categoria; comparar todas as chamadas à API com a tabela de endpoints do backend.
+  - Correção: `categoryApi.update` usa `http.patch` com `CategoryRequest`, e o `CategoryForm` envia sempre o `name` (`@NotBlank` no `CategoryUpdateRequest` do backend), sem o `id` no corpo.
+  - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual). O campo será acrescentado na #34.
+- Chamadas à API comparadas com a tabela de endpoints do backend: fora a categoria, verbos, rotas e corpos batem. Ficam listados `userApi.register` (rota `/api/v1/users/register` inexistente, sem uso) e `userApi.activate`/`deactivate` tipados como `User`, embora a API responda 204 (#24).
+- Próximos passos: conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados); levar a `develop` para a `main` quando o mantenedor decidir publicar.
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.
