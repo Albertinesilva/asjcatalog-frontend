@@ -42,6 +42,9 @@ Formato de credencial em que usuário e senha são unidos por `:` e codificados 
 **Bearer**
 Tipo de credencial do cabeçalho `Authorization: Bearer <token>`. Significa "portador": quem apresenta o token é tratado como o dono dele. Por isso, um token copiado pode ser usado por outra pessoa.
 
+**BigDecimal**
+Tipo do Java para números decimais exatos, usado pelo backend no preço dos produtos. Ao contrário do ponto flutuante, guarda `0.1` exatamente e conhece a quantidade de casas decimais do valor.
+
 **Branch**
 Linha de desenvolvimento independente dentro de um repositório Git. Neste projeto, a `develop` recebe o trabalho do dia a dia e a `main` guarda a versão publicada.
 
@@ -59,6 +62,9 @@ O conjunto de arquivos JavaScript e CSS gerado pelo build e enviado ao navegador
 
 **camelCase, PascalCase e kebab-case**
 Formas de escrever nomes compostos. camelCase: `usePagedQuery`. PascalCase: `ProductForm`. kebab-case: `api-error-handler.ts`. Há ainda o UPPER_SNAKE_CASE, usado em constantes como `TOKEN_KEY`.
+
+**Casas decimais (escala)**
+Quantidade de dígitos depois do separador decimal. No banco, `NUMERIC(10,2)` guarda até 10 dígitos, 2 deles decimais (até 99.999.999,99). O backend conta os zeros à direita: `10.000` tem 3 casas.
 
 **Chave de tradução**
 Identificador de um texto traduzido, no formato `namespace:caminho`, como `auth:login.title`. O código usa a chave, e o arquivo de cada idioma traz o texto.
@@ -174,6 +180,9 @@ Marca de um cookie que impede o JavaScript da página de lê-lo. É uma alternat
 **i18n**
 Abreviação de *internationalization* (internacionalização): o "i", 18 letras no meio e o "n". É o suporte a vários idiomas. O projeto usa a biblioteca i18next.
 
+**inputMode**
+Atributo HTML que indica qual teclado o celular deve abrir, sem mudar o tipo do campo. Com `inputMode="decimal"`, o campo de preço continua sendo de texto, mas mostra o teclado numérico com separador decimal.
+
 **Integração contínua (CI)**
 Execução automática de verificações (lint, tipos, testes) a cada envio de código ao repositório. No projeto, o CI roda no GitHub Actions, pelo arquivo `.github/workflows/ci.yml`, a cada Pull Request e a cada push para a `develop`.
 
@@ -278,6 +287,9 @@ Link para um arquivo fixado num commit específico (com o SHA no endereço). Con
 
 **Plural (i18n)**
 Escolha automática da forma singular ou plural de um texto conforme a quantidade. No i18next, usa as chaves com sufixo `_one` e `_other` e o valor `count`.
+
+**Ponto flutuante**
+Forma como o computador guarda números com casas decimais, usada pelo `number` do JavaScript. Alguns valores ficam aproximados: `0.1 + 0.2` dá `0.30000000000000004`. Por isso, o preço é arredondado para 2 casas antes de ir para a API.
 
 **Pre-commit hook**
 Script executado automaticamente antes de cada commit, por exemplo para rodar o lint. O projeto não tem.

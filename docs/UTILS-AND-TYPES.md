@@ -8,7 +8,7 @@ Este documento descreve as funções auxiliares de `frontend/src/utils/` e os ti
 
 | Pasta ou arquivo | Conteúdo |
 | --- | --- |
-| `frontend/src/utils/` | Funções auxiliares sem componentes React (8 arquivos) |
+| `frontend/src/utils/` | Funções auxiliares sem componentes React (9 arquivos) |
 | `frontend/src/types/` | Tipos de domínio e contratos com a API (`auth.ts`, `user.ts`, `product.ts`, `category.ts`) e o barrel `index.ts` |
 | Outros arquivos `*.ts` | Tipos locais, declarados perto de quem os usa (veja [Tipos fora de `types/`](#tipos-fora-de-types)) |
 
@@ -21,6 +21,7 @@ Este documento descreve as funções auxiliares de `frontend/src/utils/` e os ti
 | `permissions.ts` | Decodifica o access token e verifica a expiração | `AuthContext`, `auth-service`, `api/axios.ts` | [Nesta página](#permissionsts) e [AUTHENTICATION.md](AUTHENTICATION.md#leitura-do-token-jwt-decode) |
 | `alerts.ts` | Janelas de alerta (SweetAlert2) | Páginas com formulários e exclusões, `api-error-handler.ts` | [Nesta página](#alertsts) |
 | `password.ts` | Regras e avaliação de senha | Componentes de senha e formulários com senha | [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md#validação-de-senha) |
+| `price.ts` | Regras, conversão e arredondamento do campo de preço | `ProductForm` | [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md#validação-de-preço) |
 | `api-error.ts` | `parseApiError` e os tipos do contrato de erro | `api-error-handler.ts`, `ui-error.ts` e páginas com casos específicos | [ERROR-HANDLING.md](ERROR-HANDLING.md#o-contrato-de-erro-da-api) |
 | `api-error-handler.ts` | `handleApiError` e `getApiErrorCode` | Formulários | [ERROR-HANDLING.md](ERROR-HANDLING.md#formulários-handleapierror-e-react-hook-form) |
 | `ui-error.ts` | `getUiErrorMessage` e `isNotFoundError` | Páginas, `usePagedQuery`, `useResource`, `api-error-handler.ts` | [ERROR-HANDLING.md](ERROR-HANDLING.md#o-texto-mostrado-ao-usuário-getuierrormessage) |
@@ -157,7 +158,7 @@ export const alerts = {
 
 ### Formatação
 
-Não há um módulo de formatação em `utils/`. O único formatador do projeto é a função `formatPrice`, interna do componente `ProductPrice`, que formata o preço no padrão brasileiro (veja [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md#cuidados-e-limitações)).
+Não há um módulo de formatação para exibição em `utils/`. O formatador de preço que o usuário vê é a função `formatPrice`, interna do componente `ProductPrice`, que formata o preço no padrão brasileiro (veja [INTERNATIONALIZATION.md](INTERNATIONALIZATION.md#cuidados-e-limitações)). O `utils/price.ts` só prepara o valor do campo do formulário (`formatPriceInput`, com 2 casas e ponto, como `2190.00`) e o converte para envio (veja [FORMS-AND-PASSWORD.md](FORMS-AND-PASSWORD.md#validação-de-preço)).
 
 ## Tipos (`types/`)
 

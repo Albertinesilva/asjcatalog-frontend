@@ -39,7 +39,7 @@ Mais adiante, um teste de ponta a ponta (*end-to-end*) com um navegador real, co
 
 | Tipo | O que é | O que cobriria no projeto |
 | --- | --- | --- |
-| **Unitário** | Testa uma função isolada, sem React | `utils/password.ts`, `utils/api-error.ts`, `utils/ui-error.ts`, `utils/permissions.ts`, `utils/storage.ts`, `routes/route-access.ts`, `i18n/http.ts` |
+| **Unitário** | Testa uma função isolada, sem React | `utils/password.ts`, `utils/price.ts`, `utils/api-error.ts`, `utils/ui-error.ts`, `utils/permissions.ts`, `utils/storage.ts`, `routes/route-access.ts`, `i18n/http.ts` |
 | **De hook** | Testa um hook com `renderHook` | `useDebouncedValue` (com relógio simulado), `usePagination`, `usePagedQuery`, `useResource` |
 | **De componente** | Renderiza um componente e verifica o resultado e as interações | `PasswordStrength`, `PasswordRequirements`, `Input`, `ConfirmDialog` (foco e Escape), `Pagination`, `Authorization`, `ErrorState` |
 | **De integração** | Junta várias peças, com a API simulada pelo MSW | Login com redirecionamento, renovação de sessão no interceptador, lista com busca e paginação, guardas de rota |

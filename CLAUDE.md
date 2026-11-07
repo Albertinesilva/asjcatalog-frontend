@@ -48,7 +48,7 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 | `hooks/` | `useAuth`, `useRoles`, `useTheme`, `useDebouncedValue`, `usePagination`, `usePagedQuery`, `useResource` |
 | `components/` | `ui/` (design system), `shared/`, `forms/password`, navegação e produto |
 | `i18n/` | i18next, `locales/{pt-BR,en,es}` e `hooks/useLanguage` |
-| `utils/` | `constants`, `storage`, `permissions`, `alerts`, `password`, `api-error`, `api-error-handler` e `ui-error` |
+| `utils/` | `constants`, `storage`, `permissions`, `alerts`, `password`, `price`, `api-error`, `api-error-handler` e `ui-error` |
 | `types/` | Tipos de domínio e contratos com a API |
 | `styles/` e `assets/` | `globals.css`, tokens, tema e arquivos estáticos |
 
@@ -261,12 +261,12 @@ Ele é um **mapa**: traz só as regras e os fatos que valem para toda tarefa. Os
 
 ## 16. Estado atual (atualizar a cada etapa)
 
-Atualizado em 17/10/2026.
+Atualizado em 06/11/2026.
 
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Rulesets da `develop` e da `main` com *Repository admin* em **Always allow**: o mantenedor faz commit e push direto nas duas e decide, em cada tarefa, entre Pull Request e commit direto. Contribuidores externos seguem por fork e Pull Request, com o CI obrigatório.
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
-- Documentação completa em `docs/` e 32 issues abertas (#1 a #31 e #34; #32 e #33 são Pull Requests).
+- Documentação completa em `docs/` e 34 issues abertas (#1 a #31, #34, #36 e #37; #32, #33 e #35 são Pull Requests).
 - Padrão de trabalho do backend aplicado: este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e de PR, CI (com o lint bloqueando) e ajustes em `docs/`.
 - Issues ligadas entre os dois repositórios, com comentários de referência cruzada:
   - novas no frontend: #27 (respostas de erro do backend), #28 (dono dos produtos e categorias), #29 (desativação e reativação de conta), #30 (confirmação da troca de e-mail) e #31 (itens inativos);
@@ -280,5 +280,9 @@ Atualizado em 17/10/2026.
   - Correção: `categoryApi.update` usa `http.patch` com `CategoryRequest`, e o `CategoryForm` envia sempre o `name` (`@NotBlank` no `CategoryUpdateRequest` do backend), sem o `id` no corpo.
   - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual). O campo será acrescentado na #34.
 - Chamadas à API comparadas com a tabela de endpoints do backend: fora a categoria, verbos, rotas e corpos batem. Ficam listados `userApi.register` (rota `/api/v1/users/register` inexistente, sem uso) e `userApi.activate`/`deactivate` tipados como `User`, embora a API responda 204 (#24).
-- Próximos passos: conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados); levar a `develop` para a `main` quando o mantenedor decidir publicar.
+- **Preço com `BigDecimal` no backend** (PRs #50 e #53 de lá): o preço é obrigatório no `POST` e no `PUT`, maior que zero, com até 8 dígitos inteiros e 2 casas decimais (até 99.999.999,99), e recusado com 422 fora disso.
+  - Adaptação do frontend na #36 (branch `fix/36-preco-produto`): o campo de preço do `ProductForm` virou texto (`inputMode="decimal"`, vírgula ou ponto, sem separador de milhar), validado e arredondado por `utils/price.ts`. Fecha a parte do frontend das issues #6 e #44 do backend.
+  - Fica para a #37: o `handleApiError` mostra só a última mensagem quando a API devolve mais de uma para o mesmo campo.
+- A `develop` foi levada para a `main` em 17/10/2026 (`b3564cf`).
+- Próximos passos: concluir a #36; conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados); levar a `develop` para a `main` quando o mantenedor decidir publicar.
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.

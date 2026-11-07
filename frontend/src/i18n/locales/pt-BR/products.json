@@ -20,7 +20,8 @@
     "category": "Filtrar por categoria"
   },
   "hints": {
-    "categoriesMulti": "Use Ctrl/Cmd para selecionar várias."
+    "categoriesMulti": "Use Ctrl/Cmd para selecionar várias.",
+    "price": "Use vírgula ou ponto para os centavos, sem separador de milhar. Ex.: 1234,56"
   },
   "filters": {
     "searchAria": "Pesquisar produto",
