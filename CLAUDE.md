@@ -266,12 +266,12 @@ Atualizado em 06/11/2026.
 - Branch `develop` criada a partir da `main` e já publicada no GitHub; o trabalho acontece nela (seção 9.1).
 - Rulesets da `develop` e da `main` com *Repository admin* em **Always allow**: o mantenedor faz commit e push direto nas duas e decide, em cada tarefa, entre Pull Request e commit direto. Contribuidores externos seguem por fork e Pull Request, com o CI obrigatório.
 - Repositório público. Nenhum commit novo do bot do Lovable na `main` desde 02/10/2026.
-- Documentação completa em `docs/` e 34 issues abertas (#1 a #31, #34, #36 e #37; #32, #33 e #35 são Pull Requests).
+- Documentação completa em `docs/` e 33 issues abertas (#1 a #31, #34 e #37). A #36 foi fechada; #32, #33, #35 e #38 são Pull Requests.
 - Padrão de trabalho do backend aplicado: este arquivo, guia de contribuição, Código de Conduta, licença MIT, modelos de issue e de PR, CI (com o lint bloqueando) e ajustes em `docs/`.
 - Issues ligadas entre os dois repositórios, com comentários de referência cruzada:
   - novas no frontend: #27 (respostas de erro do backend), #28 (dono dos produtos e categorias), #29 (desativação e reativação de conta), #30 (confirmação da troca de e-mail) e #31 (itens inativos);
   - novas no backend: #46 (link de recuperação com `/auth/reset-password`, par da #26), #47 (revogação do refresh token, par da #11) e #48 (dono dos produtos e categorias, par da #28);
-  - issues do backend com a label `frontend`: #2 a #6, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39, #44, #46, #47 e #48.
+  - issues abertas do backend com a label `frontend`: #2 a #5, #8 a #15, #18, #22, #28, #30, #32, #36, #37, #39, #46, #47 e #48 (a #6 e a #44 foram fechadas em 06/11/2026, depois da #36 daqui).
 - Milestone **Pronto para produção** criado com #1, #11, #13, #28 e #30. As #2, #7 e #18 ficam fora por enquanto.
 - **Regra de negócio decidida e ainda não implementada** (#28 aqui e #48 no backend): cada produto e categoria registra quem o cadastrou; o OPERATOR só altera o que cadastrou, e os registros do banco populado, só o ADMIN; categoria associada a produto não pode ser excluída nem desativada por ninguém.
 - **Bug corrigido sem issue, na branch `fix/categoria-patch`** (PR #33, já na `develop`): ao salvar uma categoria editada pelo dashboard, `/api/v1/categories/{id}` respondia **500**.
@@ -281,8 +281,10 @@ Atualizado em 06/11/2026.
   - O frontend não tem campo de descrição da categoria; editar o nome mantém a descrição gravada (`description` ausente mantém a atual). O campo será acrescentado na #34.
 - Chamadas à API comparadas com a tabela de endpoints do backend: fora a categoria, verbos, rotas e corpos batem. Ficam listados `userApi.register` (rota `/api/v1/users/register` inexistente, sem uso) e `userApi.activate`/`deactivate` tipados como `User`, embora a API responda 204 (#24).
 - **Preço com `BigDecimal` no backend** (PRs #50 e #53 de lá): o preço é obrigatório no `POST` e no `PUT`, maior que zero, com até 8 dígitos inteiros e 2 casas decimais (até 99.999.999,99), e recusado com 422 fora disso.
-  - Adaptação do frontend na #36 (branch `fix/36-preco-produto`): o campo de preço do `ProductForm` virou texto (`inputMode="decimal"`, vírgula ou ponto, sem separador de milhar), validado e arredondado por `utils/price.ts`. Fecha a parte do frontend das issues #6 e #44 do backend.
+  - **Concluído no frontend** na #36, pelo PR #38 (squash `2eaf082` na `develop`): o campo de preço do `ProductForm` virou texto (`inputMode="decimal"`, vírgula ou ponto, sem separador de milhar), validado e arredondado por `utils/price.ts`.
+  - A #36 foi fechada com um comentário citando o PR #38. As issues #6 e #44 do backend receberam comentários de ligação e foram fechadas juntas pelo mantenedor.
+  - **Ainda não publicado:** a mudança está só na `develop`; o site do Lovable só muda depois do merge na `main` e do **Publish → Update**.
   - Fica para a #37: o `handleApiError` mostra só a última mensagem quando a API devolve mais de uma para o mesmo campo.
-- A `develop` foi levada para a `main` em 17/10/2026 (`b3564cf`).
-- Próximos passos: concluir a #36; conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados); levar a `develop` para a `main` quando o mantenedor decidir publicar.
+- A `develop` foi levada para a `main` pela última vez em 17/10/2026 (`b3564cf`), antes do PR #38.
+- Próximos passos: levar a `develop` para a `main` quando o mantenedor decidir publicar (inclui o PR #38); conferir as opções de segurança restantes no GitHub (labels e rulesets já configurados).
 - Backend ainda sem deploy; o site do Lovable não exibe dados até isso acontecer.
