@@ -11,10 +11,17 @@ import { ErrorState, NotFoundState, ProductFormSkeleton } from "@/components";
 import { useResource } from "@/hooks/useResource";
 import { handleApiError } from "@/utils/api-error-handler";
 import { getUiErrorMessage } from "@/utils/ui-error";
+import {
+  formatPriceInput,
+  getPriceInputError,
+  parsePriceInput,
+  type PriceInputError,
+} from "@/utils/price";
 
 type FormFields = {
   name: string;
-  price: number;
+  /** Texto digitado; vira número (arredondado) só no envio. */
+  price: string;
   imgUrl: string;
   description: string;
   categoryIds: string[];
@@ -23,6 +30,16 @@ type FormFields = {
 type Props = {
   mode: "create" | "edit";
 };
+
+/** Mensagem de cada motivo de recusa do preço (`utils/price.ts`). */
+const PRICE_ERROR_KEYS = {
+  required: "validation:priceRequired",
+  invalid: "validation:priceInvalid",
+  thousands: "validation:priceThousands",
+  decimals: "validation:priceDecimals",
+  min: "validation:priceMin",
+  max: "validation:priceMax",
+} as const satisfies Record<PriceInputError, string>;
 
 export default function ProductForm({ mode }: Props) {
   const { t } = useTranslation(["products", "validation"]);
@@ -40,7 +57,7 @@ export default function ProductForm({ mode }: Props) {
   } = useForm<FormFields>({
     defaultValues: {
       name: "",
-      price: 0,
+      price: "",
       imgUrl: "",
       description: "",
       categoryIds: [],
@@ -64,7 +81,7 @@ export default function ProductForm({ mode }: Props) {
     const p = productState.data;
     reset({
       name: p.name,
-      price: p.price,
+      price: formatPriceInput(p.price),
       imgUrl: p.imgUrl,
       description: p.description,
       categoryIds: p.categories?.map((c) => String(c.id)) ?? [],
@@ -76,7 +93,7 @@ export default function ProductForm({ mode }: Props) {
     setSaveError(null);
     const payload: ProductRequest = {
       name: data.name,
-      price: data.price,
+      price: parsePriceInput(data.price),
       imgUrl: data.imgUrl,
       description: data.description,
       categoryIds: data.categoryIds.map(Number),
@@ -140,14 +157,18 @@ export default function ProductForm({ mode }: Props) {
           />
           <Input
             label={t("products:fields.price")}
-            type="number"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
+            autoComplete="off"
             required
             error={errors.price?.message}
+            helperText={t("products:hints.price")}
             {...register("price", {
               required: t("validation:priceRequired"),
-              valueAsNumber: true,
-              min: { value: 0, message: t("validation:priceMin") },
+              validate: (value) => {
+                const reason = getPriceInputError(value);
+                return reason ? t(PRICE_ERROR_KEYS[reason]) : true;
+              },
             })}
           />
         </div>

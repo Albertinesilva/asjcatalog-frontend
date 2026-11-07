@@ -170,7 +170,7 @@ A renovação de sessão é detalhada em [AUTHENTICATION.md](AUTHENTICATION.md#r
 | `services/` | `auth-service`, `account-service`, `product-service`, `category-service`, `user-service` |
 | `styles/` | `globals.css`: diretivas do Tailwind, variáveis de cor dos temas claro e escuro e o visual do SweetAlert2 |
 | `types/` | Tipos TypeScript dos dados trocados com a API (`auth.ts`, `user.ts`, `product.ts`, `category.ts`) |
-| `utils/` | Constantes, leitura e gravação no `localStorage`, leitura do token, regras de senha, alertas e tratamento de erros |
+| `utils/` | Constantes, leitura e gravação no `localStorage`, leitura do token, regras de senha e de preço, alertas e tratamento de erros |
 
 ## Mapa de dependências entre módulos
 

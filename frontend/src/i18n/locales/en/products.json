@@ -20,7 +20,8 @@
     "category": "Filter by category"
   },
   "hints": {
-    "categoriesMulti": "Use Ctrl/Cmd to select multiple."
+    "categoriesMulti": "Use Ctrl/Cmd to select multiple.",
+    "price": "Use a comma or a dot for cents, without a thousands separator. E.g.: 1234.56"
   },
   "filters": {
     "searchAria": "Search product",

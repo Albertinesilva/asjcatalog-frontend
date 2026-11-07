@@ -2,7 +2,7 @@
 
 # Formulários e senha
 
-Este documento mostra como os formulários do ASJCatalog funcionam. Você vai ver o padrão de uso do React Hook Form, a lista de formulários e suas regras, a validação de senha (critérios, medidor de força e componentes), a validação de e-mail e seus limites, outros comportamentos (como o tempo de espera para reenviar e-mail) e como criar um formulário novo.
+Este documento mostra como os formulários do ASJCatalog funcionam. Você vai ver o padrão de uso do React Hook Form, a lista de formulários e suas regras, a validação de senha (critérios, medidor de força e componentes), a validação de e-mail e seus limites, a validação de preço, outros comportamentos (como o tempo de espera para reenviar e-mail) e como criar um formulário novo.
 
 ## Onde fica no código
 
@@ -10,6 +10,7 @@ Este documento mostra como os formulários do ASJCatalog funcionam. Você vai ve
 | --- | --- |
 | `frontend/src/pages/**` | Os formulários (cada tela declara o próprio `useForm` e as regras dos campos) |
 | `frontend/src/utils/password.ts` | Regras de senha: `evaluatePassword`, `buildPasswordValidation`, `PASSWORD_CRITERIA`, limites de tamanho |
+| `frontend/src/utils/price.ts` | Regras do campo de preço: `getPriceInputError`, `parsePriceInput`, `formatPriceInput`, `PRICE_MAX` |
 | `frontend/src/components/forms/password/` | `PasswordField`, `PasswordRequirements`, `PasswordStrength`, `PasswordMatch` |
 | `frontend/src/components/ui/` | `Input`, `Select`, `Textarea`, `Button` (veja [COMPONENTS.md](COMPONENTS.md#design-system-ui)) |
 | `frontend/src/utils/storage.ts`, `frontend/src/utils/constants.ts` | E-mail pendente de ativação e tempo de espera de reenvio |
@@ -117,7 +118,7 @@ export default function CategoryForm({ mode }: Props) {
 | `ActivationPendingPage` | `email` | Obrigatório e com formato (mensagens escolhidas pelo tipo do erro) |
 | `PersonalProfilePage` | `firstName`, `lastName`, `email` | Nome e sobrenome obrigatórios, até 100 caracteres; e-mail obrigatório, com formato (regex diferente) e até 255 caracteres. Os valores são enviados sem espaços nas pontas (`trim`) |
 | `SecurityProfilePage` | `currentPassword`, `password`, `confirmPassword` | Senha atual obrigatória; nova senha com `buildPasswordValidation` (com dados do usuário logado); confirmação obrigatória e igual. O envio confere de novo se as senhas coincidem |
-| `ProductForm` | `name`, `price`, `imgUrl`, `categoryIds`, `description` | Todos obrigatórios; preço numérico (`valueAsNumber`) e maior ou igual a 0; pelo menos uma categoria |
+| `ProductForm` | `name`, `price`, `imgUrl`, `categoryIds`, `description` | Todos obrigatórios; preço como texto, maior que zero, até 99.999.999,99 e com até 2 casas decimais, arredondado no envio (veja [Validação de preço](#validação-de-preço)); pelo menos uma categoria |
 | `CategoryForm` | `name` | Obrigatório |
 | `UserForm` | `firstName`, `lastName`, `email`, `password` (só na criação), `roleIds` | Nome, sobrenome e e-mail obrigatórios (sem verificação de formato do e-mail); senha com `buildPasswordValidation` (com dados pessoais); pelo menos um perfil |
 
@@ -239,6 +240,43 @@ Limites da regex principal:
 - **Inconsistência:** o perfil aceita endereços que o login recusa. Um usuário pode trocar o e-mail no perfil para `ana+loja@gmail.com` e depois não conseguir digitá-lo no login.
 
 Em todos os casos, a API continua validando o e-mail.
+
+## Validação de preço
+
+O backend guarda o preço como `BigDecimal` (um tipo do Java para valores decimais exatos), numa coluna `NUMERIC(10,2)`, e recusa com **422** o preço ausente, zero ou negativo, com mais de 2 casas decimais ou acima de 99.999.999,99 (veja o [VALIDATION.md do backend](https://github.com/Albertinesilva/backend-engineering-journey-java-springboot/blob/develop/docs/guides/VALIDATION.md)). O `ProductForm` aplica as mesmas regras antes de enviar, para o usuário corrigir o valor sem esperar a resposta da API.
+
+**O campo é um texto, não um número.** Ele usa `type="text"` com `inputMode="decimal"`, um atributo HTML que abre o teclado numérico no celular sem mudar o tipo do campo (os termos desta seção estão no [GLOSSARY.md](GLOSSARY.md)). Com `type="number"`, aceitar ou não a vírgula dependia do navegador, e um valor recusado chegava vazio ao formulário. Ler o texto também permite contar as casas decimais como o usuário digitou.
+
+| Texto digitado | Resultado | Mensagem (`validation:`) |
+| --- | --- | --- |
+| `10,50` ou `10.50` | Aceito, enviado como `10.5` | — |
+| vazio ou só espaços | Recusado | `priceRequired` |
+| `0`, `0,00`, `-5` | Recusado | `priceMin` |
+| `10,999`, `10,000` | Recusado (mais de 2 casas) | `priceDecimals` |
+| `100000000` | Recusado (acima de 99.999.999,99) | `priceMax` |
+| `1.234,56`, `1.234.567` | Recusado (separador de milhar) | `priceThousands` |
+| `abc`, `1e5`, `,50`, `5.` | Recusado | `priceInvalid` |
+
+Só pode haver **um** separador decimal (vírgula ou ponto), e nunca o separador de milhar. Com um único separador, `1.234` é lido como "1 e 234 milésimos" (e não "mil duzentos e trinta e quatro"), e por isso é recusado por ter 3 casas decimais.
+
+`frontend/src/utils/price.ts`
+
+```ts
+export function parsePriceInput(raw: string): number {
+  const amount = Number(raw.trim().replace(",", "."));
+  return roundPrice(amount);
+}
+
+export function roundPrice(value: number): number {
+  return Number(value.toFixed(PRICE_DECIMALS));
+}
+```
+
+- **Envio:** o formulário guarda o texto e só o converte em número no `onSubmit`, com `parsePriceInput`. O arredondamento para 2 casas é uma garantia a mais: o backend conta os zeros à direita como casas decimais e recusa somas de ponto flutuante (o tipo `number` do JavaScript, que guarda alguns decimais de forma aproximada) sem arredondamento, como `0.30000000000000004`.
+- **Edição:** o formulário é preenchido com o preço atual em 2 casas (`formatPriceInput(2190)` → `"2190.00"`) e envia o preço sempre, mesmo que o usuário não o altere, porque o `PUT` exige o campo.
+- **Exibição:** fora do formulário, o preço é mostrado pelo `ProductPrice` (veja [COMPONENTS.md](COMPONENTS.md)), sempre com 2 casas.
+
+A API continua validando o preço. Se ela responder 422, a mensagem do campo `price` aparece embaixo dele, pelo `handleApiError` (próxima seção).
 
 ## Erros da API nos formulários
 
